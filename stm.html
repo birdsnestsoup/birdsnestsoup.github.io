@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>STM - Lập Quẻ Dịch Tân Thời</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Be+Vietnam+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --ink: #1a1a2e;
+            --cinnabar: #c0392b;
+            --gold: #c9973a;
+            --parchment: #f5f0e8;
+            --parchment-dark: #ede5d0;
+            --mist: #8c8070;
+            --jade: #2e7d5e;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background: var(--parchment);
+            min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
+            padding: 20px 15px 40px; position: relative; overflow-x: hidden;
+        }
+
+        body::before {
+            content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background-image: radial-gradient(ellipse at 20% 10%, rgba(201,151,58,0.08) 0%, transparent 60%),
+                              radial-gradient(ellipse at 80% 90%, rgba(46,125,94,0.06) 0%, transparent 60%);
+            pointer-events: none; z-index: 0;
+        }
+
+        body::after {
+            content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 0; opacity: 0.4;
+        }
+
+        .content-wrap { position: relative; z-index: 1; width: 100%; max-width: 480px; display: flex; flex-direction: column; align-items: center; }
+
+        .header { text-align: center; margin-bottom: 28px; padding-top: 10px; }
+        .header-badge { display: inline-block; font-size: 0.65rem; letter-spacing: 0.25em; font-weight: 700; color: var(--gold); text-transform: uppercase; border: 1px solid var(--gold); padding: 3px 12px; border-radius: 2px; margin-bottom: 10px; }
+        .header h1 { font-family: 'Noto Serif', serif; font-size: 1.6rem; color: var(--ink); line-height: 1.3; margin-bottom: 4px; }
+        .header h1 span { color: var(--cinnabar); }
+        .header p { font-size: 0.75rem; color: var(--mist); letter-spacing: 0.05em; }
+
+        .input-wrap { width: 100%; margin-bottom: 16px; position: relative; }
+        .input-wrap label { display: block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; color: var(--mist); text-transform: uppercase; margin-bottom: 7px; }
+        .input-wrap input { width: 100%; padding: 14px 16px; border: 1.5px solid var(--parchment-dark); border-radius: 8px; background: white; font-family: 'Be Vietnam Pro', sans-serif; font-size: 0.95rem; color: var(--ink); outline: none; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+
+        .main-btn { width: 100%; padding: 17px; background: var(--ink); color: var(--parchment); border: none; border-radius: 10px; font-weight: 700; letter-spacing: 0.08em; cursor: pointer; margin-bottom: 12px; box-shadow: 0 4px 18px rgba(26,26,46,0.22); }
+
+        .action-row { width: 100%; display: flex; gap: 8px; margin-bottom: 22px; }
+        .download-btn { flex: 1; padding: 11px; background: var(--jade); color: white; border: none; border-radius: 8px; font-weight: 600; font-size: 0.85rem; cursor: pointer; display: none; }
+        .ai-btn { flex: 1; padding: 11px; border: none; border-radius: 8px; color: white; font-weight: 600; font-size: 0.85rem; text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center; }
+        .btn-gemini { background: #4285f4; }
+        .btn-chatgpt { background: #10a37f; }
+
+        /* VÙNG CHỤP ẢNH - Cần đảm bảo màu nền và độ đục tuyệt đối */
+        #capture-area { width: 100%; display: none; flex-direction: column; gap: 14px; padding: 10px; border-radius: 12px; }
+
+        .summary-card, .card, .haodong-card { 
+            background-color: #ffffff !important; 
+            border-radius: 12px; padding: 16px 18px; 
+            box-shadow: 0 3px 12px rgba(0,0,0,0.07); 
+            opacity: 1 !important;
+        }
+        
+        .summary-card { border-left: 4px solid var(--cinnabar); }
+        .haodong-card { border-left: 4px solid var(--gold); }
+
+        .card-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; color: var(--mist); text-transform: uppercase; margin-bottom: 5px; }
+        .q-text { font-family: 'Noto Serif', serif; font-style: italic; font-size: 0.95rem; color: var(--ink); margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px dashed var(--parchment-dark); line-height: 1.5; }
+        .meta-row { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 6px; }
+        .moving-info { font-size: 0.85rem; color: var(--ink); }
+        .moving-info span { color: var(--cinnabar); font-weight: 700; }
+        .timestamp { font-size: 0.7rem; color: var(--mist); }
+
+        .que-display { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .card.chinh { border-top: 3px solid var(--gold); }
+        .card.bien { border-top: 3px solid var(--cinnabar); }
+        .que-name { font-family: 'Noto Serif', serif; font-size: 1rem; font-weight: 700; color: var(--ink); min-height: 2.8em; display: flex; align-items: center; justify-content: center; margin-bottom: 4px; }
+        
+        .hexagram { display: flex; flex-direction: column; gap: 7px; align-items: center; margin: 14px 0; }
+        .line-wrap { display: flex; align-items: center; gap: 5px; width: 100%; justify-content: center; }
+        .line-wrap .hao-lines { width: 72px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+        .line-num { font-size: 0.6rem; color: var(--mist); width: 12px; text-align: right; }
+        .line { height: 9px; border-radius: 2px; background-color: var(--ink); }
+        .line.yang { width: 72px; }
+        .line.yin-left, .line.yin-right { width: 30px; }
+        .line-wrap.is-yin { gap: 12px; }
+        .line.moving-yang, .line.moving-yin { background-color: var(--cinnabar); }
+
+        .bin-info { font-family: monospace; font-size: 0.75rem; color: var(--mist); background: var(--parchment); padding: 3px 8px; border-radius: 4px; display: inline-block; }
+        .haodong-pills { display: flex; flex-wrap: wrap; gap: 7px; }
+        .pill { background: var(--parchment); border: 1px solid var(--parchment-dark); border-radius: 20px; padding: 4px 12px; font-size: 0.8rem; color: var(--ink); }
+        .pill.active { background: var(--cinnabar); border-color: var(--cinnabar); color: white; font-weight: 600; }
+        .tinh-badge { background: var(--jade); color: white; padding: 5px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+
+        .footer { text-align: center; font-size: 0.6rem; color: var(--mist); margin-top: 10px; }
+        .divider { width: 60px; height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); margin: 4px auto 10px; }
+        .seed-info { font-size: 0.65rem; color: #ccc; margin-top: 4px; }
+    </style>
+</head>
+<body>
+<div class="content-wrap">
+    <div class="header">
+        <div class="header-badge">STM · Tân Thời Dịch Học</div>
+        <h1>Lập <span>Quẻ Dịch</span> Tân Thời</h1>
+        <p>Thời gian · Câu hỏi · Entropy tổng hợp</p>
+    </div>
+
+    <div class="input-wrap">
+        <label>Câu hỏi của bạn:</label>
+        <input type="text" id="userQuestion" placeholder="Ví dụ: Công việc tháng này thế nào?">
+    </div>
+
+    <button class="main-btn" onclick="lapQueSTM()" id="mainBtn">
+        <div class="btn-inner">☯ CHẠM LẬP QUẺ & PHÂN TÍCH</div>
+    </button>
+
+    <div class="action-row">
+        <button id="btnDownload" class="download-btn" onclick="downloadImg()">⬇ Tải ảnh quẻ</button>
+        <a href="https://gemini.google.com/share/5427958ae484" target="_blank" class="ai-btn btn-gemini">✦ Gemini</a>
+        <a href="https://chatgpt.com/share/69c36e54-d6a0-839f-8271-bfd6c1921fcd" target="_blank" class="ai-btn btn-chatgpt">✦ ChatGPT</a>
+    </div>
+
+    <div id="capture-area">
+        <div class="summary-card">
+            <div class="card-label">Câu hỏi</div>
+            <div id="show-question" class="q-text">Chưa nhập câu hỏi</div>
+            <div class="meta-row">
+                <div class="moving-info">Hào động: <span id="moving-res">---</span></div>
+                <div id="timestamp" class="timestamp"></div>
+            </div>
+        </div>
+
+        <div class="que-display">
+            <div class="card chinh">
+                <span class="card-label">Quẻ Chính</span>
+                <div id="name-chinh" class="que-name">---</div>
+                <div id="visual-chinh" class="hexagram"></div>
+                <div id="bin-chinh" class="bin-info">---</div>
+            </div>
+            <div class="card bien">
+                <span class="card-label">Quẻ Biến</span>
+                <div id="name-bien" class="que-name">---</div>
+                <div id="visual-bien" class="hexagram"></div>
+                <div id="bin-bien" class="bin-info">---</div>
+            </div>
+        </div>
+
+        <div class="haodong-card">
+            <div class="card-label">Các hào — Hào động đánh dấu đỏ</div>
+            <div id="haodong-pills" class="haodong-pills"></div>
+        </div>
+
+        <div class="footer">
+            <div class="divider"></div>
+            STM · Tân Thời Dịch Học System
+            <div id="seed-display" class="seed-info"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+// --- GIỮ NGUYÊN THUẬT TOÁN GỐC ---
+const batQuai = { 0: "000", 1: "001", 2: "010", 3: "011", 4: "100", 5: "101", 6: "110", 7: "111" };
+const data64Que = { "111111":"Thuần Càn","000000":"Thuần Khôn","010001":"Thủy Lôi Truân","100010":"Sơn Thủy Mông","010111":"Thủy Thiên Nhu","111010":"Thiên Thủy Tụng","000010":"Địa Thủy Sư","010000":"Thủy Địa Tỷ","110111":"Phong Thiên Tiểu Súc","111011":"Thiên Trạch Lý","000111":"Địa Thiên Thái","111000":"Thiên Địa Bĩ","111101":"Thiên Hỏa Đồng Nhân","101111":"Hỏa Thiên Đại Hữu","000100":"Địa Sơn Khiêm","001000":"Lôi Địa Dự","011001":"Trạch Lôi Tùy","100110":"Sơn Phong Cổ","000011":"Địa Trạch Lâm","110000":"Phong Địa Quán","101001":"Hỏa Lôi Phệ Hạp","100101":"Sơn Hỏa Bí","100000":"Sơn Địa Bác","000001":"Địa Lôi Phục","111001":"Thiên Lôi Vô Vọng","100111":"Sơn Thiên Đại Súc","100001":"Sơn Lôi Di","011110":"Trạch Phong Đại Quá","010010":"Thuần Khảm","101101":"Thuần Ly","011100":"Trạch Sơn Hàm","001110":"Lôi Phong Hằng","111100":"Thiên Sơn Độn","001111":"Lôi Thiên Đại Tráng","101000":"Hỏa Địa Tấn","000101":"Địa Hỏa Minh Di","110101":"Phong Hỏa Gia Nhân","101011":"Hỏa Trạch Khuê","010100":"Thủy Sơn Kiển","001010":"Lôi Thủy Giải","100011":"Sơn Trạch Tổn","110001":"Phong Lôi Ích","011111":"Trạch Thiên Quải","111110":"Thiên Phong Cấu","011000":"Trạch Địa Tụy","000110":"Địa Phong Thăng","011010":"Trạch Thủy Khốn","010110":"Thủy Phong Tỉnh","011101":"Trạch Hỏa Cách","101110":"Hỏa Phong Đỉnh","001001":"Thuần Chấn","100100":"Thuần Cấn","110100":"Phong Sơn Tiệm","001011":"Lôi Trạch Quy Muội","001101":"Lôi Hỏa Phong","101100":"Hỏa Sơn Lữ","110110":"Thuần Tốn","011011":"Thuần Đoài","110010":"Phong Thủy Hoán","010011":"Thủy Trạch Tiết","110011":"Phong Trạch Trung Phu","001100":"Lôi Sơn Tiểu Quá","010101":"Thủy Hỏa Ký Tế","101010":"Hỏa Thủy Vị Tế" };
+
+function hashStr(str) { let h = 5381; for (let i = 0; i < str.length; i++) { h = ((h << 5) + h) ^ str.charCodeAt(i); h = h >>> 0; } return h; }
+function buildSeed(question) { const now = Date.now(); const qHash = question.trim().length > 0 ? hashStr(question.trim()) : 0; let seed = (now ^ qHash) >>> 0; seed ^= (seed >>> 16); seed = Math.imul(seed, 0x45d9f3b) >>> 0; seed ^= (seed >>> 16); seed = Math.imul(seed, 0x45d9f3b) >>> 0; seed ^= (seed >>> 16); return seed >>> 0; }
+function makeRng(seed) { let s = seed >>> 0; return function() { s = Math.imul(1664525, s) + 1013904223 >>> 0; return s / 4294967296; }; }
+function getTrigramBin(n) { return ((n & 4) ? '1' : '0') + ((n & 2) ? '1' : '0') + ((n & 1) ? '1' : '0'); }
+function rollHao(rng) { const r = Math.floor(rng() * 16); if (r <= 2) return { bin: '1', dong: true, type: 9 }; if (r === 3) return { bin: '0', dong: true, type: 6 }; if (r <= 11) return { bin: '1', dong: false, type: 7 }; return { bin: '0', dong: false, type: 8 }; }
+function tinhQueBien(haos) { return haos.map(h => { if (h.dong) return h.bin === '1' ? '0' : '1'; return h.bin; }).join(''); }
+
+function lapQueSTM() {
+    const now = new Date();
+    const question = document.getElementById('userQuestion').value;
+    const seed = buildSeed(question);
+    const rng = makeRng(seed);
+    const haos = []; for (let i = 0; i < 6; i++) haos.push(rollHao(rng));
+    const binChinh = haos.map(h => h.bin).reverse().join('');
+    const binBien = tinhQueBien(haos.slice().reverse());
+    const dongList = haos.map((h, i) => ({ hao: i + 1, dong: h.dong })).filter(x => x.dong).map(x => x.hao);
+    const tenChinh = data64Que[binChinh] || "Không xác định";
+    const tenBien  = data64Que[binBien]  || "Không xác định";
+    const hh = now.getHours().toString().padStart(2,'0'), mm = now.getMinutes().toString().padStart(2,'0'), ss = now.getSeconds().toString().padStart(2,'0');
+
+    document.getElementById('show-question').innerText = question || "Không có câu hỏi cụ thể";
+    document.getElementById('name-chinh').innerText = tenChinh;
+    document.getElementById('name-bien').innerText  = tenBien;
+    document.getElementById('bin-chinh').innerText  = `${binChinh.slice(0, 3)} ${binChinh.slice(3, 6)}`;
+    document.getElementById('bin-bien').innerText   = `${binBien.slice(0, 3)} ${binBien.slice(3, 6)}`;
+    document.getElementById('moving-res').innerText = dongList.length > 0 ? "Hào " + dongList.sort((a,b)=>a-b).join(", ") : "Quẻ Tĩnh";
+    document.getElementById('timestamp').innerText = `${hh}:${mm}:${ss} · ${now.toLocaleDateString('vi-VN')}`;
+    document.getElementById('seed-display').innerText = `seed: ${seed.toString(16).toUpperCase()}`;
+
+    renderHex('visual-chinh', haos, dongList, true);
+    renderHex('visual-bien', haos, dongList, false);
+    renderPills(dongList);
+
+    document.getElementById('capture-area').style.display = 'flex';
+    document.getElementById('btnDownload').style.display = 'block';
+}
+
+function renderHex(containerId, haos, dongList, isMain) {
+    const container = document.getElementById(containerId); container.innerHTML = '';
+    for (let i = 5; i >= 0; i--) {
+        const haoNum = i + 1, hao = haos[i];
+        const isYang = isMain ? hao.bin === '1' : (hao.dong ? hao.bin !== '1' : hao.bin === '1');
+        const isDong = dongList.includes(haoNum) && isMain;
+        const wrap = document.createElement('div'); wrap.className = 'line-wrap';
+        const numEl = document.createElement('span'); numEl.className = 'line-num'; numEl.innerText = haoNum; wrap.appendChild(numEl);
+        const linesBox = document.createElement('div'); linesBox.className = 'hao-lines';
+        if (isYang) {
+            const l = document.createElement('div'); l.className = 'line yang' + (isDong ? ' moving-yang' : ''); linesBox.appendChild(l);
+        } else {
+            const l1 = document.createElement('div'); l1.className = 'line yin-left' + (isDong ? ' moving-yin' : '');
+            const l2 = document.createElement('div'); l2.className = 'line yin-right' + (isDong ? ' moving-yin' : '');
+            linesBox.appendChild(l1); linesBox.appendChild(l2);
+        }
+        wrap.appendChild(linesBox); container.appendChild(wrap);
+    }
+}
+
+function renderPills(dongList) {
+    const wrap = document.getElementById('haodong-pills'); wrap.innerHTML = '';
+    if (dongList.length === 0) {
+        const b = document.createElement('span'); b.className = 'tinh-badge'; b.innerText = '☯ Quẻ Tĩnh'; wrap.appendChild(b); return;
+    }
+    for (let i = 1; i <= 6; i++) {
+        const p = document.createElement('span'); p.className = 'pill' + (dongList.includes(i) ? ' active' : ''); p.innerText = `Hào ${i}${dongList.includes(i) ? ' ●' : ''}`; wrap.appendChild(p);
+    }
+}
+
+// --- HÀM TẢI ẢNH ĐÃ EDIT ĐỂ RÕ NÉT ---
+function downloadImg() {
+    const area = document.getElementById('capture-area');
+    
+    // Ép style nền trắng đặc và loại bỏ hiệu ứng đổ bóng phức tạp khi capture
+    const tempStyle = document.createElement('style');
+    tempStyle.innerHTML = `
+        #capture-area { background-color: #f5f0e8 !important; padding: 20px !important; }
+        .summary-card, .card, .haodong-card { box-shadow: none !important; border: 1px solid #ede5d0 !important; background-color: #ffffff !important; }
+    `;
+    document.head.appendChild(tempStyle);
+
+    html2canvas(area, {
+        backgroundColor: "#f5f0e8",
+        scale: 3, // Độ phân giải cực cao
+        useCORS: true,
+        logging: false,
+        onclone: (clonedDoc) => {
+            clonedDoc.getElementById('capture-area').style.display = 'flex';
+        }
+    }).then(canvas => {
+        document.head.removeChild(tempStyle);
+        const link = document.createElement('a');
+        link.download = 'QueDich_STM_' + new Date().getTime() + '.png';
+        link.href = canvas.toDataURL('image/png', 1.0);
+        link.click();
+    });
+}
+</script>
+</body>
+</html>
