@@ -18,6 +18,7 @@
             color: var(--text-color);
             background-color: var(--bg-color);
             margin: 0; padding: 20px;
+            scroll-behavior: smooth; /* Cuộn mượt */
         }
 
         .container {
@@ -46,6 +47,7 @@
         .search-box input {
             flex: 1; border: none; outline: none;
             font-size: 24px; padding: 5px 15px;
+            background: transparent;
         }
 
         .search-box button {
@@ -76,7 +78,13 @@
         .toc a { text-decoration: none; color: var(--primary-color); font-weight: bold; font-size: 20px; }
 
         strong { color: #c0392b; }
-        ::selection { background: yellow; color: black; }
+
+        /* Lớp dùng để đánh dấu và nhảy tới */
+        .search-highlight {
+            background-color: yellow;
+            color: black;
+            font-weight: bold;
+        }
 
         .content-section {
             margin-bottom: 50px;
@@ -92,7 +100,7 @@
 
     <div class="search-box">
         <input type="text" id="searchInput" placeholder="Gõ từ khóa cần tìm...">
-        <button onclick="doSearch()">TÌM KIẾM</button>
+        <button onclick="smartSearch()">TÌM KIẾM</button>
     </div>
 
     <div class="toc">
@@ -176,29 +184,62 @@
 </div>
 
 <script>
-    function doSearch() {
+    function smartSearch() {
         const query = document.getElementById('searchInput').value.trim();
-        if (!query) return;
+        const mainContent = document.getElementById('mainContent');
+        
+        if (!query) {
+            alert("Vui lòng nhập từ khóa!");
+            return;
+        }
 
-        // Xóa bôi đen cũ
-        window.getSelection().removeAllRanges();
+        // 1. Xóa các highlight cũ trước khi tìm kiếm mới
+        const oldHighlights = mainContent.querySelectorAll('.search-highlight');
+        oldHighlights.forEach(el => {
+            el.replaceWith(document.createTextNode(el.textContent));
+        });
+        mainContent.normalize(); // Gộp các node text lại
 
-        // Tìm từ khóa (hàm chuẩn trình duyệt tự nhảy đến vị trí text)
-        const found = window.find(query, false, false, true, false, false, true);
+        // 2. Hàm tìm và bọc từ khóa
+        let foundNode = null;
+        const walk = document.createTreeWalker(mainContent, NodeFilter.SHOW_TEXT, null, false);
+        const nodes = [];
+        let n;
+        while (n = walk.nextNode()) nodes.push(n);
 
-        if (found) {
-            // Đợi trình duyệt nhảy xong, cuộn ngược lên 120px để tránh bị thanh Search che
-            setTimeout(() => {
-                window.scrollBy(0, -120);
-            }, 10);
+        nodes.forEach(node => {
+            const pos = node.nodeValue.toLowerCase().indexOf(query.toLowerCase());
+            if (pos !== -1 && !foundNode) {
+                const span = document.createElement('span');
+                span.className = 'search-highlight';
+                const matchedText = node.nodeValue.substring(pos, pos + query.length);
+                const before = node.nodeValue.substring(0, pos);
+                const after = node.nodeValue.substring(pos + query.length);
+                
+                span.textContent = matchedText;
+                const parent = node.parentNode;
+                parent.insertBefore(document.createTextNode(before), node);
+                parent.insertBefore(span, node);
+                parent.insertBefore(document.createTextNode(after), node);
+                parent.removeChild(node);
+                
+                foundNode = span;
+            }
+        });
+
+        // 3. Cuộn đến vị trí tìm thấy chính xác
+        if (foundNode) {
+            const yOffset = -120; // Khoảng cách bù cho thanh Search Box cố định
+            const y = foundNode.getBoundingClientRect().top + window.pageYOffset + yOffset;
+            window.scrollTo({top: y, behavior: 'smooth'});
         } else {
             alert("Không tìm thấy nội dung: " + query);
         }
     }
 
-    // Cho phép bấm Enter để tìm
+    // Nhấn Enter để tìm
     document.getElementById("searchInput").addEventListener("keyup", (e) => {
-        if (e.key === "Enter") doSearch();
+        if (e.key === "Enter") smartSearch();
     });
 </script>
 
