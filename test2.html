@@ -74,7 +74,7 @@ button.secondary { background: #34495e; color: #fff; }
     border-radius: 10px;
     white-space: pre;
     font-family: "Courier New", Courier, monospace;
-    font-size: 15px; /* Tăng cỡ chữ một chút để dễ nhìn dấu chấm */
+    font-size: 15px;
     overflow-x: auto;
     border: 1px solid #333;
     line-height: 1.2;
@@ -147,7 +147,7 @@ function buildTable(index, rawText) {
         [dataItems[1], dataItems[3], dataItems[5]]
     ];
 
-    // Tính độ rộng cột dựa trên text dài nhất trong cột đó
+    // Tính độ rộng cột dựa trên text dài nhất
     const colWidths = [0, 1, 2].map(i => 
         Math.max(...tableMatrix.map(row => row[i].length))
     );
@@ -157,7 +157,7 @@ function buildTable(index, rawText) {
     
     const headerRow = tableMatrix[0].map((c, i) => pad(c, colWidths[i])).join(" | ");
     
-    // Dòng phân cách: Chỉ dùng dấu chấm và gạch đứng |
+    // ĐÃ FIX: Chỉ dùng dấu chấm và dấu gạch đứng |, hoàn toàn không còn - hay +
     const sepRow = colWidths.map(w => dotLine(w)).join(" | ");
     
     const row1 = tableMatrix[1].map((c, i) => pad(c, colWidths[i])).join(" | ");
