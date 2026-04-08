@@ -22,7 +22,6 @@ body {
     background: var(--card);
     padding: 15px;
     border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 h3 { text-align: center; color: var(--gold); margin-bottom: 20px; font-size: 1.2rem; }
 
@@ -46,7 +45,7 @@ input {
     border: none;
     background: transparent;
     color: #fff;
-    font-size: 16px; /* Chống auto-zoom trên mobile */
+    font-size: 16px; 
     outline: none;
 }
 
@@ -67,7 +66,6 @@ button {
     cursor: pointer;
 }
 button.secondary { background: #34495e; color: #fff; }
-button:active { opacity: 0.8; transform: scale(0.98); }
 
 .preview {
     margin-top: 15px;
@@ -76,10 +74,10 @@ button:active { opacity: 0.8; transform: scale(0.98); }
     border-radius: 10px;
     white-space: pre;
     font-family: "Courier New", Courier, monospace;
-    font-size: 14px;
+    font-size: 15px; /* Tăng cỡ chữ một chút để dễ nhìn dấu chấm */
     overflow-x: auto;
     border: 1px solid #333;
-    line-height: 1.3;
+    line-height: 1.2;
 }
 </style>
 </head>
@@ -113,29 +111,20 @@ const container = document.getElementById('inputs-container');
 for (let i = 1; i <= 12; i++) {
     const div = document.createElement('div');
     div.className = 'input-group';
-    div.innerHTML = `
-        <span class="row-label">${i}</span>
-        <input type="text" id="row-${i}" 
-               placeholder="k, kh, ch, c, t, l" 
-               oninput="formatInput(this)" 
-               onblur="finalizeInput(this)">
-    `;
+    div.innerHTML = `<span class="row-label">${i}</span>
+        <input type="text" id="row-${i}" placeholder="k, kh, ch, c, t, l" oninput="formatInput(this)" onblur="finalizeInput(this)">`;
     container.appendChild(div);
 }
 
 function formatInput(el) {
     let val = el.value;
-    if (val.includes(',')) {
-        val = val.replace(/,([^\s])/g, ', $1');
-    }
+    if (val.includes(',')) val = val.replace(/,([^\s])/g, ', $1');
     el.value = val;
 }
 
 function finalizeInput(el) {
     let parts = el.value.split(',').map(s => s.trim()).filter(s => s !== "");
-    if (parts.length > 0) {
-        el.value = parts.join(', ');
-    }
+    if (parts.length > 0) el.value = parts.join(', ');
 }
 
 function normalize(token) {
@@ -158,18 +147,18 @@ function buildTable(index, rawText) {
         [dataItems[1], dataItems[3], dataItems[5]]
     ];
 
-    // Đếm độ rộng lớn nhất cho mỗi cột (để khớp dấu chấm)
+    // Tính độ rộng cột dựa trên text dài nhất trong cột đó
     const colWidths = [0, 1, 2].map(i => 
         Math.max(...tableMatrix.map(row => row[i].length))
     );
 
     const pad = (t, w) => t + " ".repeat(Math.max(0, w - t.length));
-    const dotPad = (w) => ".".repeat(w); // Tạo dải dấu chấm khớp độ rộng cột
+    const dotLine = (w) => ".".repeat(w); 
     
     const headerRow = tableMatrix[0].map((c, i) => pad(c, colWidths[i])).join(" | ");
     
-    // Tạo dòng phân cách bằng dấu chấm thay vì dấu gạch ngang
-    const sepRow = colWidths.map(w => dotPad(w)).join("-+-");
+    // Dòng phân cách: Chỉ dùng dấu chấm và gạch đứng |
+    const sepRow = colWidths.map(w => dotLine(w)).join(" | ");
     
     const row1 = tableMatrix[1].map((c, i) => pad(c, colWidths[i])).join(" | ");
     const row2 = tableMatrix[2].map((c, i) => pad(c, colWidths[i])).join(" | ");
@@ -184,22 +173,14 @@ function generateOutput(limit) {
         let table = buildTable(i, val);
         if (table) results.push(table);
     }
-    
     const preview = document.getElementById('preview');
-    if (results.length === 0) {
-        preview.innerText = "Dữ liệu chưa đủ. Hãy nhập dạng: k, kh, ch, c, t, l";
-    } else {
-        preview.innerText = results.join("\n\n");
-    }
+    preview.innerText = results.length > 0 ? results.join("\n\n") : "Dữ liệu chưa đủ.";
 }
 
 function copyResult() {
     const text = document.getElementById('preview').innerText;
-    if (text.includes("Dữ liệu chưa đủ") || text.includes("Kết quả")) return;
-    
-    navigator.clipboard.writeText(text).then(() => {
-        alert("Đã copy thành công!");
-    });
+    if (text.includes("Dữ liệu") || text.includes("Kết quả")) return;
+    navigator.clipboard.writeText(text).then(() => alert("Đã copy thành công!"));
 }
 </script>
 
