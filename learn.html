@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tra Cứu Quẻ Dịch</title>
+    <style>
+        /* Tối ưu cho người mắt kém: Chữ to, rõ ràng */
+        :root {
+            --primary-color: #2c3e50;
+            --bg-color: #f9f9f9;
+            --text-color: #1a1a1a;
+            --accent-color: #e74c3c;
+            --font-size-base: 22px; /* Chữ mặc định to */
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Thanh tìm kiếm cố định */
+        .search-box {
+            position: sticky;
+            top: 10px;
+            background: white;
+            padding: 15px;
+            border: 3px solid var(--primary-color);
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            z-index: 1000;
+        }
+
+        .search-box input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 24px;
+            padding: 5px 15px;
+        }
+
+        .search-box button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 30px;
+            color: var(--primary-color);
+        }
+
+        /* Mục lục */
+        .toc {
+            background: #f0f4f8;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+        }
+
+        .toc h2 { margin-top: 0; color: var(--accent-color); }
+        
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+        }
+
+        .toc li a {
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 20px;
+            display: block;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Nội dung bài viết */
+        .content-section {
+            margin-bottom: 50px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+        }
+
+        h1 { font-size: 36px; color: var(--accent-color); text-align: center; }
+        h2 { font-size: 30px; color: var(--primary-color); border-left: 8px solid var(--accent-color); padding-left: 15px; }
+        h3 { font-size: 26px; color: #34495e; }
+        
+        p, li { font-size: 24px; margin-bottom: 15px; }
+
+        strong { color: #c0392b; }
+
+        /* Highlight khi tìm kiếm */
+        .highlight {
+            background-color: yellow;
+            font-weight: bold;
+        }
+
+        /* Responsive cho di động */
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            .container { padding: 15px; }
+            :root { --font-size-base: 20px; }
+            h1 { font-size: 28px; }
+            h2 { font-size: 24px; }
+            .search-box input { font-size: 18px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>HƯỚNG DẪN DỊCH HỌC</h1>
+
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Gõ từ khóa cần tìm...">
+        <button onclick="searchContent()">🔍</button>
+    </div>
+
+    <div class="toc">
+        <h2>Mục lục nhanh</h2>
+        <ul>
+            <li><a href="#muc1">1. Hướng dẫn xem Quẻ Dịch</a></li>
+            <li><a href="#muc2">2. Mục lục nội dung 22222</a></li>
+            <li><a href="#muc3">3. Mục lục nội dung 33333</a></li>
+            <li><a href="#muc4">4. Mục lục nội dung 44444</a></li>
+            <li><a href="#muc5">5. Mục lục nội dung 55555</a></li>
+            <li><a href="#muc6">6. Mục lục nội dung 66666</a></li>
+            <li><a href="#muc7">7. Mục lục nội dung 77777</a></li>
+            <li><a href="#muc8">8. Mục lục nội dung 88888</a></li>
+            <li><a href="#muc9">9. Mục lục nội dung 99999</a></li>
+            <li><a href="#muc10">10. Mục lục nội dung 101010</a></li>
+        </ul>
+    </div>
+
+    <div id="mainContent">
+        
+        <div id="muc1" class="content-section">
+            <h2>HƯỚNG DẪN XEM QUẺ DỊCH (DÀNH CHO NGƯỜI MỚI)</h2>
+            <p>Bản chất của bói Dịch là xem sự thay đổi của trời đất (Âm - Dương) để biết việc mình định làm là: <strong>Nên hay Không nên</strong>; <strong>Tốt hay Xấu</strong>. Từ đó, ta có hướng hành động đúng đắn để gặt hái thành công.</p>
+
+            <h3>I. CÁC TỪ KHÓA CẦN NHỚ (TỪ ĐIỂN BỎ TÚI)</h3>
+            <p>Khi đọc lời giải của một quẻ, bạn sẽ thường gặp các từ "chuyên ngành" sau:</p>
+            <ul>
+                <li><strong>1. Tứ Đức (4 đặc tính tốt):</strong></li>
+                <ul>
+                    <li><strong>Nguyên:</strong> Sự bắt đầu, to lớn, nguồn gốc của mọi điều tốt lành.</li>
+                    <li><strong>Hanh:</strong> Sự hanh thông, thuận lợi, làm đâu trúng đó.</li>
+                    <li><strong>Lợi:</strong> Có ích, có lời, sự hòa hợp và đúng đắn.</li>
+                    <li><strong>Trinh:</strong> Sự bền vững, chính trực, là cái gốc để giữ được thành quả.</li>
+                </ul>
+                <li><strong>2. Các từ chỉ kết quả:</strong></li>
+                <ul>
+                    <li><strong>Cát:</strong> Tốt lành, may mắn.</li>
+                    <li><strong>Hung:</strong> Xấu, nguy hiểm (ngược với Cát).</li>
+                    <li><strong>Hối:</strong> Có lỗi, thấy hối hận.</li>
+                    <li><strong>Lận:</strong> Lỗi nhỏ, hơi đáng tiếc một chút.</li>
+                    <li><strong>Vô cữu:</strong> Không có lỗi hoặc lỗi không về ai cả.</li>
+                </ul>
+            </ul>
+
+            <h3>II. CÁCH CHỌN "LỜI GIẢI" THEO SỐ HÀO ĐỘNG</h3>
+            <p>Tùy vào số lượng hào động mà bạn chọn nội dung để đọc:</p>
+            <p>1. <strong>Không có hào động (Quẻ tĩnh):</strong> Xem tên quẻ và lời giải chung (Thoán từ).</p>
+            <p>2. <strong>Có 1 hào động:</strong> Tập trung đọc lời giải của chính hào đó (Hào từ).</p>
+            <p>3. <strong>Có 2 hào động:</strong> Đọc hào từ của cả 2 hào. (Lấy hào trên làm chính nếu nội dung khác nhau, hào dưới nếu giống nhau).</p>
+            <p>4. <strong>Có 3 hào động:</strong> Nếu hào 1 động, lấy quẻ biến làm chính. Nếu không, lấy quẻ gốc làm chính.</p>
+            <p>5. <strong>Có 4 hào động:</strong> Xem 2 hào không động. Lấy hào tĩnh dưới làm chính.</p>
+            <p>6. <strong>Có 5 hào động:</strong> Xem hào duy nhất không động của quẻ biến.</p>
+            <p>7. <strong>Cả 6 hào đều động:</strong> Xem lời giải tổng quát của quẻ biến.</p>
+
+            <h3>III. QUY TRÌNH DIỄN BIẾN</h3>
+            <p><strong>Quẻ Chủ:</strong> Trạng thái hiện tại và bản chất ban đầu.</p>
+            <p><strong>Quẻ Hỗ:</strong> Diễn biến trung gian.</p>
+            <p><strong>Quẻ Biến:</strong> Kết quả chung cuộc.</p>
+
+            <h3>IV. VÍ DỤ THỰC TẾ</h3>
+            <p><strong>Câu chuyện 1:</strong> C.G. Jung bói về việc viết sách. Quẻ Khảm biến Tỉnh. Kết luận: Dù khó nhưng có ích như giếng nước, nên làm.</p>
+            <p><strong>Câu chuyện 2:</strong> Trùng Nhĩ về nước. Quẻ Dự biến Truân. Kết luận: Được việc nước, nên về.</p>
+        </div>
+
+        <div id="muc2" class="content-section"><h2>Mục 2</h2><p>data text 22222</p></div>
+        <div id="muc3" class="content-section"><h2>Mục 3</h2><p>data text 33333</p></div>
+        <div id="muc4" class="content-section"><h2>Mục 4</h2><p>data text 44444</p></div>
+        <div id="muc5" class="content-section"><h2>Mục 5</h2><p>data text 55555</p></div>
+        <div id="muc6" class="content-section"><h2>Mục 6</h2><p>data text 66666</p></div>
+        <div id="muc7" class="content-section"><h2>Mục 7</h2><p>data text 77777</p></div>
+        <div id="muc8" class="content-section"><h2>Mục 8</h2><p>data text 88888</p></div>
+        <div id="muc9" class="content-section"><h2>Mục 9</h2><p>data text 99999</p></div>
+        <div id="muc10" class="content-section"><h2>Mục 10</h2><p>data text 10101010</p></div>
+
+    </div>
+</div>
+
+<script>
+    function searchContent() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const content = document.getElementById('mainContent');
+        const sections = content.getElementsByClassName('content-section');
+        
+        if (!input) {
+            alert("Vui lòng nhập từ khóa!");
+            return;
+        }
+
+        let found = false;
+
+        for (let section of sections) {
+            const text = section.innerText.toLowerCase();
+            if (text.includes(input)) {
+                // Cuộn đến phần nội dung đó
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                
+                // Hiệu ứng nhấp nháy để user nhận biết
+                section.style.backgroundColor = "#fff9c4";
+                setTimeout(() => {
+                    section.style.backgroundColor = "transparent";
+                }, 2000);
+                
+                found = true;
+                break; // Dừng lại ở mục đầu tiên tìm thấy
+            }
+        }
+
+        if (!found) {
+            alert("Không tìm thấy nội dung này trong trang.");
+        }
+    }
+
+    // Cho phép bấm Enter để tìm kiếm
+    document.getElementById("searchInput").addEventListener("keyup", function(event) {
+        if (event.key === "Enter") {
+            searchContent();
+        }
+    });
+</script>
+
+</body>
+</html>
