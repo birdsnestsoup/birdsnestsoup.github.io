@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tra Cứu Bài Tứ Sắc - Zen Interface</title>
+    <style>
+        /* Bảng màu An Thần (Zen Palette) */
+        :root {
+            --bg-color: #f4f7f6;
+            --container-bg: #ffffff;
+            --primary-green: #6b8e23; /* Olive Drab cho cảm giác tự nhiên */
+            --text-main: #3e4444;
+            --text-sub: #707771;
+            --accent-soft: #e8ede7;
+            --shadow: 0 10px 30px rgba(0,0,0,0.05);
+            --border-radius: 16px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            background: var(--container-bg);
+            width: 90%;
+            max-width: 500px;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        h2 {
+            color: var(--primary-green);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--text-sub);
+            margin-bottom: 0.5rem;
+            margin-left: 5px;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #fff;
+            color: var(--text-main);
+            outline: none;
+            transition: border 0.3s;
+            cursor: pointer;
+            appearance: none;
+        }
+
+        select:focus {
+            border-color: var(--primary-green);
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 1.5rem;
+        }
+
+        button {
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #btnSearch {
+            background-color: var(--primary-green);
+            color: white;
+        }
+
+        #btnSearch:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        #btnCopy {
+            background-color: var(--accent-soft);
+            color: var(--primary-green);
+            display: none; /* Chỉ hiện khi có kết quả */
+        }
+
+        #btnCopy:active {
+            background-color: #d0d9cf;
+        }
+
+        #resultBox {
+            margin-top: 1.5rem;
+            padding: 1.2rem;
+            background-color: #f9fbf9;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-green);
+            text-align: left;
+            min-height: 50px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .result-text {
+            font-size: 0.95rem;
+            white-space: pre-line;
+            color: #4a5568;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Toast thông báo copy */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Tứ Sắc Minh Giải</h2>
+    
+    <div class="form-group">
+        <label>Chọn Quân Bài</label>
+        <select id="cardType">
+            <option value="TƯỚNG">TƯỚNG</option>
+            <option value="SĨ">SĨ</option>
+            <option value="TƯỢNG">TƯỢNG</option>
+            <option value="XE">XE</option>
+            <option value="PHÁO">PHÁO</option>
+            <option value="NGỰA">NGỰA</option>
+            <option value="CHỐT">CHỐT</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Màu Sắc</label>
+        <select id="cardColor">
+            <option value="XANH">XANH</option>
+            <option value="VÀNG">VÀNG</option>
+            <option value="TRẮNG">TRẮNG</option>
+            <option value="ĐỎ">ĐỎ</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Trạng Thái</label>
+        <select id="cardStatus">
+            <option value="Đứng">Đứng (Xuôi)</option>
+            <option value="Ngược">Ngược</option>
+        </select>
+    </div>
+
+    <div class="button-group">
+        <button id="btnSearch" onclick="searchData()">Tìm Giải Mã</button>
+        <button id="btnCopy" onclick="copyToClipboard()">Sao Chép</button>
+    </div>
+
+    <div id="resultBox">
+        <div class="result-text" id="outputText"></div>
+    </div>
+</div>
+
+<div id="toast" class="toast">Đã sao chép vào bộ nhớ tạm!</div>
+
+<script>
+    const tuSacData = {
+        "TƯỚNG": {
+            "XANH": { "Đứng": "Tiến thân, thi cử, mọi khuếch trương khởi sự đều thuận lợi có người đỡ đầu", "Ngược": "Có xung đột với người trên trước, bất lợi mọi mặt" },
+            "VÀNG": { "Đứng": "Thành công chắc chắn về tiền bạc, có quý nhân là người đàn ông giàu sẵn sang giúp đỡ về mọi mặt", "Ngược": "Phòng phản phúc trong gia tộc, mọi sự chậm trễ luôn lẩn quẩn bên mình" },
+            "TRẮNG": { "Đứng": "Mọi vấn đề đều không giải quyết êm thắm, phải ra đến pháp luật, bệnh nặng khó tìm thầy", "Ngược": "Kiện tụng thắng lợi, bệnh hoạn bình phục" },
+            "ĐỎ": { "Đứng": "Có người đàn ông đứng tuổi tận tình giúp đỡ cho hôn nhân thành tựu", "Ngược": "Mọi liên hệ về tình cảm tình bạn tình yêu đều tuyệt vọng, phòng kẻ vô ơn" }
+        },
+        "SĨ": {
+            "XANH": { "Đứng": "Được người đàn bà hoặc cô gái tận tình tiến cử, nhưng phòng ghen tuông làm hỏng công trình", "Ngược": "Bị người đàn bà theo đuổi quấy rầy, lừa dối gây xáo trộn" },
+            "VÀNG": { "Đứng": "Người đàn bà giàu tận tình giúp đỡ trong mọi hoàn cảnh khó khan về tiền bạc", "Ngược": "Đừng ham bóng sắc mà gánh niềm đau, tiêu tiền tan địa vị" },
+            "TRẮNG": { "Đứng": "Phòng ghen tuông gây đổ vỡ trong gia đình, vui không có, buồn tràn ngập", "Ngược": "Nên yên lòng, mọi việc trước sau gì cũng được dàn xếp êm đẹp" },
+            "ĐỎ": { "Đứng": "Bà Nguyệt se duyên, tác hợp xứng lứa vừa đôi, mọi tạo dựng hạnh phúc đều như ý", "Ngược": "Phản phúc gian xảo vô duyên đang theo đuổi quấy rầy. Nhiều đắng cay thử thách" }
+        },
+        "TƯỢNG": {
+            "XANH": { "Đứng": "Có người thanh niên tốt bụng, nhiều uy tín tận tình giúp đỡ, được tin vui, gặp bạn bất ngờ", "Ngược": "Gặp kẻ xảo trá, nhân tình hay ghen, phòng hỏng việc" },
+            "VÀNG": { "Đứng": "Người bạn tốt một mực trung thành, môi giới, hôn nhân đẹp, có địa vị", "Ngược": "Mọi xáo trộn trong công việc xảy ra vì phản trắc, nên đề phòng" },
+            "TRẮNG": { "Đứng": "Đừng tin người bằng cái vỏ bên ngoài, có câu hữu nhan sắc hữu ác đức, tự mình giữ mình là thượng sách.", "Ngược": "Hy vọng thực hiện được sở nguyện, nhất là hôn nhân" },
+            "ĐỎ": { "Đứng": "Tình duyên đẹp, do mình tạo cho mình với người mình yêu và yêu mình", "Ngược": "Mọi sự phũ phàng đều có thể xảy ra cho gia đình và tình yêu" }
+        },
+        "XE": {
+            "XANH": { "Đứng": "Nên có thái độ dứt khoát, đừng rụt rè, chậm chạp mà hỏng cơ hội, nếu cơ hội ấy là 1 cuộc xê dịch", "Ngược": "Mọi trở ngại đang nhen nhúm, phòng thất bại, không nên thay đổi việc làm hay chỗ ở" },
+            "VÀNG": { "Đứng": "Của bất ngờ đến giữa cơn túng ngặt, mọi bối rối sẽ tiêu tan.", "Ngược": "Phòng trộm cắp, mất của to, thua lận" },
+            "TRẮNG": { "Đứng": "Có dấu hiệu sẽ lìa nơi sinh trưởng hoặc có chết chóc, ly thân, ly dị, tan rã gia đình.", "Ngược": "Sau cơn mưa trời lại sang, nên vui vì ngày mai hơn là buồn hôm nay" },
+            "ĐỎ": { "Đứng": "Cầu con sẽ được con lành, nhưng cầu duyên nợ sẽ gặp trái đắng nên đừng cầu làm gì.", "Ngược": "Ân tình phản bội có thể xảy ra bất cứ ở nơi nào" }
+        },
+        "PHÁO": {
+            "XANH": { "Đứng": "Sắp có thay đổi, hoặc đi xa thắng lợi về mọi mặt. Hoặc gặp ý trung nhân trở thành duyên nợ. Nếu thi cử chắc chắn sẽ đỗ cao", "Ngược": "Lá bài hung tin, mọi dự kiến tiến thủ đều nên xếp lại, phòng hoen hố danh dự" },
+            "VÀNG": { "Đứng": "Mọi ý kiến nên thực hiện ngay sẽ thu thập kết quả mỹ mãn", "Ngược": "Đỗ vỡ, tranh chấp về tiền bạc ảnh hưởng đến hôn nhân" },
+            "TRẮNG": { "Đứng": "Pháo nổ ngay trong tâm tư, có xáo trộn về địa vị, danh vọng, nếu không cũng bị mẻ trộm to", "Ngược": "Tự giác hối cải là tâm niệm của kẻ lỡ lầm, nên hiểu nhau để yêu nhau hơn" },
+            "ĐỎ": { "Đứng": "Đừng nên ngập ngừng e ấp, ngưỡng của tình yêu đang sẵn sàng chờ đón", "Ngược": "Hiểu lầm đáng tiếc sẽ xảy ra nhưng được hàn gắn" }
+        },
+        "NGỰA": {
+            "XANH": { "Đứng": "Tương lai huy hoàng đang chờ ngoài ngõ, tình duyên bất ngờ đầy thơ mộng", "Ngược": "Tương đương với giá trị Ngựa Xanh đứng, nhưng lá ngược đầu Ngựa Xanh này gặp ( đi kèm ) lá Ngựa Trắng ( đứng ) thì mọi việc bất thành" },
+            "VÀNG": { "Đứng": "Người bạn gái dí dỏm duyên dáng, đẹp, tốt bụng sẽ xuất hiện bất ngờ, cứu vãn tình thế", "Ngược": "Trở ngại dồn dập cạm bẫy giăng mắc khắp nơi." },
+            "TRẮNG": { "Đứng": "Tình đầu ít suôn sẻ, cay đắng lỡ làng, cạm bẫy đổ vỡ tan nát cõi lòng.", "Ngược": "Mọi vấn đề về tình yêu sẽ được bàn tay đẹp thắt chặt thêm tươi thắm" },
+            "ĐỎ": { "Đứng": "Duyên tình cờ cũng là duyên bất ngờ, đưa đến mọi hạnh phúc tốt đẹp như mơ.", "Ngược": "Phòng tranh giành tình ái mang hậu quả u buồn ray rức" }
+        },
+        "CHỐT": {
+            "XANH": { "Đứng": "Mọi ý định tiến thủ nên ngừng lại, có xáo trộn trong gia đình, kiện tụng, gièm pha, tranh giành.", "Ngược": "Lá bài hứa hẹn nhiều bất ngờ đến ngoài sự tưởng tượng." },
+            "VÀNG": { "Đứng": "Gặp sự gièm pha bêu xấu, gắt gỏng, ganh tị nhưng cứ lặng yên thực hiện theo ý định của mình sẽ thành công .", "Ngược": "Thua lỗ, công nợ lôi cuốn đến tụng đình, hoen ố danh dự." },
+            "TRẮNG": { "Đứng": "Mọi việc đều thất bại, nên tự cứu hơn là chờ đến lúc phải gánh trọn hậu quả.", "Ngược": "Trì hoãn là phương thuốc hay, dùng chạy chữa tình trạng bi đát." },
+            "ĐỎ": { "Đứng": "Tin nhạn bay về tràn ngập vui tươi trong hạnh phúc, duyên thắm tươi.", "Ngược": "Lỡ lầm trong quá khứ sẽ ân hận mãi ở hiện tại và tương lai." }
+        }
+    };
+
+    function searchData() {
+        const type = document.getElementById('cardType').value;
+        const color = document.getElementById('cardColor').value;
+        const status = document.getElementById('cardStatus').value;
+        
+        const result = tuSacData[type][color][status];
+        
+        const resultBox = document.getElementById('resultBox');
+        const outputText = document.getElementById('outputText');
+        const btnCopy = document.getElementById('btnCopy');
+
+        outputText.innerHTML = `<strong>${type} ${color} (${status}):</strong>\n${result}`;
+        resultBox.style.display = 'block';
+        btnCopy.style.display = 'block';
+    }
+
+    function copyToClipboard() {
+        const text = document.getElementById('outputText').innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            const toast = document.getElementById('toast');
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 2000);
+        });
+    }
+</script>
+
+</body>
+</html>
