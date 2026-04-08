@@ -147,19 +147,19 @@ function buildTable(index, rawText) {
         [dataItems[1], dataItems[3], dataItems[5]]
     ];
 
-    // Tính độ rộng cột dựa trên text dài nhất
-    const colWidths = [0, 1, 2].map(i => 
-        Math.max(...tableMatrix.map(row => row[i].length))
-    );
+    // Cấu hình: Độ rộng tối thiểu mỗi cột là 10 ký tự để dấu chấm dài ra
+    const minColWidth = 10;
+
+    const colWidths = [0, 1, 2].map(i => {
+        let maxTextLen = Math.max(...tableMatrix.map(row => row[i].length));
+        return Math.max(maxTextLen, minColWidth);
+    });
 
     const pad = (t, w) => t + " ".repeat(Math.max(0, w - t.length));
     const dotLine = (w) => ".".repeat(w); 
     
     const headerRow = tableMatrix[0].map((c, i) => pad(c, colWidths[i])).join(" | ");
-    
-    // ĐÃ FIX: Chỉ dùng dấu chấm và dấu gạch đứng |, hoàn toàn không còn - hay +
     const sepRow = colWidths.map(w => dotLine(w)).join(" | ");
-    
     const row1 = tableMatrix[1].map((c, i) => pad(c, colWidths[i])).join(" | ");
     const row2 = tableMatrix[2].map((c, i) => pad(c, colWidths[i])).join(" | ");
 
