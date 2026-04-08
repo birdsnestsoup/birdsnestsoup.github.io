@@ -3,63 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gợi ý tiếng Việt thông minh</title>
+    <title>Gợi ý tiếng Việt thông minh - Fixed</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background-color: #f0f2f5; }
         .container { max-width: 800px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         h2 { color: #1a73e8; margin-top: 0; }
-        
         #editor-container { position: relative; }
-        
         #typing-area {
-            width: 100%;
-            height: 250px;
-            padding: 15px;
-            font-size: 19px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            resize: none;
-            box-sizing: border-box;
-            outline: none;
-            line-height: 1.5;
+            width: 100%; height: 250px; padding: 15px; font-size: 19px;
+            border: 2px solid #ddd; border-radius: 8px; resize: none;
+            box-sizing: border-box; outline: none; line-height: 1.5;
         }
         #typing-area:focus { border-color: #1a73e8; }
-
         #suggestion-box {
-            position: absolute;
-            background: #fff;
-            border: 1px solid #1a73e8;
-            display: none;
-            z-index: 100;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            border-radius: 8px;
-            padding: 5px;
-            max-width: 100%;
-            top: 100%; /* Hiện ngay dưới khung gõ */
+            position: absolute; background: #fff; border: 1px solid #1a73e8;
+            display: none; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 8px; padding: 5px; max-width: 100%; top: 100%;
         }
         .suggestion-item {
-            padding: 10px 15px;
-            cursor: pointer;
-            background: #f8f9fa;
-            margin: 3px;
-            border-radius: 5px;
-            display: inline-block;
-            font-weight: bold;
-            color: #1a73e8;
-            border: 1px solid #e0e0e0;
+            padding: 10px 15px; cursor: pointer; background: #f8f9fa;
+            margin: 3px; border-radius: 5px; display: inline-block;
+            font-weight: bold; color: #1a73e8; border: 1px solid #e0e0e0;
         }
         .suggestion-item:hover { background: #1a73e8; color: white; }
-
         .controls { margin-top: 20px; display: flex; justify-content: space-between; align-items: center; }
         .btn {
-            padding: 12px 25px;
-            background: #1a73e8;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: 0.3s;
+            padding: 12px 25px; background: #1a73e8; color: white;
+            border: none; border-radius: 6px; cursor: pointer; font-size: 16px; transition: 0.3s;
         }
         .btn:hover { background: #1557b0; }
         .word-count { font-weight: bold; color: #5f6368; }
@@ -69,12 +39,10 @@
 
 <div class="container">
     <h2>Trình soạn thảo thông minh</h2>
-    
     <div id="editor-container">
-        <textarea id="typing-area" placeholder="Gõ 'vie' để thử gợi ý từ 'việt'..."></textarea>
+        <textarea id="typing-area" placeholder="Gõ để thử gợi ý..."></textarea>
         <div id="suggestion-box"></div>
     </div>
-
     <div class="controls">
         <button class="btn" onclick="copyToClipboard()">Sao chép văn bản</button>
         <div class="word-count" id="count-display">Số từ: 0 / 300</div>
@@ -82,15 +50,15 @@
 </div>
 
 <script>
-    // Thư viện mẫu (Bạn hãy dán 3000 từ của bạn vào đây)
+    // DATA ĐÃ ĐƯỢC FIX LỖI CÚ PHÁP
     const dictionary = [
-        "anh", "ái", "ánh", "áp", "ách", "át", "ấy", "ấu", "án", "ám", "bé", "biết", "bó", "bá", "bí", "buồm, "bốn, "bằng, "bênh, "bên" "bạn", "bận", "bịu", "bướm", "bảng" , "bướng", "bới", "búa", "biến", "bóc", "báng", "bánh", " bún", "buông", "bóng", "biếu", "búng", "cưới", "cánh", "cốm", "cứ",
-"cùng", "cũng", "cành", "cảnh", "cường", cuốn", "cắn", "cuỗm", "càng", "em", "người", "những", "thành", "phố", "gia", "đình", "hạnh", "phúc",
+        "anh", "ái", "ánh", "áp", "ách", "át", "ấy", "ấu", "án", "ám", "bé", "biết", "bó", "bá", "bí", "buồm", "bốn", "bằng", "bênh", "bên", "bạn", "bận", "bịu", "bướm", "bảng", "bướng", "bới", "búa", "biến", "bóc", "báng", "bánh", "bún", "buông", "bóng", "biếu", "búng", "cưới", "cánh", "cốm", "cứ",
+        "cùng", "cũng", "cành", "cảnh", "cường", "cuốn", "cắn", "cuỗm", "càng", "em", "người", "những", "thành", "phố", "gia", "đình", "hạnh", "phúc",
         "trường", "học", "công", "việc", "phát", "triển", "kinh", "tế", "xã", "hội",
         "việt", "nam", "tôi", "bạn", "chúng", "ta", "yêu", "thương", "giúp", "đỡ",
         "không", "được", "có", "một", "nhiều", "rất", "đang", "sẽ", "đã", "làm",
         "đi", "đến", "về", "nhà", "ăn", "uống", "nói", "nghe", "xem", "đọc", "viết",
-        "mới", "cũ", "lớn", "nhỏ", "nhanh", "chậm", "tốt", "đẹp", "xấu", "khó", "dễ",  "biết", "cách", "chuyện", "chưa", "chỉ", "chẳng", "chứ", "con", "cùng", "cũng",
+        "mới", "cũ", "lớn", "nhỏ", "nhanh", "chậm", "tốt", "đẹp", "xấu", "khó", "dễ", "biết", "cách", "chuyện", "chưa", "chỉ", "chẳng", "chứ", "con", "cùng", "cũng",
         "cuộc", "càng", "cảnh", "chính", "chờ", "chết", "chọn", "chủ", "chứ", "cơ",
         "dòng", "dùng", "dưới", "dẫn", "dễ", "dựng", "dù", "dần", "danh", "dáng",
         "đầu", "đây", "để", "đến", "điều", "đúng", "đáng", "đặc", "đặt", "đất",
@@ -126,8 +94,8 @@
     const suggestionBox = document.getElementById('suggestion-box');
     const countDisplay = document.getElementById('count-display');
 
-    // Hàm chuyển tiếng Việt có dấu thành không dấu để so sánh chính xác hơn khi đang gõ dở
     function removeVietnameseTones(str) {
+        if (!str) return "";
         str = str.toLowerCase();
         str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
         str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
@@ -141,25 +109,19 @@
 
     typingArea.addEventListener('input', function(e) {
         const text = this.value;
-        
-        // Kiểm tra số lượng từ
         const allWords = text.trim().split(/\s+/).filter(w => w.length > 0);
         countDisplay.innerText = `Số từ: ${allWords.length} / 300`;
         
-        if (allWords.length > 300) {
-            // Chỉ ngăn chặn nếu gõ thêm, vẫn cho phép xóa
-            if (e.inputType !== 'deleteContentBackward') {
-                this.value = text.split(/\s+/).slice(0, 300).join(' ');
-                return;
-            }
+        if (allWords.length > 300 && e.inputType !== 'deleteContentBackward') {
+            this.value = text.split(/\s+/).slice(0, 300).join(' ');
+            return;
         }
 
-        // Lấy từ cuối cùng đang gõ
         const cursorPosition = this.selectionStart;
         const textBeforeCursor = text.substring(0, cursorPosition);
         const lastWord = textBeforeCursor.split(/\s+/).pop();
         
-        if (lastWord.length >= 2) {
+        if (lastWord.length >= 1) { // Chỉnh lại để nhạy hơn
             findSuggestions(lastWord);
         } else {
             suggestionBox.style.display = 'none';
@@ -172,17 +134,15 @@
         
         const matches = dictionary.filter(word => {
             const wordClean = removeVietnameseTones(word);
-            // Tính toán 80% độ dài từ trong thư viện
+            // Ngưỡng 80% độ dài
             const threshold = Math.floor(word.length * 0.8);
-            
-            // So sánh: 
-            // 1. Từ trong thư viện bắt đầu bằng từ đang gõ
-            // 2. Độ dài gõ vào phải đạt ít nhất 80% độ dài từ mục tiêu
             return wordClean.startsWith(inputClean) && input.length >= threshold && word !== input;
         });
 
         if (matches.length > 0) {
-            matches.slice(0, 6).forEach(match => {
+            // Loại bỏ từ trùng lặp trong kết quả gợi ý
+            const uniqueMatches = [...new Set(matches)];
+            uniqueMatches.slice(0, 8).forEach(match => {
                 const div = document.createElement('div');
                 div.className = 'suggestion-item';
                 div.innerText = match;
@@ -201,21 +161,16 @@
     function selectWord(word) {
         const text = typingArea.value;
         const cursorPosition = typingArea.selectionStart;
-        
         const textBefore = text.substring(0, cursorPosition);
         const textAfter = text.substring(cursorPosition);
-        
         const wordsBefore = textBefore.split(/\s+/);
-        wordsBefore.pop(); // Bỏ từ đang gõ dở
+        wordsBefore.pop();
         
         const newBefore = wordsBefore.join(' ') + (wordsBefore.length > 0 ? ' ' : '') + word + ' ';
+        typingArea.value = newBefore + textAfter.replace(/^\S*/, ''); // Xóa phần thừa của từ cũ nếu có
         
-        typingArea.value = newBefore + textAfter.trim();
-        
-        // Đưa con trỏ về vị trí sau từ vừa chọn
         const newPos = newBefore.length;
         typingArea.setSelectionRange(newPos, newPos);
-        
         suggestionBox.style.display = 'none';
         typingArea.focus();
     }
@@ -223,14 +178,9 @@
     function copyToClipboard() {
         typingArea.select();
         document.execCommand('copy');
-        alert("Đã sao chép nội dung vào Clipboard!");
+        alert("Đã sao chép nội dung!");
     }
 
-    // Đóng gợi ý khi nhấn Esc hoặc bấm ra ngoài
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') suggestionBox.style.display = 'none';
-    });
-    
     document.addEventListener('click', (e) => {
         if (e.target !== typingArea) suggestionBox.style.display = 'none';
     });
