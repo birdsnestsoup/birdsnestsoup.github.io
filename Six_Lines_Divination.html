@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kinh Dịch Lục Hào</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c8a84b;
+    --gold-light: #e8c97a;
+    --gold-dim: #8a6f2e;
+    --ink: #1a1208;
+    --paper: #f5edd8;
+    --paper-dark: #e8d9b8;
+    --red: #c0392b;
+    --yang-color: #1a1208;
+    --yin-color: #1a1208;
+    --glow: rgba(200,168,75,0.4);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: #0d0a05;
+    background-image:
+      radial-gradient(ellipse at 50% 0%, rgba(200,168,75,0.08) 0%, transparent 60%),
+      repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(200,168,75,0.02) 40px, rgba(200,168,75,0.02) 41px),
+      repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(200,168,75,0.02) 40px, rgba(200,168,75,0.02) 41px);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Noto Sans SC', sans-serif;
+    color: var(--paper);
+    padding: 20px;
+  }
+
+  .header {
+    text-align: center;
+    padding: 40px 20px 20px;
+    position: relative;
+  }
+
+  .header::before {
+    content: '☯';
+    display: block;
+    font-size: 48px;
+    color: var(--gold);
+    filter: drop-shadow(0 0 20px var(--glow));
+    animation: spin 20s linear infinite;
+    margin-bottom: 10px;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  h1 {
+    font-family: 'Ma Shan Zheng', serif;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-shadow: 0 0 30px var(--glow), 0 2px 4px rgba(0,0,0,0.8);
+    line-height: 1.2;
+  }
+
+  .subtitle {
+    font-size: 0.85rem;
+    color: var(--gold-dim);
+    letter-spacing: 0.3em;
+    margin-top: 8px;
+    text-transform: uppercase;
+  }
+
+  .divider {
+    width: 200px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 20px auto;
+  }
+
+  .main-container {
+    width: 100%;
+    max-width: 900px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 10px;
+  }
+
+  @media (max-width: 680px) {
+    .main-container { grid-template-columns: 1fr; }
+  }
+
+  .panel {
+    background: linear-gradient(145deg, rgba(30,22,8,0.95), rgba(20,14,4,0.98));
+    border: 1px solid rgba(200,168,75,0.25);
+    border-radius: 4px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(200,168,75,0.01) 10px,
+      rgba(200,168,75,0.01) 11px
+    );
+    pointer-events: none;
+  }
+
+  .panel-title {
+    font-family: 'Ma Shan Zheng', serif;
+    font-size: 1.2rem;
+    color: var(--gold);
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(200,168,75,0.2);
+    letter-spacing: 0.1em;
+  }
+
+  /* === METHOD SELECTOR === */
+  .method-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .method-tab {
+    flex: 1;
+    min-width: 100px;
+    padding: 8px 12px;
+    background: transparent;
+    border: 1px solid rgba(200,168,75,0.3);
+    color: var(--gold-dim);
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 0.8rem;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+
+  .method-tab.active, .method-tab:hover {
+    background: rgba(200,168,75,0.12);
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .method-desc {
+    font-size: 0.78rem;
+    color: rgba(200,168,75,0.5);
+    line-height: 1.6;
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+
+  /* === INPUT AREA === */
+  .question-input {
+    width: 100%;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(200,168,75,0.2);
+    border-radius: 2px;
+    color: var(--paper);
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 0.85rem;
+    padding: 10px 12px;
+    resize: vertical;
+    min-height: 70px;
+    outline: none;
+    transition: border-color 0.2s;
+    margin-bottom: 12px;
+  }
+
+  .question-input:focus {
+    border-color: rgba(200,168,75,0.5);
+  }
+
+  .question-input::placeholder { color: rgba(200,168,75,0.25); }
+
+  /* === COIN METHOD === */
+  .coin-area {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .coin-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 10px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(200,168,75,0.1);
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+
+  .coin-row.active-row {
+    border-color: rgba(200,168,75,0.4);
+    background: rgba(200,168,75,0.06);
+  }
+
+  .hao-label {
+    font-family: 'Ma Shan Zheng', serif;
+    font-size: 0.9rem;
+    color: var(--gold-dim);
+    width: 48px;
+    flex-shrink: 0;
+  }
+
+  .coins-display {
+    display: flex;
+    gap: 6px;
+    flex: 1;
+  }
+
+  .coin {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid rgba(200,168,75,0.4);
+    background: radial-gradient(circle at 35% 35%, #d4a847, #8a6520);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,200,0.2);
+    transition: all 0.3s;
+  }
+
+  .coin.yang { background: radial-gradient(circle at 35% 35%, #e8c060, #a07030); }
+  .coin.yin  { background: radial-gradient(circle at 35% 35%, #8a7050, #504030); }
+
+  .coin-sum {
+    font-size: 0.85rem;
+    color: var(--gold);
+    width: 20px;
+    text-align: right;
+    font-family: 'Noto Serif SC', serif;
+  }
+
+  /* === YARROW STALK INPUT === */
+  .yarrow-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .yarrow-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .yarrow-row label {
+    width: 60px;
+    font-size: 0.8rem;
+    color: var(--gold-dim);
+    flex-shrink: 0;
+  }
+
+  .yarrow-input {
+    flex: 1;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(200,168,75,0.2);
+    border-radius: 2px;
+    color: var(--paper);
+    font-size: 0.85rem;
+    padding: 6px 10px;
+    outline: none;
+    font-family: 'Noto Sans SC', sans-serif;
+  }
+
+  .yarrow-input:focus { border-color: rgba(200,168,75,0.5); }
+
+  /* === BUTTONS === */
+  .btn-cast {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, rgba(200,168,75,0.15), rgba(200,168,75,0.08));
+    border: 1px solid rgba(200,168,75,0.5);
+    color: var(--gold);
+    font-family: 'Ma Shan Zheng', serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.2em;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-cast:hover {
+    background: linear-gradient(135deg, rgba(200,168,75,0.25), rgba(200,168,75,0.15));
+    box-shadow: 0 0 20px rgba(200,168,75,0.2);
+  }
+
+  .btn-cast:active { transform: scale(0.98); }
+
+  .btn-cast::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s;
+  }
+
+  .btn-cast:hover::after { transform: translateX(100%); }
+
+  /* === HEXAGRAM DISPLAY === */
+  .hexagram-panel {
+    grid-column: 1 / -1;
+    display: none;
+  }
+
+  .hexagram-panel.show { display: block; }
+
+  .hex-inner {
+    display: grid;
+    grid-template-columns: auto 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+
+  @media (max-width: 560px) {
+    .hex-inner { grid-template-columns: auto 1fr; }
+    .hex-meta { grid-column: 1 / -1; }
+  }
+
+  /* === LINES DISPLAY === */
+  .lines-display {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .hao-line {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: fadeSlideIn 0.4s ease forwards;
+    opacity: 0;
+  }
+
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hao-num {
+    font-family: 'Ma Shan Zheng', serif;
+    font-size: 0.8rem;
+    color: var(--gold-dim);
+    width: 36px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .line-symbol {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    flex: 1;
+  }
+
+  .bar {
+    height: 8px;
+    background: var(--gold);
+    border-radius: 2px;
+    box-shadow: 0 0 6px rgba(200,168,75,0.4);
+    transition: all 0.3s;
+  }
+
+  .bar.yang-bar { width: 64px; }
+  .bar.yin-bar  { width: 28px; }
+
+  .changing-marker {
+    font-size: 1.1rem;
+    margin-left: 6px;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.85); }
+  }
+
+  .lao-yang .bar { background: #e8c060; box-shadow: 0 0 10px rgba(255,200,80,0.6); }
+  .lao-yin  .bar { background: #c0392b; box-shadow: 0 0 10px rgba(192,57,43,0.5); }
+
+  .hao-value {
+    font-size: 0.8rem;
+    color: rgba(200,168,75,0.5);
+    width: 24px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  /* === HEX NAME / META === */
+  .hex-name-area {
+    text-align: center;
+  }
+
+  .hex-chinese {
+    font-family: 'Ma Shan Zheng', serif;
+    font-size: 3.5rem;
+    color: var(--gold);
+    text-shadow: 0 0 20px var(--glow);
+    line-height: 1;
+    display: block;
+  }
+
+  .hex-number {
+    font-size: 0.75rem;
+    color: var(--gold-dim);
+    letter-spacing: 0.15em;
+    margin-top: 4px;
+  }
+
+  .hex-viet {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.2rem;
+    color: var(--paper);
+    margin-top: 6px;
+  }
+
+  .hex-trigrams {
+    font-size: 0.8rem;
+    color: var(--gold-dim);
+    margin-top: 4px;
+  }
+
+  .hex-judgment {
+    font-size: 0.82rem;
+    color: rgba(245,237,216,0.75);
+    line-height: 1.7;
+    margin-top: 10px;
+    padding: 10px;
+    border-left: 2px solid rgba(200,168,75,0.3);
+    font-style: italic;
+  }
+
+  /* === CHANGED HEX === */
+  .changed-hex {
+    margin-top: 12px;
+    padding: 12px;
+    background: rgba(192,57,43,0.08);
+    border: 1px solid rgba(192,57,43,0.25);
+    border-radius: 2px;
+  }
+
+  .changed-title {
+    font-size: 0.8rem;
+    color: rgba(192,57,43,0.8);
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+    font-family: 'Ma Shan Zheng', serif;
+  }
+
+  .changed-name {
+    font-family: 'Ma Shan Zheng', serif;
+    font-size: 1.4rem;
+    color: #e67e7e;
+  }
+
+  /* === NUMBER METHOD === */
+  .number-area {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+
+  .num-input {
+    flex: 1;
+    min-width: 80px;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(200,168,75,0.2);
+    border-radius: 2px;
+    color: var(--paper);
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    outline: none;
+    text-align: center;
+    font-family: 'Noto Serif SC', serif;
+  }
+
+  .num-input:focus { border-color: rgba(200,168,75,0.5); }
+
+  /* === SPINNER === */
+  .spinner {
+    display: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(200,168,75,0.2);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin-fast 0.6s linear infinite;
+    margin: 0 auto;
+  }
+
+  @keyframes spin-fast { to { transform: rotate(360deg); } }
+
+  .footer-note {
+    text-align: center;
+    color: rgba(200,168,75,0.2);
+    font-size: 0.7rem;
+    margin-top: 30px;
+    letter-spacing: 0.15em;
+    padding-bottom: 20px;
+  }
+
+  .legend {
+    display: flex;
+    gap: 16px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    color: var(--gold-dim);
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 6px;
+    border-radius: 1px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>周易六爻</h1>
+  <div class="subtitle">Kinh Dịch Lục Hào · Bói Quẻ</div>
+</div>
+<div class="divider"></div>
+
+<div class="main-container">
+
+  <!-- LEFT: Input Panel -->
+  <div class="panel">
+    <div class="panel-title">⊞ Phương Pháp Lấy Quẻ</div>
+
+    <div class="method-tabs">
+      <button class="method-tab active" onclick="setMethod('coin')">🪙 Đồng Tiền</button>
+      <button class="method-tab" onclick="setMethod('yarrow')">草 Thi Thảo</button>
+      <button class="method-tab" onclick="setMethod('number')">數 Số Học</button>
+      <button class="method-tab" onclick="setMethod('random')">∞ Ngẫu Nhiên</button>
+    </div>
+
+    <div class="method-desc" id="method-desc">
+      Gieo 3 đồng tiền 6 lần — mỗi lần xác định một hào. Mặt dương (ngửa) = 3, mặt âm (sấp) = 2. Tổng 6,7,8,9 xác định loại hào.
+    </div>
+
+    <textarea class="question-input" id="questionInput" placeholder="Nhập câu hỏi tâm niệm (tuỳ chọn)..."></textarea>
+
+    <!-- COIN METHOD -->
+    <div id="method-coin">
+      <div class="coin-area" id="coinArea"></div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#e8c060"></div>9 = Lão Dương (động)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#c0392b"></div>6 = Lão Âm (động)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>7 = Thiếu Dương</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#504030"></div>8 = Thiếu Âm</div>
+      </div>
+    </div>
+
+    <!-- YARROW METHOD -->
+    <div id="method-yarrow" style="display:none">
+      <div class="yarrow-inputs" id="yarrowInputs"></div>
+    </div>
+
+    <!-- NUMBER METHOD -->
+    <div id="method-number" style="display:none">
+      <p style="font-size:0.8rem;color:var(--gold-dim);margin-bottom:10px;">Nhập 2 số bất kỳ (ngày giờ, tuổi, ...) để tính quẻ theo phương pháp Mai Hoa Dịch Số:</p>
+      <div class="number-area">
+        <input class="num-input" type="number" id="num1" placeholder="Số 1" min="1" max="9999">
+        <input class="num-input" type="number" id="num2" placeholder="Số 2" min="1" max="9999">
+      </div>
+    </div>
+
+    <!-- RANDOM METHOD -->
+    <div id="method-random" style="display:none">
+      <p style="font-size:0.8rem;color:var(--gold-dim);margin-bottom:10px;">Hệ thống tự động gieo quẻ bằng thuật toán ngẫu nhiên mô phỏng phương pháp đồng tiền truyền thống.</p>
+    </div>
+
+    <button class="btn-cast" onclick="castHexagram()">
+      ✦ Gieo Quẻ ✦
+    </button>
+  </div>
+
+  <!-- RIGHT: Hexagram Result -->
+  <div class="panel" id="resultPanel">
+    <div class="panel-title">卦 Kết Quả</div>
+    <div id="resultContent" style="color:rgba(200,168,75,0.2);font-size:0.85rem;text-align:center;padding:30px 0;">
+      <div style="font-size:2rem;margin-bottom:10px;">☯</div>
+      Chưa có quẻ. Hãy gieo quẻ...
+    </div>
+  </div>
+
+  <!-- HEXAGRAM FULL DISPLAY -->
+  <div class="panel hexagram-panel" id="hexPanel">
+    <div class="panel-title">📖 Luận Giải</div>
+    <div class="hex-inner" id="hexInner"></div>
+  </div>
+
+</div>
+
+<div class="footer-note">
+  六十四卦 · Lục Thập Tứ Quái · 64 Quẻ Kinh Dịch
+</div>
+
+<script>
+// ============================================================
+// DATA: QUẺ ĐƠN (TRIGRAMS) - theo chuẩn queDon từ data user
+// Key = 3 bit (thượng hoặc hạ quái), bit cao nhất = hào trên cùng của quái đó
+// ============================================================
+const QUE_DON = {
+  '111': { name: 'Kiền',  char: '☰', element: 'Kim',  image: 'Trời' },
+  '011': { name: 'Đoài',  char: '☱', element: 'Kim',  image: 'Đầm'  },
+  '101': { name: 'Ly',    char: '☲', element: 'Hỏa',  image: 'Lửa'  },
+  '001': { name: 'Chấn',  char: '☳', element: 'Mộc',  image: 'Sấm'  },
+  '110': { name: 'Tốn',   char: '☴', element: 'Mộc',  image: 'Gió'  },
+  '010': { name: 'Khảm',  char: '☵', element: 'Thủy', image: 'Nước' },
+  '100': { name: 'Cấn',   char: '☶', element: 'Thổ',  image: 'Núi'  },
+  '000': { name: 'Khôn',  char: '☷', element: 'Thổ',  image: 'Đất'  },
+};
+
+// ============================================================
+// DATA: 64 HEXAGRAMS - theo chuẩn queKep từ data user
+// Key = thuongQuai(3bit) + haQuai(3bit)  — ĐÚNG THỨ TỰ CỦA DATA GỐC
+// Mỗi quái 3-bit: bit[0]=hào cao nhất của quái đó, bit[2]=hào thấp nhất
+// ============================================================
+const QUE_KEP = {
+  '111111': { num: 1,  viet: 'Thuần Kiền',            judgment: 'Nguyên Hanh Lợi Trinh. Trời vận hành mạnh mẽ không ngừng. Người quân tử tự cường không nghỉ.' },
+  '111110': { num: 44, viet: 'Thiên Phong Cấu',        judgment: 'Nữ tráng. Gặp gỡ bất ngờ. Cẩn thận với cạm bẫy ẩn hiện.' },
+  '111100': { num: 33, viet: 'Thiên Sơn Độn',          judgment: 'Hanh. Tiểu lợi trinh. Thoái lui đúng lúc là thượng sách.' },
+  '111000': { num: 12, viet: 'Thiên Địa Bĩ',           judgment: 'Bĩ chi phỉ nhân. Bế tắc. Ẩn nhẫn chờ thời, tiểu nhân không thể làm gì.' },
+  '110000': { num: 20, viet: 'Phong Địa Quán',         judgment: 'Quán ngưỡng tế nhi bất tiến. Quan sát và suy xét sâu sắc.' },
+  '100000': { num: 23, viet: 'Sơn Địa Bác',            judgment: 'Bất lợi hữu du vãng. Tan rã. Giữ vững chờ tái sinh.' },
+  '101000': { num: 35, viet: 'Hoả Địa Tấn',            judgment: 'Khang hầu. Tiến tới rực rỡ như mặt trời mọc.' },
+  '101111': { num: 14, viet: 'Hoả Thiên Đại Hữu',      judgment: 'Nguyên Hanh. Đại giàu có. Sáng suốt quang minh chính đại.' },
+  '011011': { num: 58, viet: 'Thuần Đoài',             judgment: 'Hanh Lợi Trinh. Niềm vui chân thật và đức tín mang lại may mắn.' },
+  '011010': { num: 47, viet: 'Trạch Thủy Khốn',        judgment: 'Hanh. Trinh. Đại nhân cát. Khốn khổ nhưng chí khí bền vững.' },
+  '011000': { num: 45, viet: 'Trạch Địa Tụy',          judgment: 'Hanh. Vương giả miếu. Tụ hội đoàn kết thành công.' },
+  '011100': { num: 31, viet: 'Trạch Sơn Hàm',          judgment: 'Hanh Lợi Trinh. Cảm ứng. Tình cảm chân thành thu hút may mắn.' },
+  '010100': { num: 39, viet: 'Thủy Sơn Kiển',          judgment: 'Lợi tây nam. Trở ngại. Cần trợ giúp của đại nhân để vượt qua.' },
+  '000100': { num: 15, viet: 'Địa Sơn Khiêm',          judgment: 'Hanh. Người khiêm nhường luôn thành công và được kính trọng.' },
+  '001100': { num: 62, viet: 'Lôi Sơn Tiểu Quá',       judgment: 'Hanh. Lợi trinh. Vượt quá nhỏ. Thận trọng trong từng việc nhỏ.' },
+  '001011': { num: 54, viet: 'Lôi Trạch Quy Muội',     judgment: 'Chinh hung. Hôn phối. Địa vị thấp kém cần thận trọng.' },
+  '101101': { num: 30, viet: 'Thuần Ly',                judgment: 'Lợi Trinh. Hanh. Sáng rõ. Nương tựa vào điều chính đáng.' },
+  '101100': { num: 56, viet: 'Hoả Sơn Lữ',             judgment: 'Tiểu hanh. Lữ hành. Thận trọng khi xa nhà lạ đất.' },
+  '101110': { num: 50, viet: 'Hoả Phong Đỉnh',         judgment: 'Nguyên Cát. Hanh. Vạc đỉnh. Nuôi dưỡng hiền tài phát triển.' },
+  '101010': { num: 63, viet: 'Hoả Thủy Vị Tế',         judgment: 'Hanh. Tiểu hồ cật. Chưa hoàn thành, cần thêm nỗ lực cuối cùng.' },
+  '100010': { num: 4,  viet: 'Sơn Thủy Mông',          judgment: 'Hanh. Mông muội cần khai sáng. Học hỏi chân thành tất thành.' },
+  '110010': { num: 59, viet: 'Phong Thủy Hoán',        judgment: 'Hanh. Vương giả miếu. Ly tán rồi tập hợp lại càng mạnh.' },
+  '111010': { num: 5,  viet: 'Thiên Thủy Nhu',         judgment: 'Hanh Trinh. Chờ đợi thời cơ. Tự tin kiên nhẫn sẽ hanh thông.' },
+  '111101': { num: 13, viet: 'Thiên Hoả Đồng Nhân',    judgment: 'Đồng nhân vu dã hanh. Hòa đồng rộng rãi. Hợp tác đại thành.' },
+  '001001': { num: 51, viet: 'Thuần Chấn',             judgment: 'Hanh. Sấm sét vang rền. Kinh hãi mà tỉnh ngộ tu thân.' },
+  '001000': { num: 16, viet: 'Lôi Địa Dự',             judgment: 'Lợi kiến hầu hành sư. Vui mừng hăng hái. Thuận lòng người.' },
+  '001010': { num: 40, viet: 'Lôi Thủy Giải',          judgment: 'Lợi tây nam. Giải thoát. Hành động quyết đoán thoát khổ nạn.' },
+  '001110': { num: 32, viet: 'Lôi Phong Hằng',         judgment: 'Hanh Vô Cữu Lợi Trinh. Bền lâu. Kiên định trong sự nghiệp.' },
+  '000110': { num: 46, viet: 'Địa Phong Thăng',        judgment: 'Nguyên Hanh. Thăng tiến. Từng bước lên cao vững chắc.' },
+  '010110': { num: 48, viet: 'Thủy Phong Tĩnh',        judgment: 'Cải ấp bất cải tỉnh. Nguồn mạch bất biến. Trở về bản chất tốt.' },
+  '011110': { num: 28, viet: 'Trạch Phong Đại Quá',    judgment: 'Đống nảo. Lợi hữu du vãng. Gánh nặng quá lớn cần quyết đoán.' },
+  '011001': { num: 17, viet: 'Trạch Lôi Tùy',          judgment: 'Nguyên Hanh Lợi Trinh. Thuận theo thời thế. Linh hoạt thích nghi.' },
+  '110110': { num: 57, viet: 'Thuần Tốn',              judgment: 'Tiểu hanh. Lợi hữu du vãng. Thuận chiều nhu mì mà đạt đích.' },
+  '110111': { num: 9,  viet: 'Phong Thiên Tiểu Súc',   judgment: 'Hanh. Tích lũy nhỏ. Kiên trì tích lũy từng bước.' },
+  '110101': { num: 37, viet: 'Phong Hoả Gia Nhân',     judgment: 'Lợi nữ trinh. Gia đình. Vai trò trách nhiệm rõ ràng hòa thuận.' },
+  '110001': { num: 42, viet: 'Phong Lôi Ích',          judgment: 'Lợi hữu du vãng. Thêm ích lợi. Thời cơ thuận tốt để hành động.' },
+  '111001': { num: 25, viet: 'Thiên Lôi Vô Vọng',      judgment: 'Nguyên Hanh Lợi Trinh. Vô tư không vọng. Chân thành tự nhiên.' },
+  '101001': { num: 21, viet: 'Hoả Lôi Phệ Hạp',        judgment: 'Hanh. Lợi dụng ngục. Phán quyết dứt khoát trừ bỏ chướng ngại.' },
+  '100001': { num: 27, viet: 'Sơn Lôi Di',             judgment: 'Trinh. Quan di. Nuôi dưỡng thân tâm. Cẩn thận lời ăn tiếng nói.' },
+  '100110': { num: 18, viet: 'Sơn Phong Cổ',           judgment: 'Nguyên Hanh. Sửa chữa hủ bại. Cải cách mang lại phát triển.' },
+  '010010': { num: 29, viet: 'Thuần Khảm',             judgment: 'Hanh. Tập Khảm. Nguy hiểm chồng chất. Kiên trì đức tin vượt qua.' },
+  '010011': { num: 60, viet: 'Thủy Trạch Tiết',        judgment: 'Hanh. Khổ tiết bất khả trinh. Điều độ mới bền lâu.' },
+  '010001': { num: 3,  viet: 'Thủy Lôi Truân',         judgment: 'Nguyên Hanh Lợi Trinh. Khó khăn ban đầu như mầm cây vươn lên.' },
+  '010101': { num: 64, viet: 'Thủy Hoả Ký Tế',         judgment: 'Hanh. Tiểu lợi trinh. Đã thành. Cẩn thận giữ gìn thành quả.' },
+  '011101': { num: 49, viet: 'Trạch Hoả Cách',         judgment: 'Kỷ nhật nãi phu. Cải cách đổi mới mang lại thành công.' },
+  '001101': { num: 55, viet: 'Lôi Hoả Phong',          judgment: 'Hanh. Vương giả. Phong phú hưởng thụ thời cực thịnh.' },
+  '000101': { num: 36, viet: 'Địa Hoả Minh Di',        judgment: 'Lợi Trinh. Ánh sáng bị che khuất. Ẩn nhẫn chờ thời phục hưng.' },
+  '000010': { num: 7,  viet: 'Địa Thủy Sư',            judgment: 'Trinh. Tướng soái. Tổ chức kỷ luật đem lại thành công lâu bền.' },
+  '100100': { num: 52, viet: 'Thuần Cấn',              judgment: 'Cấn kỳ bối. Dừng lại đúng lúc. Biết dừng là đạo quân tử.' },
+  '100101': { num: 22, viet: 'Sơn Hoả Bí',             judgment: 'Hanh. Tiểu lợi hữu du vãng. Văn vẻ trang trí, nội dung là gốc.' },
+  '100111': { num: 26, viet: 'Sơn Thiên Đại Súc',      judgment: 'Lợi Trinh. Tích lũy lớn. Đức độ kiến thức dồi dào hanh thông.' },
+  '100011': { num: 41, viet: 'Sơn Trạch Tổn',          judgment: 'Hữu phu. Nguyên cát. Thiệt thòi giảm bớt mang lại may mắn.' },
+  '101011': { num: 38, viet: 'Hoả Trạch Khuê',         judgment: 'Tiểu sự cát. Bất đồng. Tìm điểm tương đồng trong dị biệt.' },
+  '111011': { num: 10, viet: 'Thiên Trạch Lý',         judgment: 'Hanh. Cẩn thận trong hành động. Lễ phép và thận trọng.' },
+  '110011': { num: 61, viet: 'Phong Trạch Trung Phu',  judgment: 'Lợi thiệp đại xuyên. Thành tín. Chân thành với mọi người.' },
+  '110100': { num: 53, viet: 'Phong Sơn Tiệm',         judgment: 'Nữ quy cát. Tiến dần. Từng bước kiên nhẫn tất thành.' },
+  '000000': { num: 2,  viet: 'Thuần Khôn',             judgment: 'Nguyên Hanh Lợi Trinh. Đất dày chở muôn vật. Mềm mại thuận thảo.' },
+  '000001': { num: 24, viet: 'Địa Lôi Phục',           judgment: 'Hanh. Trở lại. Tái sinh sau gian khó. Thời điểm thuận lợi.' },
+  '000011': { num: 19, viet: 'Địa Trạch Lâm',          judgment: 'Nguyên Hanh Lợi Trinh. Tiến lên. Thời cơ đến cần nắm bắt.' },
+  '000111': { num: 11, viet: 'Địa Thiên Thái',         judgment: 'Tiểu vãng đại lai. Thái bình thịnh trị. Âm dương hòa hợp.' },
+  '001111': { num: 34, viet: 'Lôi Thiên Đại Tráng',    judgment: 'Lợi Trinh. Hùng mạnh. Dùng sức mạnh đúng lúc đúng chỗ.' },
+  '011111': { num: 43, viet: 'Trạch Thiên Quải',       judgment: 'Dương vu vương đình. Quyết đoán. Xử lý dứt khoát điều tiêu cực.' },
+  '010111': { num: 6,  viet: 'Thủy Thiên Tụng',        judgment: 'Hanh, lợi kiến đại nhân. Tranh tụng. Trung đạo là thắng.' },
+  '010000': { num: 8,  viet: 'Thủy Địa Tỷ',            judgment: 'Hanh. Đoàn kết thân cận. Hợp tác chân thành mang lại may mắn.' },
+};
+
+// ============================================================
+// STATE
+// ============================================================
+let currentMethod = 'coin';
+let coinResults = []; // index 0=hào1(hạ nhất), index 5=hào6(thượng nhất)
+
+const methodDescs = {
+  coin: 'Gieo 3 đồng tiền 6 lần. Ngửa=3, sấp=2. Tổng: 9=Lão Dương(○động), 8=Thiếu Âm(tĩnh), 7=Thiếu Dương(tĩnh), 6=Lão Âm(●động).',
+  yarrow: 'Thi thảo cổ điển: nhập số cọng còn lại sau 3 lần tách cho mỗi hào. 36→9(Lão Dương), 32→8(Thiếu Âm), 28→7(Thiếu Dương), 24→6(Lão Âm).',
+  number: 'Mai Hoa Dịch Số: nhập 2 con số (ngày+giờ, tuổi+năm...). Số 1 → thượng quái, số 2 → hạ quái, tổng mod 6 → hào động.',
+  random: 'Tự động gieo theo xác suất chuẩn: P(9)=1/8 · P(7)=3/8 · P(8)=3/8 · P(6)=1/8.',
+};
+
+// ============================================================
+// INIT
+// ============================================================
+function init() {
+  buildCoinArea();
+  buildYarrowInputs();
+}
+
+function buildCoinArea() {
+  const area = document.getElementById('coinArea');
+  area.innerHTML = '';
+  for (let i = 1; i <= 6; i++) {
+    area.innerHTML += `
+      <div class="coin-row" id="coin-row-${i}">
+        <div class="hao-label">Hào ${i}</div>
+        <div class="coins-display" id="coins-${i}">
+          <div class="coin" id="c${i}_1">?</div>
+          <div class="coin" id="c${i}_2">?</div>
+          <div class="coin" id="c${i}_3">?</div>
+        </div>
+        <div class="coin-sum" id="sum-${i}">–</div>
+        <button onclick="throwCoins(${i})" style="
+          background:rgba(200,168,75,0.1);border:1px solid rgba(200,168,75,0.3);
+          color:var(--gold-dim);font-size:0.75rem;padding:4px 8px;cursor:pointer;border-radius:2px;
+          font-family:'Noto Sans SC',sans-serif;white-space:nowrap;
+        ">Tung</button>
+      </div>`;
+  }
+  coinResults = Array(6).fill(null);
+}
+
+function buildYarrowInputs() {
+  const area = document.getElementById('yarrowInputs');
+  area.innerHTML = '';
+  for (let i = 1; i <= 6; i++) {
+    area.innerHTML += `
+      <div class="yarrow-row">
+        <label>Hào ${i}:</label>
+        <input class="yarrow-input" type="number" id="yarrow-${i}" min="4" max="44"
+          placeholder="Số cọng còn lại (4,8,12...)" oninput="validateYarrow(${i})">
+        <span id="yarrow-result-${i}" style="width:60px;font-size:0.8rem;color:var(--gold-dim);text-align:right;"></span>
+      </div>`;
+  }
+}
+
+// ============================================================
+// METHOD SWITCHING
+// ============================================================
+function setMethod(m) {
+  currentMethod = m;
+  document.querySelectorAll('.method-tab').forEach((t,i) => {
+    t.classList.toggle('active', ['coin','yarrow','number','random'][i] === m);
+  });
+  document.getElementById('method-desc').textContent = methodDescs[m];
+  ['coin','yarrow','number','random'].forEach(id => {
+    document.getElementById('method-' + id).style.display = (id === m) ? 'block' : 'none';
+  });
+}
+
+// ============================================================
+// COIN ALGORITHM
+// ============================================================
+function throwCoins(haoNum) {
+  const values = [0,0,0].map(() => Math.random() < 0.5 ? 3 : 2);
+  const sum = values.reduce((a,b) => a+b, 0);
+  coinResults[haoNum - 1] = sum;
+
+  for (let j = 1; j <= 3; j++) {
+    const el = document.getElementById(`c${haoNum}_${j}`);
+    const isYang = values[j-1] === 3;
+    el.classList.remove('yang','yin');
+    el.classList.add(isYang ? 'yang' : 'yin');
+    el.textContent = isYang ? '○' : '×';
+  }
+  document.getElementById(`sum-${haoNum}`).textContent = sum;
+
+  const row = document.getElementById(`coin-row-${haoNum}`);
+  row.classList.add('active-row');
+}
+
+function throwAllCoins() {
+  for (let i = 1; i <= 6; i++) throwCoins(i);
+}
+
+// ============================================================
+// YARROW STALK ALGORITHM
+// 36 bundles remain → 9 (old yang), 32 → 8 (young yin), 28 → 7 (young yang), 24 → 6 (old yin)
+// Simplified: we accept user input as 6,7,8,9 directly OR compute from stalk count
+// ============================================================
+function validateYarrow(haoNum) {
+  const val = parseInt(document.getElementById(`yarrow-${haoNum}`).value);
+  const resultEl = document.getElementById(`yarrow-result-${haoNum}`);
+  if (!val) { resultEl.textContent = ''; return; }
+  // Map stalk remainder to line value
+  const map = { 36:9, 32:8, 28:7, 24:6 };
+  if (map[val]) {
+    resultEl.textContent = `→ ${map[val]} (${lineTypeName(map[val])})`;
+    resultEl.style.color = lineColor(map[val]);
+  } else {
+    resultEl.textContent = 'Không hợp lệ';
+    resultEl.style.color = '#e74c3c';
+  }
+}
+
+function yarrowToLineValues() {
+  const vals = [];
+  const map = { 36:9, 32:8, 28:7, 24:6 };
+  for (let i = 1; i <= 6; i++) {
+    const v = parseInt(document.getElementById(`yarrow-${i}`).value);
+    if (!map[v]) return null;
+    vals.push(map[v]);
+  }
+  return vals;
+}
+
+// ============================================================
+// NUMBER / MAI HOA ALGORITHM
+// Thứ tự bát quái theo data chuẩn: Kiền(1) Đoài(2) Ly(3) Chấn(4) Tốn(5) Khảm(6) Cấn(7) Khôn(8)
+// ============================================================
+function numberToHexagram(n1, n2) {
+  // key thứ tự: Kiền Đoài Ly Chấn Tốn Khảm Cấn Khôn
+  const trigramOrder = ['111','011','101','001','110','010','100','000'];
+  const thuongIdx = ((n1 - 1) % 8);
+  const haIdx     = ((n2 - 1) % 8);
+  const thuongBits = trigramOrder[thuongIdx]; // hào6·hào5·hào4
+  const haBits     = trigramOrder[haIdx];     // hào3·hào2·hào1
+  const changingLine = (n1 + n2) % 6; // 0–5 → hào 1–6
+  // Build lineVals[0..5] = hào1..6
+  // haBits[2]=hào1, haBits[1]=hào2, haBits[0]=hào3
+  // thuongBits[2]=hào4, thuongBits[1]=hào5, thuongBits[0]=hào6
+  const bits = [haBits[2], haBits[1], haBits[0], thuongBits[2], thuongBits[1], thuongBits[0]];
+  return bits.map((b, i) => {
+    const base = b === '1' ? 7 : 8;
+    if (i === changingLine) return b === '1' ? 9 : 6;
+    return base;
+  });
+}
+
+// ============================================================
+// RANDOM ALGORITHM (weighted coin simulation)
+// ============================================================
+function randomLineValues() {
+  // P(6)=1/8, P(7)=3/8, P(8)=3/8, P(9)=1/8
+  return Array.from({length:6}, () => {
+    const r = Math.random();
+    if (r < 1/8) return 6;
+    if (r < 4/8) return 7;
+    if (r < 7/8) return 8;
+    return 9;
+  });
+}
+
+// ============================================================
+// LINE HELPERS
+// ============================================================
+function lineTypeName(v) {
+  return { 6:'Lão Âm', 7:'Thiếu Dương', 8:'Thiếu Âm', 9:'Lão Dương' }[v] || '?';
+}
+function lineColor(v) {
+  return { 6:'#c0392b', 7:'var(--gold)', 8:'rgba(200,168,75,0.45)', 9:'#e8c060' }[v] || '#aaa';
+}
+function isYang(v) { return v === 7 || v === 9; }
+function isChanging(v) { return v === 6 || v === 9; }
+function lineValToBit(v) { return isYang(v) ? '1' : '0'; }
+
+// ============================================================
+// KEY BUILDING — QUAN TRỌNG
+// lineVals[0] = hào 1 (hạ nhất), lineVals[5] = hào 6 (thượng nhất)
+//
+// Quy tắc queDon/queKep của data chuẩn:
+//   key = thuongQuai(3bit) + haQuai(3bit)
+//   thuongQuai = hào6·hào5·hào4  (bit[0]=hào6, bit[2]=hào4)
+//   haQuai     = hào3·hào2·hào1  (bit[0]=hào3, bit[2]=hào1)
+// ============================================================
+function buildKey(vals) {
+  // vals[0..5] = hào 1..6
+  const haQuai    = lineValToBit(vals[2]) + lineValToBit(vals[1]) + lineValToBit(vals[0]);
+  const thuongQuai = lineValToBit(vals[5]) + lineValToBit(vals[4]) + lineValToBit(vals[3]);
+  return thuongQuai + haQuai;
+}
+
+function buildChangedKey(vals) {
+  const flipped = vals.map(v => {
+    if (v === 9) return 8; // Lão Dương → Thiếu Âm (dương→âm)
+    if (v === 6) return 7; // Lão Âm → Thiếu Dương (âm→dương)
+    return v;
+  });
+  return buildKey(flipped);
+}
+
+function getTrigramKeys(vals) {
+  // haQuai key: hào3·hào2·hào1
+  const haKey     = lineValToBit(vals[2]) + lineValToBit(vals[1]) + lineValToBit(vals[0]);
+  // thuongQuai key: hào6·hào5·hào4
+  const thuongKey  = lineValToBit(vals[5]) + lineValToBit(vals[4]) + lineValToBit(vals[3]);
+  return { thuongKey, haKey };
+}
+
+function lookupHex(key) {
+  if (QUE_KEP[key]) return QUE_KEP[key];
+  return { num: '?', viet: 'Quẻ ' + key, judgment: 'Không tìm thấy. Kiểm tra lại hào.' };
+}
+
+// ============================================================
+// MAIN CAST FUNCTION
+// ============================================================
+function castHexagram() {
+  let lineVals = null;
+
+  if (currentMethod === 'coin') {
+    // Check all 6 hào have been thrown
+    if (coinResults.some(v => v === null)) {
+      // Auto-throw remaining
+      throwAllCoins();
+      lineVals = [...coinResults];
+    } else {
+      lineVals = [...coinResults];
+    }
+  } else if (currentMethod === 'yarrow') {
+    lineVals = yarrowToLineValues();
+    if (!lineVals) { alert('Vui lòng nhập đủ số cọng hợp lệ (24, 28, 32, hoặc 36) cho cả 6 hào.'); return; }
+  } else if (currentMethod === 'number') {
+    const n1 = parseInt(document.getElementById('num1').value);
+    const n2 = parseInt(document.getElementById('num2').value);
+    if (!n1 || !n2) { alert('Vui lòng nhập 2 con số.'); return; }
+    lineVals = numberToHexagram(n1, n2);
+  } else { // random
+    lineVals = randomLineValues();
+  }
+
+  displayResult(lineVals);
+}
+
+// ============================================================
+// DISPLAY RESULT
+// ============================================================
+function displayResult(lineVals) {
+  const hexKey     = buildKey(lineVals);
+  const changedKey = buildChangedKey(lineVals);
+  const hexData    = lookupHex(hexKey);
+  const hasChanging = lineVals.some(isChanging);
+
+  const { thuongKey, haKey } = getTrigramKeys(lineVals);
+  const thuongTrig = QUE_DON[thuongKey] || { name:'?', char:'?', element:'?', image:'?' };
+  const haTrig     = QUE_DON[haKey]     || { name:'?', char:'?', element:'?', image:'?' };
+
+  // ---- Summary card (right panel) ----
+  document.getElementById('resultContent').innerHTML = `
+    <div style="margin-bottom:14px;">
+      <div class="hex-viet" style="font-size:1.5rem;font-family:'Ma Shan Zheng',serif;color:var(--gold);text-shadow:0 0 16px var(--glow);">
+        ${hexData.viet}
+      </div>
+      <div class="hex-number" style="margin-top:4px;">Quẻ số ${hexData.num !== '?' ? (hexData.num < 10 ? '0'+hexData.num : hexData.num) : '?'} / 64</div>
+    </div>
+    <div style="display:flex;gap:16px;justify-content:center;margin-bottom:10px;">
+      <div style="text-align:center;">
+        <div style="font-size:1.6rem;color:var(--gold);">${thuongTrig.char}</div>
+        <div style="font-size:0.72rem;color:var(--gold-dim);">Thượng: ${thuongTrig.name}</div>
+        <div style="font-size:0.65rem;color:rgba(200,168,75,0.35);">${thuongTrig.image}</div>
+      </div>
+      <div style="display:flex;align-items:center;color:rgba(200,168,75,0.3);font-size:1rem;">÷</div>
+      <div style="text-align:center;">
+        <div style="font-size:1.6rem;color:var(--gold);">${haTrig.char}</div>
+        <div style="font-size:0.72rem;color:var(--gold-dim);">Hạ: ${haTrig.name}</div>
+        <div style="font-size:0.65rem;color:rgba(200,168,75,0.35);">${haTrig.image}</div>
+      </div>
+    </div>
+    ${hasChanging
+      ? `<div style="font-size:0.75rem;color:#e07070;border:1px solid rgba(192,57,43,0.3);padding:5px 10px;border-radius:2px;background:rgba(192,57,43,0.07);">
+           ⚡ Có hào động → biến quẻ
+         </div>`
+      : `<div style="font-size:0.75rem;color:rgba(200,168,75,0.4);">Không có hào động</div>`
+    }
+  `;
+
+  // ---- Lines display (hiển thị từ hào 6 xuống hào 1) ----
+  let linesHTML = '<div class="lines-display">';
+  for (let i = 5; i >= 0; i--) {
+    const v = lineVals[i];
+    const yang = isYang(v);
+    const changing = isChanging(v);
+    const typeClass = v === 9 ? 'lao-yang' : v === 6 ? 'lao-yin' : '';
+    const delay = (5 - i) * 80;
+
+    linesHTML += `
+      <div class="hao-line ${typeClass}" style="animation-delay:${delay}ms">
+        <div class="hao-num">Hào ${i+1}</div>
+        <div class="line-symbol">
+          ${yang
+            ? `<div class="bar yang-bar"></div>`
+            : `<div class="bar yin-bar"></div><div style="width:8px"></div><div class="bar yin-bar"></div>`
+          }
+          ${changing ? `<span class="changing-marker" style="color:${v===9?'#e8c060':'#c0392b'}">${v===9?'●':'○'}</span>` : ''}
+        </div>
+        <div class="hao-value" style="color:${lineColor(v)}">${v}</div>
+        <div style="font-size:0.68rem;color:rgba(200,168,75,0.38);width:80px;text-align:right;flex-shrink:0;">${lineTypeName(v)}</div>
+      </div>`;
+  }
+  linesHTML += '</div>';
+
+  // ---- Changed hexagram ----
+  let changedHTML = '';
+  if (hasChanging) {
+    const changedData  = lookupHex(changedKey);
+    const changedVals  = lineVals.map(v => v === 9 ? 8 : v === 6 ? 7 : v);
+    const { thuongKey: cThuong, haKey: cHa } = getTrigramKeys(changedVals);
+    const cThuongTrig  = QUE_DON[cThuong] || { name:'?', char:'?' };
+    const cHaTrig      = QUE_DON[cHa]     || { name:'?', char:'?' };
+
+    // Quẻ biến mini lines
+    let changedLines = '';
+    for (let i = 5; i >= 0; i--) {
+      const cv = changedVals[i];
+      const cyang = isYang(cv);
+      changedLines += `
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+          <span style="font-size:0.68rem;color:rgba(200,100,100,0.5);width:36px;">Hào ${i+1}</span>
+          <div style="display:flex;align-items:center;gap:4px;">
+            ${cyang
+              ? `<div style="height:6px;width:52px;background:#e07070;border-radius:1px;box-shadow:0 0 4px rgba(224,112,112,0.3)"></div>`
+              : `<div style="height:6px;width:22px;background:#e07070;border-radius:1px;"></div>
+                 <div style="width:6px"></div>
+                 <div style="height:6px;width:22px;background:#e07070;border-radius:1px;"></div>`
+            }
+          </div>
+        </div>`;
+    }
+
+    changedHTML = `
+      <div class="changed-hex">
+        <div class="changed-title">⚡ Quẻ Biến:</div>
+        <div style="display:flex;gap:20px;align-items:flex-start;">
+          <div>${changedLines}</div>
+          <div>
+            <div style="font-family:'Ma Shan Zheng',serif;font-size:1.3rem;color:#e07070;">${changedData.viet}</div>
+            <div style="font-size:0.72rem;color:rgba(200,100,100,0.6);margin-top:2px;">
+              ${cThuongTrig.char}${cThuongTrig.name} / ${cHaTrig.char}${cHaTrig.name}
+            </div>
+            <div style="font-size:0.75rem;color:rgba(245,200,200,0.55);margin-top:8px;font-style:italic;line-height:1.6;">${changedData.judgment}</div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  // ---- Full panel ----
+  document.getElementById('hexInner').innerHTML = `
+    <div>${linesHTML}</div>
+    <div class="hex-name-area">
+      <div style="font-family:'Ma Shan Zheng',serif;font-size:2rem;color:var(--gold);text-shadow:0 0 16px var(--glow);line-height:1.2;margin-bottom:4px;">
+        ${hexData.viet}
+      </div>
+      <div class="hex-number">Quẻ ${hexData.num} / 64</div>
+      <div class="hex-trigrams" style="margin-top:6px;">
+        ${thuongTrig.char} <strong style="color:var(--gold-dim)">${thuongTrig.name}</strong> (${thuongTrig.image})
+        &nbsp;/&nbsp;
+        ${haTrig.char} <strong style="color:var(--gold-dim)">${haTrig.name}</strong> (${haTrig.image})
+      </div>
+      <div class="hex-judgment">${hexData.judgment}</div>
+      ${changedHTML}
+    </div>
+  `;
+
+  document.getElementById('hexPanel').classList.add('show');
+  setTimeout(() => document.getElementById('hexPanel').scrollIntoView({ behavior:'smooth', block:'nearest' }), 100);
+}
+
+// ============================================================
+// START
+// ============================================================
+init();
+</script>
+</body>
+</html>
