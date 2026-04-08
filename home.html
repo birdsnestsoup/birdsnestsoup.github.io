@@ -3,32 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bài Tứ Sắc</title>
+    <title>Bài Tứ Sắc - Giao Diện Dịu Tâm</title>
     <style>
         body {
+            /* Màu nền xanh kem cực dịu cho mắt */
+            background-color: #f0f4f0; 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #ffffff;
             margin: 0;
-            padding: 20px;
+            padding: 30px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            color: #2d3436;
         }
 
         .header-title {
             text-align: center;
-            font-size: 28px; 
-            font-weight: bold;
-            margin-top: 20px;
+            font-size: 32px; /* To rõ hơn */
+            font-weight: 800;
             margin-bottom: 40px;
-            color: #222;
+            color: #2f5d3e; /* Xanh đậm tinh tế */
+            letter-spacing: -0.5px;
         }
 
         .utility-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 25px 15px;
-            max-width: 500px;
+            gap: 30px 20px;
+            max-width: 600px;
             width: 100%;
         }
 
@@ -37,113 +39,93 @@
             flex-direction: column;
             align-items: center;
             text-decoration: none;
-            color: #444;
-            transition: opacity 0.2s;
+            transition: transform 0.2s, opacity 0.2s;
         }
 
+        /* Hiệu ứng nhấn nhẹ nhàng */
         .utility-item:active {
-            opacity: 0.6;
+            transform: scale(0.95);
+            opacity: 0.8;
         }
 
         .icon-wrapper {
-            width: 85px;
-            height: 85px;
-            background-color: #f8f8f8;
-            border-radius: 22px; 
+            width: 95px; /* Tăng kích thước icon */
+            height: 95px;
+            background-color: #ffffff;
+            border-radius: 28px; /* Bo góc tròn hơn tạo cảm giác thân thiện */
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 12px;
+            /* Đổ bóng mịn màng */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.05);
+            border: 2px solid #e0eee0;
             overflow: hidden;
         }
 
         .icon-wrapper img {
-            width: 100%; 
-            height: 100%;
-            object-fit: cover;
+            width: 70%; /* Thu nhỏ ảnh bên trong một chút để tạo khoảng thở */
+            height: 70%;
+            object-fit: contain;
         }
 
         .utility-name {
-            font-size: 14px;
-            font-weight: 500;
+            /* Chữ to hơn, đậm hơn theo yêu cầu */
+            font-size: 18px; 
+            font-weight: 700;
             text-align: center;
-            line-height: 1.2;
-            margin-top: 4px;
+            line-height: 1.3;
+            color: #34495e;
+            width: 110%; /* Giúp chữ không bị bó hẹp */
         }
 
-        @media (max-width: 380px) {
+        /* Menu đặc biệt: Lấy Quẻ Tân Thời */
+        .utility-item:last-child .utility-name {
+            color: #d35400; /* Màu cam đất dịu nhưng nổi bật cho menu cuối */
+        }
+
+        @media (max-width: 400px) {
+            .utility-grid {
+                gap: 20px 10px;
+            }
             .icon-wrapper {
-                width: 75px;
-                height: 75px;
+                width: 85px;
+                height: 85px;
+            }
+            .utility-name {
+                font-size: 16px;
             }
         }
     </style>
 </head>
 <body>
 
-    <h1 class="header-title">Tứ Sắc Utilities</h1>
+    <h1 class="header-title">Tứ Sắc Thiên Cơ</h1>
 
     <div class="utility-grid">
-        <a href="https://birdsnestsoup.github.io/1.html" target="_blank" class="utility-item">
-            <div class="icon-wrapper"><img src="https://birdsnestsoup.github.io/4colourcards.png" alt="Icon"></div>
-            <span class="utility-name">Tứ Sắc 1</span>
-        </a>
+        <script>
+            const titles = [
+                "Tứ Sắc 1", "Tứ Sắc 2", "Tứ Sắc 3", "Tứ Sắc 4", 
+                "Tứ Sắc 5", "Tứ Sắc 6", "Tứ Sắc 7", "Tứ Sắc 8", 
+                "Tứ Sắc 9", "Tứ Sắc 10", "Tiện Ích", "Quẻ Tân Thời"
+            ];
+            const links = [
+                "1.html", "2.html", "3.html", "4.html", 
+                "5.html", "6.html", "7.html", "8.html", 
+                "9.html", "10.html", "11.html", "stm.html"
+            ];
 
-        <a href="https://birdsnestsoup.github.io/2.html" target="_blank" class="utility-item">
-            <div class="icon-wrapper"><img src="https://birdsnestsoup.github.io/4colourcards.png" alt="Icon"></div>
-            <span class="utility-name">Tứ Sắc 2</span>
-        </a>
-
-        <a href="https://birdsnestsoup.github.io/3.html" target="_blank" class="utility-item">
-            <div class="icon-wrapper"><img src="https://birdsnestsoup.github.io/4colourcards.png" alt="Icon"></div>
-            <span class="utility-name">Tứ Sắc 3</span>
-        </a>
-
-        <a href="https://birdsnestsoup.github.io/4.html" target="_blank" class="utility-item">
-            <div class="icon-wrapper"><img src="https://birdsnestsoup.github.io/4colourcards.png" alt="Icon"></div>
-            <span class="utility-name">Tứ Sắc 4</span>
-        </a>
-
-        <a href="https://birdsnestsoup.github.io/5.html" target="_blank" class="utility-item">
-            <div class="icon-wrapper"><img src="https://birdsnestsoup.github.io/4colourcards.png" alt="Icon"></div>
-            <span class="utility-name">Tứ Sắc 5</span>
-        </a>
-
-        <a href="https://birdsnestsoup.github.io/6.html" target="_blank" class="utility-item">
-            <div class="icon-wrapper"><img src="https://birdsnestsoup.github.io/4colourcards.png" alt="Icon"></div>
-            <span class="utility-name">Tứ Sắc 6</span>
-        </a>
-
-        <a href="https://birdsnestsoup.github.io/7.html" target="_blank" class="utility-item">
-            <div class="icon-wrapper"><img src="https://birdsnestsoup.github.io/4colourcards.png" alt="Icon"></div>
-            <span class="utility-name">Tứ Sắc 7</span>
-        </a>
-
-        <a href="https://birdsnestsoup.github.io/8.html" target="_blank" class="utility-item">
-            <div class="icon-wrapper"><img src="https://birdsnestsoup.github.io/4colourcards.png" alt="Icon"></div>
-            <span class="utility-name">Tứ Sắc 8</span>
-        </a>
-
-        <a href="https://birdsnestsoup.github.io/9.html" target="_blank" class="utility-item">
-            <div class="icon-wrapper"><img src="https://birdsnestsoup.github.io/4colourcards.png" alt="Icon"></div>
-            <span class="utility-name">Tứ Sắc 9</span>
-        </a>
-
-        <a href="https://birdsnestsoup.github.io/10.html" target="_blank" class="utility-item">
-            <div class="icon-wrapper"><img src="https://birdsnestsoup.github.io/4colourcards.png" alt="Icon"></div>
-            <span class="utility-name">Tứ Sắc 10</span>
-        </a>
-
-        <a href="https://birdsnestsoup.github.io/11.html" target="_blank" class="utility-item">
-            <div class="icon-wrapper"><img src="https://birdsnestsoup.github.io/4colourcards.png" alt="Icon"></div>
-            <span class="utility-name">Extra</span>
-        </a>
-
-        <a href="https://birdsnestsoup.github.io/stm.html" target="_blank" class="utility-item">
-            <div class="icon-wrapper"><img src="https://birdsnestsoup.github.io/4colourcards.png" alt="Icon"></div>
-            <span class="utility-name">Lấy Quẻ Tân Thời</span>
-        </a>
+            for (let i = 0; i < titles.length; i++) {
+                document.write(`
+                    <a href="https://birdsnestsoup.github.io/${links[i]}" target="_blank" class="utility-item">
+                        <div class="icon-wrapper">
+                            <img src="https://birdsnestsoup.github.io/4colourcards.png" alt="Icon">
+                        </div>
+                        <span class="utility-name">${titles[i]}</span>
+                    </a>
+                `);
+            }
+        </script>
     </div>
 
 </body>
