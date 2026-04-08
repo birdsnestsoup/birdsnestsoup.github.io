@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Liên Hoa 12 Không Thời</title>
+<style>
+:root { --gold:#f1c40f; --dark:#121212; --card:#1e1e1e; --text:#e0e0e0; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body {
+    font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--dark);
+    color: var(--text);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    padding: 15px;
+}
+.container {
+    width: 100%;
+    max-width: 600px;
+    background: var(--card);
+    padding: 15px;
+    border-radius: 16px;
+}
+h3 { text-align: center; color: var(--gold); margin-bottom: 20px; font-size: 1.2rem; }
+
+.input-group {
+    display: flex;
+    align-items: center;
+    background: #000;
+    border: 1px solid #444;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    padding-left: 10px;
+}
+.row-label {
+    color: var(--gold);
+    font-weight: bold;
+    width: 25px;
+}
+input {
+    flex: 1;
+    padding: 12px 10px;
+    border: none;
+    background: transparent;
+    color: #fff;
+    font-size: 16px; 
+    outline: none;
+}
+
+.button-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin: 15px 0;
+}
+button {
+    padding: 12px 5px;
+    border: none;
+    border-radius: 8px;
+    background: var(--gold);
+    color: #000;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+}
+button.secondary { background: #34495e; color: #fff; }
+
+.preview {
+    margin-top: 15px;
+    padding: 15px;
+    background: #000;
+    border-radius: 10px;
+    white-space: pre;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 15px;
+    overflow-x: auto;
+    border: 1px solid #333;
+    line-height: 1.2;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h3>BẢNG QUẺ LIÊN HOA</h3>
+
+    <div id="inputs-container"></div>
+
+    <div class="button-grid">
+        <button class="secondary" onclick="generateOutput(5)">Hiện 5 mục</button>
+        <button class="secondary" onclick="generateOutput(9)">Hiện 9 mục</button>
+        <button onclick="generateOutput(12)">Hiện 12 mục</button>
+    </div>
+
+    <button style="width:100%;" onclick="copyResult()">Sao chép kết quả</button>
+
+    <div id="preview" class="preview">Kết quả sẽ xuất hiện ở đây...</div>
+</div>
+
+<script>
+const trigramMap = {
+    "k": "Kiền", "kh": "Khôn", "km": "Khảm", "đ": "Đoài", 
+    "t": "Tốn", "l": "Ly", "ch": "Chấn", "c": "Cấn"
+};
+
+const headers = ["Chính", "Hỗ", "Biến"];
+
+const container = document.getElementById('inputs-container');
+for (let i = 1; i <= 12; i++) {
+    const div = document.createElement('div');
+    div.className = 'input-group';
+    div.innerHTML = `<span class="row-label">${i}</span>
+        <input type="text" id="row-${i}" placeholder="k, kh, ch, c, t, l" oninput="formatInput(this)" onblur="finalizeInput(this)">`;
+    container.appendChild(div);
+}
+
+function formatInput(el) {
+    let val = el.value;
+    if (val.includes(',')) val = val.replace(/,([^\s])/g, ', $1');
+    el.value = val;
+}
+
+function finalizeInput(el) {
+    let parts = el.value.split(',').map(s => s.trim()).filter(s => s !== "");
+    if (parts.length > 0) el.value = parts.join(', ');
+}
+
+function normalize(token) {
+    if(!token) return null;
+    let key = token.toLowerCase().trim();
+    if (trigramMap[key]) return trigramMap[key];
+    if (Object.values(trigramMap).includes(token)) return token;
+    return null;
+}
+
+function buildTable(index, rawText) {
+    let parts = rawText.split(',').map(s => s.trim());
+    if (parts.length < 6) return null;
+
+    let d = parts.map(p => normalize(p) || "??");
+
+    // Tự động tính khoảng cách để dấu gạch | thẳng hàng
+    // Chúng ta lấy độ rộng thực tế của chữ + 1 khoảng trắng
+    const col1W = Math.max(headers[0].length, d[0].length, d[1].length) + 1;
+    const col2W = Math.max(headers[1].length, d[2].length, d[3].length) + 1;
+
+    const pad = (t, w) => t.padEnd(w, " ");
+
+    // Dòng chữ: Dùng độ rộng thực tế
+    const headerRow = `${pad(headers[0], col1W)}| ${pad(headers[1], col2W)}| ${headers[2]}`;
+    const row1      = `${pad(d[0], col1W)}| ${pad(d[2], col2W)}| ${d[4]}`;
+    const row2      = `${pad(d[1], col1W)}| ${pad(d[3], col2W)}| ${d[5]}`;
+
+    // Dòng dấu chấm: Ép 10 dấu chấm mỗi phần, bất chấp độ rộng chữ bên trên
+    const dotLine = ".........."; 
+    const sepRow  = `${dotLine} | ${dotLine} | ${dotLine}`;
+
+    return `${index}\n${headerRow}\n${sepRow}\n${row1}\n${row2}`;
+}
+
+function generateOutput(limit) {
+    let results = [];
+    for (let i = 1; i <= limit; i++) {
+        let val = document.getElementById(`row-${i}`).value;
+        let table = buildTable(i, val);
+        if (table) results.push(table);
+    }
+    const preview = document.getElementById('preview');
+    preview.innerText = results.length > 0 ? results.join("\n\n") : "Dữ liệu chưa đủ.";
+}
+
+function copyResult() {
+    const text = document.getElementById('preview').innerText;
+    if (text.includes("Dữ liệu") || text.includes("Kết quả")) return;
+    navigator.clipboard.writeText(text).then(() => alert("Đã copy thành công!"));
+}
+</script>
+
+</body>
+</html>
