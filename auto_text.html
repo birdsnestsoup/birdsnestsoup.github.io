@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trình soạn thảo gợi ý thông minh</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; padding: 20px; background-color: #f4f4f9; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h2 { color: #333; }
+        
+        #editor-container { position: relative; margin-bottom: 10px; }
+        
+        /* Form gõ văn bản */
+        #typing-area {
+            width: 100%;
+            height: 250px;
+            padding: 15px;
+            font-size: 18px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            resize: none;
+            box-sizing: border-box;
+            outline: none;
+        }
+        #typing-area:focus { border-color: #007bff; }
+
+        /* Khung gợi ý */
+        #suggestion-box {
+            position: absolute;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-top: none;
+            display: none;
+            z-index: 100;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-radius: 0 0 5px 5px;
+        }
+        .suggestion-item {
+            padding: 8px 15px;
+            cursor: pointer;
+            background: #e9ecef;
+            margin: 2px;
+            border-radius: 3px;
+            display: inline-block;
+        }
+        .suggestion-item:hover { background: #007bff; color: white; }
+
+        .controls { margin-top: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .btn {
+            padding: 10px 20px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn:hover { background: #218838; }
+        .word-count { color: #666; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Trình soạn thảo tiếng Việt thông minh</h2>
+    <p style="font-size: 0.9em; color: #666;">Gõ đạt 80% từ để xem gợi ý. Tối đa 300 từ.</p>
+    
+    <div id="editor-container">
+        <textarea id="typing-area" placeholder="Bắt đầu gõ tại đây..."></textarea>
+        <div id="suggestion-box"></div>
+    </div>
+
+    <div class="controls">
+        <button class="btn" onclick="copyToClipboard()">Sao chép văn bản</button>
+        <div class="word-count" id="count-display">Số từ: 0/300</div>
+    </div>
+</div>
+
+<script>
+    // 1. THƯ VIỆN 3000 TỪ (Dưới đây là các từ mẫu, bạn hãy dán thêm vào cho đủ 3000 từ)
+    const dictionary = [
+        "anh", "em", "người", "những", "thành", "phố", "gia", "đình", "hạnh", "phúc",
+        "trường", "học", "công", "việc", "phát", "triển", "kinh", "tế", "xã", "hội",
+        "việt", "nam", "tôi", "bạn", "chúng", "ta", "yêu", "thương", "giúp", "đỡ",
+        "không", "được", "có", "một", "nhiều", "rất", "đang", "sẽ", "đã", "làm",
+        "đi", "đến", "về", "nhà", "ăn", "uống", "nói", "nghe", "xem", "đọc", "viết",
+        "mới", "cũ", "lớn", "nhỏ", "nhanh", "chậm", "tốt", "đẹp", "xấu", "khó", "dễ"
+        // ... Thêm 3000 từ phổ biến của bạn vào đây
+    ];
+
+    const typingArea = document.getElementById('typing-area');
+    const suggestionBox = document.getElementById('suggestion-box');
+    const countDisplay = document.getElementById('count-display');
+
+    typingArea.addEventListener('input', function(e) {
+        const text = this.value;
+        const words = text.trim().split(/\s+/).filter(w => w.length > 0);
+        
+        // Cập nhật số từ
+        countDisplay.innerText = `Số từ: ${words.length}/300`;
+        if (words.length >= 300 && e.inputType !== 'deleteContentBackward') {
+            alert("Đã đạt giới hạn 300 từ!");
+        }
+
+        // Lấy từ hiện tại đang gõ (từ cuối cùng)
+        const lastWord = text.split(/\s+/).pop();
+        
+        if (lastWord.length >= 2) {
+            findSuggestions(lastWord);
+        } else {
+            suggestionBox.style.display = 'none';
+        }
+    });
+
+    function findSuggestions(input) {
+        suggestionBox.innerHTML = '';
+        const matches = dictionary.filter(word => {
+            // Kiểm tra nếu input đạt 80% độ dài của từ trong từ điển
+            // Và input phải là phần bắt đầu của từ đó
+            const threshold = Math.ceil(word.length * 0.8);
+            return word.startsWith(input) && input.length >= threshold && word !== input;
+        });
+
+        if (matches.length > 0) {
+            matches.slice(0, 5).forEach(match => {
+                const div = document.createElement('div');
+                div.className = 'suggestion-item';
+                div.innerText = match;
+                div.onclick = () => selectWord(match);
+                suggestionBox.appendChild(div);
+            });
+            
+            // Định vị khung gợi ý
+            suggestionBox.style.display = 'block';
+        } else {
+            suggestionBox.style.display = 'none';
+        }
+    }
+
+    function selectWord(word) {
+        const content = typingArea.value;
+        const words = content.split(/\s+/);
+        words.pop(); // Xóa từ đang gõ dở
+        words.push(word);
+        
+        typingArea.value = words.join(' ') + ' '; // Thêm từ và tự động nhảy khoảng trắng
+        typingArea.focus();
+        suggestionBox.style.display = 'none';
+        
+        // Cập nhật đếm từ
+        const newWords = typingArea.value.trim().split(/\s+/);
+        countDisplay.innerText = `Số từ: ${newWords.length}/300`;
+    }
+
+    function copyToClipboard() {
+        typingArea.select();
+        document.execCommand('copy');
+        alert("Đã sao chép vào bộ nhớ tạm!");
+    }
+
+    // Đóng gợi ý khi bấm ra ngoài
+    document.addEventListener('click', function(e) {
+        if (e.target !== typingArea) {
+            suggestionBox.style.display = 'none';
+        }
+    });
+</script>
+
+</body>
+</html>
