@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bói Bài Tây – Huyền Số</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=IM+Fell+English+SC&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #c8a94a;
+  --gold-light: #e8d08a;
+  --gold-dark: #8b6914;
+  --deep: #0a0612;
+  --deep2: #120920;
+  --purple: #1e0a3c;
+  --purple2: #2d1260;
+  --crimson: #7a1020;
+  --text: #e8dcc8;
+  --text2: #b8a888;
+  --card-back: #1a0a30;
+  --shadow: rgba(200,169,74,0.3);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--deep);
+  color: var(--text);
+  font-family: 'Lora', Georgia, serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* STARFIELD */
+body::before {
+  content:'';
+  position:fixed; inset:0; pointer-events:none; z-index:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(46,18,96,0.7) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 40% at 80% 100%, rgba(122,16,32,0.3) 0%, transparent 60%);
+}
+
+.stars {
+  position:fixed; inset:0; pointer-events:none; z-index:0;
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.5), transparent),
+    radial-gradient(1.5px 1.5px at 55% 15%, rgba(200,169,74,0.9), transparent),
+    radial-gradient(1px 1px at 70% 80%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 85% 35%, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 15% 75%, rgba(200,169,74,0.6), transparent),
+    radial-gradient(1px 1px at 45% 90%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1.5px 1.5px at 90% 10%, rgba(255,255,255,0.9), transparent),
+    radial-gradient(1px 1px at 25% 40%, rgba(255,255,255,0.5), transparent),
+    radial-gradient(1px 1px at 65% 55%, rgba(200,169,74,0.7), transparent),
+    radial-gradient(1px 1px at 5% 50%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 95% 65%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1px 1px at 38% 28%, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 77% 48%, rgba(200,169,74,0.5), transparent),
+    radial-gradient(1.5px 1.5px at 50% 70%, rgba(255,255,255,0.8), transparent);
+  animation: twinkle 6s infinite alternate;
+}
+@keyframes twinkle {
+  0%{opacity:.7} 50%{opacity:1} 100%{opacity:.5}
+}
+
+/* LAYOUT */
+.app { position:relative; z-index:1; max-width:960px; margin:0 auto; padding:0 16px 60px; }
+
+/* HEADER */
+header {
+  text-align:center; padding:40px 16px 20px;
+  border-bottom:1px solid rgba(200,169,74,0.2);
+}
+.title-deco { color:var(--gold); font-size:11px; letter-spacing:6px; text-transform:uppercase; opacity:.7; margin-bottom:8px; }
+h1 {
+  font-family:'Cinzel Decorative', serif;
+  font-size: clamp(22px, 5vw, 42px);
+  color: var(--gold);
+  text-shadow: 0 0 40px rgba(200,169,74,0.5), 0 2px 4px #000;
+  line-height:1.2; margin-bottom:6px;
+}
+.subtitle { font-family:'IM Fell English SC'; color:var(--text2); font-size:14px; letter-spacing:2px; }
+
+/* ORB */
+.orb-wrap { display:flex; justify-content:center; margin:24px 0 16px; }
+.orb {
+  width:80px; height:80px; border-radius:50%;
+  background: radial-gradient(circle at 35% 35%, rgba(200,169,74,0.4) 0%, rgba(46,18,96,0.8) 50%, rgba(10,6,18,1) 100%);
+  border:2px solid rgba(200,169,74,0.4);
+  box-shadow:0 0 30px rgba(200,169,74,0.3), inset 0 0 20px rgba(200,169,74,0.1);
+  animation: pulse-orb 3s ease-in-out infinite;
+  cursor:pointer; position:relative; overflow:hidden;
+}
+.orb::after {
+  content:'✦'; position:absolute; top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  color:var(--gold); font-size:28px;
+  animation: rotate-star 8s linear infinite;
+}
+@keyframes pulse-orb { 0%,100%{box-shadow:0 0 30px rgba(200,169,74,0.3), inset 0 0 20px rgba(200,169,74,0.1)} 50%{box-shadow:0 0 50px rgba(200,169,74,0.5), inset 0 0 30px rgba(200,169,74,0.2)} }
+@keyframes rotate-star { from{transform:translate(-50%,-50%) rotate(0deg)} to{transform:translate(-50%,-50%) rotate(360deg)} }
+
+/* SECTIONS */
+section { margin-top:28px; }
+.section-title {
+  font-family:'Cinzel Decorative'; font-size:12px;
+  color:var(--gold); letter-spacing:4px; text-transform:uppercase;
+  text-align:center; margin-bottom:16px; opacity:.85;
+}
+.section-title span { display:inline-block; padding:0 12px; position:relative; }
+.section-title span::before, .section-title span::after {
+  content:''; display:inline-block; width:40px; height:1px;
+  background:linear-gradient(to right,transparent,var(--gold-dark)); vertical-align:middle; margin:0 10px;
+}
+.section-title span::after { background:linear-gradient(to left,transparent,var(--gold-dark)); }
+
+/* TOPIC GRID */
+.topic-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:10px; }
+.topic-btn {
+  background: linear-gradient(135deg, rgba(30,10,60,0.8), rgba(10,6,18,0.9));
+  border:1px solid rgba(200,169,74,0.25);
+  border-radius:8px; padding:12px 10px;
+  color:var(--text2); font-family:'Lora'; font-size:12px;
+  cursor:pointer; transition:all .25s; text-align:center;
+  display:flex; flex-direction:column; align-items:center; gap:6px;
+}
+.topic-btn:hover, .topic-btn.active {
+  border-color:var(--gold); color:var(--gold);
+  background:linear-gradient(135deg, rgba(46,18,96,0.9), rgba(30,10,60,0.95));
+  box-shadow:0 0 16px rgba(200,169,74,0.2);
+  transform:translateY(-2px);
+}
+.topic-icon { font-size:22px; }
+
+/* QUESTION INPUT */
+.question-wrap { margin-top:16px; }
+.question-wrap textarea {
+  width:100%; background:rgba(10,6,18,0.8);
+  border:1px solid rgba(200,169,74,0.2); border-radius:8px;
+  color:var(--text); font-family:'Lora'; font-size:13px;
+  padding:12px 14px; resize:vertical; min-height:70px;
+  outline:none; transition:border .2s;
+}
+.question-wrap textarea:focus { border-color:rgba(200,169,74,0.5); }
+.question-wrap textarea::placeholder { color:rgba(184,168,136,0.4); font-style:italic; }
+
+/* SPREAD SELECTOR */
+.spread-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; margin-top:8px; }
+.spread-btn {
+  background:rgba(10,6,18,0.8); border:1px solid rgba(200,169,74,0.2);
+  border-radius:8px; padding:12px; cursor:pointer; transition:all .25s;
+  text-align:left;
+}
+.spread-btn:hover, .spread-btn.active {
+  border-color:var(--gold); background:rgba(30,10,60,0.9);
+  box-shadow:0 0 12px rgba(200,169,74,0.15);
+}
+.spread-name { font-family:'IM Fell English SC'; color:var(--gold); font-size:13px; margin-bottom:3px; }
+.spread-desc { color:var(--text2); font-size:11px; line-height:1.5; }
+
+/* DRAW BTN */
+.draw-wrap { display:flex; justify-content:center; margin-top:24px; }
+.draw-btn {
+  font-family:'Cinzel Decorative'; font-size:13px; letter-spacing:2px;
+  color:var(--deep); background:linear-gradient(135deg, var(--gold), var(--gold-dark));
+  border:none; border-radius:50px; padding:14px 40px;
+  cursor:pointer; transition:all .3s;
+  box-shadow:0 4px 20px rgba(200,169,74,0.4);
+}
+.draw-btn:hover {
+  transform:translateY(-2px);
+  box-shadow:0 8px 30px rgba(200,169,74,0.5);
+}
+.draw-btn:active { transform:translateY(0); }
+
+/* READING AREA */
+#reading-area { margin-top:32px; }
+
+/* CARD DISPLAY */
+.cards-row {
+  display:flex; flex-wrap:wrap; gap:12px;
+  justify-content:center; margin:20px 0;
+}
+.card-slot {
+  display:flex; flex-direction:column; align-items:center; gap:6px;
+}
+.pos-label { font-size:10px; color:var(--gold); letter-spacing:2px; text-transform:uppercase; font-family:'IM Fell English SC'; }
+.card {
+  width:72px; height:108px; border-radius:8px;
+  position:relative; cursor:pointer;
+  transform-style:preserve-3d; transition:transform .6s;
+  perspective:600px;
+}
+.card.flipped .card-inner { transform:rotateY(180deg); }
+.card-inner { width:100%; height:100%; position:relative; transform-style:preserve-3d; transition:transform .6s; }
+.card-front, .card-back {
+  position:absolute; inset:0; border-radius:8px;
+  backface-visibility:hidden;
+}
+.card-back {
+  background:linear-gradient(135deg, var(--card-back), var(--purple2));
+  border:2px solid rgba(200,169,74,0.4);
+  display:flex; align-items:center; justify-content:center;
+  font-size:24px; color:rgba(200,169,74,0.3);
+}
+.card-back::after {
+  content:''; position:absolute; inset:4px;
+  border:1px solid rgba(200,169,74,0.15);
+  border-radius:4px;
+}
+.card-front {
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  transform:rotateY(180deg);
+  font-size:11px; font-family:'IM Fell English SC'; letter-spacing:.5px;
+  padding:4px; text-align:center;
+  border:2px solid;
+}
+.card-front.hearts  { background:#1a0005; border-color:#cc3344; color:#ff6677; }
+.card-front.diamonds{ background:#1a0a00; border-color:#cc6622; color:#ff8844; }
+.card-front.clubs   { background:#001a08; border-color:#228866; color:#44cc88; }
+.card-front.spades  { background:#00081a; border-color:#3366cc; color:#6699ff; }
+
+.card-suit-big { font-size:28px; line-height:1; }
+.card-name-text { font-size:9px; margin-top:4px; opacity:.9; }
+
+/* RESULT BOX */
+.result-box {
+  background:linear-gradient(180deg, rgba(10,6,18,0.95), rgba(30,10,60,0.9));
+  border:1px solid rgba(200,169,74,0.3); border-radius:12px;
+  padding:24px; margin-top:16px;
+  box-shadow:0 0 40px rgba(0,0,0,0.6);
+}
+.result-topic { font-family:'Cinzel Decorative'; font-size:11px; color:var(--gold); letter-spacing:3px; margin-bottom:16px; }
+.result-overall { font-size:15px; line-height:1.9; color:var(--text); margin-bottom:16px; font-style:italic; }
+.card-meaning-list { list-style:none; padding:0; }
+.card-meaning-item {
+  padding:10px 0; border-bottom:1px solid rgba(200,169,74,0.1);
+  display:flex; gap:12px; align-items:flex-start;
+}
+.card-meaning-item:last-child { border-bottom:none; }
+.card-badge {
+  min-width:44px; height:28px; border-radius:4px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px; font-family:'IM Fell English SC';
+}
+.card-badge.hearts  { background:rgba(204,51,68,0.2); border:1px solid #cc3344; }
+.card-badge.diamonds{ background:rgba(204,102,34,0.2); border:1px solid #cc6622; }
+.card-badge.clubs   { background:rgba(34,136,102,0.2); border:1px solid #228866; }
+.card-badge.spades  { background:rgba(51,102,204,0.2); border:1px solid #3366cc; }
+.card-meaning-text { font-size:12.5px; color:var(--text2); line-height:1.7; }
+.card-meaning-name { color:var(--gold); font-family:'IM Fell English SC'; margin-right:6px; }
+
+.combo-section { margin-top:16px; padding-top:16px; border-top:1px solid rgba(200,169,74,0.15); }
+.combo-title { font-family:'IM Fell English SC'; color:var(--gold-light); font-size:13px; letter-spacing:1px; margin-bottom:10px; }
+.combo-item {
+  background:rgba(200,169,74,0.05); border:1px solid rgba(200,169,74,0.1);
+  border-radius:6px; padding:10px 12px; margin-bottom:8px;
+  font-size:12.5px; color:var(--text2); line-height:1.7;
+}
+.combo-cards { color:var(--gold); font-family:'IM Fell English SC'; font-size:12px; margin-bottom:4px; }
+
+.final-verdict {
+  margin-top:16px; padding:16px;
+  background:linear-gradient(135deg, rgba(46,18,96,0.4), rgba(122,16,32,0.2));
+  border:1px solid rgba(200,169,74,0.25); border-radius:8px;
+}
+.verdict-label { font-family:'IM Fell English SC'; color:var(--gold); font-size:12px; letter-spacing:2px; margin-bottom:8px; }
+.verdict-text { font-size:13px; color:var(--text); line-height:1.8; }
+
+/* COPY BTN */
+.copy-wrap { display:flex; justify-content:center; margin-top:20px; gap:12px; flex-wrap:wrap; }
+.copy-btn {
+  font-family:'Cinzel Decorative'; font-size:11px; letter-spacing:1px;
+  background:rgba(200,169,74,0.1); border:1px solid rgba(200,169,74,0.4);
+  color:var(--gold); border-radius:50px; padding:10px 28px;
+  cursor:pointer; transition:all .25s;
+}
+.copy-btn:hover { background:rgba(200,169,74,0.2); box-shadow:0 0 16px rgba(200,169,74,0.2); }
+.new-btn {
+  font-family:'Cinzel Decorative'; font-size:11px; letter-spacing:1px;
+  background:rgba(122,16,32,0.2); border:1px solid rgba(200,169,74,0.3);
+  color:var(--text2); border-radius:50px; padding:10px 28px;
+  cursor:pointer; transition:all .25s;
+}
+.new-btn:hover { background:rgba(122,16,32,0.3); color:var(--gold); }
+
+/* TOAST */
+.toast {
+  position:fixed; bottom:30px; left:50%; transform:translateX(-50%);
+  background:var(--gold); color:var(--deep); font-family:'IM Fell English SC';
+  padding:10px 24px; border-radius:50px; font-size:13px;
+  opacity:0; transition:opacity .3s; pointer-events:none; z-index:999;
+  white-space:nowrap;
+}
+.toast.show { opacity:1; }
+
+/* DIVIDER */
+.divider {
+  display:flex; align-items:center; gap:12px;
+  color:rgba(200,169,74,0.3); font-size:18px;
+  margin:8px 0;
+}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:rgba(200,169,74,0.15);}
+
+/* LOADING */
+.loading {
+  display:flex; flex-direction:column; align-items:center; gap:12px;
+  padding:40px; display:none;
+}
+.loading.show { display:flex; }
+.loading-orb {
+  width:50px;height:50px;border-radius:50%;
+  border:2px solid transparent;
+  border-top-color:var(--gold);
+  border-right-color:rgba(200,169,74,0.3);
+  animation:spin 1s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{color:var(--text2);font-style:italic;font-size:13px;animation:fade-text 2s ease-in-out infinite}
+@keyframes fade-text{0%,100%{opacity:.5}50%{opacity:1}}
+
+/* FOOTER */
+footer {
+  text-align:center; padding:30px 0 10px;
+  color:rgba(200,169,74,0.3); font-size:11px; letter-spacing:2px;
+  font-family:'IM Fell English SC';
+}
+
+/* RESPONSIVE */
+@media(max-width:480px){
+  .topic-grid{grid-template-columns:repeat(2,1fr);}
+  .spread-grid{grid-template-columns:1fr;}
+  .card{width:60px;height:90px;}
+  .card-suit-big{font-size:22px;}
+}
+</style>
+</head>
+<body>
+<div class="stars"></div>
+
+<div class="app">
+  <header>
+    <div class="title-deco">✦ Huyền Bí Số Mệnh ✦</div>
+    <h1>Bói Bài Tây</h1>
+    <div class="subtitle">Tiên Tri – Luận Giải – Định Mệnh</div>
+    <div class="orb-wrap"><div class="orb"></div></div>
+  </header>
+
+  <section>
+    <div class="section-title"><span>Chọn Chủ Đề</span></div>
+    <div class="topic-grid" id="topicGrid"></div>
+  </section>
+
+  <section>
+    <div class="section-title"><span>Câu Hỏi Của Bạn</span></div>
+    <div class="question-wrap">
+      <textarea id="questionInput" placeholder="Gõ câu hỏi cụ thể của bạn vào đây… (không bắt buộc)"></textarea>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title"><span>Kiểu Trải Bài</span></div>
+    <div class="spread-grid" id="spreadGrid"></div>
+  </section>
+
+  <div class="draw-wrap">
+    <button class="draw-btn" onclick="startReading()">✦ Rút Bài ✦</button>
+  </div>
+
+  <div id="reading-area"></div>
+
+  <footer>⬟ Chỉ mang tính giải trí – Vận mệnh do chính bạn tạo nên ⬟</footer>
+</div>
+
+<div class="toast" id="toast">Đã sao chép vào bộ nhớ tạm!</div>
+
+<script>
+// ===================== DATA =====================
+const SUITS = {
+  H: { name:'Cơ', symbol:'♥', cls:'hearts', color:'red' },
+  D: { name:'Rô', symbol:'♦', cls:'diamonds', color:'orange' },
+  C: { name:'Nhép', symbol:'♣', cls:'clubs', color:'green' },
+  S: { name:'Bích', symbol:'♠', cls:'spades', color:'blue' }
+};
+
+const RANKS = {
+  '7':  { name:'Bảy', short:'7' },
+  '8':  { name:'Tám', short:'8' },
+  '9':  { name:'Chín', short:'9' },
+  '10': { name:'Mười', short:'10' },
+  'J':  { name:'Bồi', short:'J' },
+  'Q':  { name:'Đầm', short:'Q' },
+  'K':  { name:'Già', short:'K' },
+  'A':  { name:'Ách', short:'A' }
+};
+
+// Card meanings (general)
+const CARD_MEANINGS = {
+  '7H': { core:'Tình cảm bình dị, ước mơ ngây thơ, niềm vui nhỏ', pos:'Hạnh phúc giản dị, tình yêu trong sáng', neg:'Ảo tưởng, thiếu thực tế trong tình cảm' },
+  '8H': { core:'Tình cảm ổn định, sự bảo bọc, gia đình yêu thương', pos:'Tình cảm bền vững, mái ấm hạnh phúc', neg:'Sự phụ thuộc, khó thoát khỏi cảm xúc cũ' },
+  '9H': { core:'Mong ước thành hiện thực, sự viên mãn, may mắn', pos:'Điều ước trở thành sự thật, thành công mỹ mãn', neg:'Quá hài lòng, không cầu tiến' },
+  '10H': { core:'Hạnh phúc trọn vẹn, viên mãn gia đình, đoàn tụ', pos:'Tình yêu thành hôn nhân, gia đình sung mãn', neg:'Phụ thuộc quá nhiều vào cảm xúc' },
+  'JH': { core:'Người trẻ nhiệt huyết, sứ giả tốt lành, tin tức vui', pos:'Có người giúp đỡ, tin mừng đến gần', neg:'Người ngây thơ, dễ bị lợi dụng' },
+  'QH': { core:'Người phụ nữ hiền lành, bao dung, tinh tế', pos:'Được người tốt hỗ trợ, sự quan tâm chân thành', neg:'Cảm xúc quá mức, hay lo lắng' },
+  'KH': { core:'Người đàn ông nhân từ, lãnh đạo bằng trái tim', pos:'Được người có quyền bảo vệ, tình cảm sâu sắc', neg:'Ưu tiên cảm xúc hơn lý trí' },
+  'AH': { core:'Tình yêu mãnh liệt, khởi đầu mới về tình cảm, sự thịnh vượng trong nhà', pos:'Tình yêu sâu đậm, hôn nhân hạnh phúc', neg:'Cảm xúc bùng phát, tình cảm không kiểm soát' },
+
+  '7D': { core:'Tiền nhỏ, giao dịch lặt vặt, tin tức về tiền bạc', pos:'Có thu nhập nhỏ, may mắn nho nhỏ về tài chính', neg:'Chỉ thấy lợi ích trước mắt, tham vặt' },
+  '8D': { core:'Công việc bận rộn, kỹ năng thực tế, sự cần mẫn', pos:'Chăm chỉ được đền đáp, tiền từ lao động', neg:'Vất vả mà chưa thấy kết quả' },
+  '9D': { core:'Độc lập tài chính, thành công từ cố gắng, dư dả', pos:'Tự lực cánh sinh, tài chính ổn định', neg:'Quá tự mãn, ngại chia sẻ' },
+  '10D': { core:'Giàu có, thịnh vượng, tiền bạc dồi dào, di sản', pos:'Tài lộc lớn, đầu tư có lời, thành công tài chính', neg:'Ham muốn tiền bạc quá mức' },
+  'JD': { core:'Người mang tin tức kinh doanh, cơ hội thương mại', pos:'Tin tốt về tài chính, cơ hội kiếm tiền', neg:'Lời hứa suông, cơ hội không chắc chắn' },
+  'QD': { core:'Người phụ nữ thực dụng, khéo léo tài chính', pos:'Người cố vấn kinh doanh giỏi, may mắn về tiền', neg:'Hơi vụ lợi, tính toán quá mức' },
+  'KD': { core:'Người đàn ông thực dụng, thành đạt, doanh nhân', pos:'Được người giỏi kinh doanh hỗ trợ, tài lộc', neg:'Quá chú trọng vật chất, lạnh lùng' },
+  'AD': { core:'Tin tức quan trọng, giấy tờ hợp đồng, tài lộc lớn', pos:'Hợp đồng thuận lợi, tiền lớn đến, thành công rực rỡ', neg:'Tin tức không hay, giấy tờ rắc rối' },
+
+  '7C': { core:'Nỗ lực nhỏ, kế hoạch ban đầu, tham vọng mới bắt đầu', pos:'Bước khởi đầu tốt, kế hoạch có cơ sở', neg:'Tham vọng chưa thành, cần kiên nhẫn hơn' },
+  '8C': { core:'Làm việc chăm chỉ, cạnh tranh, rời bỏ cái cũ', pos:'Tiến bộ nhanh, học hỏi nhiều, phấn đấu', neg:'Vội vàng, bỏ dở giữa chừng' },
+  '9C': { core:'Kiên trì vượt khó, bảo vệ thành quả, lo lắng ẩn', pos:'Vượt qua thử thách, giữ vững vị trí', neg:'Căng thẳng, quá thận trọng đến mức tê liệt' },
+  '10C': { core:'Thành công viên mãn, sự nghiệp đỉnh cao, gánh nặng lớn', pos:'Đạt mục tiêu, sự nghiệp thành công', neg:'Áp lực quá tải, gánh nặng trách nhiệm' },
+  'JC': { core:'Người trẻ tháo vát, tin tức về công việc, cơ hội mới', pos:'Cơ hội nghề nghiệp tốt, người đồng hành hữu ích', neg:'Người nông nổi, thông tin chưa chắc chắn' },
+  'QC': { core:'Người phụ nữ mạnh mẽ, thực dụng, tháo vát', pos:'Người hỗ trợ đắc lực, tư vấn sáng suốt', neg:'Hay kiểm soát, thiếu mềm mỏng' },
+  'KC': { core:'Người lãnh đạo tài giỏi, uy tín, kinh nghiệm', pos:'Được người tài trợ giúp, thành công sự nghiệp', neg:'Bảo thủ, cứng nhắc trong quan điểm' },
+  'AC': { core:'Thành công vang dội, điềm lành về sự nghiệp, khởi đầu mới', pos:'Đỉnh cao sự nghiệp, thành tựu lớn lao', neg:'Tham vọng quá lớn dễ gãy' },
+
+  '7S': { core:'Rắc rối nhỏ, tranh chấp, lời nói sắc bén', pos:'Phát hiện sự thật, thoát khỏi ảo tưởng', neg:'Cãi cọ, mâu thuẫn nhỏ nhặt' },
+  '8S': { core:'Bị ràng buộc, khó khăn tạm thời, thiếu tự do', pos:'Tự nhận thức giới hạn, chấp nhận để vượt qua', neg:'Cảm giác bị giam cầm, bế tắc' },
+  '9S': { core:'Lo âu, ác mộng, nỗi sợ, đau khổ tinh thần', pos:'Đối mặt sợ hãi để vượt qua, học từ đau khổ', neg:'Lo lắng cực độ, bệnh tật, mất ngủ' },
+  '10S': { core:'Kết thúc đau đớn, mất mát lớn, nhưng mở đường mới', pos:'Kết thúc để tái sinh, chấp nhận và tiến lên', neg:'Thất bại nặng nề, kết cục tệ' },
+  'JS': { core:'Người trẻ xảo quyệt, tin xấu, cẩn thận kẻ thù', pos:'Cảnh báo kịp thời, nhận ra nguy hiểm', neg:'Kẻ tiểu nhân, tin tức xấu, rắc rối do người khác' },
+  'QS': { core:'Người phụ nữ sắc sảo, lạnh lùng, hay phán xét', pos:'Thông minh, sắc bén, thoát khỏi tình huống khó', neg:'Người đàn bà xấu tính, gây họa, tính toán hại người' },
+  'KS': { core:'Người đàn ông nghiêm khắc, quyền lực, pháp luật', pos:'Người cố vấn pháp lý, kỷ luật nghiêm minh', neg:'Kẻ thù quyền lực, tranh chấp pháp lý' },
+  'AS': { core:'Thay đổi lớn, biến cố, mất mát – nhưng cũng là sự thật', pos:'Dũng cảm đối mặt sự thật, chuyển hóa mạnh mẽ', neg:'Biến cố lớn, mất mát, kết thúc đau đớn' },
+};
+
+// Combo meanings (2 or 3 cards together)
+const COMBOS = {
+  'AH+KH': 'Cặp đôi hoàn hảo – tình yêu mãnh liệt, hôn nhân đến gần, hạnh phúc viên mãn.',
+  'AH+QH': 'Tình cảm sâu đậm giữa hai người, sự quan tâm chân thành, hứa hẹn gắn bó lâu dài.',
+  'AH+AS': 'Quyết định lớn trong tình cảm – hoặc lên đỉnh hạnh phúc hoặc chia tay dứt khoát.',
+  'AH+AD': 'Tình yêu kết hợp với tiền bạc – hôn nhân có nền tảng vật chất tốt.',
+  'KH+QH': 'Đôi tình nhân ổn định, gia đình hòa thuận, mối quan hệ sâu sắc.',
+  '9H+10H': 'Hạnh phúc kép – cả ước mơ lẫn thực tế đều viên mãn, vô cùng may mắn.',
+  'JH+QH': 'Tin vui trong tình cảm, người thân mang lại niềm vui, sự giúp đỡ tận tình.',
+  '10D+AD': 'Tài lộc đỉnh cao – tiền bạc dồi dào, đầu tư đại thành công, giàu có vang dội.',
+  'KD+QD': 'Đôi tác kinh doanh ăn ý, hợp tác làm ăn rất thuận lợi và sinh lời.',
+  'AD+AC': 'Thành công toàn diện – cả tài chính lẫn sự nghiệp đều đỉnh cao cùng lúc.',
+  '9D+10D': 'Tài chính cực kỳ ổn định, tích lũy bền vững, sắp đạt mục tiêu tài chính lớn.',
+  'KC+AC': 'Sự nghiệp đạt tới đỉnh cao nhờ có người dẫn dắt tài giỏi, thành công vang dội.',
+  '10C+AC': 'Thành tựu sự nghiệp rực rỡ, hoàn thành mục tiêu lớn, được công nhận xứng đáng.',
+  '8C+9C': 'Giai đoạn cần cù vượt khó – kiên trì thêm một chút nữa là thành công.',
+  'AS+KS': 'Nguy hiểm từ người quyền lực – cẩn thận tranh chấp pháp lý hoặc kẻ thù mạnh.',
+  '9S+10S': 'Giai đoạn đen tối nhất – nhưng sau đêm dài sẽ là bình minh mới.',
+  'QS+JS': 'Có kẻ xấu đang âm mưu – cẩn thận người đàn bà và người trẻ hay gây rắc rối.',
+  '7S+8S': 'Khó khăn nối tiếp khó khăn – cần kiên nhẫn và sáng suốt để thoát ra.',
+  'AH+AC': 'Khởi đầu mới đầy năng lượng – tình yêu và sự nghiệp cùng khởi sắc.',
+  'KH+KD': 'Hai người đàn ông quyền lực đồng hành – hỗ trợ mạnh mẽ từ nhiều phía.',
+  'QH+QD': 'Hai người phụ nữ tốt bụng cùng giúp đỡ – may mắn đến từ quan hệ nữ giới.',
+  '10H+10D': 'Hạnh phúc trọn vẹn cả tình lẫn tiền – một giai đoạn thật sự sung túc.',
+  '7H+8H': 'Tình cảm phát triển dần dần từ bình dị đến bền chặt – cần thêm thời gian.',
+  'AS+9S': 'Biến cố lớn kèm lo âu – cần chuẩn bị tinh thần đối mặt thử thách khắc nghiệt.',
+  'AH+9H': 'Điều ước về tình yêu sắp thành hiện thực – rất may mắn cho chuyện tình cảm.',
+  'AD+9D': 'Hợp đồng tài chính lớn sắp ký kết – tiền bạc từ giấy tờ mang lại lợi lớn.',
+  'KC+QH': 'Người lãnh đạo và người quan tâm hợp tác – công việc có tình người, thành công bền.',
+  'JC+JH': 'Hai tin vui cùng đến – cơ hội công việc và tin mừng tình cảm song hành.',
+  '9H+9D': 'Mong ước cả tình lẫn tiền đều được toại nguyện – giai đoạn may mắn đặc biệt.',
+  'AS+KH': 'Biến cố lớn trong tình cảm – có thể là chia tay đau đớn hoặc thay đổi sâu sắc.',
+  '10S+AC': 'Kết thúc đau đớn để mở ra khởi đầu vĩ đại – sự tái sinh sau mất mát.',
+  'KS+KC': 'Hai người đàn ông quyền lực đối đầu – cạnh tranh gay gắt trong công việc.',
+  '8H+9H': 'Tình cảm đang tiến triển rất tốt – từ ổn định đến viên mãn chỉ còn một bước.',
+  'JD+JH': 'Tin tức tốt về cả tiền bạc lẫn tình cảm – nhiều điều vui đang đến.',
+};
+
+// Topics
+const TOPICS = [
+  { id:'love', icon:'💑', name:'Tình Yêu & Hôn Nhân', desc:'Duyên phận, tình cảm đôi lứa' },
+  { id:'career', icon:'💼', name:'Công Việc & Sự Nghiệp', desc:'Nghề nghiệp, thăng tiến, cơ hội' },
+  { id:'study', icon:'📚', name:'Học Hành & Giấy Tờ', desc:'Thi cử, hồ sơ, ứng tuyển' },
+  { id:'money', icon:'💰', name:'Tiền Bạc & Tài Sản', desc:'Tài lộc, đầu tư, cơ hội kiếm lợi' },
+  { id:'relation', icon:'🤝', name:'Quan Hệ Người Người', desc:'Bạn bè, đồng nghiệp, xã giao' },
+  { id:'partner', icon:'🏢', name:'Hợp Tác & Hùn Hạp', desc:'Kinh doanh, liên kết, đối tác' },
+  { id:'invest', icon:'🏠', name:'Dự Định Quan Trọng', desc:'Mua nhà, đất, xe, đầu tư lớn' },
+  { id:'danger', icon:'⚠️', name:'Tai Ương & Vận Hạn', desc:'Rủi ro, kẻ thù, điều xấu tiềm ẩn' },
+  { id:'health', icon:'🌿', name:'Sức Khoẻ Tâm & Thể', desc:'Thể chất, tinh thần, năng lượng sống' },
+  { id:'children', icon:'👶', name:'Con Cái & Cầu Con', desc:'Con cái, nuôi dạy, sức khoẻ con' },
+  { id:'family', icon:'👨‍👩‍👧', name:'Người Thân & Bình An', desc:'Gia đình, người thân yêu' },
+];
+
+// Spreads
+const SPREADS = [
+  { id:'3card', name:'Trải 3 Lá', desc:'Quá khứ – Hiện tại – Tương lai. Đơn giản, súc tích, rõ ràng.', count:3, positions:['Quá Khứ','Hiện Tại','Tương Lai'] },
+  { id:'5star', name:'Trải 5 Lá (Ngôi Sao)', desc:'Tình huống – Thách thức – Điểm mạnh – Lời khuyên – Kết quả.', count:5, positions:['Tình Huống','Thách Thức','Điểm Mạnh','Lời Khuyên','Kết Quả'] },
+  { id:'cross', name:'Trải 4 Lá (Chữ Thập)', desc:'Bạn – Đối phương – Nền tảng – Kết quả.', count:4, positions:['Bạn','Đối Phương / Hoàn Cảnh','Nền Tảng','Kết Quả'] },
+  { id:'7spread', name:'Trải 7 Lá (Đầy Đủ)', desc:'Bảy lá phân tích toàn diện mọi khía cạnh của vấn đề.', count:7, positions:['Căn Nguyên','Hiện Tại','Ảnh Hưởng Ẩn','Quá Khứ Gần','Tương Lai Gần','Yếu Tố Ngoại Vi','Kết Cục'] },
+];
+
+// Topic-specific interpretation helpers
+const TOPIC_LENS = {
+  love: (card) => {
+    const h = { 'A':'Tình yêu mãnh liệt, cảm xúc bùng cháy','K':'Người đàn ông chân thành','Q':'Người phụ nữ dịu dàng','J':'Tin vui tình cảm đến gần','10':'Tình yêu trọn vẹn','9':'Điều ước tình cảm thành sự thật','8':'Mối tình ổn định, bền chặt','7':'Tình cảm ngây thơ, trong sáng' };
+    const r = card[0]==='1'?'10':card[0]; const s = card.slice(-1);
+    const base = h[r]||'';
+    if(s==='H') return base + ' – lá Cơ rất thuận lợi cho tình yêu';
+    if(s==='S') return base + ' – lá Bích cảnh báo thử thách trong tình cảm';
+    if(s==='D') return base + ' – lá Rô gợi ý tình yêu có yếu tố vật chất';
+    return base + ' – lá Nhép đòi hỏi nỗ lực xây dựng tình cảm';
+  },
+  career: (card) => {
+    const h = { 'A':'Khởi đầu sự nghiệp rực rỡ','K':'Lãnh đạo tài ba, được cất nhắc','Q':'Đồng nghiệp nữ hỗ trợ','J':'Cơ hội nghề mới','10':'Thăng tiến đỉnh cao','9':'Kiên trì vượt thử thách','8':'Cần cù lao động','7':'Bước đầu kế hoạch' };
+    const r = card[0]==='1'?'10':card[0]; const s = card.slice(-1);
+    const base = h[r]||'';
+    if(s==='C') return base + ' – lá Nhép rất tốt cho sự nghiệp';
+    if(s==='S') return base + ' – lá Bích cảnh báo thách thức công việc';
+    if(s==='D') return base + ' – lá Rô gợi ý thu nhập từ công việc';
+    return base + ' – lá Cơ mang theo cảm xúc vào nghề nghiệp';
+  },
+  money: (card) => {
+    const h = { 'A':'Tài lộc đỉnh cao, tiền lớn đến','K':'Người bảo trợ tài chính','Q':'Người phụ nữ giúp tài chính','J':'Tin tức tiền bạc','10':'Tài sản dồi dào','9':'Tích lũy độc lập','8':'Thu nhập từ lao động','7':'Tiền nhỏ, giao dịch lặt vặt' };
+    const r = card[0]==='1'?'10':card[0]; const s = card.slice(-1);
+    const base = h[r]||'';
+    if(s==='D') return base + ' – lá Rô rất thuận lợi cho tài chính';
+    if(s==='S') return base + ' – lá Bích cảnh báo rủi ro tài chính';
+    if(s==='C') return base + ' – lá Nhép gợi ý tiền từ kinh doanh';
+    return base + ' – lá Cơ mang tiền từ tình cảm quan hệ';
+  },
+  health: (card) => {
+    const h = { 'A':'Năng lượng mạnh mẽ, sức khoẻ tràn đầy','K':'Ổn định, sức khoẻ bền vững','Q':'Cần chú ý chăm sóc bản thân','J':'Trẻ trung, hồi phục tốt','10':'Sức khoẻ toàn diện, thể chất tinh thần cân bằng','9':'Vượt qua bệnh tật, hồi phục','8':'Cần nghỉ ngơi, chú ý sức khoẻ','7':'Sức khoẻ ổn, cần duy trì lối sống tốt' };
+    const r = card[0]==='1'?'10':card[0]; const s = card.slice(-1);
+    const base = h[r]||'';
+    if(s==='H') return base + ' – lá Cơ tốt cho tinh thần cảm xúc';
+    if(s==='S') return base + ' – lá Bích cảnh báo cần chú ý thể chất';
+    if(s==='C') return base + ' – lá Nhép gợi ý cần nghỉ ngơi, phục hồi';
+    return base + ' – lá Rô gợi ý sức khoẻ liên quan đến vật chất, ăn uống';
+  },
+};
+
+// Build deck
+function buildDeck() {
+  const deck = [];
+  for(const s of Object.keys(SUITS)) for(const r of Object.keys(RANKS)) deck.push(r+s);
+  return deck;
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+
+// State
+let selectedTopic = null;
+let selectedSpread = SPREADS[0];
+let drawnCards = [];
+
+// Render topics
+const topicGrid = document.getElementById('topicGrid');
+TOPICS.forEach(t => {
+  const btn = document.createElement('button');
+  btn.className = 'topic-btn'; btn.dataset.id = t.id;
+  btn.innerHTML = `<span class="topic-icon">${t.icon}</span><span>${t.name}</span>`;
+  btn.title = t.desc;
+  btn.onclick = () => {
+    document.querySelectorAll('.topic-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedTopic = t;
+  };
+  topicGrid.appendChild(btn);
+});
+
+// Render spreads
+const spreadGrid = document.getElementById('spreadGrid');
+SPREADS.forEach(sp => {
+  const btn = document.createElement('div');
+  btn.className = 'spread-btn' + (sp===SPREADS[0]?' active':'');
+  btn.innerHTML = `<div class="spread-name">✦ ${sp.name}</div><div class="spread-desc">${sp.desc}</div>`;
+  btn.onclick = () => {
+    document.querySelectorAll('.spread-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedSpread = sp;
+  };
+  spreadGrid.appendChild(btn);
+});
+
+// Get combos for drawn cards
+function findCombos(cards) {
+  const found = [];
+  // Check all pairs
+  for(let i=0;i<cards.length;i++) for(let j=i+1;j<cards.length;j++){
+    const key1 = cards[i]+'+'+cards[j];
+    const key2 = cards[j]+'+'+cards[i];
+    if(COMBOS[key1]) found.push({cards:[cards[i],cards[j]], meaning:COMBOS[key1]});
+    else if(COMBOS[key2]) found.push({cards:[cards[j],cards[i]], meaning:COMBOS[key2]});
+  }
+  return found;
+}
+
+function cardLabel(id) {
+  const r = id.slice(0,-1); const s = id.slice(-1);
+  return RANKS[r].name + ' ' + SUITS[s].name + ' ' + SUITS[s].symbol;
+}
+
+function cardFrontHTML(id) {
+  const r = id.slice(0,-1); const s = id.slice(-1);
+  const suit = SUITS[s];
+  return `<div class="card-suit-big">${suit.symbol}</div><div class="card-name-text">${RANKS[r].name}<br>${suit.name}</div>`;
+}
+
+function suitCls(id) { return SUITS[id.slice(-1)].cls; }
+
+// Generate interpretation
+function generateInterpretation(cards, topic, spread, question) {
+  const topicInfo = topic || {id:'general', name:'Tổng Quan', icon:'🔮'};
+  const lens = TOPIC_LENS[topicInfo.id];
+  const combos = findCombos(cards);
+
+  // Count suits
+  let hCount=0,dCount=0,cCount=0,sCount=0;
+  cards.forEach(c=>{
+    const s=c.slice(-1);
+    if(s==='H')hCount++; else if(s==='D')dCount++; else if(s==='C')cCount++; else sCount++;
+  });
+
+  // Overall energy
+  let overall = '';
+  if(hCount>=Math.ceil(cards.length/2)) overall = '🔴 Năng lượng lá Cơ chiếm ưu thế – cảm xúc, tình cảm và trực giác dẫn dắt vận mệnh bạn lúc này. ';
+  else if(dCount>=Math.ceil(cards.length/2)) overall = '🟠 Năng lượng lá Rô chiếm ưu thế – vật chất, tiền bạc và thực tiễn đang là trọng tâm. ';
+  else if(cCount>=Math.ceil(cards.length/2)) overall = '🟢 Năng lượng lá Nhép chiếm ưu thế – hành động, nỗ lực và sự nghiệp đang được khuyến khích. ';
+  else if(sCount>=Math.ceil(cards.length/2)) overall = '🔵 Năng lượng lá Bích chiếm ưu thế – thử thách, sự thật và biến đổi đang chờ đợi bạn. ';
+  else overall = '✦ Các lá bài cân bằng nhiều năng lượng – vận mệnh đang ở giao điểm của nhiều chiều. ';
+
+  // Build positions analysis
+  const posTexts = cards.map((c, i) => {
+    const pos = spread.positions[i] || `Lá ${i+1}`;
+    const m = CARD_MEANINGS[c];
+    const topicNote = lens ? lens(c) : m.core;
+    return { card:c, pos, core: topicNote, meaning: m };
+  });
+
+  // Final verdict based on topic and card energies
+  let verdict = '';
+  const positiveCards = cards.filter(c => !['9S','10S','AS','QS','JS','8S','7S'].includes(c)).length;
+  const ratio = positiveCards/cards.length;
+
+  if(ratio >= 0.7) {
+    if(topicInfo.id==='love') verdict = 'Tổng thể luận giải cho thấy tình cảm đang ở giai đoạn rất thuận lợi. Hãy mở lòng đón nhận những điều tốt đẹp – duyên phận đang mỉm cười với bạn.';
+    else if(topicInfo.id==='money') verdict = 'Tài vận đang rất sáng. Đây là thời điểm thuận lợi để thực hiện các kế hoạch tài chính – nhưng vẫn cần thận trọng và có chiến lược rõ ràng.';
+    else if(topicInfo.id==='career') verdict = 'Sự nghiệp đang trên đà phát triển tốt. Các nỗ lực của bạn sẽ được ghi nhận. Hãy tự tin tiến lên phía trước.';
+    else if(topicInfo.id==='health') verdict = 'Sức khoẻ nhìn chung ổn định và tích cực. Duy trì lối sống lành mạnh và giữ vững tinh thần lạc quan.';
+    else verdict = 'Các lá bài cho thấy vận khí tổng thể rất khả quan. Tiếp tục giữ vững hướng đi hiện tại, cơ hội và thành công đang ở trước mặt bạn.';
+  } else if(ratio >= 0.4) {
+    if(topicInfo.id==='danger') verdict = 'Có một số dấu hiệu đáng lo ngại – hãy thận trọng và để ý đến những người xung quanh. Giữ khoảng cách với người có ý xấu và bảo vệ quyền lợi của mình.';
+    else verdict = 'Vận khí đang ở giai đoạn trung tính với cả thuận lợi lẫn thử thách. Hãy kiên nhẫn, sáng suốt và không nên đưa ra quyết định quá vội vàng lúc này.';
+  } else {
+    verdict = 'Các lá bài cảnh báo đây là giai đoạn cần thận trọng. Hãy nhìn nhận lại tình huống một cách khách quan, tránh các rủi ro không cần thiết và chuẩn bị tinh thần cho những thay đổi có thể xảy ra.';
+  }
+
+  return { overall, posTexts, combos, verdict };
+}
+
+function startReading() {
+  if(!selectedTopic) {
+    // Pick random topic if none selected
+    const t = TOPICS[Math.floor(Math.random()*TOPICS.length)];
+    selectedTopic = t;
+    document.querySelectorAll('.topic-btn').forEach(b=>{
+      if(b.dataset.id===t.id) b.classList.add('active');
+    });
+  }
+
+  const deck = shuffle(buildDeck());
+  drawnCards = deck.slice(0, selectedSpread.count);
+  const question = document.getElementById('questionInput').value.trim();
+
+  renderReading(drawnCards, selectedTopic, selectedSpread, question);
+}
+
+function renderReading(cards, topic, spread, question) {
+  const area = document.getElementById('reading-area');
+
+  // Cards display
+  let cardsHTML = '<div class="cards-row">';
+  cards.forEach((c,i) => {
+    const pos = spread.positions[i]||`Lá ${i+1}`;
+    cardsHTML += `
+      <div class="card-slot">
+        <div class="pos-label">${pos}</div>
+        <div class="card" id="card-${i}">
+          <div class="card-inner">
+            <div class="card-back">✦</div>
+            <div class="card-front ${suitCls(c)}">${cardFrontHTML(c)}</div>
+          </div>
+        </div>
+      </div>`;
+  });
+  cardsHTML += '</div>';
+
+  area.innerHTML = `
+    <div class="section-title"><span>${topic.icon} ${topic.name}</span></div>
+    ${question?`<div style="text-align:center;color:var(--text2);font-style:italic;font-size:13px;margin-bottom:12px;">"${question}"</div>`:''}
+    ${cardsHTML}
+    <div class="loading show" id="loadingBox">
+      <div class="loading-orb"></div>
+      <div class="loading-text">Đang luận giải vận mệnh...</div>
+    </div>
+    <div id="resultBox" style="display:none;"></div>
+  `;
+
+  // Flip cards one by one
+  let idx = 0;
+  const flipNext = () => {
+    if(idx < cards.length) {
+      const el = document.getElementById('card-'+idx);
+      if(el) el.classList.add('flipped');
+      idx++;
+      setTimeout(flipNext, 400);
+    } else {
+      // Show result after all flipped
+      setTimeout(() => showResult(cards, topic, spread, question), 600);
+    }
+  };
+  setTimeout(flipNext, 300);
+  area.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function showResult(cards, topic, spread, question) {
+  const loading = document.getElementById('loadingBox');
+  const resultBox = document.getElementById('resultBox');
+  if(loading) loading.style.display='none';
+
+  const interp = generateInterpretation(cards, topic, spread, question);
+
+  // Card meaning items
+  let cardItems = interp.posTexts.map(pt => {
+    const m = pt.meaning;
+    const suit = pt.card.slice(-1);
+    return `
+      <li class="card-meaning-item">
+        <div class="card-badge ${suitCls(pt.card)}">${SUITS[suit].symbol}</div>
+        <div class="card-meaning-text">
+          <span class="card-meaning-name">${cardLabel(pt.card)} — ${pt.pos}:</span>
+          ${pt.core}. <em style="color:var(--gold-dark)">${m.pos}</em>
+          ${m.neg?`<br><span style="color:rgba(200,169,74,0.5);font-size:11px;">⚠ ${m.neg}</span>`:''}
+        </div>
+      </li>`;
+  }).join('');
+
+  // Combo items
+  let comboHTML = '';
+  if(interp.combos.length > 0) {
+    const items = interp.combos.map(co => `
+      <div class="combo-item">
+        <div class="combo-cards">✦ ${co.cards.map(cardLabel).join(' × ')}</div>
+        ${co.meaning}
+      </div>`).join('');
+    comboHTML = `
+      <div class="combo-section">
+        <div class="combo-title">🔗 Tổ Hợp Lá Bài Đặc Biệt</div>
+        ${items}
+      </div>`;
+  }
+
+  resultBox.innerHTML = `
+    <div class="result-box" id="resultContent">
+      <div class="result-topic">✦ Luận Giải – ${topic.name} ✦</div>
+      <div class="result-overall">${interp.overall}</div>
+      <ul class="card-meaning-list">${cardItems}</ul>
+      ${comboHTML}
+      <div class="final-verdict">
+        <div class="verdict-label">⬟ Tổng Kết Vận Mệnh</div>
+        <div class="verdict-text">${interp.verdict}</div>
+      </div>
+    </div>`;
+
+  resultBox.style.display = 'block';
+
+  // Copy & New buttons
+  const copyWrap = document.createElement('div');
+  copyWrap.className = 'copy-wrap';
+  copyWrap.innerHTML = `
+    <button class="copy-btn" onclick="copyResult()">📋 Sao Chép Kết Quả</button>
+    <button class="new-btn" onclick="resetReading()">🔄 Rút Bài Mới</button>`;
+  resultBox.appendChild(copyWrap);
+}
+
+function copyResult() {
+  const el = document.getElementById('resultContent');
+  if(!el) return;
+  const text = el.innerText || el.textContent;
+  navigator.clipboard.writeText(text).then(() => showToast('Đã sao chép vào bộ nhớ tạm!')).catch(() => {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+    showToast('Đã sao chép!');
+  });
+}
+
+function resetReading() {
+  document.getElementById('reading-area').innerHTML = '';
+  document.getElementById('questionInput').value = '';
+  document.querySelectorAll('.topic-btn').forEach(b=>b.classList.remove('active'));
+  selectedTopic = null; drawnCards = [];
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>
