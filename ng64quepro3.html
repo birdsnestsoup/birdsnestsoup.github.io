@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dịch Lý Huyền Cơ - Pro Edition</title>
+    <title>Dịch Lý Huyền Cơ - Fix Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -15,61 +15,47 @@
             margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; 
         }
         .container { width: 100%; max-width: 650px; }
-        
         .header { text-align: center; padding: 15px 0; border-bottom: 2px solid var(--gold); margin-bottom: 20px; }
         .header h1 { color: var(--gold); font-size: 1.4rem; margin: 0; letter-spacing: 2px; text-transform: uppercase; }
-
         .box { background: var(--card); border-radius: 15px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 20px; border: 1px solid var(--border); }
         label { font-size: 0.7rem; font-weight: 600; color: var(--gold); text-transform: uppercase; margin-bottom: 8px; display: block; opacity: 0.8; }
-        
         select { 
             width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #444; 
             background: #252525; color: white; font-family: inherit; font-size: 1rem; margin-bottom: 15px; outline: none;
         }
-
         .dong-selector { display: flex; justify-content: space-between; gap: 5px; margin-bottom: 10px; }
         .dong-item { flex: 1; text-align: center; cursor: pointer; transition: 0.2s; padding: 10px 0; border-radius: 8px; background: #252525; border: 1px solid #444; }
         .dong-item.active { background: var(--primary); border-color: var(--gold); }
         .dong-item span { font-size: 0.65rem; font-weight: bold; color: #bbb; }
         .dong-item.active span { color: white; }
-
         .btn-copy { 
             width: 100%; padding: 15px; background: var(--gold); color: #000; border: none; 
             border-radius: 10px; font-weight: bold; cursor: pointer; display: none; margin-top: 10px; font-family: inherit;
         }
-
         .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; display: none; margin-top: 10px; }
         .que-card { background: var(--card); border-radius: 15px; overflow: hidden; border: 1px solid var(--border); }
         .que-header { padding: 12px; text-align: center; background: #2a2a2a; border-bottom: 1px solid var(--border); }
         .que-name { font-size: 1.1rem; color: var(--gold); margin: 0; font-weight: 600; }
         .que-cung { font-size: 0.65rem; color: #888; margin-top: 4px; text-transform: uppercase; }
-
         .hex-container { padding: 20px 10px; display: flex; flex-direction: column-reverse; gap: 12px; }
         .hao-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; height: 28px; }
-        .nap-giap { width: 105px; font-size: 0.75rem; color: #ccc; white-space: nowrap; }
-        
+        .nap-giap { width: 130px; font-size: 0.75rem; color: #ccc; white-space: nowrap; }
         .line-box { flex-grow: 1; height: 10px; position: relative; display: flex; align-items: center; justify-content: center; }
         .line-yang { width: 100%; height: 100%; background: var(--gold); border-radius: 2px; }
         .line-yin { width: 100%; height: 100%; display: flex; justify-content: space-between; }
         .line-yin::before, .line-yin::after { content: ""; width: 44%; height: 100%; background: var(--gold); border-radius: 2px; }
-        
-        /* Ký hiệu động */
         .symbol-dong { position: absolute; font-weight: bold; font-size: 1.1rem; z-index: 2; text-shadow: 0 0 5px rgba(0,0,0,1); }
-        .is-dong-yang { color: #000; } /* O */
-        .is-dong-yin { color: var(--primary); } /* X */
-        
+        .is-dong-yang { color: #000; }
+        .is-dong-yin { color: var(--primary); }
         .the-ung { width: 35px; font-size: 0.7rem; font-weight: bold; text-align: right; }
         .label-the { color: var(--primary); }
         .label-ung { color: var(--accent); }
-
         @media (max-width: 500px) { .result-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
-
 <div class="container">
     <div class="header"><h1>Dịch Lý Huyền Cơ</h1></div>
-
     <div class="box">
         <label>Chọn Họ Quẻ</label>
         <select id="selectCung" onchange="updateQueList()">
@@ -83,12 +69,10 @@
             <option value="Can2">Họ Cấn (Thổ)</option>
             <option value="Khon">Họ Khôn (Thổ)</option>
         </select>
-
         <label>Tên Quẻ Chủ</label>
         <select id="selectQue" onchange="processDich()">
             <option value="">-- Chọn quẻ --</option>
         </select>
-
         <label>Chọn Hào Động</label>
         <div class="dong-selector" id="dongSelector">
             <div class="dong-item" onclick="toggleDong(1)"><span>Hào 1</span></div>
@@ -98,10 +82,8 @@
             <div class="dong-item" onclick="toggleDong(5)"><span>Hào 5</span></div>
             <div class="dong-item" onclick="toggleDong(6)"><span>Hào 6</span></div>
         </div>
-
         <button id="btnCopy" class="btn-copy" onclick="copyToClipboard()">📋 SAO CHÉP KẾT QUẢ</button>
     </div>
-
     <div id="resultGrid" class="result-grid">
         <div class="que-card">
             <div class="que-header"><p id="resCungChu" class="que-cung"></p><h2 id="resNameChu" class="que-name"></h2></div>
@@ -113,24 +95,23 @@
         </div>
     </div>
 </div>
-
 <script>
-// TOÀN BỘ DATA NGUỒN CỦA BẠN - ĐÃ TÍCH HỢP ĐẦY ĐỦ
+// Data chuẩn 64 quẻ
 const dataDich = {
     "Can": { hanh: "Kim", name: "Kiền", quẻ: {
-        "Càn Vi Thiên": { c: "111111", n: ["Tử Tôn Tý Thủy","Thê Tài Dần Mộc","Phụ Mẫu Thìn Thổ (Ứng)","Quan Quỷ Ngọ Hỏa","Huynh Đệ Thân Kim","Phụ Mẫu Tuất Thổ (Thế)"] },
+        "Càn Vi Thiên": { c: "111111", n: ["Tử Tôn Tý Thủy","Huynh Đệ Dần Mộc","Phụ Mẫu Thìn Thổ (Ứng)","Quan Quỷ Ngọ Hỏa","Huynh Đệ Thân Kim","Phụ Mẫu Tuất Thổ (Thế)"] },
         "Thiên Phong Cấu": { c: "111110", n: ["Phụ Mẫu Sửu Thổ (Thế)","Tử Tôn Hợi Thủy","Huynh Đệ Dậu Kim","Quan Quỷ Ngọ Hỏa (Ứng)","Huynh Đệ Thân Kim","Phụ Mẫu Tuất Thổ"] },
         "Thiên Sơn Độn": { c: "111100", n: ["Phụ Mẫu Thìn Thổ","Quan Quỷ Ngọ Hỏa (Thế)","Huynh Đệ Thân Kim","Quan Quỷ Ngọ Hỏa","Huynh Đệ Thân Kim (Ứng)","Phụ Mẫu Tuất Thổ"] },
         "Thiên Địa Bĩ": { c: "111000", n: ["Phụ Mẫu Mùi Thổ","Quan Quỷ Tỵ Hỏa","Thê Tài Mão Mộc (Thế)","Quan Quỷ Ngọ Hỏa","Huynh Đệ Thân Kim","Phụ Mẫu Tuất Thổ (Ứng)"] },
         "Phong Địa Quan": { c: "110000", n: ["Phụ Mẫu Mùi Thổ (Ứng)","Quan Quỷ Tỵ Hỏa","Thê Tài Mão Mộc","Phụ Mẫu Mùi Thổ (Thế)","Quan Quỷ Tỵ Hỏa","Thê Tài Mão Mộc"] },
         "Sơn Địa Bác": { c: "100000", n: ["Phụ Mẫu Mùi Thổ","Quan Quỷ Tỵ Hỏa (Ứng)","Thê Tài Mão Mộc","Phụ Mẫu Tuất Thổ","Tử Tôn Tý Thủy (Thế)","Thê Tài Dần Mộc"] },
         "Hỏa Địa Tấn": { c: "101000", n: ["Phụ Mẫu Mùi Thổ (Ứng)","Quan Quỷ Tỵ Hỏa","Thê Tài Mão Mộc","Huynh Đệ Dậu Kim (Thế)","Phụ Mẫu Mùi Thổ","Quan Quỷ Tỵ Hỏa"] },
-        "Hỏa Thiên Đại Hữu": { c: "101111", n: ["Tử Tôn Tý Thủy","Thê Tài Dần Mộc","Phụ Mẫu Thìn Thổ (Thế)","Huynh Đệ Dậu Kim","Phụ Mẫu Mùi Thổ","Quan Quỷ Tỵ Hỏa (Ứng)"] }
+        "Hỏa Thiên Đại Hữu": { c: "101111", n: ["Tử Tôn Tý Thủy","Huynh Đệ Dần Mộc","Phụ Mẫu Thìn Thổ (Thế)","Huynh Đệ Dậu Kim","Phụ Mẫu Mùi Thổ","Quan Quỷ Tỵ Hỏa (Ứng)"] }
     }},
     "Doai": { hanh: "Kim", name: "Đoài", quẻ: {
         "Đoài Vi Trạch": { c: "011011", n: ["Quan Quỷ Tỵ Hỏa","Thê Tài Mão Mộc","Phụ Mẫu Sửu Thổ (Ứng)","Tử Tôn Hợi Thủy","Huynh Đệ Dậu Kim","Phụ Mẫu Mùi Thổ (Thế)"] },
         "Trạch Thủy Khốn": { c: "011010", n: ["Thê Tài Dần Mộc (Thế)","Phụ Mẫu Thìn Thổ","Quan Quỷ Ngọ Hỏa","Tử Tôn Hợi Thủy (Ứng)","Huynh Đệ Dậu Kim","Phụ Mẫu Mùi Thổ"] },
-        "Trạch Địa Tuỵ": { c: "011000", n: ["Phụ Mẫu Mùi Thổ","Quan Quỷ Tỵ Hỏa (Thế)","Thê Tài Mão Mộc","Tử Tôn Hợi Thủy","Huynh Đệ Dậu Kim (Ứng)","Phụ Mùi Thổ"] },
+        "Trạch Địa Tuỵ": { c: "011000", n: ["Phụ Mẫu Mùi Thổ","Quan Quỷ Tỵ Hỏa (Thế)","Thê Tài Mão Mộc","Tử Tôn Hợi Thủy","Huynh Đệ Dậu Kim (Ứng)","Phụ Mẫu Mùi Thổ"] },
         "Trạch Sơn Hàm": { c: "011100", n: ["Phụ Mẫu Thìn Thổ","Quan Quỷ Ngọ Hỏa","Huynh Đệ Thân Kim (Thế)","Tử Tôn Hợi Thủy","Huynh Đệ Dậu Kim","Phụ Mẫu Mùi Thổ (Ứng)"] },
         "Thủy Sơn Kiển": { c: "010100", n: ["Phụ Mẫu Thìn Thổ (Ứng)","Quan Quỷ Ngọ Hỏa","Huynh Đệ Thân Kim","Huynh Đệ Thân Kim (Thế)","Phụ Mẫu Tuất Thổ","Tử Tôn Tý Thủy"] },
         "Địa Sơn Khiêm": { c: "000100", n: ["Phụ Mẫu Thìn Thổ","Quan Quỷ Ngọ Hỏa (Ứng)","Huynh Đệ Thân Kim","Phụ Mẫu Sửu Thổ","Tử Tôn Hợi Thủy (Thế)","Huynh Đệ Dậu Kim"] },
@@ -202,6 +183,36 @@ const dataDich = {
 let currentDong = 0;
 let bienQueGiam = null;
 
+// Hàm tách chính xác Địa Chi và Ngũ Hành từ chuỗi data
+function getChiHanh(fullString) {
+    // Xóa bỏ (Thế) hoặc (Ứng)
+    let clean = fullString.replace(/\(Thế\)|\(Ứng\)/g, "").trim();
+    // Tách các từ. Lục thân thường là 2 từ (Phụ Mẫu, Tử Tôn...), còn lại là Địa Chi + Ngũ Hành
+    let words = clean.split(/\s+/);
+    // Lấy 2 từ cuối cùng (Ví dụ: "Ngọ" "Hỏa")
+    if (words.length >= 2) {
+        return words[words.length - 2] + " " + words[words.length - 1];
+    }
+    return "";
+}
+
+function getHanh(napName) {
+    const hanhs = ["Kim", "Mộc", "Thủy", "Hỏa", "Thổ"];
+    for (let h of hanhs) { if (napName.includes(h)) return h; }
+    return "";
+}
+
+function tinhLucThan(haoHanh, hoChuHanh) {
+    const sinh = { "Kim": "Thủy", "Thủy": "Mộc", "Mộc": "Hỏa", "Hỏa": "Thổ", "Thổ": "Kim" };
+    const khac = { "Kim": "Mộc", "Mộc": "Thổ", "Thổ": "Thủy", "Thủy": "Hỏa", "Hỏa": "Kim" };
+    if (haoHanh === hoChuHanh) return "Huynh Đệ";
+    if (sinh[haoHanh] === hoChuHanh) return "Phụ Mẫu";
+    if (sinh[hoChuHanh] === haoHanh) return "Tử Tôn";
+    if (khac[haoHanh] === hoChuHanh) return "Quan Quỷ";
+    if (khac[hoChuHanh] === haoHanh) return "Thê Tài";
+    return "";
+}
+
 function updateQueList() {
     const cung = document.getElementById("selectCung").value;
     const queSelect = document.getElementById("selectQue");
@@ -238,28 +249,29 @@ function findQueByCode(code) {
 }
 
 function processDich() {
-    const cungKey = document.getElementById("selectCung").value;
-    const qName = document.getElementById("selectQue").value;
+    const cungKeyChu = document.getElementById("selectCung").value;
+    const qNameChu = document.getElementById("selectQue").value;
     
-    if (!cungKey || !qName) { 
+    if (!cungKeyChu || !qNameChu) { 
         document.getElementById("resultGrid").style.display = "none"; 
         document.getElementById("btnCopy").style.display = "none";
         return; 
     }
-
-    const chuData = dataDich[cungKey].quẻ[qName];
-    renderQue("hexChu", "resNameChu", "resCungChu", qName, chuData, dataDich[cungKey], currentDong);
-
+    const chuData = dataDich[cungKeyChu].quẻ[qNameChu];
+    const chuCung = dataDich[cungKeyChu];
+    
+    renderQue("hexChu", "resNameChu", "resCungChu", qNameChu, chuData, chuCung, currentDong);
+    
     if (currentDong > 0) {
         let chuCodeArr = chuData.c.split("");
         let bitIndex = 6 - currentDong;
         chuCodeArr[bitIndex] = chuCodeArr[bitIndex] === "1" ? "0" : "1";
         let bienCode = chuCodeArr.join("");
-
         bienQueGiam = findQueByCode(bienCode);
+        
         if (bienQueGiam) {
             document.getElementById("cardBien").style.display = "block";
-            renderQue("hexBien", "resNameBien", "resCungBien", bienQueGiam.name, bienQueGiam.data, bienQueGiam.cung, 0);
+            renderQue("hexBien", "resNameBien", "resCungBien", bienQueGiam.name, bienQueGiam.data, bienQueGiam.cung, 0, chuData, chuCung);
         }
     } else {
         document.getElementById("cardBien").style.display = "none";
@@ -269,29 +281,49 @@ function processDich() {
     document.getElementById("btnCopy").style.display = "block";
 }
 
-function renderQue(containerId, nameId, cungId, name, que, cung, dongHao) {
+function renderQue(containerId, nameId, cungId, name, que, cung, dongHao, dataChu = null, cungChu = null) {
     document.getElementById(nameId).innerText = name;
     document.getElementById(cungId).innerText = `HỌ ${cung.name.toUpperCase()} - CUNG ${cung.hanh}`;
     const container = document.getElementById(containerId);
     container.innerHTML = "";
     
+    const isQueBien = dataChu !== null; 
+    const thuongDong = (currentDong >= 4 && currentDong <= 6);
+    const haDong = (currentDong >= 1 && currentDong <= 3);
+
     for (let i = 0; i < 6; i++) {
+        const haoThu = i + 1;
         const row = document.createElement("div");
         row.className = "hao-row";
-        const haoThu = i + 1;
         const isYang = que.c[5 - i] === "1";
-        const napText = que.n[i];
         
-        let label = ""; let labelClass = "";
-        let cleanNap = napText;
-        if(napText.includes("(Thế)")) { label = "Thế"; labelClass = "label-the"; cleanNap = napText.replace("(Thế)",""); }
-        else if(napText.includes("(Ứng)")) { label = "Ứng"; labelClass = "label-ung"; cleanNap = napText.replace("(Ứng)",""); }
+        let displayNap = "";
+        if (isQueBien) {
+            const isHaoThuong = (haoThu >= 4);
+            // Logic biến: Nếu đơn quái chứa hào động thì dùng nạp giáp quẻ biến + lục thân tính theo họ quẻ chủ
+            if ((isHaoThuong && thuongDong) || (!isHaoThuong && haDong)) {
+                let napGốcBien = que.n[i];
+                let chiHanh = getChiHanh(napGốcBien);
+                let lucThanMoi = tinhLucThan(getHanh(chiHanh), cungChu.hanh);
+                displayNap = lucThanMoi + " " + chiHanh;
+            } else {
+                // Đơn quái không động: Sao chép y nguyên từ quẻ chủ
+                displayNap = dataChu.n[i];
+            }
+        } else {
+            displayNap = que.n[i];
+        }
 
+        let label = ""; let labelClass = "";
+        let cleanNap = displayNap.replace("(Thế)", "").replace("(Ứng)", "").trim();
+        if(displayNap.includes("(Thế)")) { label = "Thế"; labelClass = "label-the"; }
+        else if(displayNap.includes("(Ứng)")) { label = "Ứng"; labelClass = "label-ung"; }
+        
         let symbol = "";
         if (haoThu === dongHao) {
             symbol = isYang ? '<span class="symbol-dong is-dong-yang">O</span>' : '<span class="symbol-dong is-dong-yin">X</span>';
         }
-
+        
         row.innerHTML = `
             <div class="nap-giap">${cleanNap}</div>
             <div class="line-box">
@@ -305,31 +337,37 @@ function renderQue(containerId, nameId, cungId, name, que, cung, dongHao) {
 }
 
 function copyToClipboard() {
-    const cungChu = document.getElementById("selectCung").value;
+    const cungChuKey = document.getElementById("selectCung").value;
     const nameChu = document.getElementById("selectQue").value;
-    const chuData = dataDich[cungChu].quẻ[nameChu];
+    const chuData = dataDich[cungChuKey].quẻ[nameChu];
+    const cungChu = dataDich[cungChuKey];
     
-    let text = `Quẻ Chủ : ${nameChu} họ ${dataDich[cungChu].name}\n`;
+    let text = `Quẻ Chủ: ${nameChu} (Họ ${cungChu.name})\n`;
     for(let i=5; i>=0; i--) {
         let n = chuData.n[i];
-        let line = `Hào ${i+1} : ${n}`;
-        if(i+1 === currentDong) line += " x Động";
-        
-        line = line.replace("(Thế)", " - **Thế**").replace("(Ứng)", " - **Ứng**");
-        if(i+1 === currentDong) line = `***${line}***`;
+        let line = `Hào ${i+1}: ${n}`;
+        if(i+1 === currentDong) line += " [Động]";
         text += line + "\n";
     }
-
+    
     if(bienQueGiam) {
-        text += `\n***\nQuẻ Biến : ${bienQueGiam.name} họ ${bienQueGiam.cung.name}\n`;
+        text += `\nQuẻ Biến: ${bienQueGiam.name} (Tính Lục Thân theo Họ ${cungChu.name})\n`;
+        const thuongDong = (currentDong >= 4 && currentDong <= 6);
+        const haDong = (currentDong >= 1 && currentDong <= 3);
         for(let i=5; i>=0; i--) {
-            let n = bienQueGiam.data.n[i];
-            let line = `Hào ${i+1} : ${n}`;
-            line = line.replace("(Thế)", " - **Thế**").replace("(Ứng)", " - **Ứng**");
-            text += line + "\n";
+            let haoThu = i + 1;
+            let displayNap = "";
+            const isHaoThuong = (haoThu >= 4);
+            if ((isHaoThuong && thuongDong) || (!isHaoThuong && haDong)) {
+                let chiHanh = getChiHanh(bienQueGiam.data.n[i]);
+                displayNap = tinhLucThan(getHanh(chiHanh), cungChu.hanh) + " " + chiHanh;
+            } else {
+                displayNap = chuData.n[i];
+            }
+            text += `Hào ${haoThu}: ${displayNap}\n`;
         }
     }
-
+    
     navigator.clipboard.writeText(text).then(() => {
         const btn = document.getElementById("btnCopy");
         btn.innerText = "✅ ĐÃ SAO CHÉP!";
