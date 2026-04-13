@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Lý Số Phong Thủy - Hậu Thiên Bát Quái</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Cinzel+Decorative:wght@700&family=Noto+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #c9a84c; --gold-light: #e8c97a; --gold-dark: #8a6a1f;
+  --red: #c0392b; --red-light: #e74c3c; --ink: #1a0a00;
+  --paper: #fdf6e3; --paper-dark: #f5e9c8; --jade: #2e7d52;
+  --bg: #0d0705; --panel: rgba(20,10,0,0.85); --border: rgba(201,168,76,0.4);
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+body {
+  font-family: 'Noto Sans', sans-serif; background: var(--bg); min-height: 100vh; color: var(--paper);
+  background-image: radial-gradient(ellipse at 20% 10%, rgba(201,168,76,0.08) 0%, transparent 50%), url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.app-header { text-align: center; padding: 24px 16px 16px; position: relative; }
+.app-header::after { content: ''; display: block; width: 200px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); margin: 12px auto 0; }
+.app-title { font-family: 'Cinzel Decorative', serif; font-size: 1.1rem; color: var(--gold); letter-spacing: 2px; text-shadow: 0 0 20px rgba(201,168,76,0.5); }
+.app-subtitle { font-family: 'Noto Serif', serif; font-size: 0.75rem; color: rgba(201,168,76,0.6); letter-spacing: 4px; margin-top: 4px; }
+.tabs { display: flex; margin: 0 12px 16px; background: rgba(201,168,76,0.08); border-radius: 12px; padding: 4px; border: 1px solid var(--border); gap: 2px; }
+.tab-btn { flex: 1; padding: 10px 4px; background: transparent; border: none; color: rgba(201,168,76,0.5); font-family: 'Noto Serif', serif; font-size: 0.75rem; cursor: pointer; border-radius: 8px; transition: all 0.3s; }
+.tab-btn.active { background: linear-gradient(135deg, var(--gold-dark), var(--gold)); color: var(--ink); font-weight: 700; }
+.container { padding: 0 12px 40px; max-width: 520px; margin: 0 auto; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.card { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 16px; margin-bottom: 14px; position: relative; overflow: hidden; }
+.card-title { font-family: 'Noto Serif', serif; font-size: 0.85rem; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.input-label { font-size: 0.72rem; color: rgba(201,168,76,0.6); margin-bottom: 6px; }
+.main-input { width: 100%; background: rgba(201,168,76,0.06); border: 1.5px solid rgba(201,168,76,0.3); border-radius: 10px; padding: 12px; font-size: 1.2rem; color: var(--paper); text-align: center; outline: none; }
+.btn-primary { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--gold-dark), var(--gold)); color: var(--ink); border: none; border-radius: 10px; font-weight: 700; cursor: pointer; margin-top: 12px; }
+.number-display { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 15px 0; }
+.num-chip { width: 42px; height: 42px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 10px; font-weight: 700; border: 1px solid rgba(201,168,76,0.3); }
+.chip-label { font-size: 0.55rem; opacity: 0.8; }
+.hanh-thuy { background: #1a237e; color: #fff; } .hanh-hoa { background: #b71c1c; color: #fff; }
+.hanh-moc { background: #1b5e20; color: #fff; } .hanh-kim { background: #fbc02d; color: #000; }
+.hanh-tho { background: #5d4037; color: #fff; } .hanh-none { background: #333; color: #999; }
+.batson-item { padding: 10px; border-radius: 10px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.1); }
+.bs-tot { background: rgba(46,125,82,0.2); border-color: var(--jade); }
+.bs-xau { background: rgba(192,57,43,0.2); border-color: var(--red); }
+.info-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(201,168,76,0.1); font-size: 0.85rem; }
+.badge { padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; }
+.verdict-box { background: rgba(201,168,76,0.1); border: 1px solid var(--gold); border-radius: 12px; padding: 15px; margin-top: 10px; text-align: center; }
+.select-input { width: 100%; padding: 10px; background: #1a0a00; color: #fff; border: 1px solid var(--gold); border-radius: 8px; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <div class="app-title">LÝ SỐ PHONG THỦY</div>
+  <div class="app-subtitle">HẬU THIÊN BÁT QUÁI · LẠC THƯ</div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('tab-so')">🔢 Bát San Số</button>
+  <button class="tab-btn" onclick="switchTab('tab-canhan')">👤 Cá Nhân</button>
+</div>
+
+<div class="container">
+  <div id="tab-so" class="tab-panel active">
+    <div class="card">
+      <div class="card-title">Phân Tích Bát San Dãy Số</div>
+      <input type="tel" id="soInput" class="main-input" placeholder="Nhập dãy số..." oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+      <button class="btn-primary" onclick="phanTichBatSan()">LUẬN GIẢI BÁT SAN</button>
+    </div>
+    <div id="result-so" style="display:none">
+      <div class="card" id="card-display"></div>
+      <div class="card" id="card-details"></div>
+    </div>
+  </div>
+
+  <div id="tab-canhan" class="tab-panel">
+    <div class="card">
+      <div class="card-title">Dữ Liệu Cá Nhân</div>
+      <div class="row2">
+        <div class="input-group">
+          <div class="input-label">NĂM SINH (ÂM)</div>
+          <input type="number" id="cn-nam" class="main-input" placeholder="VD: 1990" style="font-size:1rem;">
+        </div>
+        <div class="input-group">
+          <div class="input-label">THÁNG SINH (ÂM)</div>
+          <select id="cn-thang" class="select-input">
+            <option value="1">Tháng 1 (Dần)</option><option value="2">Tháng 2 (Mão)</option>
+            <option value="3">Tháng 3 (Thìn)</option><option value="4">Tháng 4 (Tỵ)</option>
+            <option value="5">Tháng 5 (Ngọ)</option><option value="6">Tháng 6 (Mùi)</option>
+            <option value="7">Tháng 7 (Thân)</option><option value="8">Tháng 8 (Dậu)</option>
+            <option value="9">Tháng 9 (Tuất)</option><option value="10">Tháng 10 (Hợi)</option>
+            <option value="11">Tháng 11 (Tý)</option><option value="12">Tháng 12 (Sửu)</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-primary" onclick="tinhCaNhan()">XEM SỐ ĐỊA CHI</button>
+    </div>
+    <div id="result-canhan" style="display:none">
+      <div class="card" id="card-cn-result"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* DATA HẬU THIÊN BÁT QUÁI */
+const HAU_THIEN = {
+  1: { quẻ: "Khảm", hành: "Thủy" },
+  2: { quẻ: "Khôn", hành: "Thổ" },
+  3: { quẻ: "Chấn", hành: "Mộc" },
+  4: { quẻ: "Tốn", hành: "Mộc" },
+  6: { quẻ: "Kiền", hành: "Kim" },
+  7: { quẻ: "Đoài", hành: "Kim" },
+  8: { quẻ: "Cấn", hành: "Thổ" },
+  9: { quẻ: "Ly", hành: "Hoả" }
+};
+
+const BAT_SAN_MAP = {
+  "14": "Sinh Khí", "41": "Sinh Khí", "67": "Sinh Khí", "76": "Sinh Khí", "39": "Sinh Khí", "93": "Sinh Khí", "28": "Sinh Khí", "82": "Sinh Khí",
+  "13": "Thiên Y", "31": "Thiên Y", "68": "Thiên Y", "86": "Thiên Y", "49": "Thiên Y", "94": "Thiên Y", "27": "Thiên Y", "72": "Thiên Y",
+  "19": "Diên Niên", "91": "Diên Niên", "78": "Diên Niên", "87": "Diên Niên", "34": "Diên Niên", "43": "Diên Niên", "26": "Diên Niên", "62": "Diên Niên",
+  "11": "Phục Vị", "22": "Phục Vị", "33": "Phục Vị", "44": "Phục Vị", "66": "Phục Vị", "77": "Phục Vị", "88": "Phục Vị", "99": "Phục Vị",
+  "12": "Tuyệt Mạng", "21": "Tuyệt Mạng", "69": "Tuyệt Mạng", "96": "Tuyệt Mạng", "48": "Tuyệt Mạng", "84": "Tuyệt Mạng", "37": "Tuyệt Mạng", "73": "Tuyệt Mạng",
+  "18": "Ngũ Quỷ", "81": "Ngũ Quỷ", "79": "Ngũ Quỷ", "97": "Ngũ Quỷ", "36": "Ngũ Quỷ", "63": "Ngũ Quỷ", "24": "Ngũ Quỷ", "42": "Ngũ Quỷ",
+  "16": "Lục Sát", "61": "Lục Sát", "47": "Lục Sát", "74": "Lục Sát", "38": "Lục Sát", "83": "Lục Sát", "29": "Lục Sát", "92": "Lục Sát",
+  "17": "Hoạ Hại", "71": "Hoạ Hại", "89": "Hoạ Hại", "98": "Hoạ Hại", "46": "Hoạ Hại", "64": "Hoạ Hại", "32": "Hoạ Hại", "23": "Hoạ Hại"
+};
+
+const PHAN_LOAI = {
+  "Sinh Khí": "tot", "Thiên Y": "tot", "Diên Niên": "tot", "Phục Vị": "tot",
+  "Tuyệt Mạng": "xau", "Ngũ Quỷ": "xau", "Lục Sát": "xau", "Hoạ Hại": "xau"
+};
+
+const DIA_CHI_SO = {
+  "Tý": 1, "Sửu": 2, "Dần": 3, "Mão": 4, "Thìn": 8, "Tỵ": 9, "Ngọ": 9, "Mùi": 2, "Thân": 6, "Dậu": 7, "Tuất": 8, "Hợi": 1
+};
+
+const THANG_CHI = ["", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi", "Tý", "Sửu"];
+
+function getHanhClass(n) {
+  if (n == 0 || n == 5) return 'hanh-none';
+  const h = HAU_THIEN[n].hành;
+  if (h === 'Thủy') return 'hanh-thuy';
+  if (h === 'Hoả') return 'hanh-hoa';
+  if (h === 'Mộc') return 'hanh-moc';
+  if (h === 'Kim') return 'hanh-kim';
+  return 'hanh-tho';
+}
+
+/* THUẬT TOÁN PHÂN TÍCH BÁT SAN CHUẨN */
+function phanTichBatSan() {
+  const input = document.getElementById('soInput').value;
+  if (!input) return;
+  const digits = input.split('').map(Number);
+  
+  let htmlDisplay = `<div class="card-title">Dãy Số & Hậu Thiên</div><div class="number-display">`;
+  digits.forEach(d => {
+    const info = HAU_THIEN[d] || {quẻ: d==5?'Mậu':'Kỷ', hành: 'Thổ'};
+    htmlDisplay += `<div class="num-chip ${getHanhClass(d)}"><span>${d}</span><span class="chip-label">${info.quẻ}</span></div>`;
+  });
+  htmlDisplay += `</div>`;
+  document.getElementById('card-display').innerHTML = htmlDisplay;
+
+  // Lọc lấy các số khác 0 và 5 để tính cặp
+  let validNodes = [];
+  digits.forEach((val, idx) => {
+    if (val !== 0 && val !== 5) {
+      validNodes.push({val, idx});
+    }
+  });
+
+  let batSanResults = [];
+  for (let i = 0; i < validNodes.length - 1; i++) {
+    const nodeA = validNodes[i];
+    const nodeB = validNodes[i+1];
+    const pair = "" + nodeA.val + nodeB.val;
+    const sanName = BAT_SAN_MAP[pair];
+
+    if (sanName) {
+      // Tìm các số 0 hoặc 5 nằm GIỮA nodeA và nodeB trong dãy gốc
+      // Và các số 0, 5 đứng ngay SAU nodeB
+      let effects = [];
+      let nextIdx = nodeB.idx + 1;
+      while (nextIdx < digits.length && (digits[nextIdx] === 0 || digits[nextIdx] === 5)) {
+        effects.push(digits[nextIdx]);
+        nextIdx++;
+      }
+
+      batSanResults.push({
+        pair: pair,
+        name: sanName,
+        type: PHAN_LOAI[sanName],
+        effects: effects
+      });
+    }
+  }
+
+  let htmlDetails = `<div class="card-title">Kết Quả Bát San (Nhảy Cóc 0, 5)</div>`;
+  if (batSanResults.length === 0) htmlDetails += `<p>Không tìm thấy cặp Bát San hợp lệ.</p>`;
+  
+  batSanResults.forEach(res => {
+    let effectText = "";
+    if (res.effects.length > 0) {
+      const count0 = res.effects.filter(x => x === 0).length;
+      const count5 = res.effects.filter(x => x === 5).length;
+      if (count5 > 0) effectText += ` <br><small>⚡ <b>Khuếch đại:</b> ${count5} lần năng lượng ${res.name} (do số 5 đứng sau)</small>`;
+      if (count0 > 0) effectText += ` <br><small>🌫️ <b>Ẩn tàng:</b> Năng lượng ${res.name} vơi đi hoặc bộc phát bất ngờ (do số 0 đứng sau)</small>`;
+    }
+
+    htmlDetails += `
+      <div class="batson-item ${res.type === 'tot' ? 'bs-tot' : 'bs-xau'}">
+        <div style="display:flex; justify-content:space-between;">
+          <strong>${res.pair.split('').join(' & ')} → ${res.name}</strong>
+          <span class="badge" style="background:${res.type==='tot'?'#2e7d52':'#c0392b'}">${res.type==='tot'?'CÁT':'HUNG'}</span>
+        </div>
+        ${effectText}
+      </div>`;
+  });
+
+  document.getElementById('card-details').innerHTML = htmlDetails;
+  document.getElementById('result-so').style.display = 'block';
+}
+
+/* THUẬT TOÁN ĐỊA CHI CÁ NHÂN */
+function tinhCaNhan() {
+  const nam = document.getElementById('cn-nam').value;
+  const thang = document.getElementById('cn-thang').value;
+  if (!nam) return;
+
+  // Lấy chi năm
+  const chiNamList = ["Thân", "Dậu", "Tuất", "Hợi", "Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi"];
+  const chiNam = chiNamList[nam % 12];
+  const soNam = DIA_CHI_SO[chiNam];
+  
+  // Lấy chi tháng
+  const chiThang = THANG_CHI[thang];
+  const soThang = DIA_CHI_SO[chiThang];
+
+  let html = `<div class="card-title">Kết Quả Địa Chi Cá Nhân</div>`;
+  html += `<div class="info-row"><span>Năm sinh: ${nam} (${chiNam})</span> <strong>Số: ${soNam}</strong></div>`;
+  html += `<div class="info-row"><span>Tháng sinh: ${thang} (${chiThang})</span> <strong>Số: ${soThang}</strong></div>`;
+  
+  const pair = "" + soNam + soThang;
+  const sanName = BAT_SAN_MAP[pair] || "Không xét";
+  const type = PHAN_LOAI[sanName];
+
+  html += `<div class="verdict-box">
+    <div style="font-size:0.8rem">Bát San Bản Mệnh (Năm & Tháng)</div>
+    <div style="font-size:1.5rem; font-weight:700; color:var(--gold)">${sanName}</div>
+    <div style="margin-top:5px" class="badge ${type==='tot'?'bs-tot':'bs-xau'}">${type==='tot'?'ĐẠI CÁT':'CẦN LƯU Ý'}</div>
+  </div>`;
+
+  document.getElementById('card-cn-result').innerHTML = html;
+  document.getElementById('result-canhan').style.display = 'block';
+}
+
+function switchTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+</script>
+</body>
+</html>
