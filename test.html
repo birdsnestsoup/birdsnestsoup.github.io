@@ -3,96 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>Công Cụ Số Học & Dịch Lý Nâng Cao</title>
+    <title>Công Cụ Số Học & Dịch Lý</title>
     <style>
         :root { --primary: #1a73e8; --secondary: #34a853; --accent: #d93025; --bg: #f0f2f5; }
-        * { box-sizing: border-box; }
-        body { font-family: sans-serif; background: var(--bg); padding: 10px; display: flex; flex-direction: column; align-items: center; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
         .container { width: 100%; max-width: 480px; }
-        .card { background: white; border-radius: 16px; padding: 15px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-        .full-input { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 10px; font-size: 1.2rem; text-align: center; }
+        h2 { text-align: center; color: #333; font-size: 1.1rem; margin: 15px 0 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .card { background: white; border-radius: 16px; padding: 15px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 1px solid #e8eaed; }
+        .que-input-group { margin-bottom: 15px; }
+        .que-input-group label { display: block; font-size: 0.8rem; font-weight: bold; color: #666; margin-bottom: 5px; }
+        .full-input { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 10px; font-size: 1.2rem; text-align: center; outline: none; }
+        .full-input:focus { border-color: var(--primary); }
         .btn-action { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
-        #result-area { margin-top: 15px; padding: 10px; border-top: 1px solid #eee; display: none; }
-        .bat-san-item { padding: 5px; border-bottom: 1px solid #f0f0f0; font-size: 0.9rem; }
+        #result-que { margin-top: 15px; display: none; text-align: center; }
+        .hexagram { display: flex; flex-direction: column-reverse; gap: 6px; align-items: center; margin: 15px 0; }
+        .line-wrapper { display: flex; align-items: center; gap: 10px; }
+        .line { width: 100px; height: 10px; background: #333; border-radius: 2px; }
+        .line.broken { background: transparent; display: flex; justify-content: space-between; }
+        .line.broken::before, .line.broken::after { content: ""; width: 44%; height: 100%; background: #333; border-radius: 2px; }
+        .dot { width: 7px; height: 7px; background: var(--accent); border-radius: 50%; visibility: hidden; }
+        .active .dot { visibility: visible; }
+        .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+        .label-group { display: flex; flex-direction: column; width: 45%; }
+        .label-group label { font-size: 10px; color: #888; font-weight: bold; margin-bottom: 3px; }
+        .config-input { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px; background: #f9f9f9; }
+        .inputs-wrapper { display: flex; gap: 5px; justify-content: space-between; }
+        .number-box { flex: 1; min-width: 0; height: 45px; text-align: center; font-size: 16px; font-weight: bold; border: 1px solid #dadce0; border-radius: 6px; outline: none; }
+        .number-box::-webkit-inner-spin-button { -webkit-appearance: none; }
+        .result-box { background: var(--primary) !important; color: white !important; border-color: var(--primary) !important; }
+        .title-badge { background: var(--primary); color: white; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: bold; }
+        .btn-reset { width: 100%; padding: 12px; margin: 10px 0 30px; border: none; border-radius: 10px; background: #ccc; color: #333; font-weight: bold; }
+        #batSanDisplay { margin-top: 15px; font-size: 0.9rem; text-align: left; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>Lập Quẻ & Bát San</h2>
+    <h2>1. Lập Quẻ & Bát San</h2>
     <div class="card">
-        <label style="font-size:0.8rem; color:#666;">NHẬP DÃY SỐ</label>
-        <input type="number" id="mainInput" class="full-input" placeholder="Ví dụ: 7100205339678">
-        <button class="btn-action" style="margin-top:10px;" onclick="processAll()">TÍNH TOÁN</button>
-        
-        <div id="result-area">
-            <div id="queResult" style="font-weight:bold; color:var(--primary); margin-bottom:10px;"></div>
-            <div id="batSanResult"></div>
+        <div class="que-input-group">
+            <label>NHẬP DÃY SỐ</label>
+            <input type="number" id="queInput" class="full-input" placeholder="Ví dụ: 7100205339678">
         </div>
+        <button class="btn-action" onclick="processAll()">TÍNH TOÁN</button>
+        <div id="result-que">
+            <div id="queName" style="font-size: 1.3rem; font-weight: 800; color: var(--primary);"></div>
+            <div id="haoDongTxt" style="color: var(--accent); font-weight: bold; font-size: 0.9rem; margin-top: 5px;"></div>
+            <div id="visualQue" class="hexagram"></div>
+        </div>
+        <div id="batSanDisplay"></div>
     </div>
+
+    <hr style="width: 100%; border: 0; border-top: 1px dashed #bbb;">
+
+    <h2>2. Tìm Số Thỏa Mãn Tổng</h2>
+    <div class="card">
+        <div class="header-row">
+            <span class="title-badge">DÃY A</span>
+            <div class="label-group"><label>SỐ LƯỢNG</label><input type="number" id="count-A" class="config-input" value="3" min="3" max="7" onchange="build('A')"></div>
+            <div class="label-group"><label>TỔNG</label><input type="number" id="target-A" class="config-input" value="12" oninput="calc('A')"></div>
+        </div>
+        <div id="box-A" class="inputs-wrapper"></div>
+    </div>
+
+    <div class="card">
+        <div class="header-row">
+            <span class="title-badge" style="background:var(--secondary)">DÃY B</span>
+            <div class="label-group"><label>SỐ LƯỢNG</label><input type="number" id="count-B" class="config-input" value="3" min="3" max="7" onchange="build('B')"></div>
+            <div class="label-group"><label>TỔNG</label><input type="number" id="target-B" class="config-input" value="14" oninput="calc('B')"></div>
+        </div>
+        <div id="box-B" class="inputs-wrapper"></div>
+    </div>
+
+    <button class="btn-reset" onclick="window.location.reload()">LÀM MỚI TẤT CẢ</button>
 </div>
 
 <script>
-    // 
-    
-    const batSanData = {
-        "Sinh Khí": ["14", "41", "67", "76", "39", "93", "28", "82"],
-        "Thiên Y": ["13", "31", "68", "86", "49", "94", "27", "72"],
-        "Diên Niên": ["19", "91", "78", "87", "34", "43", "26", "62"],
-        "Phục Vị": ["11", "22", "33", "44", "66", "77", "88", "99"],
-        "Tuyệt Mạng": ["12", "21", "69", "96", "48", "84", "37", "73"],
-        "Ngũ Quỷ": ["18", "81", "79", "97", "36", "63", "24", "42"],
-        "Lục Sát": ["16", "61", "47", "74", "38", "83", "29", "92"],
-        "Hoạ Hại": ["17", "71", "89", "98", "46", "64", "32", "23"]
-    };
-
-    function getLoai(cap) {
-        for (let loai in batSanData) { if (batSanData[loai].includes(cap)) return loai; }
-        return null;
-    }
+    const batQuai = [
+        { name: "Khôn", code: "000" }, { name: "Kiền", code: "111" }, { name: "Đoài", code: "011" }, { name: "Ly", code: "101" }, 
+        { name: "Chấn", code: "001" }, { name: "Tốn", code: "110" }, { name: "Khảm", code: "010" }, { name: "Cấn", code: "100" }
+    ];
+    const data64Que = {"111111":"Thuần Càn","000000":"Thuần Khôn","010001":"Thủy Lôi Truân","100010":"Sơn Thủy Mông","010111":"Thủy Thiên Nhu","111010":"Thiên Thủy Tụng","000010":"Địa Thủy Sư","010000":"Thủy Địa Tỷ","110111":"Phong Thiên Tiểu Súc","111011":"Thiên Trạch Lý","000111":"Địa Thiên Thái","111000":"Thiên Địa Bĩ","111101":"Thiên Hỏa Đồng Nhân","101111":"Hỏa Thiên Đại Hữu","000100":"Địa Sơn Khiêm","001000":"Lôi Địa Dự","011001":"Trạch Lôi Tùy","100110":"Sơn Phong Cổ","000011":"Địa Trạch Lâm","110000":"Phong Địa Quán","101001":"Hỏa Lôi Phệ Hạp","100101":"Sơn Hỏa Bí","100000":"Sơn Địa Bác","000001":"Địa Lôi Phục","111001":"Thiên Lôi Vô Vọng","100111":"Sơn Thiên Đại Súc","100001":"Sơn Lôi Di","011110":"Trạch Phong Đại Quá","010010":"Thuần Khảm","101101":"Thuần Ly","011100":"Trạch Sơn Hàm","001110":"Lôi Phong Hằng","111100":"Thiên Sơn Độn","001111":"Lôi Thiên Đại Tráng","101000":"Hỏa Địa Tấn","000101":"Địa Hỏa Minh Di","110101":"Phong Hỏa Gia Nhân","101011":"Hỏa Trạch Khuê","010100":"Thủy Sơn Kiển","001010":"Lôi Thủy Giải","100011":"Sơn Trạch Tổn","110001":"Phong Lôi Ích","011111":"Trạch Thiên Quải","111110":"Thiên Phong Cấu","011000":"Trạch Địa Tụy","000110":"Địa Phong Thăng","011010":"Trạch Thủy Khốn","010110":"Thủy Phong Tỉnh","011101":"Trạch Hỏa Cách","101110":"Hỏa Phong Đỉnh","001001":"Thuần Chấn","100100":"Thuần Cấn","110100":"Phong Sơn Tiệm","001011":"Lôi Trạch Quy Muội","001101":"Lôi Hỏa Phong","101100":"Hỏa Sơn Lữ","110110":"Thuần Tốn","011011":"Thuần Đoài","110010":"Phong Thủy Hoán","010011":"Thủy Trạch Tiết","110011":"Phong Trạch Trung Phu","001100":"Lôi Sơn Tiểu Quá","010101":"Thủy Hỏa Ký Tế","101010":"Hỏa Thủy Vị Tế"};
 
     function processAll() {
-        const val = document.getElementById('mainInput').value.trim();
-        if (!val) return;
-        document.getElementById('result-area').style.display = 'block';
-
-        // 1. Logic tính Quẻ (Dãy lẻ: Thượng ít hơn Hạ 1)
-        const len = val.length;
+        const val = document.getElementById('queInput').value;
+        if (val.length < 6) { alert("Dãy số quá ngắn"); return; }
+        
+        // 1. Logic Quẻ Dịch: Dãy lẻ Thượng ít hơn Hạ 1 đơn vị
+        let len = val.length;
         let mid = Math.floor(len / 2);
-        let thuongStr = val.substring(0, len % 2 === 0 ? mid : mid);
-        let haStr = val.substring(len % 2 === 0 ? mid : mid);
+        let sTruoc = val.substring(0, len % 2 === 0 ? mid : mid);
+        let sSau = val.substring(len % 2 === 0 ? mid : mid);
         
-        let tTruoc = 0; for(let c of thuongStr) tTruoc += parseInt(c);
-        let tSau = 0; for(let c of haStr) tSau += parseInt(c);
+        let tTruoc = 0; for(let c of sTruoc) tTruoc += parseInt(c);
+        let tSau = 0; for(let c of sSau) tSau += parseInt(c);
+        let upIdx = tTruoc % 8; let lowIdx = tSau % 8;
+        let dong = (tTruoc + tSau) % 6 || 6;
+        let code = batQuai[upIdx].code + batQuai[lowIdx].code;
         
-        document.getElementById('queResult').innerText = `Quẻ: Thượng(${thuongStr}) - Hạ(${haStr})`;
+        document.getElementById('result-que').style.display = 'block';
+        document.getElementById('queName').innerText = data64Que[code];
+        document.getElementById('haoDongTxt').innerText = `Động hào ${dong}`;
+        const visual = document.getElementById('visualQue'); visual.innerHTML = '';
+        code.split('').reverse().forEach((char, i) => {
+            const wrap = document.createElement('div'); wrap.className = 'line-wrapper' + (i+1 === dong ? ' active' : '');
+            const line = document.createElement('div'); line.className = char === '1' ? 'line' : 'line broken';
+            wrap.appendChild(line); wrap.appendChild(document.createElement('div')).className = 'dot';
+            visual.appendChild(wrap);
+        });
 
         // 2. Logic Bát San
-        let html = "<strong>Bát San:</strong><br>";
-        let count5 = 0;
+        let bSanHtml = "<strong>Phân tích Bát San:</strong><br>";
+        let pairs = { "Sinh Khí": ["14","41","67","76","39","93","28","82"], "Thiên Y": ["13","31","68","86","49","94","27","72"], "Diên Niên": ["19","91","78","87","34","43","26","62"], "Phục Vị": ["11","22","33","44","66","77","88","99"], "Tuyệt Mạng": ["12","21","69","96","48","84","37","73"], "Ngũ Quỷ": ["18","81","79","97","36","63","24","42"], "Lục Sát": ["16","61","47","74","38","83","29","92"], "Hoạ Hại": ["17","71","89","98","46","64","32","23"] };
+        let count5 = 0; let hasZero = false;
         
         for (let i = 0; i < val.length - 1; i++) {
-            let a = val[i], b = val[i+1];
-            
-            // Bỏ qua nếu có 5 hoặc 0 trong cặp
-            if (a === '5' || b === '5' || a === '0' || b === '0') {
-                if (a === '5' || b === '5') count5++;
-                continue; 
-            }
-
-            let pair = a + b;
-            let loai = getLoai(pair);
-            if (loai) {
-                html += `<div class="bat-san-item">${pair}: ${loai}</div>`;
+            let p = val[i] + val[i+1];
+            if (p.includes('5')) count5++;
+            if (p.includes('0')) hasZero = true;
+            if (p.includes('0') || p.includes('5')) continue;
+            for (let type in pairs) {
+                if (pairs[type].includes(p)) bSanHtml += `${p}: ${type} | `;
             }
         }
-
-        // Lý giải 5 và 0
-        if (count5 > 0) html += `<div style="color:var(--secondary)">* Số 5 xuất hiện ${count5} lần: Khuếch đại năng lượng Bát San.</div>`;
-        if (val.includes('0')) html += `<div style="color:var(--accent)">* Số 0 xuất hiện: Ẩn tàng hoặc tích lũy năng lượng chờ bộc phát.</div>`;
-        
-        document.getElementById('batSanResult').innerHTML = html;
+        if(count5 > 0) bSanHtml += `<br><small style="color:var(--secondary)">Số 5 (${count5} lần): Khuếch đại năng lượng Bát San.</small>`;
+        if(hasZero) bSanHtml += `<br><small style="color:var(--accent)">Số 0: Ẩn tàng/vơi đi năng lượng (đợi bộc phát).</small>`;
+        document.getElementById('batSanDisplay').innerHTML = bSanHtml;
     }
+
+    function build(type) {
+        const n = parseInt(document.getElementById(`count-${type}`).value);
+        const container = document.getElementById(`box-${type}`);
+        container.innerHTML = '';
+        for (let i = 0; i < n; i++) {
+            const input = document.createElement('input');
+            input.type = 'number'; input.className = 'number-box' + (i === n - 1 ? ' result-box' : ` input-${type}`);
+            if (i === n - 1) { input.readOnly = true; input.id = `res-${type}`; }
+            else { input.addEventListener('input', () => calc(type)); }
+            container.appendChild(input);
+        }
+    }
+    function calc(type) {
+        const target = parseFloat(document.getElementById(`target-${type}`).value) || 0;
+        let sum = 0, filled = 0, inputs = document.querySelectorAll(`.input-${type}`);
+        inputs.forEach(el => { if (el.value !== "") { sum += parseFloat(el.value); filled++; } });
+        if (filled === inputs.length) document.getElementById(`res-${type}`).value = target - sum;
+    }
+    window.onload = () => { build('A'); build('B'); };
 </script>
 </body>
 </html>
