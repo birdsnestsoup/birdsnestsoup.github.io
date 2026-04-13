@@ -1,0 +1,1593 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trạch Nhật Tinh Yếu</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@400;600;800&family=Noto+Sans:wght@300;400;600&display=swap');
+
+:root {
+  --gold: #c9a84c;
+  --gold-light: #e8c97a;
+  --gold-dark: #8a6a1e;
+  --red: #b22222;
+  --red-light: #e05252;
+  --ink: #1a0a00;
+  --parchment: #f5e6c8;
+  --parchment-dark: #e8d4a8;
+  --jade: #2d6b4f;
+  --jade-light: #4a9b72;
+  --bg-deep: #0d0500;
+  --bg-mid: #1a0c03;
+  --bg-panel: #120800;
+  --text-main: #f0dbb0;
+  --text-dim: #9a7a4a;
+  --border: #3a2010;
+  --border-gold: #5a3a10;
+  --good: #4a9b72;
+  --bad: #b22222;
+  --neutral: #c9a84c;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-main);
+  font-family: 'Noto Sans', sans-serif;
+  min-height: 100vh;
+  background-image: 
+    radial-gradient(ellipse at 20% 0%, rgba(139,90,30,0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba(100,50,10,0.1) 0%, transparent 50%);
+}
+
+/* HEADER */
+.header {
+  text-align: center;
+  padding: 2.5rem 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-gold);
+  background: linear-gradient(180deg, rgba(201,168,76,0.08) 0%, transparent 100%);
+  position: relative;
+}
+.header::before, .header::after {
+  content: '✦';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gold-dark);
+  font-size: 1.5rem;
+}
+.header::before { left: 2rem; }
+.header::after { right: 2rem; }
+
+.header h1 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  font-weight: 800;
+  color: var(--gold);
+  letter-spacing: 0.15em;
+  text-shadow: 0 0 30px rgba(201,168,76,0.4);
+}
+.header p {
+  font-family: 'Noto Serif', serif;
+  font-style: italic;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  margin-top: 0.4rem;
+  letter-spacing: 0.05em;
+}
+
+/* TABS */
+.tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border-gold);
+  background: var(--bg-panel);
+  overflow-x: auto;
+}
+.tab {
+  padding: 0.85rem 1.4rem;
+  cursor: pointer;
+  font-family: 'Noto Serif', serif;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: all 0.2s;
+  border-right: 1px solid var(--border);
+}
+.tab:hover { color: var(--gold-light); background: rgba(201,168,76,0.05); }
+.tab.active {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+  background: rgba(201,168,76,0.08);
+}
+
+/* MAIN LAYOUT */
+.container { max-width: 1200px; margin: 0 auto; padding: 1.5rem 1rem; }
+
+/* PANEL */
+.panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-gold);
+  border-radius: 2px;
+  margin-bottom: 1.2rem;
+}
+.panel-header {
+  padding: 0.7rem 1.2rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.panel-header h3 {
+  font-family: 'Cinzel', serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  font-weight: 600;
+}
+.panel-icon { font-size: 1rem; }
+.panel-body { padding: 1.2rem; }
+
+/* INPUT FORM */
+.trụ-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+@media(max-width:600px){ .trụ-grid { grid-template-columns: repeat(2,1fr); } }
+
+.trụ-card {
+  background: rgba(201,168,76,0.04);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 1rem;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+.trụ-card:hover { border-color: var(--gold-dark); }
+.trụ-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: var(--gold-dark);
+  margin-bottom: 0.8rem;
+  text-transform: uppercase;
+}
+.can-chi-select {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.can-chi-select select {
+  background: var(--bg-deep);
+  color: var(--text-main);
+  border: 1px solid var(--border-gold);
+  padding: 0.45rem 0.5rem;
+  font-family: 'Noto Serif', serif;
+  font-size: 0.9rem;
+  border-radius: 2px;
+  width: 100%;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.can-chi-select select:focus { border-color: var(--gold); }
+.can-chi-select label {
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  text-align: left;
+  letter-spacing: 0.08em;
+}
+
+.btn-analyze {
+  width: 100%;
+  margin-top: 1.2rem;
+  padding: 0.9rem;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-dark));
+  color: var(--ink);
+  border: none;
+  font-family: 'Cinzel', serif;
+  font-weight: 800;
+  font-size: 0.9rem;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.3s;
+  text-transform: uppercase;
+}
+.btn-analyze:hover {
+  background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
+  box-shadow: 0 0 20px rgba(201,168,76,0.4);
+}
+
+/* TỨ TRỤ DISPLAY */
+.batu-display {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 0.8rem;
+  margin-bottom: 1.2rem;
+}
+.trụ-block {
+  border: 1px solid var(--border-gold);
+  text-align: center;
+  background: linear-gradient(180deg, rgba(201,168,76,0.06) 0%, transparent 60%);
+}
+.trụ-block .lbl {
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  font-family: 'Cinzel', serif;
+  letter-spacing: 0.1em;
+  padding: 0.4rem;
+  border-bottom: 1px solid var(--border);
+  background: rgba(0,0,0,0.2);
+}
+.trụ-block .can {
+  font-family: 'Noto Serif', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  padding: 0.5rem 0.3rem 0.2rem;
+  color: var(--gold-light);
+}
+.trụ-block .chi {
+  font-family: 'Noto Serif', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  padding: 0.2rem 0.3rem 0.5rem;
+  color: var(--text-main);
+}
+.trụ-block .nhanh {
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  padding: 0 0.3rem 0.5rem;
+}
+
+/* RESULT SECTIONS */
+.result-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+@media(max-width:700px){ .result-grid { grid-template-columns: 1fr; } }
+
+/* TAGS */
+.tag {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 2px;
+  font-size: 0.72rem;
+  font-family: 'Noto Serif', serif;
+  margin: 0.15rem;
+  font-weight: 600;
+}
+.tag-good { background: rgba(74,155,114,0.2); color: #6dc89a; border: 1px solid rgba(74,155,114,0.4); }
+.tag-bad { background: rgba(178,34,34,0.2); color: #e07070; border: 1px solid rgba(178,34,34,0.4); }
+.tag-neutral { background: rgba(201,168,76,0.15); color: var(--gold-light); border: 1px solid rgba(201,168,76,0.35); }
+.tag-warning { background: rgba(200,120,20,0.2); color: #e8a060; border: 1px solid rgba(200,120,20,0.4); }
+
+/* ENERGY BAR */
+.energy-bar-wrap {
+  margin: 0.8rem 0;
+}
+.energy-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  margin-bottom: 0.3rem;
+}
+.energy-bar {
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.energy-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.8s ease;
+}
+.fill-good { background: linear-gradient(90deg, var(--jade), var(--jade-light)); }
+.fill-bad { background: linear-gradient(90deg, #8a1010, var(--red-light)); }
+.fill-neutral { background: linear-gradient(90deg, var(--gold-dark), var(--gold)); }
+
+/* TABLE */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+}
+.data-table th {
+  background: rgba(201,168,76,0.1);
+  color: var(--gold);
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding: 0.5rem 0.7rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-gold);
+  font-size: 0.7rem;
+}
+.data-table td {
+  padding: 0.45rem 0.7rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-main);
+  vertical-align: middle;
+}
+.data-table tr:hover td { background: rgba(201,168,76,0.03); }
+
+/* LO SHU */
+.loshu-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 4px;
+  max-width: 240px;
+  margin: 0 auto;
+}
+.loshu-cell {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  font-family: 'Cinzel', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  position: relative;
+  background: rgba(0,0,0,0.3);
+  transition: all 0.3s;
+  min-height: 64px;
+}
+.loshu-cell .dir {
+  font-size: 0.55rem;
+  color: var(--text-dim);
+  position: absolute;
+  top: 3px;
+  left: 0; right: 0;
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+.loshu-cell .stars {
+  font-size: 0.6rem;
+  color: var(--gold-dark);
+  position: absolute;
+  bottom: 3px;
+  left: 0; right: 0;
+  text-align: center;
+}
+.loshu-cell.center { background: rgba(201,168,76,0.08); }
+.star-1 { color: #e8c97a !important; }
+.star-2 { color: #e07070 !important; }
+.star-3 { color: #6dc89a !important; }
+.star-4 { color: #6dc89a !important; }
+.star-5 { color: #aaa !important; }
+.star-6 { color: #e8c97a !important; }
+.star-7 { color: #e07070 !important; }
+.star-8 { color: #e8c97a !important; }
+.star-9 { color: #e07070 !important; }
+
+/* INTERACTION SECTION */
+.person-input {
+  background: rgba(201,168,76,0.03);
+  border: 1px solid var(--border);
+  padding: 1rem;
+  margin-bottom: 0.8rem;
+  border-radius: 2px;
+}
+.person-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  color: var(--gold);
+  letter-spacing: 0.12em;
+  margin-bottom: 0.8rem;
+}
+
+/* SCORE */
+.score-display {
+  text-align: center;
+  padding: 1.5rem;
+}
+.score-number {
+  font-family: 'Cinzel', serif;
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1;
+}
+.score-label {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  margin-top: 0.3rem;
+  font-family: 'Noto Serif', serif;
+}
+.score-good { color: var(--jade-light); text-shadow: 0 0 20px rgba(74,155,114,0.5); }
+.score-mid { color: var(--gold); text-shadow: 0 0 20px rgba(201,168,76,0.4); }
+.score-bad { color: var(--red-light); text-shadow: 0 0 20px rgba(178,34,34,0.4); }
+
+/* COMPASS */
+.compass-wrap {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+}
+.compass-ring {
+  width: 100%; height: 100%;
+  border: 2px solid var(--border-gold);
+  border-radius: 50%;
+  position: relative;
+  background: radial-gradient(circle, rgba(201,168,76,0.05) 0%, transparent 70%);
+}
+.compass-dir {
+  position: absolute;
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  transform: translate(-50%, -50%);
+}
+.compass-dir.N { top: 5%; left: 50%; color: var(--red); font-weight: bold; }
+.compass-dir.S { top: 95%; left: 50%; }
+.compass-dir.E { top: 50%; left: 95%; }
+.compass-dir.W { top: 50%; left: 5%; }
+.compass-dot {
+  position: absolute;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  transform: translate(-50%,-50%);
+  font-size: 0; border: 2px solid;
+}
+
+/* DIVIDER */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 1rem 0;
+}
+.section-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  color: var(--gold-dark);
+  text-transform: uppercase;
+  margin: 1rem 0 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* HIDDEN */
+.hidden { display: none !important; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb { background: var(--border-gold); border-radius: 3px; }
+
+.note {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  font-style: italic;
+  padding: 0.5rem 0;
+  font-family: 'Noto Serif', serif;
+}
+
+.interaction-result-wrap {
+  margin-top: 1rem;
+}
+
+.chi-matrix {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+.chi-cell {
+  border: 1px solid var(--border);
+  padding: 0.4rem;
+  text-align: center;
+  font-size: 0.75rem;
+}
+.chi-cell .chi-name {
+  font-family: 'Noto Serif', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gold-light);
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>擇日精要</h1>
+  <p>Trạch Nhật Tinh Yếu · Cổ Pháp Trung Hoa · Tứ Trụ Can Chi</p>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('main')">☯ Phân Tích Tứ Trụ</div>
+  <div class="tab" onclick="switchTab('phi')">✦ Phi Tinh Lạc Cung</div>
+  <div class="tab" onclick="switchTab('interact1')">⟐ Lịch × Bát Tự</div>
+  <div class="tab" onclick="switchTab('interact2')">☯ Người A × Người B</div>
+</div>
+
+<!-- TAB 1: PHÂN TÍCH TỨ TRỤ -->
+<div id="tab-main" class="tab-content active">
+<div class="container">
+  <div class="panel">
+    <div class="panel-header">
+      <span class="panel-icon">✦</span>
+      <h3>Nhập Tứ Trụ Can Chi (theo Tiết Khí)</h3>
+    </div>
+    <div class="panel-body">
+      <div class="trụ-grid">
+        <!-- GIỜ -->
+        <div class="trụ-card">
+          <div class="trụ-label">時 · Giờ</div>
+          <div class="can-chi-select">
+            <label>Thiên Can</label>
+            <select id="gio-can">
+              <option value="">-- Chọn --</option>
+            </select>
+            <label>Địa Chi</label>
+            <select id="gio-chi">
+              <option value="">-- Chọn --</option>
+            </select>
+          </div>
+        </div>
+        <!-- NGÀY -->
+        <div class="trụ-card">
+          <div class="trụ-label">日 · Ngày</div>
+          <div class="can-chi-select">
+            <label>Thiên Can</label>
+            <select id="ngay-can">
+              <option value="">-- Chọn --</option>
+            </select>
+            <label>Địa Chi</label>
+            <select id="ngay-chi">
+              <option value="">-- Chọn --</option>
+            </select>
+          </div>
+        </div>
+        <!-- THÁNG -->
+        <div class="trụ-card">
+          <div class="trụ-label">月 · Tháng</div>
+          <div class="can-chi-select">
+            <label>Thiên Can</label>
+            <select id="thang-can">
+              <option value="">-- Chọn --</option>
+            </select>
+            <label>Địa Chi</label>
+            <select id="thang-chi">
+              <option value="">-- Chọn --</option>
+            </select>
+          </div>
+        </div>
+        <!-- NĂM -->
+        <div class="trụ-card">
+          <div class="trụ-label">年 · Năm</div>
+          <div class="can-chi-select">
+            <label>Thiên Can</label>
+            <select id="nam-can">
+              <option value="">-- Chọn --</option>
+            </select>
+            <label>Địa Chi</label>
+            <select id="nam-chi">
+              <option value="">-- Chọn --</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <button class="btn-analyze" onclick="analyze()">✦ PHÂN TÍCH TỨ TRỤ ✦</button>
+    </div>
+  </div>
+
+  <div id="main-result" class="hidden">
+    <!-- Tứ Trụ Display -->
+    <div class="panel">
+      <div class="panel-header"><span class="panel-icon">卦</span><h3>Tứ Trụ Bát Chữ</h3></div>
+      <div class="panel-body">
+        <div class="batu-display" id="batu-display"></div>
+        <div id="ngu-hanh-summary"></div>
+      </div>
+    </div>
+
+    <!-- Điểm tổng & Năng lượng -->
+    <div class="result-grid">
+      <div class="panel">
+        <div class="panel-header"><span class="panel-icon">⚖</span><h3>Phân Lượng Cát Hung</h3></div>
+        <div class="panel-body">
+          <div id="score-section" class="score-display"></div>
+          <div id="energy-bars"></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><span class="panel-icon">☯</span><h3>Xu Hướng Năng Lượng</h3></div>
+        <div class="panel-body" id="energy-trend"></div>
+      </div>
+    </div>
+
+    <!-- Quan hệ Chi -->
+    <div class="panel">
+      <div class="panel-header"><span class="panel-icon">⛓</span><h3>Quan Hệ Địa Chi</h3></div>
+      <div class="panel-body" id="chi-relations"></div>
+    </div>
+
+    <!-- Thần Sát -->
+    <div class="panel">
+      <div class="panel-header"><span class="panel-icon">☠</span><h3>Thần Sát & Cát Thần</h3></div>
+      <div class="panel-body" id="than-sat"></div>
+    </div>
+
+    <!-- Trường Sinh -->
+    <div class="panel">
+      <div class="panel-header"><span class="panel-icon">∞</span><h3>12 Trạng Thái Trường Sinh</h3></div>
+      <div class="panel-body" id="truong-sinh"></div>
+    </div>
+
+    <!-- Ảnh hưởng phương vị -->
+    <div class="panel">
+      <div class="panel-header"><span class="panel-icon">🧭</span><h3>Ảnh Hưởng Phương Vị</h3></div>
+      <div class="panel-body" id="phuong-vi"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- TAB 2: PHI TINH -->
+<div id="tab-phi" class="tab-content">
+<div class="container">
+  <div class="panel">
+    <div class="panel-header"><span class="panel-icon">✦</span><h3>Phi Tinh Lạc Cung (Huyền Không Phi Tinh)</h3></div>
+    <div class="panel-body">
+      <div class="trụ-grid" style="grid-template-columns:repeat(3,1fr)">
+        <div class="trụ-card">
+          <div class="trụ-label">Năm</div>
+          <select id="phi-nam-chi" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.45rem;font-family:'Noto Serif',serif;font-size:0.9rem;width:100%;cursor:pointer;outline:none;">
+            <option value="">-- Chi Năm --</option>
+          </select>
+        </div>
+        <div class="trụ-card">
+          <div class="trụ-label">Tháng</div>
+          <select id="phi-thang-chi" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.45rem;font-family:'Noto Serif',serif;font-size:0.9rem;width:100%;cursor:pointer;outline:none;">
+            <option value="">-- Chi Tháng --</option>
+          </select>
+        </div>
+        <div class="trụ-card">
+          <div class="trụ-label">Ngày</div>
+          <select id="phi-ngay-chi" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.45rem;font-family:'Noto Serif',serif;font-size:0.9rem;width:100%;cursor:pointer;outline:none;">
+            <option value="">-- Chi Ngày --</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-analyze" onclick="calcPhiTinh()" style="margin-top:1rem">✦ XEM PHI TINH ✦</button>
+    </div>
+  </div>
+  <div id="phi-result" class="hidden">
+    <div class="result-grid">
+      <div class="panel">
+        <div class="panel-header"><span>年</span><h3>Phi Tinh Năm</h3></div>
+        <div class="panel-body"><div id="loshu-nam" class="loshu-grid"></div><div id="phi-nam-legend" style="margin-top:0.8rem;font-size:0.75rem;color:var(--text-dim)"></div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><span>月</span><h3>Phi Tinh Tháng</h3></div>
+        <div class="panel-body"><div id="loshu-thang" class="loshu-grid"></div><div id="phi-thang-legend" style="margin-top:0.8rem;font-size:0.75rem;color:var(--text-dim)"></div></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-header"><span>日</span><h3>Phi Tinh Ngày</h3></div>
+      <div class="panel-body">
+        <div id="loshu-ngay" class="loshu-grid" style="max-width:300px"></div>
+        <div id="phi-ngay-legend" style="margin-top:0.8rem;font-size:0.75rem;color:var(--text-dim)"></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-header"><span>✦</span><h3>Chồng Tinh Theo Phương Vị</h3></div>
+      <div class="panel-body" id="phi-overlay"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- TAB 3: LỊCH × BÁT TỰ -->
+<div id="tab-interact1" class="tab-content">
+<div class="container">
+  <div class="panel">
+    <div class="panel-header"><span>⟐</span><h3>Tứ Trụ Lịch × Bát Tự Cá Nhân</h3></div>
+    <div class="panel-body">
+      <div class="person-input">
+        <div class="person-title">✦ TỨ TRỤ LỊCH (Giờ chọn / Ngày xem)</div>
+        <div class="trụ-grid">
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Giờ Can</label><select id="lich-gio-can" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Giờ Chi</label><select id="lich-gio-chi" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Ngày Can</label><select id="lich-ngay-can" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Ngày Chi</label><select id="lich-ngay-chi" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Tháng Can</label><select id="lich-thang-can" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Tháng Chi</label><select id="lich-thang-chi" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Năm Can</label><select id="lich-nam-can" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Năm Chi</label><select id="lich-nam-chi" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+        </div>
+      </div>
+      <div class="person-input">
+        <div class="person-title">☯ BÁT TỰ CÁ NHÂN (Ngày giờ sinh)</div>
+        <div class="trụ-grid">
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Giờ Can</label><select id="bt-gio-can" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Giờ Chi</label><select id="bt-gio-chi" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Ngày Can</label><select id="bt-ngay-can" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Ngày Chi</label><select id="bt-ngay-chi" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Tháng Can</label><select id="bt-thang-can" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Tháng Chi</label><select id="bt-thang-chi" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Năm Can</label><select id="bt-nam-can" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Năm Chi</label><select id="bt-nam-chi" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+        </div>
+      </div>
+      <button class="btn-analyze" onclick="analyzeInteract1()">✦ PHÂN TÍCH TƯƠNG TÁC ✦</button>
+    </div>
+  </div>
+  <div id="interact1-result" class="hidden interaction-result-wrap"></div>
+</div>
+</div>
+
+<!-- TAB 4: NGƯỜI A × NGƯỜI B -->
+<div id="tab-interact2" class="tab-content">
+<div class="container">
+  <div class="panel">
+    <div class="panel-header"><span>☯</span><h3>Bát Tự Người A × Người B</h3></div>
+    <div class="panel-body">
+      <div class="person-input">
+        <div class="person-title">👤 NGƯỜI A</div>
+        <div class="trụ-grid">
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Giờ Can</label><select id="a-gio-can" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Giờ Chi</label><select id="a-gio-chi" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Ngày Can</label><select id="a-ngay-can" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Ngày Chi</label><select id="a-ngay-chi" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Tháng Can</label><select id="a-thang-can" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Tháng Chi</label><select id="a-thang-chi" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Năm Can</label><select id="a-nam-can" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Năm Chi</label><select id="a-nam-chi" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+        </div>
+      </div>
+      <div class="person-input">
+        <div class="person-title">👤 NGƯỜI B</div>
+        <div class="trụ-grid">
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Giờ Can</label><select id="b-gio-can" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Giờ Chi</label><select id="b-gio-chi" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Ngày Can</label><select id="b-ngay-can" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Ngày Chi</label><select id="b-ngay-chi" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Tháng Can</label><select id="b-thang-can" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Tháng Chi</label><select id="b-thang-chi" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Năm Can</label><select id="b-nam-can" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+          <div><label style="font-size:0.65rem;color:var(--text-dim)">Năm Chi</label><select id="b-nam-chi" style="background:var(--bg-deep);color:var(--text-main);border:1px solid var(--border-gold);padding:0.4rem;width:100%;margin-top:0.3rem"></select></div>
+        </div>
+      </div>
+      <button class="btn-analyze" onclick="analyzeInteract2()">✦ PHÂN TÍCH TƯƠNG HỢP ✦</button>
+    </div>
+  </div>
+  <div id="interact2-result" class="hidden interaction-result-wrap"></div>
+</div>
+</div>
+
+<script>
+// ============================================================
+// DATA CORE
+// ============================================================
+const CAN = ['Giáp','Ất','Bính','Đinh','Mậu','Kỷ','Canh','Tân','Nhâm','Quý'];
+const CHI = ['Tý','Sửu','Dần','Mão','Thìn','Tỵ','Ngọ','Mùi','Thân','Dậu','Tuất','Hợi'];
+
+const CAN_HANH = {
+  'Giáp':'Mộc','Ất':'Mộc','Bính':'Hỏa','Đinh':'Hỏa',
+  'Mậu':'Thổ','Kỷ':'Thổ','Canh':'Kim','Tân':'Kim','Nhâm':'Thủy','Quý':'Thủy'
+};
+const CHI_HANH = {
+  'Tý':'Thủy','Sửu':'Thổ','Dần':'Mộc','Mão':'Mộc','Thìn':'Thổ','Tỵ':'Hỏa',
+  'Ngọ':'Hỏa','Mùi':'Thổ','Thân':'Kim','Dậu':'Kim','Tuất':'Thổ','Hợi':'Thủy'
+};
+const CAN_AM_DUONG = {
+  'Giáp':'Dương','Ất':'Âm','Bính':'Dương','Đinh':'Âm','Mậu':'Dương',
+  'Kỷ':'Âm','Canh':'Dương','Tân':'Âm','Nhâm':'Dương','Quý':'Âm'
+};
+const CHI_AM_DUONG = {
+  'Tý':'Dương','Sửu':'Âm','Dần':'Dương','Mão':'Âm','Thìn':'Dương','Tỵ':'Âm',
+  'Ngọ':'Dương','Mùi':'Âm','Thân':'Dương','Dậu':'Âm','Tuất':'Dương','Hợi':'Âm'
+};
+
+// Ngũ hành sinh khắc
+const SINH = {'Mộc':'Hỏa','Hỏa':'Thổ','Thổ':'Kim','Kim':'Thủy','Thủy':'Mộc'};
+const KHAC = {'Mộc':'Thổ','Thổ':'Thủy','Thủy':'Hỏa','Hỏa':'Kim','Kim':'Mộc'};
+const DUOC_SINH = {'Hỏa':'Mộc','Thổ':'Hỏa','Kim':'Thổ','Thủy':'Kim','Mộc':'Thủy'};
+const BI_KHAC = {'Thổ':'Mộc','Thủy':'Thổ','Hỏa':'Thủy','Kim':'Hỏa','Mộc':'Kim'};
+
+// Lục Xung
+const LUC_XUNG = {'Tý':'Ngọ','Ngọ':'Tý','Sửu':'Mùi','Mùi':'Sửu','Dần':'Thân','Thân':'Dần','Mão':'Dậu','Dậu':'Mão','Thìn':'Tuất','Tuất':'Thìn','Tỵ':'Hợi','Hợi':'Tỵ'};
+// Lục Hợp
+const LUC_HOP = {'Tý':'Sửu','Sửu':'Tý','Dần':'Hợi','Hợi':'Dần','Mão':'Tuất','Tuất':'Mão','Thìn':'Dậu','Dậu':'Thìn','Tỵ':'Thân','Thân':'Tỵ','Ngọ':'Mùi','Mùi':'Ngọ'};
+const LUC_HOP_HOA = {'Tý-Sửu':'Thổ','Dần-Hợi':'Mộc','Mão-Tuất':'Hỏa','Thìn-Dậu':'Kim','Tỵ-Thân':'Thủy','Ngọ-Mùi':'Thổ'};
+// Lục Phá
+const LUC_PHA = {'Tý':'Dậu','Dậu':'Tý','Sửu':'Thìn','Thìn':'Sửu','Dần':'Hợi','Hợi':'Dần','Mão':'Ngọ','Ngọ':'Mão','Thân':'Tỵ','Tỵ':'Thân','Tuất':'Mùi','Mùi':'Tuất'};
+// Lục Hại
+const LUC_HAI = {'Tý':'Mùi','Mùi':'Tý','Sửu':'Ngọ','Ngọ':'Sửu','Dần':'Tỵ','Tỵ':'Dần','Mão':'Thìn','Thìn':'Mão','Thân':'Hợi','Hợi':'Thân','Dậu':'Tuất','Tuất':'Dậu'};
+// Tam Hợp
+const TAM_HOP = {
+  'Hợi-Mão-Mùi':'Mộc','Dần-Ngọ-Tuất':'Hỏa','Tỵ-Dậu-Sửu':'Kim','Thân-Tý-Thìn':'Thủy'
+};
+const TAM_HOP_MEMBERS = {'Hợi':'Mộc','Mão':'Mộc','Mùi':'Mộc','Dần':'Hỏa','Ngọ':'Hỏa','Tuất':'Hỏa','Tỵ':'Kim','Dậu':'Kim','Sửu':'Kim','Thân':'Thủy','Tý':'Thủy','Thìn':'Thủy'};
+// Tam Hội
+const TAM_HOI = {'Dần-Mão-Thìn':'Mộc Đông','Tỵ-Ngọ-Mùi':'Hỏa Nam','Thân-Dậu-Tuất':'Kim Tây','Hợi-Tý-Sửu':'Thủy Bắc'};
+// Tam Hình
+const TAM_HINH_VAN_AN = {'Dần':'Tỵ','Tỵ':'Thân','Thân':'Dần'}; // vô ân
+const TAM_HINH_YI_THE = {'Sửu':'Tuất','Tuất':'Mùi','Mùi':'Sửu'}; // ỷ thế
+const TAM_HINH_VO_LE = {'Tý':'Mão','Mão':'Tý'}; // vô lễ
+const TU_HINH = ['Thìn','Ngọ','Dậu','Hợi']; // tự hình
+
+// Trường Sinh (Dương can)
+const TRUONG_SINH = {
+  'Mộc': ['Hợi','Tý','Sửu','Dần','Mão','Thìn','Tỵ','Ngọ','Mùi','Thân','Dậu','Tuất'],
+  'Hỏa': ['Dần','Mão','Thìn','Tỵ','Ngọ','Mùi','Thân','Dậu','Tuất','Hợi','Tý','Sửu'],
+  'Thổ': ['Dần','Mão','Thìn','Tỵ','Ngọ','Mùi','Thân','Dậu','Tuất','Hợi','Tý','Sửu'],
+  'Kim': ['Tỵ','Ngọ','Mùi','Thân','Dậu','Tuất','Hợi','Tý','Sửu','Dần','Mão','Thìn'],
+  'Thủy': ['Thân','Dậu','Tuất','Hợi','Tý','Sửu','Dần','Mão','Thìn','Tỵ','Ngọ','Mùi']
+};
+const TRUONG_SINH_NAMES = ['Trường Sinh','Mộc Dục','Quan Đới','Lâm Quan','Đế Vượng','Suy','Bệnh','Tử','Mộ','Tuyệt','Thai','Dưỡng'];
+const TRUONG_SINH_QUALITY = {
+  'Trường Sinh':'good','Mộc Dục':'neutral','Quan Đới':'good','Lâm Quan':'good',
+  'Đế Vượng':'good','Suy':'neutral','Bệnh':'bad','Tử':'bad','Mộ':'bad',
+  'Tuyệt':'bad','Thai':'neutral','Dưỡng':'neutral'
+};
+
+// Thần sát theo năm chi
+const TAM_SAT = {
+  'Thân':'Nam','Tý':'Nam','Thìn':'Nam',
+  'Dần':'Bắc','Ngọ':'Bắc','Tuất':'Bắc',
+  'Hợi':'Tây','Mão':'Tây','Mùi':'Tây',
+  'Tỵ':'Đông','Dậu':'Đông','Sửu':'Đông'
+};
+const TAM_SAT_CHI = {
+  'Nam':['Tỵ','Ngọ','Mùi'],'Bắc':['Hợi','Tý','Sửu'],
+  'Tây':['Thân','Dậu','Tuất'],'Đông':['Dần','Mão','Thìn']
+};
+const KIEP_SAT = {'Thân':'Tỵ','Tý':'Tỵ','Thìn':'Tỵ','Dần':'Hợi','Ngọ':'Hợi','Tuất':'Hợi','Hợi':'Thân','Mão':'Thân','Mùi':'Thân','Tỵ':'Dần','Dậu':'Dần','Sửu':'Dần'};
+const DUONG_NHAN = {'Giáp':'Mão','Bính':'Ngọ','Mậu':'Ngọ','Canh':'Dậu','Nhâm':'Tý'};
+// Tuế Phá (cùng hành năm bị phá = chi xung với năm)
+// Tuần Không
+const TUAN_KHONG = {
+  'Giáp Tý':['Tuất','Hợi'],'Giáp Tuất':['Thân','Dậu'],'Giáp Thân':['Ngọ','Mùi'],
+  'Giáp Ngọ':['Thìn','Tỵ'],'Giáp Thìn':['Dần','Mão'],'Giáp Dần':['Tý','Sửu']
+};
+// Vãng Vong (ngày hung)
+const VANG_VONG = {
+  'Dần':'Tỵ','Mão':'Ngọ','Thìn':'Mùi','Tỵ':'Thân','Ngọ':'Dậu','Mùi':'Tuất',
+  'Thân':'Hợi','Dậu':'Tý','Tuất':'Sửu','Hợi':'Dần','Tý':'Mão','Sửu':'Thìn'
+};
+// Sát Chủ (ngày chi xung năm chi)  => dùng Lục Xung
+// Sát Sư theo tháng
+const SAT_SU = {
+  'Dần':'Hợi','Mão':'Tý','Thìn':'Sửu','Tỵ':'Dần','Ngọ':'Mão','Mùi':'Thìn',
+  'Thân':'Tỵ','Dậu':'Ngọ','Tuất':'Mùi','Hợi':'Thân','Tý':'Dậu','Sửu':'Tuất'
+};
+// Đô Thiên Sát (theo năm chi)
+const DO_THIEN = {'Tý':'Mùi','Sửu':'Ngọ','Dần':'Tỵ','Mão':'Thìn','Thìn':'Mão','Tỵ':'Dần','Ngọ':'Sửu','Mùi':'Tý','Thân':'Hợi','Dậu':'Tuất','Tuất':'Dậu','Hợi':'Thân'};
+
+// Phi Tinh Lạc Cung (Huyền Không)
+// Số bản cung năm: Giáp Tý=8, từ đó mỗi năm -1, chu kỳ 9
+const CHI_ORDER = ['Tý','Sửu','Dần','Mão','Thìn','Tỵ','Ngọ','Mùi','Thân','Dậu','Tuất','Hợi'];
+// Cung vị Lạc Thư: [cung index 0-8] = [Khảm,Cấn,Chấn,Tốn,Trung,Càn,Đoài,Khôn,Ly]
+// Thứ tự ô Lạc Thư (hàng từ trên xuống, trái sang phải):
+// 4 9 2
+// 3 5 7
+// 8 1 6
+const LO_SHU_BASE = [4,9,2,3,5,7,8,1,6]; // vị trí cố định
+const LO_SHU_DIRS = ['ĐN','Nam','TN','Đông','Trung','Tây','ĐB','Bắc','TB'];
+const STAR_INFO = {
+  1:{name:'Nhất Bạch Tham Lang',element:'Thủy',nature:'Cát - Công danh, tình duyên'},
+  2:{name:'Nhị Hắc Cự Môn',element:'Thổ',nature:'Hung - Bệnh tật, tai ương'},
+  3:{name:'Tam Bích Lộc Tồn',element:'Mộc',nature:'Hung - Tranh tụng, khẩu thiệt'},
+  4:{name:'Tứ Lục Văn Khúc',element:'Mộc',nature:'Cát - Văn chương, học vấn'},
+  5:{name:'Ngũ Hoàng Liêm Trinh',element:'Thổ',nature:'Đại Hung - Họa hại, tai kiếp'},
+  6:{name:'Lục Bạch Vũ Khúc',element:'Kim',nature:'Cát - Tài lộc, võ nghiệp'},
+  7:{name:'Thất Xích Phá Quân',element:'Kim',nature:'Hung (hiện kim) - Trộm cướp, thị phi'},
+  8:{name:'Bát Bạch Tả Phụ',element:'Thổ',nature:'Cát - Điền sản, tài vật'},
+  9:{name:'Cửu Tử Hữu Bật',element:'Hỏa',nature:'Cát/Hung - Hỉ sự, hỏa tai'}
+};
+
+// Năm Giáp Tý 1984 = số 1 (cung Khảm). Tính ngược: mỗi năm -1 mod 9
+function getYearStar(chiNam) {
+  // Giáp Tý 1984: sao năm = 1. Chu kỳ 60. Ta dùng Can Chi index.
+  // Đơn giản: map chi năm → sao cơ sở theo chu kỳ 9
+  // Năm Tý đầu tiên trong chu kỳ hiện tại: 2008=Mậu Tý → sao 6
+  // 2020 Canh Tý → sao 7. Mỗi năm -1. 
+  // Tý=7(2020), Sửu=6, Dần=5, Mão=4, Thìn=3, Tỵ=2, Ngọ=1, Mùi=9, Thân=8, Dậu=7...
+  // Đây là sao cho CHU KỲ 2020-2029 (phổ biến nhất khi dùng)
+  const starMap = {'Tý':7,'Sửu':6,'Dần':5,'Mão':4,'Thìn':3,'Tỵ':2,'Ngọ':1,'Mùi':9,'Thân':8,'Dậu':7,'Tuất':6,'Hợi':5};
+  return starMap[chiNam] || 5;
+}
+
+function getMonthStar(chiThang, yearStar) {
+  // Phi tinh tháng: căn cứ vào sao năm, tháng Dần là sao cố định
+  // Nếu sao năm 8,5,2 → tháng Dần bắt đầu = sao 8
+  // Nếu sao năm 9,6,3 → tháng Dần = sao 5  
+  // Nếu sao năm 7,4,1 → tháng Dần = sao 2
+  let danStar;
+  if([8,5,2].includes(yearStar)) danStar=8;
+  else if([9,6,3].includes(yearStar)) danStar=5;
+  else danStar=2;
+  const chiIdx = CHI_ORDER.indexOf(chiThang);
+  // Tháng Dần=index 2, cộng dần
+  const monthOffset = (chiIdx - 2 + 12) % 12;
+  return ((danStar - 1 + monthOffset) % 9) + 1;
+}
+
+function getDayStar(chiNgay) {
+  // Phi tinh ngày: chu kỳ 9 ngày, bắt đầu từ Tý=1 trong vòng tính đơn giản
+  const base = {'Tý':1,'Sửu':2,'Dần':3,'Mão':4,'Thìn':5,'Tỵ':6,'Ngọ':7,'Mùi':8,'Thân':9,'Dậu':1,'Tuất':2,'Hợi':3};
+  return base[chiNgay] || 5;
+}
+
+function buildLoShu(centerStar) {
+  // Phi tinh: từ số trung cung, phân bổ ra 9 cung theo thứ tự Lạc Thư
+  const result = new Array(9);
+  for(let i=0;i<9;i++){
+    const basePos = LO_SHU_BASE[i]; // số lạc thư tại vị trí i
+    // số sao tại vị = (centerStar + basePos - 5 - 1 + 9*10) % 9 + 1
+    // cách đúng: centerStar là số tại Trung Cung (pos 5)
+    // tại pos basePos: star = (centerStar + basePos - 5 -1 + 90) % 9 +1
+    const star = ((centerStar + basePos - 6 + 90) % 9) + 1;
+    result[i] = star;
+  }
+  return result;
+}
+
+// Phương vị địa chi
+const CHI_PHUONG = {
+  'Tý':'Bắc','Sửu':'ĐB','Dần':'ĐB','Mão':'Đông','Thìn':'ĐN','Tỵ':'ĐN',
+  'Ngọ':'Nam','Mùi':'TN','Thân':'TN','Dậu':'Tây','Tuất':'TB','Hợi':'TB'
+};
+
+// ============================================================
+// INIT
+// ============================================================
+function populateSelects() {
+  const canSelects = ['gio-can','ngay-can','thang-can','nam-can',
+    'lich-gio-can','lich-ngay-can','lich-thang-can','lich-nam-can',
+    'bt-gio-can','bt-ngay-can','bt-thang-can','bt-nam-can',
+    'a-gio-can','a-ngay-can','a-thang-can','a-nam-can',
+    'b-gio-can','b-ngay-can','b-thang-can','b-nam-can'];
+  const chiSelects = ['gio-chi','ngay-chi','thang-chi','nam-chi',
+    'phi-nam-chi','phi-thang-chi','phi-ngay-chi',
+    'lich-gio-chi','lich-ngay-chi','lich-thang-chi','lich-nam-chi',
+    'bt-gio-chi','bt-ngay-chi','bt-thang-chi','bt-nam-chi',
+    'a-gio-chi','a-ngay-chi','a-thang-chi','a-nam-chi',
+    'b-gio-chi','b-ngay-chi','b-thang-chi','b-nam-chi'];
+  
+  canSelects.forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    el.innerHTML='<option value="">--</option>';
+    CAN.forEach(c=>el.add(new Option(c,c)));
+  });
+  chiSelects.forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    el.innerHTML='<option value="">--</option>';
+    CHI.forEach(c=>el.add(new Option(c,c)));
+  });
+}
+
+// ============================================================
+// TABS
+// ============================================================
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+}
+
+// ============================================================
+// HELPER
+// ============================================================
+function getHanh(can, chi) {
+  return { canHanh: CAN_HANH[can]||'', chiHanh: CHI_HANH[chi]||'' };
+}
+function tag(text, type) {
+  return `<span class="tag tag-${type}">${text}</span>`;
+}
+function energyBar(label, val, max, type) {
+  const pct = Math.min(100, Math.round(val/max*100));
+  return `<div class="energy-bar-wrap">
+    <div class="energy-label"><span>${label}</span><span>${val}/${max}</span></div>
+    <div class="energy-bar"><div class="energy-fill fill-${type}" style="width:${pct}%"></div></div>
+  </div>`;
+}
+
+function getTuanKhong(can, chi) {
+  // Xác định tuần giáp từ can+chi
+  const canIdx = CAN.indexOf(can);
+  const chiIdx = CHI.indexOf(chi);
+  if(canIdx<0||chiIdx<0) return [];
+  // Tuần chứa can chi này: tìm Giáp gần nhất
+  // can chi cycle: 60. Tý=0,Sửu=1..
+  const cycle = canIdx*12 + chiIdx; // không chính xác, cần mod 60
+  // Đơn giản: tìm Giáp (canIdx=0) với chi cùng nhóm
+  const tuanStarts = ['Giáp Tý','Giáp Tuất','Giáp Thân','Giáp Ngọ','Giáp Thìn','Giáp Dần'];
+  // chi bắt đầu của mỗi tuần
+  const tuanStartChi = ['Tý','Tuất','Thân','Ngọ','Thìn','Dần'];
+  for(let i=0;i<6;i++){
+    const sc = CHI.indexOf(tuanStartChi[i]);
+    // kiểm tra chi hiện tại nằm trong phạm vi 10 bước từ sc
+    let found=false;
+    for(let j=0;j<10;j++){
+      if(CHI[(sc+j)%12]===chi) { found=true; break; }
+    }
+    if(found) return TUAN_KHONG[tuanStarts[i]]||[];
+  }
+  return [];
+}
+
+function checkHinh(chi1, chi2) {
+  if(TAM_HINH_VAN_AN[chi1]===chi2) return 'Tam Hình Vô Ân';
+  if(TAM_HINH_YI_THE[chi1]===chi2) return 'Tam Hình Ỷ Thế';
+  if(TAM_HINH_VO_LE[chi1]===chi2) return 'Hình Vô Lễ (Tý-Mão)';
+  if(TU_HINH.includes(chi1)&&chi1===chi2) return 'Tự Hình';
+  return null;
+}
+
+function getTruongSinh(hanh, chi) {
+  const seq = TRUONG_SINH[hanh];
+  if(!seq) return '';
+  const idx = seq.indexOf(chi);
+  if(idx<0) return '';
+  return TRUONG_SINH_NAMES[idx];
+}
+
+// ============================================================
+// MAIN ANALYSIS
+// ============================================================
+function analyze() {
+  const gioCan=document.getElementById('gio-can').value;
+  const gioChi=document.getElementById('gio-chi').value;
+  const ngayCan=document.getElementById('ngay-can').value;
+  const ngayChi=document.getElementById('ngay-chi').value;
+  const thangCan=document.getElementById('thang-can').value;
+  const thangChi=document.getElementById('thang-chi').value;
+  const namCan=document.getElementById('nam-can').value;
+  const namChi=document.getElementById('nam-chi').value;
+
+  if(!ngayCan||!ngayChi) { alert('Vui lòng nhập ít nhất Ngày (Can + Chi)'); return; }
+
+  const trụ = [
+    {lbl:'時 Giờ', can:gioCan, chi:gioChi},
+    {lbl:'日 Ngày', can:ngayCan, chi:ngayChi},
+    {lbl:'月 Tháng', can:thangCan, chi:thangChi},
+    {lbl:'年 Năm', can:namCan, chi:namChi}
+  ];
+
+  // Tứ trụ display
+  let batuHtml = '';
+  trụ.forEach(t=>{
+    const ch = CAN_HANH[t.can]||'';
+    const chChi = CHI_HANH[t.chi]||'';
+    batuHtml+=`<div class="trụ-block">
+      <div class="lbl">${t.lbl}</div>
+      <div class="can" style="color:${hanhColor(ch)}">${t.can||'—'}</div>
+      <div class="chi" style="color:${hanhColor(chChi)}">${t.chi||'—'}</div>
+      <div class="nhanh">${ch} / ${chChi}</div>
+    </div>`;
+  });
+  document.getElementById('batu-display').innerHTML=batuHtml;
+
+  // Ngũ hành đếm
+  const hanhCount = {'Mộc':0,'Hỏa':0,'Thổ':0,'Kim':0,'Thủy':0};
+  trụ.forEach(t=>{
+    if(t.can) hanhCount[CAN_HANH[t.can]]=(hanhCount[CAN_HANH[t.can]]||0)+1;
+    if(t.chi) hanhCount[CHI_HANH[t.chi]]=(hanhCount[CHI_HANH[t.chi]]||0)+1;
+  });
+  let nhHtml='<div class="section-title">Ngũ Hành Phân Bố</div><div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.5rem;">';
+  Object.entries(hanhCount).forEach(([h,c])=>{
+    const col=hanhColor(h);
+    nhHtml+=`<span style="background:rgba(0,0,0,0.3);border:1px solid ${col}44;color:${col};padding:0.3rem 0.7rem;font-size:0.8rem;font-family:'Noto Serif',serif;">${h}: ${c}</span>`;
+  });
+  nhHtml+='</div>';
+  document.getElementById('ngu-hanh-summary').innerHTML=nhHtml;
+
+  // Tính điểm cát hung
+  let catScore=0, hungScore=0, neutralScore=0;
+  const catList=[], hungList=[], neutralList=[];
+
+  // 1. Kiểm tra quan hệ chi với nhau
+  const chiList = trụ.filter(t=>t.chi).map(t=>t.chi);
+  const chiRelations=[];
+
+  for(let i=0;i<chiList.length;i++){
+    for(let j=i+1;j<chiList.length;j++){
+      const a=chiList[i], b=chiList[j];
+      const lbl1=trụ[i].lbl, lbl2=trụ[j].lbl;
+      const pairKey=`${lbl1}(${a}) - ${lbl2}(${b})`;
+      
+      if(LUC_XUNG[a]===b){ chiRelations.push({pair:pairKey,rel:'Lục Xung ⚡',type:'bad',score:-2}); hungScore+=2; hungList.push(`Xung ${a}-${b}`); }
+      if(LUC_HOP[a]===b){ const h=LUC_HOP_HOA[`${a}-${b}`]||LUC_HOP_HOA[`${b}-${a}`]||''; chiRelations.push({pair:pairKey,rel:`Lục Hợp ✦ (hóa ${h})`,type:'good',score:2}); catScore+=2; catList.push(`Hợp ${a}-${b}`); }
+      if(LUC_PHA[a]===b){ chiRelations.push({pair:pairKey,rel:'Lục Phá 🔴',type:'bad',score:-1}); hungScore+=1; hungList.push(`Phá ${a}-${b}`); }
+      if(LUC_HAI[a]===b){ chiRelations.push({pair:pairKey,rel:'Lục Hại 🟠',type:'warning',score:-1}); hungScore+=1; hungList.push(`Hại ${a}-${b}`); }
+      
+      const hinh=checkHinh(a,b)||checkHinh(b,a);
+      if(hinh){ chiRelations.push({pair:pairKey,rel:`⛓ ${hinh}`,type:'bad',score:-2}); hungScore+=2; hungList.push(hinh); }
+    }
+  }
+
+  // Tam Hợp
+  for(const [combo,hanh] of Object.entries(TAM_HOP)){
+    const members=combo.split('-');
+    if(members.every(m=>chiList.includes(m))){
+      chiRelations.push({pair:members.join('-'),rel:`Tam Hợp ${hanh} 🔺`,type:'good',score:3});
+      catScore+=3; catList.push(`Tam Hợp ${hanh}`);
+    }
+  }
+  // Tam Hội
+  for(const [combo,dir] of Object.entries(TAM_HOI)){
+    const members=combo.split('-');
+    if(members.every(m=>chiList.includes(m))){
+      chiRelations.push({pair:members.join('-'),rel:`Tam Hội ${dir} 🔷`,type:'good',score:3});
+      catScore+=3; catList.push(`Tam Hội ${dir}`);
+    }
+  }
+  // Tự Hình
+  TU_HINH.forEach(c=>{
+    if(chiList.filter(x=>x===c).length>=2){
+      chiRelations.push({pair:`${c}-${c}`,rel:'Tự Hình ⛓',type:'bad',score:-1});
+      hungScore+=1; hungList.push(`Tự Hình ${c}`);
+    }
+  });
+
+  // Quan hệ can
+  const canRelations=[];
+  for(let i=0;i<trụ.length;i++){
+    for(let j=i+1;j<trụ.length;j++){
+      if(!trụ[i].can||!trụ[j].can) continue;
+      const h1=CAN_HANH[trụ[i].can], h2=CAN_HANH[trụ[j].can];
+      const lbl=`${trụ[i].lbl}(${trụ[i].can}) - ${trụ[j].lbl}(${trụ[j].can})`;
+      if(h1===h2){ canRelations.push({pair:lbl,rel:'Tỷ Hoà ☯',type:'neutral',score:1}); neutralScore+=1; }
+      else if(SINH[h1]===h2){ canRelations.push({pair:lbl,rel:`Sinh → ${h2}`,type:'good',score:1}); catScore+=1; }
+      else if(KHAC[h1]===h2){ canRelations.push({pair:lbl,rel:`Khắc → ${h2}`,type:'bad',score:-1}); hungScore+=1; }
+    }
+  }
+
+  // BUILD CHI RELATIONS HTML
+  let crHtml='<div class="section-title">Quan Hệ Địa Chi</div>';
+  if(chiRelations.length===0) crHtml+='<p class="note">Không phát hiện quan hệ đặc biệt giữa các chi.</p>';
+  else {
+    crHtml+='<table class="data-table"><thead><tr><th>Cặp</th><th>Quan Hệ</th><th>Ảnh Hưởng</th></tr></thead><tbody>';
+    chiRelations.forEach(r=>{
+      crHtml+=`<tr><td>${r.pair}</td><td>${tag(r.rel,r.type)}</td><td>${tag(r.score>0?'Cát +'+r.score:r.score===0?'Trung Hòa':'Hung '+r.score, r.score>0?'good':r.score<0?'bad':'neutral')}</td></tr>`;
+    });
+    crHtml+='</tbody></table>';
+  }
+  crHtml+='<div class="section-title" style="margin-top:1rem">Quan Hệ Thiên Can</div>';
+  if(canRelations.length===0) crHtml+='<p class="note">Không phát hiện quan hệ đặc biệt giữa các can.</p>';
+  else {
+    crHtml+='<table class="data-table"><thead><tr><th>Cặp</th><th>Quan Hệ</th><th>Ảnh Hưởng</th></tr></thead><tbody>';
+    canRelations.forEach(r=>{
+      crHtml+=`<tr><td>${r.pair}</td><td>${tag(r.rel,r.type)}</td><td>${tag(r.score>0?'Cát +'+r.score:r.score===0?'Trung Hòa':'Hung '+r.score, r.score>0?'good':r.score<0?'bad':'neutral')}</td></tr>`;
+    });
+    crHtml+='</tbody></table>';
+  }
+  document.getElementById('chi-relations').innerHTML=crHtml;
+
+  // THẦN SÁT
+  let tsHtml='';
+  const ngayChiVal=ngayChi, namChiVal=namChi, thangChiVal=thangChi, gioChiVal=gioChi;
+
+  // Tuần Không
+  tsHtml+='<div class="section-title">Tuần Không (Không Vong)</div>';
+  const tk=getTuanKhong(ngayCan,ngayChi);
+  if(tk.length){
+    tsHtml+=`<p style="font-size:0.8rem;margin-bottom:0.5rem">Ngày <b>${ngayCan} ${ngayChi}</b> thuộc tuần có Không Vong tại: `;
+    tk.forEach(c=>{
+      const isInBatu=chiList.includes(c);
+      tsHtml+=tag(c+(isInBatu?' ★':' '), isInBatu?'bad':'neutral');
+    });
+    tsHtml+='</p>';
+    tk.forEach(c=>{
+      if(chiList.includes(c)){
+        hungScore+=2; hungList.push(`Không Vong ${c} trong tứ trụ`);
+      }
+    });
+  } else { tsHtml+='<p class="note">Không xác định được tuần (cần Can+Chi ngày đầy đủ).</p>'; }
+
+  // Tam Sát
+  tsHtml+='<div class="section-title">Tam Sát</div>';
+  if(namChiVal){
+    const tsDir=TAM_SAT[namChiVal];
+    const tsChi=TAM_SAT_CHI[tsDir]||[];
+    tsHtml+=`<p style="font-size:0.8rem;margin-bottom:0.5rem">Năm <b>${namChiVal}</b> → Tam Sát phương <b>${tsDir}</b>: `;
+    tsChi.forEach(c=>{
+      const isIn=chiList.includes(c);
+      tsHtml+=tag(c+(isIn?' ⚠':' '),isIn?'bad':'neutral');
+    });
+    tsHtml+='</p>';
+    tsChi.forEach(c=>{ if(chiList.includes(c)){hungScore+=2;hungList.push(`Tam Sát ${c}`);} });
+  } else tsHtml+='<p class="note">Cần nhập chi Năm để xác định Tam Sát.</p>';
+
+  // Tuế Phá
+  tsHtml+='<div class="section-title">Tuế Phá</div>';
+  if(namChiVal){
+    const tuePha=LUC_XUNG[namChiVal];
+    tsHtml+=`<p style="font-size:0.8rem;margin-bottom:0.5rem">Năm ${namChiVal} → Tuế Phá tại: `;
+    const isIn=chiList.includes(tuePha);
+    tsHtml+=tag(tuePha+(isIn?' ⚠':' '),isIn?'bad':'neutral');
+    tsHtml+='</p>';
+    if(isIn){hungScore+=2;hungList.push(`Tuế Phá ${tuePha}`);}
+  } else tsHtml+='<p class="note">Cần nhập chi Năm.</p>';
+
+  // Kiếp Sát
+  tsHtml+='<div class="section-title">Kiếp Sát</div>';
+  if(namChiVal){
+    const ks=KIEP_SAT[namChiVal];
+    const isIn=chiList.includes(ks);
+    tsHtml+=`<p style="font-size:0.8rem;margin-bottom:0.5rem">Năm ${namChiVal} → Kiếp Sát tại: ${tag(ks+(isIn?' ⚠':' '),isIn?'bad':'neutral')}</p>`;
+    if(isIn){hungScore+=1;hungList.push(`Kiếp Sát ${ks}`);}
+  }
+
+  // Đô Thiên Sát
+  tsHtml+='<div class="section-title">Đô Thiên Sát</div>';
+  if(namChiVal){
+    const dt=DO_THIEN[namChiVal];
+    const isIn=chiList.includes(dt);
+    tsHtml+=`<p style="font-size:0.8rem;margin-bottom:0.5rem">Năm ${namChiVal} → Đô Thiên Sát tại: ${tag(dt+(isIn?' ⚠':' '),isIn?'bad':'neutral')}</p>`;
+    if(isIn){hungScore+=1;hungList.push(`Đô Thiên ${dt}`);}
+  }
+
+  // Dương Nhẫn
+  tsHtml+='<div class="section-title">Dương Nhẫn</div>';
+  if(ngayCan){
+    const dn=DUONG_NHAN[ngayCan];
+    if(dn){
+      const isIn=chiList.includes(dn);
+      tsHtml+=`<p style="font-size:0.8rem;margin-bottom:0.5rem">Ngày Can ${ngayCan} → Dương Nhẫn tại: ${tag(dn+(isIn?' ⚠':' '),isIn?'warning':'neutral')}</p>`;
+      if(isIn){hungScore+=1;hungList.push(`Dương Nhẫn ${dn}`);}
+    } else tsHtml+=`<p class="note">Can ${ngayCan} không có Dương Nhẫn (âm can).</p>`;
+  }
+
+  // Sát Sư
+  tsHtml+='<div class="section-title">Sát Sư</div>';
+  if(thangChiVal){
+    const ss=SAT_SU[thangChiVal];
+    const isIn=chiList.includes(ss);
+    tsHtml+=`<p style="font-size:0.8rem;margin-bottom:0.5rem">Tháng ${thangChiVal} → Sát Sư tại: ${tag(ss+(isIn?' ⚠':' '),isIn?'bad':'neutral')}</p>`;
+    if(isIn){hungScore+=1;hungList.push(`Sát Sư ${ss}`);}
+  } else tsHtml+='<p class="note">Cần nhập chi Tháng.</p>';
+
+  // Sát Chủ (ngày chi xung năm chi)
+  tsHtml+='<div class="section-title">Sát Chủ</div>';
+  if(ngayChiVal&&namChiVal){
+    const satChu=LUC_XUNG[ngayChiVal]===namChiVal;
+    tsHtml+=`<p style="font-size:0.8rem;margin-bottom:0.5rem">Ngày ${ngayChiVal} xung Năm ${namChiVal}: ${satChu?tag('CÓ SÁT CHỦ ⚠','bad'):tag('Không phạm','good')}</p>`;
+    if(satChu){hungScore+=2;hungList.push('Sát Chủ');}
+  }
+
+  // Vãng Vong
+  tsHtml+='<div class="section-title">Vãng Vong</div>';
+  if(ngayChiVal&&thangChiVal){
+    const vv=VANG_VONG[thangChiVal];
+    const isVV=ngayChiVal===vv;
+    tsHtml+=`<p style="font-size:0.8rem;margin-bottom:0.5rem">Tháng ${thangChiVal} → Vãng Vong ngày: ${tag(vv,isVV?'bad':'neutral')} — Ngày hiện tại: ${isVV?tag('PHẠM VÃNG VONG ⚠','bad'):tag('Không phạm','good')}</p>`;
+    if(isVV){hungScore+=1;hungList.push('Vãng Vong');}
+  }
+
+  document.getElementById('than-sat').innerHTML=tsHtml;
+
+  // TRƯỜNG SINH
+  let tsinhHtml='<table class="data-table"><thead><tr><th>Trụ</th><th>Can</th><th>Hành Can</th><th>Chi</th><th>Trạng Thái (Can so Chi)</th><th>Chất Lượng</th></tr></thead><tbody>';
+  trụ.forEach(t=>{
+    if(!t.can||!t.chi) return;
+    const hanh=CAN_HANH[t.can]||'';
+    const ts=getTruongSinh(hanh,t.chi);
+    const q=TRUONG_SINH_QUALITY[ts]||'neutral';
+    tsinhHtml+=`<tr><td>${t.lbl}</td><td>${t.can}</td><td style="color:${hanhColor(hanh)}">${hanh}</td><td>${t.chi}</td><td>${tag(ts||'—',q)}</td><td>${tag(q==='good'?'Vượng/Tốt':q==='bad'?'Suy/Xấu':'Trung Bình',q)}</td></tr>`;
+    if(q==='good') catScore+=1;
+    else if(q==='bad') hungScore+=1;
+  });
+  // Ngày so với các trụ khác
+  if(ngayCan){
+    const ngayHanh=CAN_HANH[ngayCan];
+    tsinhHtml+=`<tr style="background:rgba(201,168,76,0.05)"><td colspan="6" style="font-size:0.7rem;color:var(--text-dim);padding-top:0.8rem">▼ Nhật Can <b>${ngayCan}</b> (${ngayHanh}) đặt trong các chi của tứ trụ:</td></tr>`;
+    trụ.forEach(t=>{
+      if(!t.chi||!ngayHanh) return;
+      const ts=getTruongSinh(ngayHanh,t.chi);
+      const q=TRUONG_SINH_QUALITY[ts]||'neutral';
+      tsinhHtml+=`<tr><td colspan="2" style="color:var(--text-dim);font-size:0.75rem">Nhật Can → ${t.lbl}</td><td style="color:${hanhColor(ngayHanh)}">${ngayHanh}</td><td>${t.chi}</td><td>${tag(ts||'—',q)}</td><td>${tag(q==='good'?'Vượng/Tốt':q==='bad'?'Suy/Xấu':'Trung Bình',q)}</td></tr>`;
+    });
+  }
+  tsinhHtml+='</tbody></table>';
+  document.getElementById('truong-sinh').innerHTML=tsinhHtml;
+
+  // SCORE
+  const total=catScore-hungScore;
+  const scoreClass=total>=3?'score-good':total<0?'score-bad':'score-mid';
+  const scoreLabel=total>=5?'Đại Cát ✦':total>=3?'Cát':total>=1?'Trung Cát':total===0?'Trung Bình':total>=-2?'Tiểu Hung':'Đại Hung ☠';
+  document.getElementById('score-section').innerHTML=`
+    <div class="score-number ${scoreClass}">${total>0?'+':''}${total}</div>
+    <div class="score-label">${scoreLabel}</div>
+    <div style="margin-top:0.8rem;font-size:0.72rem;color:var(--text-dim)">
+      Cát: <span style="color:#6dc89a">+${catScore}</span> &nbsp;|&nbsp; Hung: <span style="color:#e07070">−${hungScore}</span>
+    </div>`;
+  
+  document.getElementById('energy-bars').innerHTML=
+    energyBar('Năng lượng Cát',catScore,Math.max(catScore+hungScore,1)*1,'good')+
+    energyBar('Năng lượng Hung',hungScore,Math.max(catScore+hungScore,1)*1,'bad');
+
+  // ENERGY TREND
+  let trendHtml='<div class="section-title">Xu Hướng Vận Động</div>';
+  const dominant=Object.entries(hanhCount).sort((a,b)=>b[1]-a[1])[0];
+  const dominantHanh=dominant[0];
+  const sinhBoi=DUOC_SINH[dominantHanh]||'';
+  const sinhRa=SINH[dominantHanh]||'';
+  const khacBoi=BI_KHAC[dominantHanh]||'';
+  const khacRa=KHAC[dominantHanh]||'';
+  trendHtml+=`<p style="font-size:0.82rem;line-height:1.7">
+    Hành vượng nhất: ${tag(dominantHanh+' ('+dominant[1]+')','neutral')}<br>
+    Được sinh bởi: ${tag(sinhBoi,'good')} &nbsp;→&nbsp; Sinh ra: ${tag(sinhRa,'good')}<br>
+    Bị khắc bởi: ${tag(khacBoi,'bad')} &nbsp;→&nbsp; Khắc: ${tag(khacRa,'warning')}<br>
+  </p>`;
+  trendHtml+=`<hr class="divider">`;
+  trendHtml+=`<div class="section-title">Tổng Kết</div>`;
+  trendHtml+=`<div style="font-size:0.78rem;line-height:1.8">`;
+  if(catList.length) trendHtml+=`<div style="margin-bottom:0.4rem"><span style="color:#6dc89a">✦ Cát:</span> ${catList.map(c=>tag(c,'good')).join(' ')}</div>`;
+  if(hungList.length) trendHtml+=`<div><span style="color:#e07070">✦ Hung:</span> ${hungList.map(c=>tag(c,'bad')).join(' ')}</div>`;
+  trendHtml+=`</div>`;
+  document.getElementById('energy-trend').innerHTML=trendHtml;
+
+  // PHƯƠNG VỊ
+  let pvHtml='<div class="section-title">Địa Chi & Phương Vị Tương Ứng</div>';
+  pvHtml+='<table class="data-table"><thead><tr><th>Chi</th><th>Phương Vị</th><th>Hành</th><th>Quan Hệ</th></tr></thead><tbody>';
+  const uniqueChi=[...new Set(chiList)];
+  uniqueChi.forEach(c=>{
+    const pv=CHI_PHUONG[c]||'';
+    const h=CHI_HANH[c]||'';
+    const rels=[];
+    chiList.forEach((c2,i2)=>{
+      if(c2===c) return;
+      if(LUC_XUNG[c]===c2) rels.push(tag('Xung '+c2,'bad'));
+      if(LUC_HOP[c]===c2) rels.push(tag('Hợp '+c2,'good'));
+      if(LUC_HAI[c]===c2) rels.push(tag('Hại '+c2,'warning'));
+    });
+    pvHtml+=`<tr><td style="font-size:1.1rem;font-weight:700">${c}</td><td>${pv}</td><td style="color:${hanhColor(h)}">${h}</td><td>${rels.join(' ')||'—'}</td></tr>`;
+  });
+  pvHtml+='</tbody></table>';
+  pvHtml+=`<p class="note" style="margin-top:0.8rem">★ Phương vị có chi Tam Sát / Xung / Hại: tránh động thổ, xuất hành theo hướng đó trong thời gian này.</p>`;
+  document.getElementById('phuong-vi').innerHTML=pvHtml;
+
+  document.getElementById('main-result').classList.remove('hidden');
+  document.getElementById('main-result').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ============================================================
+// PHI TINH
+// ============================================================
+function calcPhiTinh() {
+  const namChi=document.getElementById('phi-nam-chi').value;
+  const thangChi=document.getElementById('phi-thang-chi').value;
+  const ngayChi=document.getElementById('phi-ngay-chi').value;
+  if(!namChi) { alert('Vui lòng chọn Chi Năm'); return; }
+
+  const yearStar=getYearStar(namChi);
+  const monthStar=thangChi?getMonthStar(thangChi,yearStar):null;
+  const dayStar=ngayChi?getDayStar(ngayChi):null;
+
+  renderLoShu('loshu-nam',yearStar,'phi-nam-legend');
+  if(monthStar) renderLoShu('loshu-thang',monthStar,'phi-thang-legend');
+  else document.getElementById('loshu-thang').innerHTML='<p class="note" style="grid-column:span 3">Chọn Chi Tháng để xem</p>';
+  if(dayStar) renderLoShu('loshu-ngay',dayStar,'phi-ngay-legend');
+  else document.getElementById('loshu-ngay').innerHTML='<p class="note" style="grid-column:span 3">Chọn Chi Ngày để xem</p>';
+
+  // Chồng tinh
+  let overlayHtml='<table class="data-table"><thead><tr><th>Phương Vị</th><th>Sao Năm</th><th>Sao Tháng</th><th>Sao Ngày</th><th>Đánh Giá Tổng</th></tr></thead><tbody>';
+  const namStars=buildLoShu(yearStar);
+  const thangStars=monthStar?buildLoShu(monthStar):null;
+  const ngayStars=dayStar?buildLoShu(dayStar):null;
+  LO_SHU_DIRS.forEach((dir,i)=>{
+    const ns=namStars[i];
+    const ts=thangStars?thangStars[i]:'-';
+    const ds=ngayStars?ngayStars[i]:'-';
+    const qual=evalStarCombo([ns, ts!=='-'?ts:null, ds!=='-'?ds:null].filter(Boolean));
+    overlayHtml+=`<tr>
+      <td>${dir}</td>
+      <td>${tag(ns,starQuality(ns))}</td>
+      <td>${ts!=='-'?tag(ts,starQuality(ts)):'-'}</td>
+      <td>${ds!=='-'?tag(ds,starQuality(ds)):'-'}</td>
+      <td>${tag(qual.label,qual.type)}</td>
+    </tr>`;
+  });
+  overlayHtml+='</tbody></table>';
+  overlayHtml+=`<p class="note" style="margin-top:0.8rem">★ Ngũ Hoàng (5) đại hung, tránh động thổ & xây cất tại phương này. Nhị Hắc (2), Thất Xích (7) hung. Nhất Bạch (1), Bát Bạch (8), Lục Bạch (6), Tứ Lục (4) cát.</p>`;
+  document.getElementById('phi-overlay').innerHTML=overlayHtml;
+
+  document.getElementById('phi-result').classList.remove('hidden');
+}
+
+function renderLoShu(containerId, centerStar, legendId) {
+  const stars=buildLoShu(centerStar);
+  let html='';
+  stars.forEach((s,i)=>{
+    const info=STAR_INFO[s];
+    const isCen=i===4;
+    html+=`<div class="loshu-cell${isCen?' center':''}" style="color:${starColor(s)}">
+      <div class="dir">${LO_SHU_DIRS[i]}</div>
+      <span>${s}</span>
+      <div class="stars">${s}</div>
+    </div>`;
+  });
+  document.getElementById(containerId).innerHTML=html;
+  const ci=STAR_INFO[centerStar];
+  document.getElementById(legendId).innerHTML=`Trung Cung: <span style="color:${starColor(centerStar)};font-weight:700">${centerStar} - ${ci.name}</span> · ${ci.nature}`;
+}
+
+function starQuality(s){
+  if([1,4,6,8].includes(s)) return 'good';
+  if([2,3,5,7].includes(s)) return 'bad';
+  return 'neutral';
+}
+function starColor(s){
+  if(s===5) return '#aaa';
+  if([1,6,8].includes(s)) return '#e8c97a';
+  if([2,7].includes(s)) return '#e07070';
+  if([3].includes(s)) return '#e07070';
+  if([4,9].includes(s)) return '#6dc89a';
+  return '#f0dbb0';
+}
+function evalStarCombo(stars){
+  const hasHung=stars.some(s=>[2,3,5,7].includes(s));
+  const hasCat=stars.some(s=>[1,4,6,8].includes(s));
+  const has5=stars.includes(5);
+  if(has5) return {label:'Đại Hung (5)',type:'bad'};
+  if(hasHung&&!hasCat) return {label:'Hung',type:'bad'};
+  if(hasCat&&!hasHung) return {label:'Cát',type:'good'};
+  if(hasCat&&hasHung) return {label:'Trung Hòa',type:'neutral'};
+  return {label:'Bình',type:'neutral'};
+}
+
+// ============================================================
+// INTERACTION ANALYSIS (shared)
+// ============================================================
+function analyzeInteractionPair(batu1, batu2, containerId, label1, label2) {
+  const chiList1=batu1.filter(t=>t.chi).map(t=>t.chi);
+  const chiList2=batu2.filter(t=>t.chi).map(t=>t.chi);
+  const allChi=[...chiList1,...chiList2];
+  const allCan=[...batu1.filter(t=>t.can).map(t=>t.can),...batu2.filter(t=>t.can).map(t=>t.can)];
+
+  let catScore=0,hungScore=0;
+  const events=[];
+
+  // Cross-chi relations
+  chiList1.forEach(c1=>{
+    chiList2.forEach(c2=>{
+      if(LUC_XUNG[c1]===c2){ events.push({rel:`${c1}⚡${c2}`,detail:'Lục Xung',type:'bad',score:-2}); hungScore+=2; }
+      if(LUC_HOP[c1]===c2){ const h=LUC_HOP_HOA[`${c1}-${c2}`]||LUC_HOP_HOA[`${c2}-${c1}`]||''; events.push({rel:`${c1}✦${c2}`,detail:`Lục Hợp→${h}`,type:'good',score:2}); catScore+=2; }
+      if(LUC_PHA[c1]===c2){ events.push({rel:`${c1}🔴${c2}`,detail:'Lục Phá',type:'bad',score:-1}); hungScore+=1; }
+      if(LUC_HAI[c1]===c2){ events.push({rel:`${c1}🟠${c2}`,detail:'Lục Hại',type:'warning',score:-1}); hungScore+=1; }
+      const hinh=checkHinh(c1,c2);
+      if(hinh){ events.push({rel:`${c1}⛓${c2}`,detail:hinh,type:'bad',score:-2}); hungScore+=2; }
+    });
+  });
+
+  // Tam Hợp cross
+  for(const [combo,hanh] of Object.entries(TAM_HOP)){
+    const members=combo.split('-');
+    const fromA=members.filter(m=>chiList1.includes(m));
+    const fromB=members.filter(m=>chiList2.includes(m));
+    if(fromA.length+fromB.length===3&&fromA.length>0&&fromB.length>0){
+      events.push({rel:members.join('-'),detail:`Tam Hợp ${hanh} (liên trụ)`,type:'good',score:3}); catScore+=3;
+    }
+  }
+
+  // Can relation cross
+  const canRelCross=[];
+  batu1.filter(t=>t.can).forEach(t1=>{
+    batu2.filter(t=>t.can).forEach(t2=>{
+      const h1=CAN_HANH[t1.can],h2=CAN_HANH[t2.can];
+      if(SINH[h1]===h2) canRelCross.push({pair:`${t1.can}→${t2.can}`,rel:'Sinh',type:'good',score:1});
+      else if(KHAC[h1]===h2) canRelCross.push({pair:`${t1.can}→${t2.can}`,rel:'Khắc',type:'bad',score:-1});
+    });
+  });
+
+  const total=catScore-hungScore;
+  const scoreClass=total>=3?'score-good':total<0?'score-bad':'score-mid';
+  const scoreLabel=total>=5?'Đại Hợp ✦':total>=3?'Tương Hợp':total>=1?'Trung Bình':total===0?'Cân Bằng':total>=-2?'Có Xung Khắc':'Nhiều Xung Khắc ☠';
+
+  let html=`<div class="panel"><div class="panel-header"><span>⟐</span><h3>Tổng Hợp Tương Tác: ${label1} × ${label2}</h3></div><div class="panel-body">`;
+  html+=`<div class="result-grid">
+    <div>
+      <div class="score-display">
+        <div class="score-number ${scoreClass}">${total>0?'+':''}${total}</div>
+        <div class="score-label">${scoreLabel}</div>
+        <div style="margin-top:0.5rem;font-size:0.72rem;color:var(--text-dim)">Cát: <span style="color:#6dc89a">+${catScore}</span> &nbsp;|&nbsp; Hung: <span style="color:#e07070">−${hungScore}</span></div>
+      </div>
+    </div>
+    <div>
+      ${energyBar('Tương hợp',catScore,Math.max(catScore+hungScore,1)*1,'good')}
+      ${energyBar('Xung khắc',hungScore,Math.max(catScore+hungScore,1)*1,'bad')}
+    </div>
+  </div>`;
+
+  html+=`<div class="section-title">Chi Tiết Tương Tác Địa Chi</div>`;
+  if(events.length===0) html+='<p class="note">Không phát hiện quan hệ xung hợp giữa 2 bát tự.</p>';
+  else {
+    html+='<table class="data-table"><thead><tr><th>Cặp Chi</th><th>Quan Hệ</th><th>Điểm</th></tr></thead><tbody>';
+    events.forEach(e=>{
+      html+=`<tr><td>${e.rel}</td><td>${tag(e.detail,e.type)}</td><td>${tag(e.score>0?'+'+e.score:''+e.score,e.score>0?'good':e.score<0?'bad':'neutral')}</td></tr>`;
+    });
+    html+='</tbody></table>';
+  }
+
+  if(canRelCross.length){
+    html+=`<div class="section-title">Tương Tác Thiên Can</div>`;
+    html+='<table class="data-table"><thead><tr><th>Cặp Can</th><th>Quan Hệ</th><th>Điểm</th></tr></thead><tbody>';
+    canRelCross.forEach(e=>{
+      html+=`<tr><td>${e.pair}</td><td>${tag(e.rel,e.type)}</td><td>${tag(e.score>0?'+'+e.score:''+e.score,e.score>0?'good':'bad')}</td></tr>`;
+    });
+    html+='</tbody></table>';
+  }
+
+  html+=`<div class="section-title">Tổng Địa Chi Hai Bát Tự</div>`;
+  html+=`<div style="margin-bottom:0.5rem;font-size:0.78rem">${label1}: ${chiList1.map(c=>tag(c,'neutral')).join(' ')}</div>`;
+  html+=`<div style="font-size:0.78rem">${label2}: ${chiList2.map(c=>tag(c,'neutral')).join(' ')}</div>`;
+
+  html+='</div></div>';
+  document.getElementById(containerId).innerHTML=html;
+  document.getElementById(containerId).classList.remove('hidden');
+  document.getElementById(containerId).scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function analyzeInteract1() {
+  const batu1=[
+    {lbl:'Giờ',can:document.getElementById('lich-gio-can').value,chi:document.getElementById('lich-gio-chi').value},
+    {lbl:'Ngày',can:document.getElementById('lich-ngay-can').value,chi:document.getElementById('lich-ngay-chi').value},
+    {lbl:'Tháng',can:document.getElementById('lich-thang-can').value,chi:document.getElementById('lich-thang-chi').value},
+    {lbl:'Năm',can:document.getElementById('lich-nam-can').value,chi:document.getElementById('lich-nam-chi').value}
+  ];
+  const batu2=[
+    {lbl:'Giờ',can:document.getElementById('bt-gio-can').value,chi:document.getElementById('bt-gio-chi').value},
+    {lbl:'Ngày',can:document.getElementById('bt-ngay-can').value,chi:document.getElementById('bt-ngay-chi').value},
+    {lbl:'Tháng',can:document.getElementById('bt-thang-can').value,chi:document.getElementById('bt-thang-chi').value},
+    {lbl:'Năm',can:document.getElementById('bt-nam-can').value,chi:document.getElementById('bt-nam-chi').value}
+  ];
+  analyzeInteractionPair(batu1,batu2,'interact1-result','Tứ Trụ Lịch','Bát Tự Cá Nhân');
+}
+
+function analyzeInteract2() {
+  const batu1=[
+    {lbl:'Giờ',can:document.getElementById('a-gio-can').value,chi:document.getElementById('a-gio-chi').value},
+    {lbl:'Ngày',can:document.getElementById('a-ngay-can').value,chi:document.getElementById('a-ngay-chi').value},
+    {lbl:'Tháng',can:document.getElementById('a-thang-can').value,chi:document.getElementById('a-thang-chi').value},
+    {lbl:'Năm',can:document.getElementById('a-nam-can').value,chi:document.getElementById('a-nam-chi').value}
+  ];
+  const batu2=[
+    {lbl:'Giờ',can:document.getElementById('b-gio-can').value,chi:document.getElementById('b-gio-chi').value},
+    {lbl:'Ngày',can:document.getElementById('b-ngay-can').value,chi:document.getElementById('b-ngay-chi').value},
+    {lbl:'Tháng',can:document.getElementById('b-thang-can').value,chi:document.getElementById('b-thang-chi').value},
+    {lbl:'Năm',can:document.getElementById('b-nam-can').value,chi:document.getElementById('b-nam-chi').value}
+  ];
+  analyzeInteractionPair(batu1,batu2,'interact2-result','Người A','Người B');
+}
+
+// ============================================================
+// UTILS
+// ============================================================
+function hanhColor(h) {
+  const map={'Mộc':'#6dc89a','Hỏa':'#e07070','Thổ':'#e8c97a','Kim':'#c0c0d8','Thủy':'#70b0e0'};
+  return map[h]||'#f0dbb0';
+}
+
+// ============================================================
+// INIT
+// ============================================================
+populateSelects();
+</script>
+</body>
+</html>
