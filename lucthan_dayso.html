@@ -1,0 +1,81 @@
+Lục Thân Năng Lượng
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Tính Lục Thân Năng Lượng - Chi Tiết</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; max-width: 800px; margin: auto; }
+        .result-box { background: #f4f4f4; padding: 15px; border-radius: 5px; white-space: pre-wrap; margin-top: 10px; line-height: 1.6; }
+    </style>
+</head>
+<body>
+    <h2>Tính Lục Thân Năng Lượng</h2>
+    <input type="text" id="inputNumber" placeholder="Nhập dãy số (dưới 20 chữ số)" maxlength="20" style="width:100%; padding: 8px;">
+    <br><br>
+    <button onclick="calculate()">Tính Toán</button>
+    <button onclick="copyResult()">Sao Chép Kết Quả</button>
+
+    <div id="output" class="result-box">Kết quả sẽ hiện ở đây...</div>
+
+    <script>
+        const bagua = {
+            1: { name: "Kiền", polar: 1, element: "Kim" },
+            2: { name: "Đoài", polar: 0, element: "Kim" },
+            3: { name: "Ly",    polar: 0, element: "Hoả" },
+            4: { name: "Chấn",  polar: 1, element: "Mộc" },
+            5: { name: "Tốn",   polar: 0, element: "Mộc" },
+            6: { name: "Khảm",  polar: 1, element: "Thuỷ" },
+            7: { name: "Cấn",   polar: 1, element: "Thổ" },
+            8: { name: "Khôn",  polar: 0, element: "Thổ" }
+        };
+
+        function getRelation(a, b) {
+            let elA = bagua[a].element;
+            let elB = bagua[b].element;
+            let samePolar = (bagua[a].polar === bagua[b].polar);
+
+            if (elA === elB) return { a_to_b: "H", b_to_a: "H" };
+
+            const sinh = { "Kim": "Thuỷ", "Thuỷ": "Mộc", "Mộc": "Hoả", "Hoả": "Thổ", "Thổ": "Kim" };
+            if (sinh[elA] === elB) return { a_to_b: (samePolar ? "P'" : "P"), b_to_a: (samePolar ? "C'" : "C") };
+            if (sinh[elB] === elA) return { a_to_b: (samePolar ? "C'" : "C"), b_to_a: (samePolar ? "P'" : "P") };
+
+            const khac = { "Kim": "Mộc", "Mộc": "Thổ", "Thổ": "Thuỷ", "Thuỷ": "Hoả", "Hoả": "Kim" };
+            if (khac[elA] === elB) return { a_to_b: (samePolar ? "Q'" : "Q"), b_to_a: (samePolar ? "T'" : "T") };
+            if (khac[elB] === elA) return { a_to_b: (samePolar ? "T'" : "T"), b_to_a: (samePolar ? "Q'" : "Q") };
+            
+            return { a_to_b: "?", b_to_a: "?" };
+        }
+
+        function calculate() {
+            let str = document.getElementById('inputNumber').value.replace(/[^0-9]/g, '');
+            if (str.length < 2) { alert("Vui lòng nhập ít nhất 2 số"); return; }
+            
+            let result = "Dãy số: " + str + "\n\n";
+            let shortResult = [];
+            
+            for (let i = 0; i < str.length - 1; i++) {
+                let n1 = parseInt(str[i]); n1 = (n1 === 0 ? 8 : (n1 === 9 ? 1 : n1));
+                let n2 = parseInt(str[i+1]); n2 = (n2 === 0 ? 8 : (n2 === 9 ? 1 : n2));
+                
+                let rel = getRelation(n1, n2);
+                result += `${bagua[n1].name}(${n1}) & ${bagua[n2].name}(${n2}): ${n1} là ${rel.a_to_b} của ${n2} - ${n2} là ${rel.b_to_a} của ${n1}\n`;
+                
+                // Thêm cả hai chiều vào mảng kết quả tinh gọn
+                shortResult.push(rel.a_to_b);
+                shortResult.push(rel.b_to_a);
+            }
+            
+            result += "\nKết quả tinh gọn: " + shortResult.join(" - ");
+            document.getElementById('output').innerText = result;
+        }
+
+        function copyResult() {
+            const text = document.getElementById('output').innerText;
+            navigator.clipboard.writeText(text).then(() => alert("Đã sao chép!"));
+        }
+    </script>
+</body>
+</html>
