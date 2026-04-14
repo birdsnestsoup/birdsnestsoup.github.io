@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Công Cụ Số Học & Dịch Lý</title>
+    <style>
+        :root { --primary: #1a73e8; --secondary: #34a853; --accent: #d93025; --bg: #f0f2f5; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
+        .container { width: 100%; max-width: 480px; }
+        h2 { text-align: center; color: #333; font-size: 1.1rem; margin: 15px 0 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .card { background: white; border-radius: 16px; padding: 15px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 1px solid #e8eaed; }
+        .que-input-group { margin-bottom: 15px; }
+        .que-input-group label { display: block; font-size: 0.8rem; font-weight: bold; color: #666; margin-bottom: 5px; }
+        .full-input { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 10px; font-size: 1.2rem; text-align: center; outline: none; }
+        .full-input:focus { border-color: var(--primary); }
+        .btn-action { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        #result-que { margin-top: 15px; display: none; text-align: center; }
+        .hexagram { display: flex; flex-direction: column-reverse; gap: 6px; align-items: center; margin: 15px 0; }
+        .line-wrapper { display: flex; align-items: center; gap: 10px; }
+        .line { width: 100px; height: 10px; background: #333; border-radius: 2px; }
+        .line.broken { background: transparent; display: flex; justify-content: space-between; }
+        .line.broken::before, .line.broken::after { content: ""; width: 44%; height: 100%; background: #333; border-radius: 2px; }
+        .dot { width: 7px; height: 7px; background: var(--accent); border-radius: 50%; visibility: hidden; }
+        .active .dot { visibility: visible; }
+        .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+        .label-group { display: flex; flex-direction: column; width: 45%; }
+        .label-group label { font-size: 10px; color: #888; font-weight: bold; margin-bottom: 3px; }
+        .config-input { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px; background: #f9f9f9; }
+        .inputs-wrapper { display: flex; gap: 5px; justify-content: space-between; }
+        .number-box { flex: 1; min-width: 0; height: 45px; text-align: center; font-size: 16px; font-weight: bold; border: 1px solid #dadce0; border-radius: 6px; outline: none; }
+        .number-box::-webkit-inner-spin-button { -webkit-appearance: none; }
+        .result-box { background: var(--primary) !important; color: white !important; border-color: var(--primary) !important; }
+        .title-badge { background: var(--primary); color: white; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: bold; }
+        .btn-reset { width: 100%; padding: 12px; margin: 10px 0 30px; border: none; border-radius: 10px; background: #ccc; color: #333; font-weight: bold; }
+        #batSanDisplay { margin-top: 15px; font-size: 0.9rem; text-align: left; }
+
+        /* Bát San styles */
+        .bs-normal { color: #333; }
+        .bs-zero { color: #111; font-weight: 900; }
+        .bs-five { color: #cc0000; font-weight: 900; }
+        .bs-mixed-zero { color: #222; font-weight: 900; }
+        .bs-mixed-five { color: #dd1111; font-weight: 900; }
+
+        .bs-pairs-line { margin: 4px 0; line-height: 1.8; }
+        .bs-section-title { font-weight: bold; margin-top: 10px; margin-bottom: 4px; color: #444; border-bottom: 1px solid #eee; padding-bottom: 3px; }
+        .bs-note { font-size: 0.78rem; color: #666; margin: 3px 0 3px 8px; line-height: 1.5; }
+        .bs-note-zero { color: #333; font-size: 0.78rem; margin: 3px 0 3px 8px; line-height: 1.5; }
+        .bs-note-five { color: #cc0000; font-size: 0.78rem; margin: 3px 0 3px 8px; line-height: 1.5; }
+        .bs-note-mixed { color: #7700aa; font-size: 0.78rem; margin: 3px 0 3px 8px; line-height: 1.5; }
+
+        .bs-stat-block { background: #f8f8f8; border-radius: 8px; padding: 8px 10px; margin-top: 8px; font-size: 0.82rem; }
+        .bs-stat-block .stat-row { display: flex; justify-content: space-between; padding: 2px 0; border-bottom: 1px solid #eee; }
+        .bs-stat-block .stat-row:last-child { border-bottom: none; }
+        .bs-stat-label { color: #555; }
+        .bs-stat-val { font-weight: bold; }
+
+        .bs-energy-block { margin-top: 10px; background: #fff8e1; border-radius: 8px; padding: 8px 10px; font-size: 0.82rem; border-left: 3px solid #f9a825; }
+        .bs-nhanh-block { margin-top: 8px; background: #e8f5e9; border-radius: 8px; padding: 8px 10px; font-size: 0.82rem; border-left: 3px solid #388e3c; }
+        .bs-bad-block { margin-top: 8px; background: #fce4ec; border-radius: 8px; padding: 8px 10px; font-size: 0.82rem; border-left: 3px solid #c62828; }
+
+        .bs-nghhanh-block { margin-top: 10px; background: #ede7f6; border-radius: 8px; padding: 8px 10px; font-size: 0.82rem; border-left: 3px solid #6a1b9a; }
+        .nh-row { margin: 2px 0; }
+
+        .verdict-good { color: #2e7d32; font-weight: bold; }
+        .verdict-bad { color: #c62828; font-weight: bold; }
+        .verdict-mixed { color: #e65100; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>1. Lập Quẻ & Bát San</h2>
+    <div class="card">
+        <div class="que-input-group">
+            <label>NHẬP DÃY SỐ</label>
+            <input type="number" id="queInput" class="full-input" placeholder="Ví dụ: 7100205339678">
+        </div>
+        <button class="btn-action" onclick="processAll()">TÍNH TOÁN</button>
+        <div id="result-que">
+            <div id="queName" style="font-size: 1.3rem; font-weight: 800; color: var(--primary);"></div>
+            <div id="haoDongTxt" style="color: var(--accent); font-weight: bold; font-size: 0.9rem; margin-top: 5px;"></div>
+            <div id="visualQue" class="hexagram"></div>
+        </div>
+        <div id="batSanDisplay"></div>
+    </div>
+
+    <hr style="width: 100%; border: 0; border-top: 1px dashed #bbb;">
+
+    <h2>2. Tìm Số Thỏa Mãn Tổng</h2>
+    <div class="card">
+        <div class="header-row">
+            <span class="title-badge">DÃY A</span>
+            <div class="label-group"><label>SỐ LƯỢNG</label><input type="number" id="count-A" class="config-input" value="3" min="3" max="7" onchange="build('A')"></div>
+            <div class="label-group"><label>TỔNG</label><input type="number" id="target-A" class="config-input" value="12" oninput="calc('A')"></div>
+        </div>
+        <div id="box-A" class="inputs-wrapper"></div>
+    </div>
+
+    <div class="card">
+        <div class="header-row">
+            <span class="title-badge" style="background:var(--secondary)">DÃY B</span>
+            <div class="label-group"><label>SỐ LƯỢNG</label><input type="number" id="count-B" class="config-input" value="3" min="3" max="7" onchange="build('B')"></div>
+            <div class="label-group"><label>TỔNG</label><input type="number" id="target-B" class="config-input" value="14" oninput="calc('B')"></div>
+        </div>
+        <div id="box-B" class="inputs-wrapper"></div>
+    </div>
+
+    <button class="btn-reset" onclick="window.location.reload()">LÀM MỚI TẤT CẢ</button>
+</div>
+
+<script>
+    // ===================== QUẺ DỊCH DATA =====================
+    const batQuai = [
+        { name: "Khôn", code: "000" }, { name: "Kiền", code: "111" }, { name: "Đoài", code: "011" }, { name: "Ly", code: "101" }, 
+        { name: "Chấn", code: "001" }, { name: "Tốn", code: "110" }, { name: "Khảm", code: "010" }, { name: "Cấn", code: "100" }
+    ];
+    const data64Que = {"111111":"Thuần Càn","000000":"Thuần Khôn","010001":"Thủy Lôi Truân","100010":"Sơn Thủy Mông","010111":"Thủy Thiên Nhu","111010":"Thiên Thủy Tụng","000010":"Địa Thủy Sư","010000":"Thủy Địa Tỷ","110111":"Phong Thiên Tiểu Súc","111011":"Thiên Trạch Lý","000111":"Địa Thiên Thái","111000":"Thiên Địa Bĩ","111101":"Thiên Hỏa Đồng Nhân","101111":"Hỏa Thiên Đại Hữu","000100":"Địa Sơn Khiêm","001000":"Lôi Địa Dự","011001":"Trạch Lôi Tùy","100110":"Sơn Phong Cổ","000011":"Địa Trạch Lâm","110000":"Phong Địa Quán","101001":"Hỏa Lôi Phệ Hạp","100101":"Sơn Hỏa Bí","100000":"Sơn Địa Bác","000001":"Địa Lôi Phục","111001":"Thiên Lôi Vô Vọng","100111":"Sơn Thiên Đại Súc","100001":"Sơn Lôi Di","011110":"Trạch Phong Đại Quá","010010":"Thuần Khảm","101101":"Thuần Ly","011100":"Trạch Sơn Hàm","001110":"Lôi Phong Hằng","111100":"Thiên Sơn Độn","001111":"Lôi Thiên Đại Tráng","101000":"Hỏa Địa Tấn","000101":"Địa Hỏa Minh Di","110101":"Phong Hỏa Gia Nhân","101011":"Hỏa Trạch Khuê","010100":"Thủy Sơn Kiển","001010":"Lôi Thủy Giải","100011":"Sơn Trạch Tổn","110001":"Phong Lôi Ích","011111":"Trạch Thiên Quải","111110":"Thiên Phong Cấu","011000":"Trạch Địa Tụy","000110":"Địa Phong Thăng","011010":"Trạch Thủy Khốn","010110":"Thủy Phong Tỉnh","011101":"Trạch Hỏa Cách","101110":"Hỏa Phong Đỉnh","001001":"Thuần Chấn","100100":"Thuần Cấn","110100":"Phong Sơn Tiệm","001011":"Lôi Trạch Quy Muội","001101":"Lôi Hỏa Phong","101100":"Hỏa Sơn Lữ","110110":"Thuần Tốn","011011":"Thuần Đoài","110010":"Phong Thủy Hoán","010011":"Thủy Trạch Tiết","110011":"Phong Trạch Trung Phu","001100":"Lôi Sơn Tiểu Quá","010101":"Thủy Hỏa Ký Tế","101010":"Hỏa Thủy Vị Tế"};
+
+    // ===================== BÁT SAN DATA =====================
+    const BS_PAIRS = {
+        "Sinh Khí":   ["14","41","67","76","39","93","28","82"],
+        "Thiên Y":    ["13","31","68","86","49","94","27","72"],
+        "Diên Niên":  ["19","91","78","87","34","43","26","62"],
+        "Phục Vị":    ["11","22","33","44","66","77","88","99"],
+        "Tuyệt Mạng": ["12","21","69","96","48","84","37","73"],
+        "Ngũ Quỷ":    ["18","81","79","97","36","63","24","42"],
+        "Lục Sát":    ["16","61","47","74","38","83","29","92"],
+        "Hoạ Hại":    ["17","71","89","98","46","64","32","23"]
+    };
+    const BS_GOOD = ["Sinh Khí","Thiên Y","Diên Niên","Phục Vị"];
+    const BS_BAD  = ["Tuyệt Mạng","Ngũ Quỷ","Lục Sát","Hoạ Hại"];
+
+    // Ngũ hành bát san
+    const BS_NHANH = {
+        "Sinh Khí":   { hanh: "Mộc",  am_duong: "dương" },
+        "Thiên Y":    { hanh: "Thổ",  am_duong: "dương" },
+        "Diên Niên":  { hanh: "Kim",  am_duong: "dương" },
+        "Phục Vị":    { hanh: "Thủy", am_duong: "âm"    },
+        "Ngũ Quỷ":    { hanh: "Hỏa",  am_duong: "âm"    },
+        "Tuyệt Mạng": { hanh: "Kim",  am_duong: "âm"    },
+        "Lục Sát":    { hanh: "Thủy", am_duong: "dương" },
+        "Hoạ Hại":    { hanh: "Thổ",  am_duong: "âm"    }
+    };
+
+    // Chế hóa
+    const BS_CHEHO = {
+        "Sinh Khí":  "Ngũ Quỷ",
+        "Thiên Y":   "Tuyệt Mạng",
+        "Diên Niên": "Lục Sát",
+        "Phục Vị":   "Hoạ Hại"
+    };
+
+    // Sinh khắc ngũ hành
+    const NH_KHAC = { "Kim":"Mộc","Mộc":"Thổ","Thổ":"Thủy","Thủy":"Hỏa","Hỏa":"Kim" };
+    const NH_SINH = { "Kim":"Thủy","Thủy":"Mộc","Mộc":"Hỏa","Hỏa":"Thổ","Thổ":"Kim" };
+
+    // ===================== HÀM TÌM BÁT SAN =====================
+    function getBatSanName(pair) {
+        for (let type in BS_PAIRS) {
+            if (BS_PAIRS[type].includes(pair)) return type;
+        }
+        return null;
+    }
+
+    /**
+     * Phân tích dãy số: trả về mảng các cặp bát san
+     * Loại 1: cặp liền kề thông thường (không có 0/5 chen)
+     * Loại 2: cặp có 0 chen giữa
+     * Loại 3: cặp có 5 chen giữa
+     * Loại 4: cặp có cả 0 và 5 chen giữa
+     */
+    function analyzeBatSan(val) {
+        // Bỏ số 0 ở đầu dãy
+        let s = val.replace(/^0+/, '');
+        if (s.length < 2) return [];
+
+        const results = [];
+
+        // Tìm tất cả các cặp số thực (bỏ qua 0 và 5)
+        // Lấy danh sách các vị trí và giá trị của số thực (không phải 0, không phải 5)
+        // Để xét cặp liền kề theo nghĩa: 2 số không phải 0/5 gần nhau nhất trong dãy
+
+        // ---- Bước 1: Cặp liền kề trực tiếp (không có 0/5 chen) ----
+        for (let i = 0; i < s.length - 1; i++) {
+            const a = s[i], b = s[i+1];
+            if (a === '0' || a === '5' || b === '0' || b === '5') continue;
+            const pair = a + b;
+            const name = getBatSanName(pair);
+            if (name) {
+                results.push({ pair, name, type: 'normal', idx: i });
+            }
+        }
+
+        // ---- Bước 2: Cặp có 0 hoặc 5 (hoặc cả hai) chen giữa ----
+        // Tìm tất cả vị trí các số thực (không phải 0, không phải 5)
+        const realPositions = [];
+        for (let i = 0; i < s.length; i++) {
+            if (s[i] !== '0' && s[i] !== '5') realPositions.push(i);
+        }
+
+        // Xét các cặp số thực liên tiếp nhau trong danh sách realPositions
+        for (let k = 0; k < realPositions.length - 1; k++) {
+            const posA = realPositions[k];
+            const posB = realPositions[k+1];
+
+            // Chuỗi chen giữa
+            const between = s.substring(posA + 1, posB);
+            if (between.length === 0) continue; // đã xử lý ở bước 1
+
+            const a = s[posA], b = s[posB];
+            const pair = a + b;
+            const name = getBatSanName(pair);
+            if (!name) continue;
+
+            // Phân tích chuỗi chen giữa
+            const betweenArr = between.split('');
+            const hasZero = betweenArr.includes('0');
+            const hasFive = betweenArr.includes('5');
+
+            if (!hasZero && !hasFive) continue; // không có 0/5, bỏ qua
+
+            // Đếm số lượng 0 và 5
+            const zeroCount = betweenArr.filter(c => c === '0').length;
+            const fiveCount = betweenArr.filter(c => c === '5').length;
+
+            if (hasZero && !hasFive) {
+                // Chỉ có 0 chen giữa
+                results.push({ pair, name, type: 'zero', zeroCount, fiveCount: 0, between, idx: posA });
+            } else if (hasFive && !hasZero) {
+                // Chỉ có 5 chen giữa
+                results.push({ pair, name, type: 'five', fiveCount, zeroCount: 0, between, idx: posA });
+            } else {
+                // Cả 0 và 5 chen giữa
+                // Xác định chủ đạo: tính tổng lực vị trí
+                const totalLen = betweenArr.length;
+                let zeroForce = 0, fiveForce = 0;
+                for (let p = 0; p < betweenArr.length; p++) {
+                    const luc = totalLen - p; // vị trí đầu có lực cao nhất
+                    if (betweenArr[p] === '0') zeroForce += luc;
+                    else if (betweenArr[p] === '5') fiveForce += luc;
+                }
+                const dominant = zeroForce >= fiveForce ? 'zero' : 'five';
+                results.push({ pair, name, type: 'mixed', dominant, zeroForce, fiveForce, zeroCount, fiveCount, between, idx: posA });
+            }
+        }
+
+        return results;
+    }
+
+    // ===================== RENDER BÁT SAN =====================
+    function renderBatSanItem(item) {
+        const isGood = BS_GOOD.includes(item.name);
+        const goodBad = isGood ? '✦' : '✧';
+
+        if (item.type === 'normal') {
+            return `<span class="bs-normal">${item.pair}: ${item.name}</span>`;
+        }
+
+        if (item.type === 'zero') {
+            const marks = '!'.repeat(item.zeroCount);
+            let desc = '';
+            if (isGood) desc = 'Nửa tốt nửa xấu, có lúc sa sút bất ngờ';
+            else desc = 'Xấu ẩn tàng, có lúc trỗi dậy bất ngờ';
+            return `<span class="bs-zero" title="${desc}">${item.pair}: ${item.name} ${marks}</span>`;
+        }
+
+        if (item.type === 'five') {
+            const marks = '*'.repeat(item.fiveCount);
+            let desc = '';
+            if (isGood) desc = 'Tốt mạnh, kéo dài, bền vững';
+            else desc = 'Xấu dồn dập, mạnh và kéo dài';
+            return `<span class="bs-five" title="${desc}">${item.pair}: ${item.name} ${marks}</span>`;
+        }
+
+        if (item.type === 'mixed') {
+            let marks = '';
+            let cls = '';
+            let desc = '';
+            if (item.dominant === 'zero') {
+                // 0 chủ đạo, ! trội
+                const exMarks = '!'.repeat(item.zeroCount);
+                const subMarks = '*'.repeat(item.fiveCount);
+                marks = exMarks + subMarks;
+                cls = 'bs-mixed-zero';
+                if (isGood) desc = 'Vô định chủ đạo, có lúc bùng phát lực tốt bất ngờ';
+                else desc = 'Vô định chủ đạo, có lúc bùng phát xấu bất ngờ';
+            } else {
+                // 5 chủ đạo, * trội
+                const exMarks = '*'.repeat(item.fiveCount);
+                const subMarks = '!'.repeat(item.zeroCount);
+                marks = exMarks + subMarks;
+                cls = 'bs-mixed-five';
+                if (isGood) desc = 'Tốt mạnh chủ đạo, có lúc đột ngột thoái lực';
+                else desc = 'Xấu dồn dập chủ đạo, có lúc đột ngột yếu đi';
+            }
+            return `<span class="${cls}" title="${desc}">${item.pair}: ${item.name} ${marks}</span>`;
+        }
+
+        return '';
+    }
+
+    // ===================== THỐNG KÊ & PHÂN TÍCH =====================
+    function analyzeStats(items) {
+        // Đếm từng loại bát san (chỉ tính cặp bình thường và chen giữa, không double-count)
+        const count = {};
+        for (let t in BS_PAIRS) count[t] = 0;
+        items.forEach(it => { if (count[it.name] !== undefined) count[it.name]++; });
+
+        const goodCount = BS_GOOD.reduce((s, n) => s + count[n], 0);
+        const badCount  = BS_BAD.reduce((s, n) => s + count[n], 0);
+
+        return { count, goodCount, badCount };
+    }
+
+    function analyzePairInteraction(items) {
+        // Chỉ lấy cặp liền kề (type=normal hoặc đại diện cặp gần nhau)
+        // Xét liên tiếp các bát san liền kề
+        const lines = [];
+        for (let i = 0; i < items.length - 1; i++) {
+            const a = items[i].name, b = items[i+1].name;
+            const aGood = BS_GOOD.includes(a), bGood = BS_GOOD.includes(b);
+            if (aGood && bGood) lines.push(`${a} → ${b}: <span class="verdict-good">Dòng năng lượng ổn định</span>`);
+            else if (!aGood && !bGood) lines.push(`${a} → ${b}: <span class="verdict-bad">Tăng rối loạn, bất cập</span>`);
+            else {
+                // Kiểm tra chế hóa
+                let cheHoa = false;
+                for (let g in BS_CHEHO) {
+                    if ((a === g && b === BS_CHEHO[g]) || (b === g && a === BS_CHEHO[g])) {
+                        cheHoa = true;
+                        lines.push(`${a} → ${b}: <span class="verdict-mixed">Chế hoá (${g} hoá giải ${BS_CHEHO[g]})</span>`);
+                        break;
+                    }
+                }
+                if (!cheHoa) lines.push(`${a} → ${b}: <span class="verdict-mixed">Giao thoa tốt - xấu</span>`);
+            }
+        }
+        return lines;
+    }
+
+    function analyzeNguHanh(items) {
+        // Tổng hợp ngũ hành
+        const nhCount = { "Mộc":0,"Hỏa":0,"Thổ":0,"Kim":0,"Thủy":0 };
+        items.forEach(it => {
+            const nh = BS_NHANH[it.name];
+            if (nh) nhCount[nh.hanh]++;
+        });
+
+        // Tìm ngũ hành chủ đạo
+        let maxNH = '', maxVal = 0;
+        for (let nh in nhCount) {
+            if (nhCount[nh] > maxVal) { maxVal = nhCount[nh]; maxNH = nh; }
+        }
+
+        // Sinh khắc giữa các cặp liền kề
+        const khacLines = [];
+        for (let i = 0; i < items.length - 1; i++) {
+            const nhA = BS_NHANH[items[i].name]?.hanh;
+            const nhB = BS_NHANH[items[i+1].name]?.hanh;
+            if (!nhA || !nhB) continue;
+            if (NH_KHAC[nhA] === nhB) {
+                khacLines.push(`${nhA} khắc ${nhB} (${items[i].name} → ${items[i+1].name})`);
+            } else if (NH_SINH[nhA] === nhB) {
+                khacLines.push(`${nhA} sinh ${nhB} (${items[i].name} → ${items[i+1].name})`);
+            }
+        }
+
+        // Ngũ hành chủ đạo thuộc nhóm tốt hay xấu
+        let mainNhGroup = [];
+        for (let bsName in BS_NHANH) {
+            if (BS_NHANH[bsName].hanh === maxNH) mainNhGroup.push(bsName);
+        }
+        const goodNH = mainNhGroup.filter(n => BS_GOOD.includes(n));
+        const badNH  = mainNhGroup.filter(n => BS_BAD.includes(n));
+
+        return { nhCount, maxNH, maxVal, khacLines, goodNH, badNH };
+    }
+
+    // ===================== MAIN PROCESS =====================
+    function processAll() {
+        const val = document.getElementById('queInput').value;
+        if (val.length < 6) { alert("Dãy số quá ngắn"); return; }
+
+        // 1. Logic Quẻ Dịch
+        let len = val.length;
+        let mid = Math.floor(len / 2);
+        let sTruoc = val.substring(0, len % 2 === 0 ? mid : mid);
+        let sSau = val.substring(len % 2 === 0 ? mid : mid);
+
+        let tTruoc = 0; for(let c of sTruoc) tTruoc += parseInt(c);
+        let tSau = 0; for(let c of sSau) tSau += parseInt(c);
+        let upIdx = tTruoc % 8; let lowIdx = tSau % 8;
+        let dong = (tTruoc + tSau) % 6 || 6;
+        let code = batQuai[upIdx].code + batQuai[lowIdx].code;
+
+        document.getElementById('result-que').style.display = 'block';
+        document.getElementById('queName').innerText = data64Que[code];
+        document.getElementById('haoDongTxt').innerText = `Động hào ${dong}`;
+        const visual = document.getElementById('visualQue'); visual.innerHTML = '';
+        code.split('').reverse().forEach((char, i) => {
+            const wrap = document.createElement('div'); wrap.className = 'line-wrapper' + (i+1 === dong ? ' active' : '');
+            const line = document.createElement('div'); line.className = char === '1' ? 'line' : 'line broken';
+            wrap.appendChild(line); wrap.appendChild(document.createElement('div')).className = 'dot';
+            visual.appendChild(wrap);
+        });
+
+        // 2. Logic Bát San mới
+        const items = analyzeBatSan(val);
+        const stats = analyzeStats(items);
+        const pairLines = analyzePairInteraction(items);
+        const nhData = analyzeNguHanh(items);
+
+        let html = `<div class="bs-section-title">🔢 Phân tích Bát San:</div>`;
+        html += `<div class="bs-pairs-line">`;
+
+        // Phân nhóm: cặp thường | cặp có 0 chen | cặp có 5 chen | cặp hỗn hợp
+        const normalItems = items.filter(i => i.type === 'normal');
+        const zeroItems   = items.filter(i => i.type === 'zero');
+        const fiveItems   = items.filter(i => i.type === 'five');
+        const mixedItems  = items.filter(i => i.type === 'mixed');
+
+        // Hiển thị tất cả cặp theo thứ tự xuất hiện
+        if (items.length === 0) {
+            html += '<em>Không tìm thấy cặp Bát San nào.</em>';
+        } else {
+            html += items.map(it => renderBatSanItem(it)).join(' | ');
+        }
+        html += `</div>`;
+
+        // ---- Chú thích cặp 0 chen ----
+        if (zeroItems.length > 0 || mixedItems.some(m => m.dominant === 'zero')) {
+            html += `<div class="bs-section-title" style="color:#111">⚠ Bát San ẩn tàng (số 0 chen giữa — dấu !):</div>`;
+            html += `<div class="bs-note-zero">`;
+            html += `Những cặp này hoạt động <b>không có đầu không có cuối</b>, không chủ ý, vô tư. `;
+            html += `Bát san <b>tốt</b> bị 0 chen: nửa tốt nửa xấu, càng nhiều <b>!</b> càng sa sút. `;
+            html += `Bát san <b>xấu</b> bị 0 chen: có thời điểm thoái lực, nhưng đột ngột trỗi dậy bất ngờ, không kịp trở tay. `;
+            html += `Càng nhiều <b>!</b> càng khó lường, không đoán định được thời điểm.`;
+            html += `</div>`;
+        }
+
+        // ---- Chú thích cặp 5 chen ----
+        if (fiveItems.length > 0 || mixedItems.some(m => m.dominant === 'five')) {
+            html += `<div class="bs-section-title" style="color:#cc0000">🔴 Bát San kích lực (số 5 chen giữa — dấu *):</div>`;
+            html += `<div class="bs-note-five">`;
+            html += `Những cặp này có <b>lực được khuếch đại mạnh và kéo dài</b>. `;
+            html += `Bát san <b>tốt</b> gặp 5: tốt mạnh, bền, kéo dài theo tính chất đó. `;
+            html += `Bát san <b>xấu</b> gặp 5: xấu dồn dập, không ngoi lên được, xô đẩy áp lực mạnh mẽ về phía sau. `;
+            html += `Các bát san phía sau không đủ lượng để hoá giải là bất cập. Càng nhiều <b>*</b> càng mạnh mẽ và kéo dài.`;
+            html += `</div>`;
+        }
+
+        // ---- Chú thích cặp hỗn hợp 0+5 ----
+        if (mixedItems.length > 0) {
+            html += `<div class="bs-section-title" style="color:#7700aa">🌀 Bát San hỗn hợp (vừa 0 vừa 5 chen giữa — bí ẩn nhất):</div>`;
+            html += `<div class="bs-note-mixed">`;
+            mixedItems.forEach(it => {
+                const isGood = BS_GOOD.includes(it.name);
+                if (it.dominant === 'zero') {
+                    html += `<b>${it.pair} (${it.name})</b>: 0 chủ đạo, 5 phụ — `;
+                    html += isGood ? `Vô định là chủ, nhưng có time bùng phát lực tốt bất ngờ.`
+                                   : `Vô định là chủ, nhưng có time bùng phát xấu bất ngờ.`;
+                } else {
+                    html += `<b>${it.pair} (${it.name})</b>: 5 chủ đạo, 0 phụ — `;
+                    html += isGood ? `Tốt mạnh chủ đạo (~70% thời gian), có lúc đột ngột thoái lực.`
+                                   : `Xấu dồn dập chủ đạo (~70% thời gian), có lúc đột ngột yếu đi bất ngờ.`;
+                }
+                html += `<br>`;
+            });
+            html += `</div>`;
+        }
+
+        // ---- Bảng thống kê ----
+        html += `<div class="bs-section-title">📊 Thống kê Bát San:</div>`;
+        html += `<div class="bs-stat-block">`;
+        for (let t in BS_PAIRS) {
+            if (stats.count[t] > 0) {
+                const isG = BS_GOOD.includes(t);
+                const colorStyle = isG ? 'color:#2e7d32' : 'color:#c62828';
+                html += `<div class="stat-row"><span class="bs-stat-label">${isG ? '✦' : '✧'} ${t}</span><span class="bs-stat-val" style="${colorStyle}">${stats.count[t]} lần</span></div>`;
+            }
+        }
+        html += `<div class="stat-row"><span class="bs-stat-label"><b>Tổng tốt</b></span><span class="bs-stat-val verdict-good">${stats.goodCount}</span></div>`;
+        html += `<div class="stat-row"><span class="bs-stat-label"><b>Tổng xấu</b></span><span class="bs-stat-val verdict-bad">${stats.badCount}</span></div>`;
+        html += `</div>`;
+
+        // ---- Dòng năng lượng tổng thể ----
+        html += `<div class="bs-section-title">⚡ Giao thoa năng lượng dãy số:</div>`;
+        const ratio = stats.goodCount + stats.badCount > 0 ? stats.goodCount / (stats.goodCount + stats.badCount) : 0.5;
+        let dongNangLuong = '';
+        if (ratio >= 0.7) dongNangLuong = `<span class="verdict-good">Dòng năng lượng ổn định, thiên về cát tường</span>`;
+        else if (ratio <= 0.3) dongNangLuong = `<span class="verdict-bad">Dòng năng lượng bất cập, rối loạn, nhiều trở ngại</span>`;
+        else dongNangLuong = `<span class="verdict-mixed">Dòng năng lượng giao thoa, tốt xấu xen lẫn</span>`;
+
+        html += `<div class="bs-energy-block">${dongNangLuong}`;
+
+        // Chế hóa
+        let cheHoaFound = [];
+        for (let g in BS_CHEHO) {
+            const bad = BS_CHEHO[g];
+            if (stats.count[g] > 0 && stats.count[bad] > 0) {
+                cheHoaFound.push(`<span class="verdict-good">${g} chế hoá ${bad}</span>`);
+            }
+        }
+        if (cheHoaFound.length > 0) {
+            html += `<br><small>Chế hoá hiện diện: ${cheHoaFound.join(', ')}</small>`;
+        }
+        html += `</div>`;
+
+        // ---- Tương tác cặp liền kề ----
+        if (pairLines.length > 0) {
+            html += `<div class="bs-section-title">🔗 Tương tác cặp Bát San liền kề:</div>`;
+            html += `<div class="bs-stat-block">`;
+            pairLines.forEach(line => {
+                html += `<div class="stat-row"><span style="font-size:0.8rem">${line}</span></div>`;
+            });
+            html += `</div>`;
+        }
+
+        // ---- Ngũ hành ----
+        html += `<div class="bs-section-title">🌿 Ngũ hành Bát San:</div>`;
+        html += `<div class="bs-nghhanh-block">`;
+        const nhNames = ["Mộc","Hỏa","Thổ","Kim","Thủy"];
+        nhNames.forEach(nh => {
+            if (nhData.nhCount[nh] > 0) {
+                const bar = '▮'.repeat(nhData.nhCount[nh]);
+                html += `<div class="nh-row"><b>${nh}</b>: ${bar} (${nhData.nhCount[nh]} cặp)</div>`;
+            }
+        });
+
+        if (nhData.maxNH && nhData.maxVal > 0) {
+            html += `<div style="margin-top:5px;"><b>Ngũ hành chủ đạo: ${nhData.maxNH}</b> (${nhData.maxVal} cặp)<br>`;
+            if (nhData.goodNH.length > 0 && nhData.badNH.length > 0) {
+                html += `<span class="verdict-mixed">Thuộc cả bát san tốt (${nhData.goodNH.join(', ')}) và xấu (${nhData.badNH.join(', ')})</span>`;
+            } else if (nhData.goodNH.length > 0) {
+                html += `<span class="verdict-good">Thuộc bát san tốt: ${nhData.goodNH.join(', ')}</span>`;
+            } else if (nhData.badNH.length > 0) {
+                html += `<span class="verdict-bad">Thuộc bát san xấu: ${nhData.badNH.join(', ')}</span>`;
+            }
+            html += `</div>`;
+        }
+
+        if (nhData.khacLines.length > 0) {
+            html += `<div style="margin-top:5px;font-size:0.78rem;color:#555">Sinh khắc liền kề:<br>`;
+            nhData.khacLines.forEach(l => { html += `• ${l}<br>`; });
+            html += `</div>`;
+        }
+        html += `</div>`;
+
+        document.getElementById('batSanDisplay').innerHTML = html;
+    }
+
+    // ===================== TÌM SỐ THỎA MÃN TỔNG =====================
+    function build(type) {
+        const n = parseInt(document.getElementById(`count-${type}`).value);
+        const container = document.getElementById(`box-${type}`);
+        container.innerHTML = '';
+        for (let i = 0; i < n; i++) {
+            const input = document.createElement('input');
+            input.type = 'number'; input.className = 'number-box' + (i === n - 1 ? ' result-box' : ` input-${type}`);
+            if (i === n - 1) { input.readOnly = true; input.id = `res-${type}`; }
+            else { input.addEventListener('input', () => calc(type)); }
+            container.appendChild(input);
+        }
+    }
+    function calc(type) {
+        const target = parseFloat(document.getElementById(`target-${type}`).value) || 0;
+        let sum = 0, filled = 0, inputs = document.querySelectorAll(`.input-${type}`);
+        inputs.forEach(el => { if (el.value !== "") { sum += parseFloat(el.value); filled++; } });
+        if (filled === inputs.length) document.getElementById(`res-${type}`).value = target - sum;
+    }
+    window.onload = () => { build('A'); build('B'); };
+</script>
+</body>
+</html>
