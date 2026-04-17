@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bảng Liên Hoa Độn</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Cinzel+Decorative:wght@400;700&display=swap');
+
+  :root {
+    --bg: #0d0a07;
+    --paper: #1a1410;
+    --border: #5c3d1e;
+    --gold: #c9922a;
+    --gold-light: #e8b84b;
+    --red: #8b1a1a;
+    --text: #e8d9c0;
+    --text-dim: #8a7a65;
+    --glow: rgba(201,146,42,0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Serif', serif;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 20% 20%, rgba(100,50,10,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(80,20,10,0.12) 0%, transparent 60%);
+  }
+
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+  }
+
+  h1 {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1.5rem;
+    color: var(--gold-light);
+    text-align: center;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+    text-shadow: 0 0 30px rgba(201,146,42,0.4);
+  }
+
+  .subtitle {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    margin-bottom: 36px;
+    font-style: italic;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 28px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 10px;
+    background: var(--paper);
+    border: none;
+    color: var(--text-dim);
+    font-family: 'Noto Serif', serif;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-right: 1px solid var(--border);
+  }
+  .tab-btn:last-child { border-right: none; }
+  .tab-btn.active {
+    background: rgba(201,146,42,0.12);
+    color: var(--gold-light);
+  }
+  .tab-btn:hover:not(.active) {
+    background: rgba(201,146,42,0.06);
+    color: var(--text);
+  }
+
+  /* PANELS */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* INPUT SECTION */
+  .input-section {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 24px;
+    margin-bottom: 28px;
+  }
+
+  .input-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    min-width: 140px;
+  }
+
+  label {
+    font-size: 0.78rem;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  input[type="number"] {
+    background: rgba(0,0,0,0.4);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: 'Noto Serif', serif;
+    font-size: 1rem;
+    padding: 8px 12px;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+  input[type="number"]:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 2px var(--glow);
+  }
+
+  .hint {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+
+  /* BUTTONS */
+  .btn-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 10px 24px;
+    border: 1px solid var(--gold);
+    border-radius: 4px;
+    background: transparent;
+    color: var(--gold-light);
+    font-family: 'Noto Serif', serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+  .btn:hover {
+    background: rgba(201,146,42,0.15);
+    box-shadow: 0 0 12px var(--glow);
+  }
+  .btn.primary {
+    background: rgba(201,146,42,0.12);
+  }
+
+  .btn-random {
+    border-color: var(--text-dim);
+    color: var(--text-dim);
+    font-size: 0.82rem;
+  }
+  .btn-random:hover {
+    border-color: var(--text);
+    color: var(--text);
+    background: rgba(255,255,255,0.04);
+  }
+
+  /* RESULT AREA */
+  .result-area {
+    display: none;
+  }
+  .result-area.visible {
+    display: block;
+    animation: fadeIn 0.4s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== QUẺ CARDS ===== */
+  .que-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .que-card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    flex: 1 1 220px;
+    min-width: 200px;
+    max-width: 260px;
+  }
+
+  .que-card.chinh-card {
+    border-color: var(--gold);
+    box-shadow: 0 0 16px rgba(201,146,42,0.12);
+  }
+
+  .card-header {
+    background: rgba(201,146,42,0.08);
+    border-bottom: 1px solid var(--border);
+    padding: 7px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card-title {
+    font-size: 0.72rem;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .hao-badge {
+    font-size: 0.68rem;
+    color: #e07070;
+    background: rgba(200,80,80,0.12);
+    border: 1px solid rgba(200,80,80,0.3);
+    border-radius: 10px;
+    padding: 1px 7px;
+  }
+
+  /* 3-column inner layout: Chính | Hỗ | Biến */
+  .que-cols {
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr 1px 1fr;
+    gap: 0;
+  }
+
+  .col-divider {
+    background: rgba(92,61,30,0.5);
+    width: 1px;
+  }
+
+  .que-col {
+    padding: 10px 6px 12px;
+    text-align: center;
+  }
+
+  .col-head {
+    font-size: 0.62rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  /* Thượng / Hạ rows inside each column */
+  .que-thuong {
+    font-size: 0.95rem;
+    font-weight: bold;
+    margin-bottom: 4px;
+    line-height: 1.4;
+  }
+
+  .que-ha {
+    font-size: 0.95rem;
+    font-weight: bold;
+    line-height: 1.4;
+  }
+
+  .sep-line {
+    border: none;
+    border-top: 1px solid rgba(92,61,30,0.4);
+    margin: 4px auto;
+    width: 60%;
+  }
+
+  /* colors per column */
+  .col-chinh .que-thuong, .col-chinh .que-ha { color: #e8c97a; }
+  .col-ho .que-thuong, .col-ho .que-ha { color: #9dbfcf; }
+  .col-bien .que-thuong, .col-bien .que-ha { color: #c9a2e0; }
+
+  /* COPY SECTION */
+  .copy-section {
+    background: rgba(0,0,0,0.35);
+    border: 1px solid rgba(92,61,30,0.5);
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 14px;
+  }
+
+  .copy-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .copy-label {
+    font-size: 0.72rem;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .btn-copy {
+    padding: 6px 18px;
+    border: 1px solid var(--gold);
+    border-radius: 4px;
+    background: rgba(201,146,42,0.1);
+    color: var(--gold-light);
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Noto Serif', serif;
+    letter-spacing: 0.05em;
+  }
+  .btn-copy:hover { background: rgba(201,146,42,0.22); box-shadow: 0 0 10px var(--glow); }
+  .btn-copy.copied { color: #6dbf6d; border-color: #6dbf6d; background: rgba(100,200,100,0.08); }
+
+  .copy-text {
+    font-family: 'Courier New', monospace;
+    font-size: 0.78rem;
+    color: var(--text);
+    white-space: pre;
+    line-height: 1.75;
+    overflow-x: auto;
+  }
+
+  /* responsive */
+  @media (max-width: 560px) {
+    .que-card { min-width: 160px; }
+    .que-thuong, .que-ha { font-size: 0.82rem; }
+    h1 { font-size: 1.1rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Bảng Liên Hoa Độn</h1>
+  <p class="subtitle">Lập quẻ theo phương pháp Mai Hoa</p>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab(1)">Tính năng 1 — 2 số</button>
+    <button class="tab-btn" onclick="switchTab(2)">Tính năng 2 — 3 số</button>
+  </div>
+
+  <!-- TAB 1 -->
+  <div class="tab-panel active" id="panel1">
+    <div class="input-section">
+      <div class="input-row">
+        <div class="input-group">
+          <label>Số Thượng</label>
+          <input type="number" id="t1_thuong" min="1" placeholder="vd: 1">
+        </div>
+        <div class="input-group">
+          <label>Số Hạ</label>
+          <input type="number" id="t1_ha" min="1" placeholder="vd: 2">
+        </div>
+      </div>
+      <p class="hint" style="margin-bottom:16px;">Hào động = (Thượng + Hạ) ÷ 6 lấy số dư</p>
+      <div class="btn-row">
+        <button class="btn primary" onclick="compute(1)">Lập Quẻ</button>
+        <button class="btn btn-random" onclick="randomInput(1)">Ngẫu Nhiên</button>
+        <button class="btn btn-random" onclick="clearAll(1)">Xoá</button>
+      </div>
+    </div>
+    <div class="result-area" id="result1"></div>
+  </div>
+
+  <!-- TAB 2 -->
+  <div class="tab-panel" id="panel2">
+    <div class="input-section">
+      <div class="input-row">
+        <div class="input-group">
+          <label>Số Thượng</label>
+          <input type="number" id="t2_thuong" min="1" placeholder="vd: 5">
+        </div>
+        <div class="input-group">
+          <label>Số Hạ</label>
+          <input type="number" id="t2_ha" min="1" placeholder="vd: 8">
+        </div>
+        <div class="input-group">
+          <label>Số Hào Động</label>
+          <input type="number" id="t2_hao" min="1" placeholder="vd: 3">
+          <span class="hint">Số này ÷ 6 lấy dư → hào động</span>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn primary" onclick="compute(2)">Lập Quẻ</button>
+        <button class="btn btn-random" onclick="randomInput(2)">Ngẫu Nhiên</button>
+        <button class="btn btn-random" onclick="clearAll(2)">Xoá</button>
+      </div>
+    </div>
+    <div class="result-area" id="result2"></div>
+  </div>
+</div>
+
+<script>
+// ===== DATA =====
+const QUE_TEN = ['', 'Kiền', 'Đoài', 'Ly', 'Chấn', 'Tốn', 'Khảm', 'Cấn', 'Khôn'];
+
+// Binary representation (nhìn từ trên xuống: hào3, hào2, hào1)
+const QUE_BIT = {
+  1: [1,1,1], // Kiền
+  2: [0,1,1], // Đoài
+  3: [1,0,1], // Ly
+  4: [0,0,1], // Chấn
+  5: [1,1,0], // Tốn
+  6: [0,1,0], // Khảm
+  7: [1,0,0], // Cấn
+  8: [0,0,0], // Khôn
+};
+
+// Bit array → quẻ số
+function bitsToQue(b3, b2, b1) {
+  const key = `${b3}${b2}${b1}`;
+  const map = {'111':1,'011':2,'101':3,'001':4,'110':5,'010':6,'100':7,'000':8};
+  return map[key];
+}
+
+// ===== BIẾN QUẺ =====
+// thuong: quẻ số (1-8), hao: 4,5,6
+// ha: quẻ số, hao: 1,2,3
+function bienQue(queNum, hao, isThong) {
+  // lấy bits của quẻ: [hào3, hào2, hào1]
+  let b = [...QUE_BIT[queNum]];
+  // vị trí bit cần đảo (hào trong quẻ đơn)
+  // Thượng: hào4→hào1 quẻ, hào5→hào2 quẻ, hào6→hào3 quẻ
+  // Hạ: hào1→hào1 quẻ, hào2→hào2 quẻ, hào3→hào3 quẻ
+  let viTriBit; // index trong mảng [hào3,hào2,hào1], 0=hào3, 1=hào2, 2=hào1
+  if (isThong === 'thuong') {
+    // hào4→quẻ hào1 (index 2), hào5→quẻ hào2 (index 1), hào6→quẻ hào3 (index 0)
+    viTriBit = [null, null, null, null, 2, 1, 0][hao];
+  } else {
+    // hào1→quẻ hào1 (index 2), hào2→quẻ hào2 (index 1), hào3→quẻ hào3 (index 0)
+    viTriBit = [null, 2, 1, 0][hao];
+  }
+  b[viTriBit] = b[viTriBit] === 1 ? 0 : 1;
+  return bitsToQue(b[0], b[1], b[2]);
+}
+
+// ===== HỖ QUẺ =====
+function hoQue(thuong, ha) {
+  const bT = QUE_BIT[thuong]; // [hào3T, hào2T, hào1T]
+  const bH = QUE_BIT[ha];     // [hào3H, hào2H, hào1H]
+
+  // Hạ hỗ: hào1,hào2 = hào2,hào3 của Hạ; hào3 = hào1 của Thượng
+  // QUE_BIT index: [2]=hào3, [1]=hào2, [0]=hào1 ... nhưng ta dùng [hào3,hào2,hào1]
+  // hào1 của quẻ = index 2, hào2=index 1, hào3=index 0
+  const hoHa_hao1 = bH[1]; // hào2 của Hạ
+  const hoHa_hao2 = bH[0]; // hào3 của Hạ
+  const hoHa_hao3 = bT[2]; // hào1 của Thượng
+  const hoHaQue = bitsToQue(hoHa_hao3, hoHa_hao2, hoHa_hao1);
+
+  // Thượng hỗ: hào1 = hào3 của Hạ; hào2,hào3 = hào1,hào2 của Thượng
+  const hoThuong_hao1 = bH[0]; // hào3 của Hạ
+  const hoThuong_hao2 = bT[2]; // hào1 của Thượng
+  const hoThuong_hao3 = bT[1]; // hào2 của Thượng
+  const hoThuongQue = bitsToQue(hoThuong_hao3, hoThuong_hao2, hoThuong_hao1);
+
+  return { thuong: hoThuongQue, ha: hoHaQue };
+}
+
+// ===== CHIA 8 / CHIA 6 =====
+function chia8(n) {
+  if (n <= 0) return 8;
+  let r = n % 8;
+  return r === 0 ? 8 : r;
+}
+function chia6(n) {
+  if (n <= 0) return 6;
+  let r = n % 6;
+  return r === 0 ? 6 : r;
+}
+
+// ===== LẬP MỘT QUẺ =====
+function lapQue(sT, sH, sD) {
+  // sT, sH: số gốc (đã qua chia8), sD: hào động (đã qua chia6)
+  const thuong = chia8(sT);
+  const ha = chia8(sH);
+  const hao = chia6(sD);
+
+  // Hỗ
+  const ho = hoQue(thuong, ha);
+
+  // Biến
+  let bienThuong = thuong, bienHa = ha;
+  if (hao >= 4 && hao <= 6) {
+    bienThuong = bienQue(thuong, hao, 'thuong');
+  } else if (hao >= 1 && hao <= 3) {
+    bienHa = bienQue(ha, hao, 'ha');
+  }
+
+  return {
+    thuong, ha, hao,
+    hoThuong: ho.thuong, hoHa: ho.ha,
+    bienThuong, bienHa,
+    sT: thuong, sH: ha // số chuẩn sau chia8
+  };
+}
+
+// ===== SỐ VÒNG ĐỘN =====
+function soVong(hao) {
+  if (hao === 3 || hao === 6) return 5;
+  if (hao === 1 || hao === 4) return 9;
+  if (hao === 2 || hao === 5) return 13;
+  return 5;
+}
+
+// ===== TÍNH DÃY QUẺ =====
+function tinhDay(sT0, sH0, sD0) {
+  const q1 = lapQue(sT0, sH0, sD0);
+  const maxLan = soVong(q1.hao);
+  const results = [q1];
+
+  // Số "hiện tại" để cộng: sau mỗi lần là số trước chia8/chia6 rồi + offset
+  // Nhưng logic: lấy số SAU KHI chia (tức là quẻ số 1-8 và hào 1-6) rồi cộng
+  let curT = q1.sT;
+  let curH = q1.sH; // = chia8(sH0)... nhưng để chính xác ta lưu số trước chia
+  let curD = q1.hao;
+
+  // Thực ra: lần 2 lấy số Thượng/Hạ/Động ở lần 1 (là kết quả chia8/chia6) cộng offset
+  for (let i = 2; i <= maxLan; i++) {
+    const newT = curT + 4;
+    const newH = curH + 6;
+    const newD = curD + 4;
+    const q = lapQue(newT, newH, newD);
+    results.push(q);
+    curT = chia8(newT);
+    curH = chia8(newH);
+    curD = chia6(newD);
+  }
+
+  return results;
+}
+
+// ===== RENDER =====
+function ten(num) { return QUE_TEN[num] || '?'; }
+function padR(str, n) { return str.padEnd(n, ' '); }
+
+function makeCard(q, idx) {
+  const isChinh = idx === 0;
+  const label = isChinh ? 'Quẻ Chính' : `Không Thời ${idx + 1}`;
+  return `
+  <div class="que-card ${isChinh ? 'chinh-card' : ''}">
+    <div class="card-header">
+      <span class="card-title">${idx + 1}. ${label}</span>
+      <span class="hao-badge">Hào ${q.hao} động</span>
+    </div>
+    <div class="que-cols">
+      <div class="que-col col-chinh">
+        <div class="col-head">Chính</div>
+        <div class="que-thuong">${ten(q.thuong)}</div>
+        <hr class="sep-line">
+        <div class="que-ha">${ten(q.ha)}</div>
+      </div>
+      <div class="col-divider"></div>
+      <div class="que-col col-ho">
+        <div class="col-head">Hỗ</div>
+        <div class="que-thuong">${ten(q.hoThuong)}</div>
+        <hr class="sep-line">
+        <div class="que-ha">${ten(q.hoHa)}</div>
+      </div>
+      <div class="col-divider"></div>
+      <div class="que-col col-bien">
+        <div class="col-head">Biến</div>
+        <div class="que-thuong">${ten(q.bienThuong)}</div>
+        <hr class="sep-line">
+        <div class="que-ha">${ten(q.bienHa)}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderResults(containerId, results, sT0Raw, sH0Raw, sD0Raw) {
+  const area = document.getElementById(containerId);
+  area.innerHTML = '';
+  area.classList.add('visible');
+
+  // Cards
+  let cardsHTML = `<div class="que-grid">`;
+  results.forEach((q, i) => { cardsHTML += makeCard(q, i); });
+  cardsHTML += `</div>`;
+
+  // Copy section
+  const copyText = buildCopyText(results, sT0Raw, sH0Raw, sD0Raw);
+  const copySection = `
+  <div class="copy-section">
+    <div class="copy-header">
+      <span class="copy-label">📋 Sao chép toàn bộ quẻ để gửi AI</span>
+      <button class="btn-copy" id="copyBtn_${containerId}" onclick="doCopy('copyBtn_${containerId}', 'copyPre_${containerId}')">Sao Chép</button>
+    </div>
+    <pre class="copy-text" id="copyPre_${containerId}">${copyText}</pre>
+  </div>`;
+
+  area.innerHTML = cardsHTML + copySection;
+}
+
+function buildCopyText(results, sT0, sH0, sD0) {
+  const lines = [];
+  lines.push(`=== BẢNG LIÊN HOA ĐỘN ===`);
+  lines.push(`Số nhập : Thượng = ${sT0}   Hạ = ${sH0}   Hào = ${sD0}`);
+  lines.push(`Tổng số : ${results.length} lần (Quẻ Chính + ${results.length - 1} Không Thời)`);
+  lines.push('');
+
+  results.forEach((q, i) => {
+    const tieu = i === 0 ? `1. Quẻ Chính` : `${i + 1}. Không Thời ${i + 1}`;
+    lines.push(tieu + `   [ Hào ${q.hao} động ]`);
+    lines.push(`           Chính      Hỗ         Biến`);
+    lines.push(`Thượng :   ${padR(ten(q.thuong), 10)} ${padR(ten(q.hoThuong), 10)} ${ten(q.bienThuong)}`);
+    lines.push(`Hạ     :   ${padR(ten(q.ha), 10)} ${padR(ten(q.hoHa), 10)} ${ten(q.bienHa)}`);
+    lines.push('');
+  });
+
+  return lines.join('\n');
+}
+
+// ===== COMPUTE =====
+function compute(tab) {
+  let sT0, sH0, sD0;
+  if (tab === 1) {
+    sT0 = parseInt(document.getElementById('t1_thuong').value);
+    sH0 = parseInt(document.getElementById('t1_ha').value);
+    if (isNaN(sT0) || isNaN(sH0)) { alert('Vui lòng nhập đủ Số Thượng và Số Hạ'); return; }
+    sD0 = sT0 + sH0; // tổng để tính hào động
+  } else {
+    sT0 = parseInt(document.getElementById('t2_thuong').value);
+    sH0 = parseInt(document.getElementById('t2_ha').value);
+    sD0 = parseInt(document.getElementById('t2_hao').value);
+    if (isNaN(sT0) || isNaN(sH0) || isNaN(sD0)) { alert('Vui lòng nhập đủ 3 số'); return; }
+  }
+
+  const results = tinhDay(sT0, sH0, sD0);
+  renderResults(`result${tab}`, results, sT0, sH0, tab === 1 ? `${sT0}+${sH0}=${sD0}` : sD0);
+}
+
+// ===== RANDOM =====
+function randomInput(tab) {
+  if (tab === 1) {
+    document.getElementById('t1_thuong').value = Math.floor(Math.random()*64)+1;
+    document.getElementById('t1_ha').value = Math.floor(Math.random()*64)+1;
+  } else {
+    document.getElementById('t2_thuong').value = Math.floor(Math.random()*64)+1;
+    document.getElementById('t2_ha').value = Math.floor(Math.random()*64)+1;
+    document.getElementById('t2_hao').value = Math.floor(Math.random()*36)+1;
+  }
+}
+
+// ===== CLEAR =====
+function clearAll(tab) {
+  if (tab === 1) {
+    document.getElementById('t1_thuong').value = '';
+    document.getElementById('t1_ha').value = '';
+    document.getElementById('result1').innerHTML = '';
+    document.getElementById('result1').classList.remove('visible');
+  } else {
+    document.getElementById('t2_thuong').value = '';
+    document.getElementById('t2_ha').value = '';
+    document.getElementById('t2_hao').value = '';
+    document.getElementById('result2').innerHTML = '';
+    document.getElementById('result2').classList.remove('visible');
+  }
+}
+
+// ===== TAB SWITCH =====
+function switchTab(n) {
+  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', i===n-1));
+  document.querySelectorAll('.tab-panel').forEach((p,i) => p.classList.toggle('active', i===n-1));
+}
+
+// ===== COPY =====
+function doCopy(btnId, preId) {
+  const text = document.getElementById(preId).textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById(btnId);
+    btn.textContent = 'Đã copy!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// Enter key
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    const active = document.querySelector('.tab-panel.active');
+    if (active.id === 'panel1') compute(1);
+    else compute(2);
+  }
+});
+</script>
+</body>
+</html>
