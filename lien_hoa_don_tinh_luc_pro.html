@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bảng Liên Hoa Độn</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Cinzel+Decorative:wght@400;700&display=swap');
+
+  :root {
+    --bg: #0d0a07;
+    --paper: #1a1410;
+    --border: #5c3d1e;
+    --gold: #c9922a;
+    --gold-light: #e8b84b;
+    --text: #e8d9c0;
+    --text-dim: #8a7a65;
+    --glow: rgba(201,146,42,0.15);
+    --green: #6dbf6d;
+    --red-soft: #e07070;
+    --blue-soft: #9dbfcf;
+    --purple-soft: #c9a2e0;
+    --orange: #e0a870;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: 'Noto Serif', serif; min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 20% 20%, rgba(100,50,10,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(80,20,10,0.12) 0%, transparent 60%);
+  }
+
+  .container { max-width: 940px; margin: 0 auto; padding: 32px 20px 60px; }
+
+  h1 {
+    font-family: 'Cinzel Decorative', serif; font-size: 1.5rem;
+    color: var(--gold-light); text-align: center; letter-spacing: 0.08em;
+    margin-bottom: 4px; text-shadow: 0 0 30px rgba(201,146,42,0.4);
+  }
+  .subtitle {
+    text-align: center; color: var(--text-dim); font-size: 0.82rem;
+    letter-spacing: 0.12em; margin-bottom: 36px; font-style: italic;
+  }
+
+  /* TABS */
+  .tabs { display: flex; margin-bottom: 28px; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+  .tab-btn {
+    flex: 1; padding: 10px; background: var(--paper); border: none;
+    color: var(--text-dim); font-family: 'Noto Serif', serif;
+    font-size: 0.85rem; cursor: pointer; transition: all 0.2s;
+    border-right: 1px solid var(--border);
+  }
+  .tab-btn:last-child { border-right: none; }
+  .tab-btn.active { background: rgba(201,146,42,0.12); color: var(--gold-light); }
+  .tab-btn:hover:not(.active) { background: rgba(201,146,42,0.06); color: var(--text); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* INPUT */
+  .input-section { background: var(--paper); border: 1px solid var(--border); border-radius: 6px; padding: 24px; margin-bottom: 28px; }
+  .input-row { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+  .input-group { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 140px; }
+  label { font-size: 0.78rem; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; }
+  input[type="number"] {
+    background: rgba(0,0,0,0.4); border: 1px solid var(--border); border-radius: 4px;
+    color: var(--text); font-family: 'Noto Serif', serif; font-size: 1rem;
+    padding: 8px 12px; outline: none; transition: border-color 0.2s; width: 100%;
+  }
+  input[type="number"]:focus { border-color: var(--gold); box-shadow: 0 0 0 2px var(--glow); }
+  .hint { font-size: 0.72rem; color: var(--text-dim); font-style: italic; }
+
+  .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn {
+    padding: 10px 24px; border: 1px solid var(--gold); border-radius: 4px;
+    background: transparent; color: var(--gold-light); font-family: 'Noto Serif', serif;
+    font-size: 0.9rem; cursor: pointer; transition: all 0.2s; letter-spacing: 0.05em;
+  }
+  .btn:hover { background: rgba(201,146,42,0.15); box-shadow: 0 0 12px var(--glow); }
+  .btn.primary { background: rgba(201,146,42,0.12); }
+  .btn-random { border-color: var(--text-dim); color: var(--text-dim); font-size: 0.82rem; }
+  .btn-random:hover { border-color: var(--text); color: var(--text); background: rgba(255,255,255,0.04); }
+
+  .result-area { display: none; }
+  .result-area.visible { display: block; animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+  /* QUE CARDS */
+  .que-grid { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
+  .que-card {
+    background: var(--paper); border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden; flex: 1 1 180px; min-width: 170px; max-width: 230px;
+  }
+  .que-card.chinh-card { border-color: var(--gold); box-shadow: 0 0 16px rgba(201,146,42,0.12); }
+  .card-header {
+    background: rgba(201,146,42,0.08); border-bottom: 1px solid var(--border);
+    padding: 6px 10px; display: flex; align-items: center; justify-content: space-between;
+  }
+  .card-title { font-size: 0.68rem; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; }
+  .hao-badge {
+    font-size: 0.65rem; color: var(--red-soft);
+    background: rgba(200,80,80,0.12); border: 1px solid rgba(200,80,80,0.3);
+    border-radius: 10px; padding: 1px 6px;
+  }
+  .que-cols { display: grid; grid-template-columns: 1fr 1px 1fr 1px 1fr; }
+  .col-divider { background: rgba(92,61,30,0.5); }
+  .que-col { padding: 8px 4px 10px; text-align: center; }
+  .col-head { font-size: 0.58rem; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+  .que-thuong { font-size: 0.88rem; font-weight: bold; margin-bottom: 3px; }
+  .que-ha { font-size: 0.88rem; font-weight: bold; }
+  .sep-line { border: none; border-top: 1px solid rgba(92,61,30,0.4); margin: 3px auto; width: 55%; }
+  .col-chinh .que-thuong, .col-chinh .que-ha { color: #e8c97a; }
+  .col-ho .que-thuong, .col-ho .que-ha { color: var(--blue-soft); }
+  .col-bien .que-thuong, .col-bien .que-ha { color: var(--purple-soft); }
+
+  /* COPY */
+  .copy-section { background: rgba(0,0,0,0.35); border: 1px solid rgba(92,61,30,0.5); border-radius: 6px; padding: 16px; margin-bottom: 14px; }
+  .copy-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .copy-label { font-size: 0.72rem; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; }
+  .btn-copy {
+    padding: 6px 18px; border: 1px solid var(--gold); border-radius: 4px;
+    background: rgba(201,146,42,0.1); color: var(--gold-light); font-size: 0.82rem;
+    cursor: pointer; transition: all 0.2s; font-family: 'Noto Serif', serif;
+  }
+  .btn-copy:hover { background: rgba(201,146,42,0.22); }
+  .btn-copy.copied { color: var(--green); border-color: var(--green); background: rgba(100,200,100,0.08); }
+  .copy-text { font-family: 'Courier New', monospace; font-size: 0.78rem; color: var(--text); white-space: pre; line-height: 1.75; overflow-x: auto; }
+
+  /* ===== TÍNH LỰC ===== */
+  .luc-section { margin-top: 28px; border-top: 1px solid var(--border); padding-top: 24px; }
+  .luc-title { font-family: 'Cinzel Decorative', serif; font-size: 1rem; color: var(--gold-light); margin-bottom: 16px; letter-spacing: 0.06em; }
+  .luc-form {
+    background: var(--paper); border: 1px solid var(--border); border-radius: 6px;
+    padding: 18px; margin-bottom: 20px; display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-end;
+  }
+  .que-select-group { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 160px; }
+  select {
+    background: rgba(0,0,0,0.4); border: 1px solid var(--border); border-radius: 4px;
+    color: var(--text); font-family: 'Noto Serif', serif; font-size: 0.95rem;
+    padding: 8px 12px; outline: none; cursor: pointer; transition: border-color 0.2s;
+  }
+  select:focus { border-color: var(--gold); }
+  select option { background: #1a1410; }
+
+  .luc-result { display: none; }
+  .luc-result.visible { display: block; animation: fadeIn 0.35s ease; }
+
+  /* ===== VERDICT BANNER ===== */
+  .verdict-banner {
+    border-radius: 10px; padding: 20px 24px; margin-bottom: 20px;
+    border: 1px solid; display: flex; gap: 20px; flex-wrap: wrap; align-items: center;
+  }
+  .verdict-banner.pos { background: rgba(60,160,60,0.07); border-color: rgba(100,200,100,0.25); }
+  .verdict-banner.neg { background: rgba(180,50,50,0.07); border-color: rgba(220,100,100,0.25); }
+  .verdict-banner.neu { background: rgba(201,146,42,0.07); border-color: rgba(201,146,42,0.25); }
+
+  .verdict-score { text-align: center; min-width: 90px; }
+  .verdict-score-num { font-size: 2.4rem; font-weight: bold; line-height: 1; }
+  .pos .verdict-score-num { color: var(--green); }
+  .neg .verdict-score-num { color: var(--red-soft); }
+  .neu .verdict-score-num { color: var(--gold-light); }
+  .verdict-score-label { font-size: 0.68rem; color: var(--text-dim); margin-top: 4px; }
+
+  .verdict-text { flex: 1; min-width: 200px; }
+  .verdict-headline { font-size: 1.05rem; font-weight: bold; margin-bottom: 8px; }
+  .pos .verdict-headline { color: var(--green); }
+  .neg .verdict-headline { color: var(--red-soft); }
+  .neu .verdict-headline { color: var(--gold-light); }
+  .verdict-narrative { font-size: 0.82rem; color: var(--text); line-height: 1.7; }
+
+  .verdict-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .pill {
+    font-size: 0.7rem; padding: 3px 10px; border-radius: 12px; border: 1px solid;
+  }
+  .pill-sinh { color: var(--green); border-color: rgba(100,200,100,0.35); background: rgba(100,200,100,0.07); }
+  .pill-tro  { color: var(--blue-soft); border-color: rgba(157,191,207,0.35); background: rgba(157,191,207,0.07); }
+  .pill-khac { color: var(--red-soft); border-color: rgba(220,100,100,0.35); background: rgba(220,100,100,0.07); }
+  .pill-hao  { color: var(--orange); border-color: rgba(224,168,112,0.35); background: rgba(224,168,112,0.07); }
+  .pill-tieu { color: var(--purple-soft); border-color: rgba(201,162,224,0.35); background: rgba(201,162,224,0.07); }
+
+  /* ===== CHART ===== */
+  .chart-wrap {
+    background: rgba(0,0,0,0.3); border: 1px solid var(--border);
+    border-radius: 8px; padding: 18px; margin-bottom: 20px;
+  }
+  .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .chart-title { font-size: 0.78rem; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; }
+  .chart-legend { display: flex; gap: 14px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 0.68rem; color: var(--text-dim); }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  canvas { display: block; width: 100%; }
+
+  /* PHASE INDICATORS */
+  .phase-row { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
+  .phase-box {
+    flex: 1; min-width: 80px; padding: 10px 8px; border-radius: 6px; text-align: center;
+    border: 1px solid; cursor: default;
+  }
+  .phase-box.up   { background: rgba(60,160,60,0.08); border-color: rgba(100,200,100,0.3); }
+  .phase-box.down { background: rgba(180,50,50,0.08); border-color: rgba(220,100,100,0.3); }
+  .phase-box.flat { background: rgba(201,146,42,0.06); border-color: rgba(201,146,42,0.25); }
+  .phase-box.peak { background: rgba(60,160,60,0.15); border-color: rgba(100,200,100,0.5); }
+  .phase-box.trough { background: rgba(180,50,50,0.15); border-color: rgba(220,100,100,0.5); }
+  .phase-num { font-size: 0.65rem; color: var(--text-dim); margin-bottom: 2px; }
+  .phase-val { font-size: 0.88rem; font-weight: bold; }
+  .up .phase-val { color: var(--green); }
+  .down .phase-val { color: var(--red-soft); }
+  .flat .phase-val { color: var(--gold-light); }
+  .peak .phase-val { color: var(--green); }
+  .trough .phase-val { color: var(--red-soft); }
+  .phase-icon { font-size: 0.75rem; margin-top: 2px; }
+
+  /* DETAIL TABLE */
+  .kt-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+  .kt-table th {
+    font-size: 0.63rem; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 7px 8px; border-bottom: 1px solid var(--border); text-align: center; font-weight: normal;
+  }
+  .kt-table td { padding: 7px 8px; border-bottom: 1px solid rgba(92,61,30,0.2); text-align: center; vertical-align: top; }
+  .kt-table tr:last-child td { border-bottom: none; }
+  .kt-table tr.chinh-row { background: rgba(201,146,42,0.04); }
+  .kt-table tr.total-row { background: rgba(0,0,0,0.25); border-top: 1px solid var(--gold); }
+  .kt-num { color: var(--text-dim); font-size: 0.7rem; }
+  .d-sinh { color: var(--green); }
+  .d-tro  { color: var(--blue-soft); }
+  .d-khac { color: var(--red-soft); }
+  .d-hao  { color: var(--orange); }
+  .d-tieu { color: var(--purple-soft); }
+
+  .detail-lines { text-align: left; font-size: 0.7rem; line-height: 1.65; }
+
+  .absent-row td { color: var(--text-dim); font-size: 0.72rem; font-style: italic; }
+
+  /* TURNING POINT BADGE */
+  .tp-badge {
+    display: inline-block; font-size: 0.6rem; padding: 1px 6px; border-radius: 8px;
+    margin-left: 4px; vertical-align: middle;
+  }
+  .tp-up   { background: rgba(100,200,100,0.2); color: var(--green); border: 1px solid rgba(100,200,100,0.4); }
+  .tp-down { background: rgba(220,100,100,0.2); color: var(--red-soft); border: 1px solid rgba(220,100,100,0.4); }
+  .tp-peak { background: rgba(100,200,100,0.3); color: var(--green); }
+  .tp-trough { background: rgba(220,100,100,0.3); color: var(--red-soft); }
+
+  @media (max-width: 560px) {
+    .que-card { min-width: 150px; }
+    h1 { font-size: 1.1rem; }
+    .kt-table { font-size: 0.7rem; }
+    .verdict-score-num { font-size: 1.8rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Bảng Liên Hoa Độn</h1>
+  <p class="subtitle">Lập quẻ · Tính lực · Phân tích diễn biến</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab(1)">Tính năng 1 — 2 số</button>
+    <button class="tab-btn" onclick="switchTab(2)">Tính năng 2 — 3 số</button>
+  </div>
+
+  <div class="tab-panel active" id="panel1">
+    <div class="input-section">
+      <div class="input-row">
+        <div class="input-group">
+          <label>Số Thượng</label>
+          <input type="number" id="t1_thuong" min="1" placeholder="vd: 1">
+        </div>
+        <div class="input-group">
+          <label>Số Hạ</label>
+          <input type="number" id="t1_ha" min="1" placeholder="vd: 2">
+        </div>
+      </div>
+      <p class="hint" style="margin-bottom:16px;">Hào động = (Thượng + Hạ) ÷ 6 lấy số dư</p>
+      <div class="btn-row">
+        <button class="btn primary" onclick="compute(1)">Lập Quẻ</button>
+        <button class="btn btn-random" onclick="randomInput(1)">Ngẫu Nhiên</button>
+        <button class="btn btn-random" onclick="clearAll(1)">Xoá</button>
+      </div>
+    </div>
+    <div class="result-area" id="result1"></div>
+  </div>
+
+  <div class="tab-panel" id="panel2">
+    <div class="input-section">
+      <div class="input-row">
+        <div class="input-group">
+          <label>Số Thượng</label>
+          <input type="number" id="t2_thuong" min="1" placeholder="vd: 5">
+        </div>
+        <div class="input-group">
+          <label>Số Hạ</label>
+          <input type="number" id="t2_ha" min="1" placeholder="vd: 8">
+        </div>
+        <div class="input-group">
+          <label>Số Hào Động</label>
+          <input type="number" id="t2_hao" min="1" placeholder="vd: 3">
+          <span class="hint">Số này ÷ 6 lấy dư → hào động</span>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn primary" onclick="compute(2)">Lập Quẻ</button>
+        <button class="btn btn-random" onclick="randomInput(2)">Ngẫu Nhiên</button>
+        <button class="btn btn-random" onclick="clearAll(2)">Xoá</button>
+      </div>
+    </div>
+    <div class="result-area" id="result2"></div>
+  </div>
+</div>
+
+<script>
+// ================================================================
+// DATA ENGINE
+// ================================================================
+const QUE_TEN = ['','Kiền','Đoài','Ly','Chấn','Tốn','Khảm','Cấn','Khôn'];
+const HANH    = {1:'Kim',2:'Kim',3:'Hỏa',4:'Mộc',5:'Mộc',6:'Thủy',7:'Thổ',8:'Thổ'};
+const HANH_COLOR = {'Kim':'#e8c97a','Hỏa':'#e07070','Mộc':'#6dbf6d','Thủy':'#9dbfcf','Thổ':'#c9a2e0'};
+
+const SINH_BANG = {1:[6],2:[6],3:[7,8],4:[3],5:[3],6:[4,5],7:[1,2],8:[1,2]};
+const KHAC_BANG = {1:[4,5],2:[4,5],3:[1,2],4:[7,8],5:[7,8],6:[3],7:[6],8:[6]};
+
+const coSinh  = (a,b) => !!SINH_BANG[a]?.includes(b);
+const coKhac  = (a,b) => !!KHAC_BANG[a]?.includes(b);
+const dongHanh= (a,b) => a!==b && HANH[a]===HANH[b];
+
+const DIEM = {1:1, 2:0.5, 3:0.25, 4:0.125, 5:0.05};
+
+// Cấp tương tác giữa các vị trí
+function capGiua(a,b) {
+  const key = [Math.min(a,b),Math.max(a,b)].join('-');
+  return {'1-3':1,'2-4':1,'1-2':2,'3-4':2,'1-4':2,'2-3':2,
+          '3-5':5,'4-6':5,'1-5':5,'2-6':5,'5-6':5}[key] || 0;
+}
+// Cấp hao tổn khi đi khắc
+function capHaoKhac(a,b) {
+  const key = [Math.min(a,b),Math.max(a,b)].join('-');
+  return {'1-3':2,'2-4':2,'1-4':3,'2-3':3,'1-2':3,'3-4':3}[key] || 3;
+}
+
+// ================================================================
+// LẬP QUẺ
+// ================================================================
+const QUE_BIT = {1:[1,1,1],2:[0,1,1],3:[1,0,1],4:[0,0,1],5:[1,1,0],6:[0,1,0],7:[1,0,0],8:[0,0,0]};
+function bitsToQue(b3,b2,b1){
+  return {'111':1,'011':2,'101':3,'001':4,'110':5,'010':6,'100':7,'000':8}[`${b3}${b2}${b1}`];
+}
+const chia8 = n => { let r=n%8; return r===0?8:r; };
+const chia6 = n => { let r=n%6; return r===0?6:r; };
+
+function bienQue(q,hao,vi){
+  let b=[...QUE_BIT[q]];
+  let i = vi==='thuong'?[null,null,null,null,2,1,0][hao]:[null,2,1,0][hao];
+  b[i]=b[i]===1?0:1;
+  return bitsToQue(b[0],b[1],b[2]);
+}
+function hoQue(t,h){
+  const bT=QUE_BIT[t],bH=QUE_BIT[h];
+  return { thuong: bitsToQue(bT[1],bT[2],bH[0]), ha: bitsToQue(bT[2],bH[0],bH[1]) };
+}
+function lapQue(sT,sH,sD){
+  const thuong=chia8(sT), ha=chia8(sH), hao=chia6(sD);
+  const ho=hoQue(thuong,ha);
+  let bT=thuong, bH=ha;
+  if(hao>=4&&hao<=6) bT=bienQue(thuong,hao,'thuong');
+  else bH=bienQue(ha,hao,'ha');
+  return {thuong,ha,hao,hoThuong:ho.thuong,hoHa:ho.ha,bienThuong:bT,bienHa:bH,sT:thuong,sH:ha};
+}
+const soVong = h => h===3||h===6?5:(h===1||h===4?9:13);
+
+function tinhDay(sT0,sH0,sD0){
+  const q1=lapQue(sT0,sH0,sD0);
+  const res=[q1]; let cT=q1.sT,cH=q1.sH,cD=q1.hao;
+  for(let i=2;i<=soVong(q1.hao);i++){
+    const nT=cT+4,nH=cH+6,nD=cD+4;
+    const q=lapQue(nT,nH,nD); res.push(q);
+    cT=chia8(nT); cH=chia8(nH); cD=chia6(nD);
+  }
+  return res;
+}
+
+// ================================================================
+// TÍNH LỰC MỘT KHÔNG THỜI
+// ================================================================
+function tinhLucKT(q, target) {
+  const pos = {1:q.thuong,2:q.ha,3:q.hoThuong,4:q.hoHa,5:q.bienThuong,6:q.bienHa};
+  const myPositions = Object.entries(pos).filter(([,v])=>v===target).map(([k])=>+k);
+  if(!myPositions.length) return null;
+
+  let duocSinh=0, biKhac=0, duocTro=0, haoKhac=0, tieuTan=0;
+  const lines=[];
+
+  for(const myP of myPositions) {
+    // Nhận tác động từ các vị trí khác
+    for(let op=1;op<=6;op++){
+      if(op===myP) continue;
+      const oq=pos[op], cap=capGiua(myP,op);
+      if(!cap) continue;
+      const oBien=op>=5, mBien=myP>=5;
+      // Biến chỉ sinh tượng trưng lên Chính (T→T, H→H)
+      const validBien = oBien && !mBien && ((op===5&&myP===1)||(op===6&&myP===2));
+      if(oBien && !mBien && !validBien) continue;
+
+      if(coSinh(oq,target)){
+        duocSinh+=DIEM[cap];
+        lines.push({type:'sinh',src:op,srcQ:oq,cap,val:+DIEM[cap]});
+      }
+      if(!oBien && coKhac(oq,target)){
+        biKhac+=DIEM[cap];
+        lines.push({type:'khac',src:op,srcQ:oq,cap,val:-DIEM[cap]});
+      }
+      if(!oBien && !mBien && dongHanh(oq,target) && !coSinh(oq,target) && !coKhac(oq,target)){
+        duocTro+=DIEM[cap];
+        lines.push({type:'tro',src:op,srcQ:oq,cap,val:+DIEM[cap]});
+      }
+    }
+    // Tác động ra ngoài (hao tổn & tiêu tán) — chỉ từ vị trí 1-4
+    if(myP<=4) {
+      for(let op=1;op<=6;op++){
+        if(op===myP) continue;
+        const oq=pos[op], cap=capGiua(myP,op);
+        if(!cap) continue;
+        if(coKhac(target,oq)){
+          const c=capHaoKhac(myP,op);
+          haoKhac+=DIEM[c];
+          lines.push({type:'hao',dst:op,dstQ:oq,cap:c,val:-DIEM[c]});
+        }
+        if(coSinh(target,oq)){
+          tieuTan+=DIEM[cap];
+          lines.push({type:'tieu',dst:op,dstQ:oq,cap,val:-DIEM[cap]});
+        }
+      }
+    }
+  }
+
+  const tong = duocSinh + duocTro - biKhac - haoKhac - tieuTan;
+  return {duocSinh,biKhac,duocTro,haoKhac,tieuTan,tong,lines,myPositions,pos};
+}
+
+// ================================================================
+// PHÂN TÍCH DIỄN BIẾN
+// ================================================================
+function phanTichDienBien(ktResults) {
+  const vals = ktResults.map(r => r ? r.tong : null);
+  const n = vals.length;
+
+  // Điểm xuất phát
+  const start = vals[0];
+  // Điểm kết thúc
+  const end = vals[n-1];
+  // Peak & trough
+  let peakIdx=0, troughIdx=0;
+  vals.forEach((v,i)=>{ if(v!==null){
+    if(v>vals[peakIdx]) peakIdx=i;
+    if(v<vals[troughIdx]) troughIdx=i;
+  }});
+
+  // Xu hướng tổng thể
+  const trend = end>start?'rising':end<start?'falling':'flat';
+
+  // Tìm điểm đảo chiều
+  const turningPoints = [];
+  for(let i=1;i<n-1;i++){
+    if(vals[i]===null) continue;
+    const prev = vals[i-1], next = vals[i+1];
+    if(prev!==null && next!==null) {
+      if(vals[i]>prev && vals[i]>next) turningPoints.push({idx:i,type:'peak'});
+      else if(vals[i]<prev && vals[i]<next) turningPoints.push({idx:i,type:'trough'});
+    }
+  }
+
+  // Nhận xét diễn biến
+  let narrative = '';
+  const s = start>=0?'thuận':'nghịch';
+  const e = end>=0?'thuận':'nghịch';
+
+  if(trend==='rising'){
+    if(start<0) narrative = `Khởi đầu trong thế ${s} (${fmtS(start)}), nhưng lực dần chuyển hoá tích cực qua các giai đoạn. Kết thúc ở thế ${e} (${fmtS(end)}) — diễn biến đi lên, cục diện cải thiện dần.`;
+    else narrative = `Bắt đầu thuận lợi (${fmtS(start)}) và tiếp tục tăng cường lực. Kết thúc mạnh hơn (${fmtS(end)}) — xu thế nhất quán đi lên.`;
+  } else if(trend==='falling'){
+    if(start>0) narrative = `Khởi đầu thuận (${fmtS(start)}), nhưng lực suy giảm dần qua các giai đoạn. Kết thúc ở thế ${e} (${fmtS(end)}) — cần chú ý đà đi xuống.`;
+    else narrative = `Bắt đầu đã bất lợi (${fmtS(start)}) và tiếp tục suy yếu. Kết thúc ở (${fmtS(end)}) — áp lực xuyên suốt toàn cục diện.`;
+  } else {
+    narrative = `Lực dao động không có hướng rõ ràng. Điểm cuối (${fmtS(end)}) gần bằng điểm đầu (${fmtS(start)}) — cục diện giằng co, chưa ngả hẳn.`;
+  }
+
+  // Thêm nhận xét turning point
+  if(turningPoints.length>0){
+    const tp = turningPoints[0];
+    if(tp.type==='peak') narrative += ` Đỉnh lực xuất hiện ở Không Thời ${tp.idx+1} — đây là thời điểm thuận lợi nhất.`;
+    else narrative += ` Đáy lực xuất hiện ở Không Thời ${tp.idx+1} — đây là giai đoạn khó khăn nhất.`;
+  }
+
+  return {vals,trend,peakIdx,troughIdx,turningPoints,narrative,start,end};
+}
+
+// ================================================================
+// VẼ BIỂU ĐỒ CANVAS
+// ================================================================
+function veChart(canvasId, ktResults, analysis) {
+  const canvas = document.getElementById(canvasId);
+  if(!canvas) return;
+  const dpr = window.devicePixelRatio||1;
+  const W = canvas.offsetWidth, H = 220;
+  canvas.width = W*dpr; canvas.height = H*dpr;
+  canvas.style.height = H+'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr,dpr);
+
+  const vals = analysis.vals;
+  const n = vals.length;
+  const pad = {top:28, right:20, bottom:36, left:44};
+  const cW = W-pad.left-pad.right;
+  const cH = H-pad.top-pad.bottom;
+
+  // Range
+  const allV = vals.filter(v=>v!==null);
+  let minV = Math.min(...allV), maxV = Math.max(...allV);
+  const margin = Math.max(0.5, (maxV-minV)*0.2);
+  minV -= margin; maxV += margin;
+  const rangeV = maxV-minV || 1;
+
+  const xOf = i => pad.left + (i/(n-1||1))*cW;
+  const yOf = v => pad.top + (1-(v-minV)/rangeV)*cH;
+  const zero = yOf(0);
+
+  // Background grid
+  ctx.strokeStyle = 'rgba(92,61,30,0.2)';
+  ctx.lineWidth = 0.5;
+  for(let g=0;g<=4;g++){
+    const y = pad.top + (g/4)*cH;
+    ctx.beginPath(); ctx.moveTo(pad.left,y); ctx.lineTo(pad.left+cW,y); ctx.stroke();
+  }
+
+  // Zero line
+  if(zero>=pad.top && zero<=pad.top+cH){
+    ctx.strokeStyle='rgba(201,146,42,0.4)'; ctx.lineWidth=1;
+    ctx.setLineDash([4,4]);
+    ctx.beginPath(); ctx.moveTo(pad.left,zero); ctx.lineTo(pad.left+cW,zero); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='rgba(201,146,42,0.6)'; ctx.font='9px monospace';
+    ctx.fillText('0',pad.left-18,zero+3);
+  }
+
+  // Y axis labels
+  ctx.fillStyle='rgba(138,122,101,0.8)'; ctx.font='9px monospace'; ctx.textAlign='right';
+  [0,0.25,0.5,0.75,1].forEach(t=>{
+    const v = minV+t*rangeV;
+    const y = pad.top+(1-t)*cH;
+    ctx.fillText(v.toFixed(1), pad.left-6, y+3);
+  });
+
+  // Fill area under curve
+  const gradient = ctx.createLinearGradient(0,pad.top,0,pad.top+cH);
+  gradient.addColorStop(0,'rgba(109,191,109,0.15)');
+  gradient.addColorStop(0.5,'rgba(109,191,109,0.05)');
+  gradient.addColorStop(1,'rgba(224,112,112,0.1)');
+
+  ctx.beginPath();
+  ctx.moveTo(xOf(0), zero);
+  vals.forEach((v,i)=>{ if(v!==null) ctx.lineTo(xOf(i),yOf(v)); });
+  ctx.lineTo(xOf(n-1),zero);
+  ctx.closePath();
+  ctx.fillStyle=gradient; ctx.fill();
+
+  // Negative fill
+  const gradNeg = ctx.createLinearGradient(0,zero,0,pad.top+cH);
+  gradNeg.addColorStop(0,'rgba(224,112,112,0.08)');
+  gradNeg.addColorStop(1,'rgba(224,112,112,0.18)');
+  ctx.beginPath();
+  ctx.moveTo(xOf(0),zero);
+  vals.forEach((v,i)=>{ if(v!==null) ctx.lineTo(xOf(i),Math.max(yOf(v),zero)); });
+  ctx.lineTo(xOf(n-1),zero);
+  ctx.closePath();
+  ctx.fillStyle=gradNeg; ctx.fill();
+
+  // Main line
+  ctx.beginPath(); ctx.lineWidth=2.5;
+  const grad2 = ctx.createLinearGradient(pad.left,0,pad.left+cW,0);
+  grad2.addColorStop(0,'#9dbfcf'); grad2.addColorStop(1,'#e8b84b');
+  ctx.strokeStyle=grad2;
+  let first=true;
+  vals.forEach((v,i)=>{
+    if(v===null) return;
+    if(first){ ctx.moveTo(xOf(i),yOf(v)); first=false; }
+    else ctx.lineTo(xOf(i),yOf(v));
+  });
+  ctx.stroke();
+
+  // Points
+  vals.forEach((v,i)=>{
+    if(v===null) return;
+    const x=xOf(i), y=yOf(v);
+    const isPeak = i===analysis.peakIdx;
+    const isTrough = i===analysis.troughIdx;
+    const isStart = i===0;
+    const r = isPeak||isTrough ? 6 : isStart ? 5 : 4;
+    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2);
+    let col = v>0?'#6dbf6d':v<0?'#e07070':'#e8b84b';
+    if(isPeak) col='#6dbf6d'; if(isTrough) col='#e07070';
+    ctx.fillStyle=col; ctx.fill();
+    ctx.strokeStyle='rgba(13,10,7,0.8)'; ctx.lineWidth=1.5; ctx.stroke();
+
+    // Value label
+    ctx.fillStyle=col; ctx.font='bold 9px monospace'; ctx.textAlign='center';
+    const lbl=(v>=0?'+':'')+v.toFixed(2);
+    ctx.fillText(lbl, x, y-(r+5));
+  });
+
+  // X axis labels
+  ctx.fillStyle='rgba(138,122,101,0.9)'; ctx.font='9px monospace'; ctx.textAlign='center';
+  vals.forEach((v,i)=>{
+    const x=xOf(i);
+    ctx.fillText(i===0?'Chính':`KT${i+1}`, x, H-pad.bottom+14);
+    ctx.strokeStyle='rgba(92,61,30,0.3)'; ctx.lineWidth=0.5;
+    ctx.beginPath(); ctx.moveTo(x,pad.top+cH); ctx.lineTo(x,pad.top+cH+4); ctx.stroke();
+  });
+
+  // Peak/Trough markers
+  if(n>1){
+    const px=xOf(analysis.peakIdx), py=yOf(vals[analysis.peakIdx]);
+    ctx.fillStyle='rgba(109,191,109,0.9)'; ctx.font='bold 10px sans-serif'; ctx.textAlign='center';
+    ctx.fillText('▲', px, py-14);
+    const tx=xOf(analysis.troughIdx), ty=yOf(vals[analysis.troughIdx]);
+    ctx.fillStyle='rgba(224,112,112,0.9)';
+    ctx.fillText('▼', tx, ty+18);
+  }
+}
+
+// ================================================================
+// RENDER TÍNH LỰC
+// ================================================================
+const ten = q => QUE_TEN[q]||'?';
+const fmtS = v => (v>=0?'+':'')+v.toFixed(2);
+const fmtP = v => (v>=0?'+':'')+v.toFixed(3);
+const posLbl = p => ['','①C-T','②C-H','③H-T','④H-H','⑤B-T','⑥B-H'][p];
+const typeLabel= {sinh:'Được Sinh',tro:'Được Trợ',khac:'Bị Khắc',hao:'Hao Tổn',tieu:'Tiêu Tán'};
+const typeCls  = {sinh:'d-sinh',tro:'d-tro',khac:'d-khac',hao:'d-hao',tieu:'d-tieu'};
+
+function buildNarrative(tongNet, analysis) {
+  const {trend,start,end,peakIdx,troughIdx,vals} = analysis;
+  const n = vals.length;
+  let head, body;
+  if(tongNet > 1.5)      { head = '✦ Lực Mạnh — Ổn Thoả'; }
+  else if(tongNet > 0.3) { head = '✦ Lực Nhẹ Thuận — Tương Đối Ổn'; }
+  else if(tongNet > -0.3){ head = '✦ Bình Hoà — Giằng Co'; }
+  else if(tongNet > -1.5){ head = '✦ Lực Nhẹ Nghịch — Cần Chú Ý'; }
+  else                   { head = '✦ Lực Mạnh Nghịch — Bất Cập'; }
+  body = analysis.narrative;
+  return {head,body};
+}
+
+function renderLucResult(results, target, cid) {
+  const area = document.getElementById('luc_result_'+cid);
+  area.innerHTML=''; area.classList.add('visible');
+
+  const ktR = results.map(q=>tinhLucKT(q,target));
+  const analysis = phanTichDienBien(ktR);
+  const {vals,trend,peakIdx,troughIdx,turningPoints} = analysis;
+
+  let tSinh=0,tKhac=0,tTro=0,tHao=0,tTieu=0;
+  ktR.forEach(r=>{ if(!r)return; tSinh+=r.duocSinh;tKhac+=r.biKhac;tTro+=r.duocTro;tHao+=r.haoKhac;tTieu+=r.tieuTan; });
+  const tongNet = tSinh+tTro-tKhac-tHao-tTieu;
+  const vClass = tongNet>0.3?'pos':tongNet<-0.3?'neg':'neu';
+  const {head,body} = buildNarrative(tongNet,analysis);
+
+  // ── 1. Verdict Banner ──
+  let html = `<div class="verdict-banner ${vClass}">
+    <div class="verdict-score">
+      <div class="verdict-score-num">${fmtS(tongNet)}</div>
+      <div class="verdict-score-label">Điểm tổng / ${results.length} KT</div>
+    </div>
+    <div class="verdict-text">
+      <div class="verdict-headline">${head}</div>
+      <div class="verdict-narrative">${body}</div>
+      <div class="verdict-pills">
+        <span class="pill pill-sinh">+Sinh ${fmtS(tSinh)}</span>
+        <span class="pill pill-tro">+Trợ ${fmtS(tTro)}</span>
+        <span class="pill pill-khac">−Khắc ${fmtS(-tKhac)}</span>
+        <span class="pill pill-hao">−HaoTổn ${fmtS(-tHao)}</span>
+        <span class="pill pill-tieu">−TiêuTán ${fmtS(-tTieu)}</span>
+      </div>
+    </div>
+  </div>`;
+
+  // ── 2. Biểu đồ diễn biến ──
+  const chartId = `chart_${cid}_${Date.now()}`;
+  html += `<div class="chart-wrap">
+    <div class="chart-header">
+      <span class="chart-title">⚡ Đường Lực — ${ten(target)} qua ${results.length} Không Thời</span>
+      <div class="chart-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#6dbf6d"></div>Dương lực</div>
+        <div class="legend-dot" style="background:#e07070"></div><span style="font-size:0.68rem;color:var(--text-dim)">Âm lực</span>
+        <div class="legend-item"><div class="legend-dot" style="background:#e8b84b"></div>▲ Đỉnh / ▼ Đáy</div>
+      </div>
+    </div>
+    <canvas id="${chartId}" style="width:100%;height:220px"></canvas>
+  </div>`;
+
+  // ── 3. Phase boxes ──
+  html += `<div class="phase-row">`;
+  vals.forEach((v,i)=>{
+    if(v===null){ html+=`<div class="phase-box flat"><div class="phase-num">KT${i+1}</div><div class="phase-val">—</div></div>`; return; }
+    const isPeak=i===peakIdx, isTrough=i===troughIdx;
+    let cls = isPeak?'peak':isTrough?'trough':v>0?'up':v<0?'down':'flat';
+    const icon = isPeak?'▲ Đỉnh':isTrough?'▼ Đáy':v>0?'↑':v<0?'↓':'→';
+    const lbl = i===0?'Chính':`KT${i+1}`;
+    html+=`<div class="phase-box ${cls}"><div class="phase-num">${lbl}</div><div class="phase-val">${fmtS(v)}</div><div class="phase-icon">${icon}</div></div>`;
+  });
+  html += `</div>`;
+
+  // ── 4. Bảng chi tiết từng KT ──
+  html += `<div class="copy-section"><div class="copy-header">
+    <span class="copy-label">Chi Tiết Từng Không Thời — ${ten(target)} (${HANH[target]})</span>
+  </div>
+  <table class="kt-table"><thead><tr>
+    <th>#</th><th>Vị trí</th>
+    <th class="d-sinh">+Sinh</th><th class="d-tro">+Trợ</th>
+    <th class="d-khac">−Khắc</th><th class="d-hao">−HaoTổn</th><th class="d-tieu">−TiêuTán</th>
+    <th>Điểm KT</th><th>Tác động</th>
+  </tr></thead><tbody>`;
+
+  ktR.forEach((r,i)=>{
+    const lbl=i===0?'Chính':`KT${i+1}`;
+    const rowCls=i===0?'chinh-row':'';
+    const isPeak=i===peakIdx, isTrough=i===troughIdx;
+    const tpBadge = isPeak?`<span class="tp-badge tp-peak">▲ Đỉnh</span>`:
+                    isTrough?`<span class="tp-badge tp-trough">▼ Đáy</span>`:'';
+    if(!r){
+      html+=`<tr class="absent-row ${rowCls}"><td class="kt-num">${i+1}</td>
+        <td>${lbl}</td><td colspan="7" style="text-align:center;color:var(--text-dim);font-size:0.7rem">
+        — ${ten(target)} không xuất hiện —</td></tr>`;
+      return;
+    }
+    const net=r.tong;
+    const nCls=net>0?'d-sinh':net<0?'d-khac':'';
+    const posTxt = r.myPositions.map(p=>posLbl(p)).join(', ');
+
+    // Chi tiết tác động
+    const groups={sinh:[],tro:[],khac:[],hao:[],tieu:[]};
+    r.lines.forEach(l=>groups[l.type]?.push(l));
+    let det='';
+    for(const [t,arr] of Object.entries(groups)){
+      arr.forEach(l=>{
+        const cls=typeCls[t];
+        if(t==='sinh'||t==='tro'||t==='khac')
+          det+=`<span class="${cls}">${typeLabel[t]}: ${ten(l.srcQ)}(${posLbl(l.src)}) Cấp${l.cap} ${l.val>=0?'+':''}${l.val.toFixed(3)}</span><br>`;
+        else
+          det+=`<span class="${cls}">${typeLabel[t]}: →${ten(l.dstQ)}(${posLbl(l.dst)}) Cấp${l.cap} ${l.val.toFixed(3)}</span><br>`;
+      });
+    }
+    if(!det) det=`<span style="color:var(--text-dim);font-size:0.68rem">Không tác động</span>`;
+
+    html+=`<tr class="${rowCls}">
+      <td class="kt-num">${i+1}</td>
+      <td style="font-size:0.7rem">${lbl}${tpBadge}<br><span style="color:var(--text-dim);font-size:0.65rem">${posTxt}</span></td>
+      <td class="d-sinh">${r.duocSinh?'+'+r.duocSinh.toFixed(3):''}</td>
+      <td class="d-tro">${r.duocTro?'+'+r.duocTro.toFixed(3):''}</td>
+      <td class="d-khac">${r.biKhac?'-'+r.biKhac.toFixed(3):''}</td>
+      <td class="d-hao">${r.haoKhac?'-'+r.haoKhac.toFixed(3):''}</td>
+      <td class="d-tieu">${r.tieuTan?'-'+r.tieuTan.toFixed(3):''}</td>
+      <td class="${nCls}" style="font-weight:bold">${fmtS(net)}</td>
+      <td class="detail-lines">${det}</td>
+    </tr>`;
+  });
+
+  // Total row
+  const tc=tongNet>0?'d-sinh':tongNet<0?'d-khac':'';
+  html+=`<tr class="total-row">
+    <td colspan="2" style="color:var(--gold);font-size:0.72rem;text-align:right">TỔNG ${results.length} KT</td>
+    <td class="d-sinh"><b>+${tSinh.toFixed(3)}</b></td>
+    <td class="d-tro"><b>+${tTro.toFixed(3)}</b></td>
+    <td class="d-khac"><b>-${tKhac.toFixed(3)}</b></td>
+    <td class="d-hao"><b>-${tHao.toFixed(3)}</b></td>
+    <td class="d-tieu"><b>-${tTieu.toFixed(3)}</b></td>
+    <td class="${tc}"><b>${fmtS(tongNet)}</b></td>
+    <td style="font-size:0.75rem;color:var(--${tongNet>0?'green':tongNet<0?'red-soft':'gold-light'})">${head}</td>
+  </tr>`;
+  html+=`</tbody></table></div>`;
+
+  area.innerHTML=html;
+
+  // Vẽ chart sau khi DOM render
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{ veChart(chartId, ktR, analysis); });
+  });
+}
+
+// ================================================================
+// RENDER QUẺ
+// ================================================================
+function makeCard(q,i){
+  const lbl=i===0?'Quẻ Chính':`Không Thời ${i+1}`;
+  return `<div class="que-card ${i===0?'chinh-card':''}">
+    <div class="card-header">
+      <span class="card-title">${i+1}. ${lbl}</span>
+      <span class="hao-badge">Hào ${q.hao} động</span>
+    </div>
+    <div class="que-cols">
+      <div class="que-col col-chinh"><div class="col-head">Chính</div>
+        <div class="que-thuong">${ten(q.thuong)}</div><hr class="sep-line"><div class="que-ha">${ten(q.ha)}</div></div>
+      <div class="col-divider"></div>
+      <div class="que-col col-ho"><div class="col-head">Hỗ</div>
+        <div class="que-thuong">${ten(q.hoThuong)}</div><hr class="sep-line"><div class="que-ha">${ten(q.hoHa)}</div></div>
+      <div class="col-divider"></div>
+      <div class="que-col col-bien"><div class="col-head">Biến</div>
+        <div class="que-thuong">${ten(q.bienThuong)}</div><hr class="sep-line"><div class="que-ha">${ten(q.bienHa)}</div></div>
+    </div>
+  </div>`;
+}
+
+const padR=(s,n)=>s.padEnd(n,' ');
+function buildCopyText(results,sT,sH,sD){
+  const L=[`=== BẢNG LIÊN HOA ĐỘN ===`,
+    `Số nhập : Thượng=${sT}  Hạ=${sH}  Hào=${sD}`,
+    `Tổng : ${results.length} Không Thời`,''];
+  results.forEach((q,i)=>{
+    const h=i===0?`1. Quẻ Chính`:`${i+1}. Không Thời ${i+1}`;
+    L.push(h+`  [Hào ${q.hao} động]`);
+    L.push(`           Chính      Hỗ         Biến`);
+    L.push(`Thượng :   ${padR(ten(q.thuong),10)} ${padR(ten(q.hoThuong),10)} ${ten(q.bienThuong)}`);
+    L.push(`Hạ     :   ${padR(ten(q.ha),10)} ${padR(ten(q.hoHa),10)} ${ten(q.bienHa)}`);
+    L.push('');
+  });
+  return L.join('\n');
+}
+
+function renderResults(cid, results, sT, sH, sD){
+  const area=document.getElementById(cid);
+  area.innerHTML=''; area.classList.add('visible');
+
+  let cards=`<div class="que-grid">`;
+  results.forEach((q,i)=>cards+=makeCard(q,i));
+  cards+=`</div>`;
+
+  const copyTxt=buildCopyText(results,sT,sH,sD);
+  const copySec=`<div class="copy-section">
+    <div class="copy-header">
+      <span class="copy-label">📋 Sao chép toàn bộ quẻ</span>
+      <button class="btn-copy" id="cb_${cid}" onclick="doCopy('cb_${cid}','cp_${cid}')">Sao Chép</button>
+    </div>
+    <pre class="copy-text" id="cp_${cid}">${copyTxt}</pre>
+  </div>`;
+
+  const lucSec=`<div class="luc-section">
+    <div class="luc-title">⚡ Tính Lực & Phân Tích Diễn Biến</div>
+    <div class="luc-form">
+      <div class="que-select-group">
+        <label>Chọn quẻ đơn cần xét</label>
+        <select id="ls_${cid}">
+          <option value="">— Chọn quẻ —</option>
+          ${QUE_TEN.slice(1).map((t,i)=>`<option value="${i+1}">${t}  (${HANH[i+1]})</option>`).join('')}
+        </select>
+      </div>
+      <div style="display:flex;align-items:flex-end">
+        <button class="btn primary" onclick="tinhLuc('${cid}')">Tính Lực</button>
+      </div>
+    </div>
+    <div class="luc-result" id="luc_result_${cid}"></div>
+  </div>`;
+
+  area.innerHTML = cards + copySec + lucSec;
+  area._results = results;
+}
+
+function tinhLuc(cid){
+  const sel=document.getElementById('ls_'+cid);
+  const tq=parseInt(sel.value);
+  if(!tq){alert('Vui lòng chọn quẻ đơn cần xét');return;}
+  const res=document.getElementById(cid)._results;
+  if(!res) return;
+  renderLucResult(res,tq,cid);
+  // Scroll đến kết quả
+  setTimeout(()=>document.getElementById('luc_result_'+cid).scrollIntoView({behavior:'smooth',block:'start'}),100);
+}
+
+// ================================================================
+// COMPUTE / UTIL
+// ================================================================
+function compute(tab){
+  let sT,sH,sD;
+  if(tab===1){
+    sT=parseInt(document.getElementById('t1_thuong').value);
+    sH=parseInt(document.getElementById('t1_ha').value);
+    if(isNaN(sT)||isNaN(sH)){alert('Vui lòng nhập Số Thượng và Số Hạ');return;}
+    sD=sT+sH;
+  } else {
+    sT=parseInt(document.getElementById('t2_thuong').value);
+    sH=parseInt(document.getElementById('t2_ha').value);
+    sD=parseInt(document.getElementById('t2_hao').value);
+    if(isNaN(sT)||isNaN(sH)||isNaN(sD)){alert('Vui lòng nhập đủ 3 số');return;}
+  }
+  renderResults(`result${tab}`, tinhDay(sT,sH,sD), sT, sH, tab===1?`${sT}+${sH}=${sD}`:sD);
+}
+
+function randomInput(tab){
+  if(tab===1){
+    document.getElementById('t1_thuong').value=Math.floor(Math.random()*64)+1;
+    document.getElementById('t1_ha').value=Math.floor(Math.random()*64)+1;
+  } else {
+    document.getElementById('t2_thuong').value=Math.floor(Math.random()*64)+1;
+    document.getElementById('t2_ha').value=Math.floor(Math.random()*64)+1;
+    document.getElementById('t2_hao').value=Math.floor(Math.random()*36)+1;
+  }
+}
+function clearAll(tab){
+  const ids=tab===1?['t1_thuong','t1_ha']:['t2_thuong','t2_ha','t2_hao'];
+  ids.forEach(id=>document.getElementById(id).value='');
+  const r=document.getElementById(`result${tab}`);
+  r.innerHTML=''; r.classList.remove('visible');
+}
+function switchTab(n){
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===n-1));
+  document.querySelectorAll('.tab-panel').forEach((p,i)=>p.classList.toggle('active',i===n-1));
+}
+function doCopy(btnId,preId){
+  navigator.clipboard.writeText(document.getElementById(preId).textContent).then(()=>{
+    const b=document.getElementById(btnId);
+    b.textContent='Đã copy!'; b.classList.add('copied');
+    setTimeout(()=>{b.textContent='Sao Chép';b.classList.remove('copied');},2000);
+  });
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){
+    const a=document.querySelector('.tab-panel.active');
+    compute(a.id==='panel1'?1:2);
+  }
+});
+</script>
+</body>
+</html>
