@@ -446,19 +446,19 @@ function phanTichDienBien(ktResults) {
   const vals = ktResults.map(r => r ? r.tong : null);
   const n = vals.length;
 
-  // Điểm xuất phát
+  // Điểm xuất phát / kết thúc
   const start = vals[0];
-  // Điểm kết thúc
   const end = vals[n-1];
-  // Peak & trough
+
+  // Peak & trough — chỉ tính trên các giá trị không null
   let peakIdx=0, troughIdx=0;
   vals.forEach((v,i)=>{ if(v!==null){
-    if(v>vals[peakIdx]) peakIdx=i;
-    if(v<vals[troughIdx]) troughIdx=i;
+    if(vals[peakIdx]===null || v>vals[peakIdx]) peakIdx=i;
+    if(vals[troughIdx]===null || v<vals[troughIdx]) troughIdx=i;
   }});
 
-  // Xu hướng tổng thể
-  const trend = end>start?'rising':end<start?'falling':'flat';
+  // Xu hướng tổng thể — guard null
+  const trend = (start===null||end===null) ? 'flat' : end>start?'rising':end<start?'falling':'flat';
 
   // Tìm điểm đảo chiều
   const turningPoints = [];
@@ -471,19 +471,21 @@ function phanTichDienBien(ktResults) {
     }
   }
 
+  // Helper format an toàn với null
+  const fS = v => v!==null ? fmtS(v) : '—';
+  const s = (start!==null && start>=0) ? 'thuận' : 'nghịch';
+  const e = (end!==null   && end>=0)   ? 'thuận' : 'nghịch';
+
   // Nhận xét diễn biến
   let narrative = '';
-  const s = start>=0?'thuận':'nghịch';
-  const e = end>=0?'thuận':'nghịch';
-
   if(trend==='rising'){
-    if(start<0) narrative = `Khởi đầu trong thế ${s} (${fmtS(start)}), nhưng lực dần chuyển hoá tích cực qua các giai đoạn. Kết thúc ở thế ${e} (${fmtS(end)}) — diễn biến đi lên, cục diện cải thiện dần.`;
-    else narrative = `Bắt đầu thuận lợi (${fmtS(start)}) và tiếp tục tăng cường lực. Kết thúc mạnh hơn (${fmtS(end)}) — xu thế nhất quán đi lên.`;
+    if(start!==null && start<0) narrative = `Khởi đầu trong thế ${s} (${fS(start)}), nhưng lực dần chuyển hoá tích cực qua các giai đoạn. Kết thúc ở thế ${e} (${fS(end)}) — diễn biến đi lên, cục diện cải thiện dần.`;
+    else narrative = `Bắt đầu thuận lợi (${fS(start)}) và tiếp tục tăng cường lực. Kết thúc mạnh hơn (${fS(end)}) — xu thế nhất quán đi lên.`;
   } else if(trend==='falling'){
-    if(start>0) narrative = `Khởi đầu thuận (${fmtS(start)}), nhưng lực suy giảm dần qua các giai đoạn. Kết thúc ở thế ${e} (${fmtS(end)}) — cần chú ý đà đi xuống.`;
-    else narrative = `Bắt đầu đã bất lợi (${fmtS(start)}) và tiếp tục suy yếu. Kết thúc ở (${fmtS(end)}) — áp lực xuyên suốt toàn cục diện.`;
+    if(start!==null && start>0) narrative = `Khởi đầu thuận (${fS(start)}), nhưng lực suy giảm dần qua các giai đoạn. Kết thúc ở thế ${e} (${fS(end)}) — cần chú ý đà đi xuống.`;
+    else narrative = `Bắt đầu đã bất lợi (${fS(start)}) và tiếp tục suy yếu. Kết thúc ở (${fS(end)}) — áp lực xuyên suốt toàn cục diện.`;
   } else {
-    narrative = `Lực dao động không có hướng rõ ràng. Điểm cuối (${fmtS(end)}) gần bằng điểm đầu (${fmtS(start)}) — cục diện giằng co, chưa ngả hẳn.`;
+    narrative = `Lực dao động không có hướng rõ ràng. Điểm cuối (${fS(end)}) gần bằng điểm đầu (${fS(start)}) — cục diện giằng co, chưa ngả hẳn.`;
   }
 
   // Thêm nhận xét turning point
@@ -517,6 +519,7 @@ function veChart(canvasId, ktResults, analysis) {
 
   // Range
   const allV = vals.filter(v=>v!==null);
+  if(!allV.length) return;
   let minV = Math.min(...allV), maxV = Math.max(...allV);
   const margin = Math.max(0.5, (maxV-minV)*0.2);
   minV -= margin; maxV += margin;
@@ -621,11 +624,15 @@ function veChart(canvasId, ktResults, analysis) {
   // Peak/Trough markers
   if(n>1){
     const px=xOf(analysis.peakIdx), py=yOf(vals[analysis.peakIdx]);
-    ctx.fillStyle='rgba(109,191,109,0.9)'; ctx.font='bold 10px sans-serif'; ctx.textAlign='center';
-    ctx.fillText('▲', px, py-14);
+    if(vals[analysis.peakIdx]!==null){
+      ctx.fillStyle='rgba(109,191,109,0.9)'; ctx.font='bold 10px sans-serif'; ctx.textAlign='center';
+      ctx.fillText('▲', px, py-14);
+    }
     const tx=xOf(analysis.troughIdx), ty=yOf(vals[analysis.troughIdx]);
-    ctx.fillStyle='rgba(224,112,112,0.9)';
-    ctx.fillText('▼', tx, ty+18);
+    if(vals[analysis.troughIdx]!==null){
+      ctx.fillStyle='rgba(224,112,112,0.9)';
+      ctx.fillText('▼', tx, ty+18);
+    }
   }
 }
 
@@ -816,7 +823,7 @@ function renderLucResult(results, target, cid, taQuai) {
   // ── 3. Phase boxes ──
   html += `<div class="phase-row">`;
   vals.forEach((v,i)=>{
-    if(v===null){ html+=`<div class="phase-box flat"><div class="phase-num">KT${i+1}</div><div class="phase-val">—</div></div>`; return; }
+    if(v===null){ html+=`<div class="phase-box flat"><div class="phase-num">${i===0?'Chính':'KT'+(i+1)}</div><div class="phase-val">—</div></div>`; return; }
     const isPeak=i===peakIdx, isTrough=i===troughIdx;
     let cls = isPeak?'peak':isTrough?'trough':v>0?'up':v<0?'down':'flat';
     const icon = isPeak?'▲ Đỉnh':isTrough?'▼ Đáy':v>0?'↑':v<0?'↓':'→';
