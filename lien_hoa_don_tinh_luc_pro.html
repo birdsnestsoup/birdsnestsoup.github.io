@@ -1057,7 +1057,7 @@ function renderResults(cid, results, sT, sH, sD){
         <label>Chọn quẻ đơn cần xét</label>
         <select id="ls_${cid}">
           <option value="">— Chọn quẻ —</option>
-          ${QUE_TEN.slice(1).map((t,i)=>`<option value="${i+1}"${i+1===taQuai?' selected':''}">${t}  (${HANH[i+1]}) ${i+1===taQuai?'← TA':''}</option>`).join('')}
+          ${QUE_TEN.slice(1).map((t,i)=>`<option value="${i+1}"${i+1===taQuai?' selected':''}>${t}  (${HANH[i+1]}) ${i+1===taQuai?'← TA':''}</option>`).join('')}
         </select>
       </div>
       <div style="display:flex;align-items:flex-end">
