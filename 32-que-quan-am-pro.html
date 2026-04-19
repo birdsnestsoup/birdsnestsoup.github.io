@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>32 Quẻ Quán Âm</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1209;
+  --gold: #c8a84b;
+  --gold-light: #e8d090;
+  --gold-pale: #f5e9c0;
+  --dark: #0d0b07;
+  --dark2: #12100a;
+  --red: #8b1a1a;
+  --coin-dark: #1e1608;
+  --glow: rgba(200,168,75,0.35);
+  --glow-red: rgba(139,26,26,0.4);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+
+body {
+  font-family:'Be Vietnam Pro',sans-serif;
+  background:var(--dark);
+  color:#e8d090;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* BG ambient */
+body::before {
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(ellipse 90% 50% at 50% 0%, rgba(200,168,75,0.07) 0%,transparent 65%),
+    radial-gradient(ellipse 50% 40% at 90% 100%, rgba(139,26,26,0.07) 0%,transparent 60%),
+    repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(200,168,75,0.025) 59px,rgba(200,168,75,0.025) 60px),
+    repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(200,168,75,0.025) 59px,rgba(200,168,75,0.025) 60px);
+}
+
+.app{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:0 16px 80px;}
+
+/* ═══ HEADER ═══ */
+.header{text-align:center;padding:36px 0 22px;border-bottom:1px solid rgba(200,168,75,0.18);margin-bottom:24px;}
+.quan-am-wrap{position:relative;display:inline-block;margin-bottom:16px;}
+.quan-am-image,.quan-am-placeholder{
+  width:88px;height:88px;border-radius:50%;display:block;
+  border:2px solid var(--gold);
+  box-shadow:0 0 0 4px rgba(200,168,75,0.1),0 0 30px var(--glow),0 0 70px rgba(200,168,75,0.08);
+  object-fit:cover;
+}
+.quan-am-placeholder{
+  display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle at 40% 35%,#3d2e10,#1a1209);
+  font-size:40px;
+}
+.quan-am-glow{
+  position:absolute;inset:-8px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,168,75,0.15) 0%,transparent 70%);
+  animation:pulseGlow 3s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes pulseGlow{0%,100%{opacity:0.5;transform:scale(1);}50%{opacity:1;transform:scale(1.08);}}
+.header-title{font-family:'Playfair Display',serif;font-size:26px;color:var(--gold);letter-spacing:0.05em;line-height:1.2;text-shadow:0 0 40px rgba(200,168,75,0.35);}
+.header-sub{margin-top:6px;font-size:11px;color:rgba(200,168,75,0.45);letter-spacing:0.18em;text-transform:uppercase;}
+
+/* ═══ NHẬP TÊN & CẦU GÌ ═══ */
+.khan-form{
+  background:rgba(200,168,75,0.04);
+  border:1px solid rgba(200,168,75,0.15);
+  border-radius:12px;padding:18px 20px;margin-bottom:20px;
+}
+.khan-form-title{
+  font-size:11px;letter-spacing:0.18em;text-transform:uppercase;
+  color:rgba(200,168,75,0.5);margin-bottom:14px;
+  display:flex;align-items:center;gap:8px;
+}
+.khan-inputs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+@media(max-width:480px){.khan-inputs{grid-template-columns:1fr;}}
+.khan-input-group label{display:block;font-size:11px;color:rgba(200,168,75,0.45);letter-spacing:0.1em;margin-bottom:5px;text-transform:uppercase;}
+.khan-input-group input,.khan-input-group select{
+  width:100%;background:rgba(0,0,0,0.3);
+  border:1px solid rgba(200,168,75,0.2);border-radius:7px;
+  padding:9px 12px;color:rgba(245,233,192,0.9);
+  font-family:'Be Vietnam Pro',sans-serif;font-size:13px;
+  outline:none;transition:border-color 0.2s;
+}
+.khan-input-group input:focus,.khan-input-group select:focus{border-color:rgba(200,168,75,0.5);}
+.khan-input-group select option{background:#1a1209;}
+.khan-preview{
+  font-size:12.5px;color:rgba(200,168,75,0.75);
+  font-style:italic;line-height:1.7;
+  border-left:2px solid rgba(200,168,75,0.25);padding-left:12px;
+  min-height:36px;transition:all 0.3s;
+}
+
+/* ═══ CHÚ & HƯỚNG DẪN (collapsible) ═══ */
+.accordion{
+  background:rgba(200,168,75,0.03);
+  border:1px solid rgba(200,168,75,0.12);
+  border-radius:10px;margin-bottom:20px;overflow:hidden;
+}
+.accordion-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:13px 18px;cursor:pointer;user-select:none;
+  color:rgba(200,168,75,0.7);font-size:13px;font-weight:500;letter-spacing:0.06em;
+  transition:background 0.2s;
+}
+.accordion-header:hover{background:rgba(200,168,75,0.05);}
+.accordion-arrow{transition:transform 0.3s;font-size:12px;}
+.accordion.open .accordion-arrow{transform:rotate(180deg);}
+.accordion-body{display:none;padding:0 18px 16px;}
+.accordion.open .accordion-body{display:block;}
+.chu-niem{
+  font-family:'Playfair Display',serif;font-style:italic;
+  color:rgba(200,168,75,0.8);font-size:13.5px;line-height:2.1;
+  border-left:2px solid rgba(200,168,75,0.25);padding-left:14px;margin-bottom:12px;
+}
+.huong-dan-text{font-size:12.5px;color:rgba(245,233,192,0.6);line-height:1.85;
+  background:rgba(0,0,0,0.2);border-radius:8px;padding:12px 14px;
+  border:1px solid rgba(200,168,75,0.08);}
+.huong-dan-text em{color:rgba(200,168,75,0.85);font-style:normal;font-weight:600;}
+
+/* ═══ XỐC TIỀN ═══ */
+.shake-area{
+  text-align:center;margin-bottom:24px;
+  padding:22px 20px;
+  background:rgba(0,0,0,0.2);border:1px solid rgba(200,168,75,0.12);border-radius:12px;
+}
+.shake-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  background:linear-gradient(135deg,#8b1a1a,#6b1212);
+  color:var(--gold-light);
+  border:1px solid rgba(200,168,75,0.35);border-radius:9px;
+  padding:13px 32px;font-family:'Be Vietnam Pro',sans-serif;
+  font-size:15px;font-weight:600;cursor:pointer;
+  transition:all 0.2s;letter-spacing:0.04em;
+  box-shadow:0 4px 24px rgba(139,26,26,0.3),inset 0 1px 0 rgba(255,255,255,0.07);
+}
+.shake-btn:hover{background:linear-gradient(135deg,#a01e1e,#7a1414);transform:translateY(-1px);box-shadow:0 6px 28px rgba(139,26,26,0.45),0 0 20px rgba(200,168,75,0.12);}
+.shake-btn:active{transform:translateY(0);}
+.shake-btn.shaking{animation:shakeAnim 0.55s ease;}
+@keyframes shakeAnim{
+  0%,100%{transform:translateX(0) rotate(0);}
+  10%{transform:translateX(-7px) rotate(-4deg);}
+  25%{transform:translateX(7px) rotate(4deg);}
+  40%{transform:translateX(-5px) rotate(-2deg);}
+  55%{transform:translateX(5px) rotate(2deg);}
+  70%{transform:translateX(-3px) rotate(-1deg);}
+  85%{transform:translateX(3px) rotate(1deg);}
+}
+.shake-hint{margin-top:10px;font-size:12px;color:rgba(200,168,75,0.38);transition:color 0.3s;}
+.shake-hint.active{color:rgba(200,168,75,0.65);}
+
+/* ═══ COINS 3D FLIP ═══ */
+.coins-section{margin-bottom:24px;}
+.section-label{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,168,75,0.38);margin-bottom:14px;}
+
+.coins-grid{display:flex;flex-direction:column;gap:10px;align-items:center;}
+.coin-row{display:flex;align-items:center;gap:12px;width:100%;max-width:400px;}
+.coin-label-wrap{width:58px;flex-shrink:0;text-align:right;}
+.coin-label{font-size:10px;color:rgba(200,168,75,0.38);letter-spacing:0.08em;display:block;}
+.coin-label-num{font-size:9px;color:rgba(200,168,75,0.22);}
+.coin-status-dot{width:20px;flex-shrink:0;text-align:center;font-size:10px;color:rgba(200,168,75,0.2);transition:all 0.3s;}
+.coin-status-dot.done{color:var(--gold);}
+
+/* 3D coin container */
+.coin-scene{flex:1;height:58px;perspective:400px;}
+.coin-3d{
+  position:relative;width:100%;height:100%;
+  transform-style:preserve-3d;
+  transition:transform 0.55s cubic-bezier(0.4,0.2,0.2,1);
+}
+.coin-3d.flipped{transform:rotateY(180deg);}
+
+.coin-face{
+  position:absolute;inset:0;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  cursor:pointer;border:1px solid;
+  font-family:'Be Vietnam Pro',sans-serif;font-size:14px;font-weight:600;letter-spacing:0.04em;
+  transition:box-shadow 0.2s;
+  user-select:none;
+}
+.coin-front{/* Trước: trạng thái chờ / ready */
+  background:linear-gradient(135deg,#1e1810,#2a2214);
+  border-color:rgba(200,168,75,0.15);
+  color:rgba(200,168,75,0.25);
+}
+.coin-front.ready{
+  background:linear-gradient(135deg,#28200e,#342a12);
+  border-color:rgba(200,168,75,0.3);
+  color:rgba(200,168,75,0.6);
+  animation:readyPulse 2s ease-in-out infinite;
+}
+@keyframes readyPulse{0%,100%{box-shadow:0 0 0 0 rgba(200,168,75,0);}50%{box-shadow:0 0 14px 2px rgba(200,168,75,0.18);}}
+.coin-front.ready:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.35) !important;}
+.coin-front:not(.ready){cursor:not-allowed;}
+
+/* Mặt sau: ngửa hoặc sấp */
+.coin-back{transform:rotateY(180deg);}
+.coin-back.ngua{
+  background:linear-gradient(135deg,#b8941e,#e8c840,#d4a830,#f0d050,#c09020);
+  border-color:#e8c840;
+  color:#1e1608;
+  box-shadow:0 0 24px rgba(200,168,75,0.45),inset 0 1px 0 rgba(255,255,255,0.35);
+}
+.coin-back.sap{
+  background:radial-gradient(circle at 35% 35%,#2e2410,#181208,#0e0c06);
+  border-color:rgba(200,168,75,0.18);
+  color:rgba(200,168,75,0.55);
+  box-shadow:inset 0 3px 10px rgba(0,0,0,0.6),0 2px 8px rgba(0,0,0,0.4);
+}
+
+.coin-icon{font-size:18px;line-height:1;}
+.coin-text-label{font-size:13px;}
+.coin-back-num{
+  position:absolute;bottom:5px;right:9px;
+  font-size:9px;opacity:0.45;font-weight:400;letter-spacing:0;
+}
+
+/* ═══ PHẦN HÀO TRUYỀN THỐNG (kết quả nhỏ trên đồng xu) ═══ */
+/* ═══ RESULT REVEAL ═══ */
+.result-area{display:none;}
+.result-area.visible{display:block;}
+
+.result-card{
+  background:linear-gradient(160deg,rgba(200,168,75,0.07) 0%,rgba(139,26,26,0.04) 100%);
+  border:1px solid rgba(200,168,75,0.28);
+  border-radius:14px;overflow:hidden;position:relative;
+}
+.result-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+
+.result-header{
+  padding:22px 22px 16px;
+  border-bottom:1px solid rgba(200,168,75,0.12);
+  display:flex;align-items:flex-start;justify-content:space-between;gap:14px;
+}
+.result-num-label{font-size:10px;color:rgba(200,168,75,0.45);letter-spacing:0.18em;text-transform:uppercase;margin-bottom:4px;}
+.result-name{
+  font-family:'Playfair Display',serif;font-size:28px;color:var(--gold);
+  line-height:1.2;text-shadow:0 0 28px rgba(200,168,75,0.3);
+  opacity:0;transform:translateY(6px);
+  transition:all 0.5s ease 0.1s;
+}
+.result-name.show{opacity:1;transform:translateY(0);}
+
+.result-cap{
+  display:inline-block;margin-top:7px;padding:4px 13px;border-radius:20px;
+  font-size:11px;font-weight:600;letter-spacing:0.06em;
+  opacity:0;transition:opacity 0.4s ease 0.3s;
+}
+.result-cap.show{opacity:1;}
+.cap-dai-cat{background:rgba(200,168,75,0.18);color:#f0d060;border:1px solid rgba(200,168,75,0.4);box-shadow:0 0 12px rgba(200,168,75,0.2);}
+.cap-kiet{background:rgba(80,160,80,0.12);color:#88cc66;border:1px solid rgba(80,160,80,0.3);}
+.cap-trung{background:rgba(80,120,200,0.12);color:#88aaee;border:1px solid rgba(80,120,200,0.3);}
+.cap-xau{background:rgba(180,50,50,0.12);color:#dd7070;border:1px solid rgba(180,50,50,0.3);box-shadow:0 0 10px rgba(180,50,50,0.15);}
+
+.action-btns{display:flex;flex-direction:column;gap:7px;flex-shrink:0;}
+.act-btn{
+  background:rgba(200,168,75,0.08);border:1px solid rgba(200,168,75,0.2);
+  border-radius:7px;padding:7px 12px;color:rgba(200,168,75,0.6);
+  font-family:'Be Vietnam Pro',sans-serif;font-size:11px;cursor:pointer;
+  transition:all 0.2s;white-space:nowrap;display:flex;align-items:center;gap:5px;
+  letter-spacing:0.04em;
+}
+.act-btn:hover{background:rgba(200,168,75,0.16);color:var(--gold);border-color:rgba(200,168,75,0.38);}
+.act-btn.copied{background:rgba(80,160,80,0.15);color:#88cc66;border-color:rgba(80,160,80,0.3);}
+
+.result-body{padding:18px 22px;}
+
+/* Hào kiểu truyền thống */
+.hao-traditional{
+  display:flex;align-items:flex-end;gap:5px;
+  margin-bottom:20px;
+  opacity:0;transform:translateY(8px);
+  transition:all 0.5s ease 0.2s;
+}
+.hao-traditional.show{opacity:1;transform:translateY(0);}
+.hao-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;}
+.hao-line-wrap{width:100%;display:flex;align-items:center;justify-content:center;height:14px;}
+.hao-lien{/* vạch liền - ngửa/dương */
+  width:90%;height:6px;border-radius:3px;
+  background:linear-gradient(90deg,#b8941e,#e8c840,#b8941e);
+  box-shadow:0 0 6px rgba(200,168,75,0.4);
+}
+.hao-dut{/* vạch đứt - sấp/âm */
+  width:90%;height:6px;display:flex;gap:10%;align-items:center;
+}
+.hao-dut-seg{flex:1;height:6px;border-radius:3px;background:rgba(200,168,75,0.25);border:1px solid rgba(200,168,75,0.15);}
+.hao-num-label{font-size:9px;color:rgba(200,168,75,0.3);margin-top:2px;}
+.hao-label-txt{font-size:8px;color:rgba(200,168,75,0.2);letter-spacing:0.05em;margin-top:1px;}
+
+.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,0.18),transparent);margin:16px 0;}
+
+.result-section-title{
+  font-size:10px;letter-spacing:0.18em;text-transform:uppercase;
+  color:rgba(200,168,75,0.4);margin-bottom:10px;
+  display:flex;align-items:center;gap:8px;
+}
+.result-section-title::after{content:'';flex:1;height:1px;background:rgba(200,168,75,0.1);}
+
+.bai-tho{
+  font-family:'Playfair Display',serif;font-style:italic;
+  color:rgba(245,233,192,0.82);font-size:14px;line-height:2.15;
+  border-left:2px solid rgba(200,168,75,0.2);padding-left:14px;
+  opacity:0;transform:translateY(6px);
+  transition:all 0.5s ease 0.45s;
+}
+.bai-tho.show{opacity:1;transform:translateY(0);}
+
+.loi-doan{
+  color:rgba(245,233,192,0.72);font-size:13px;line-height:2;
+  opacity:0;transform:translateY(6px);
+  transition:all 0.5s ease 0.65s;
+}
+.loi-doan.show{opacity:1;transform:translateY(0);}
+
+/* ═══ CANVAS EXPORT ═══ */
+#exportCanvas{display:none;}
+
+/* ═══ NHẬT KÝ ═══ */
+.history-section{margin-top:28px;}
+.history-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:14px;
+}
+.history-title{font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(200,168,75,0.4);}
+.history-clear{
+  background:none;border:1px solid rgba(200,168,75,0.15);border-radius:6px;
+  padding:4px 10px;color:rgba(200,168,75,0.35);font-size:11px;cursor:pointer;
+  transition:all 0.2s;font-family:'Be Vietnam Pro',sans-serif;
+}
+.history-clear:hover{border-color:rgba(200,168,75,0.3);color:rgba(200,168,75,0.7);}
+.history-empty{text-align:center;padding:24px;color:rgba(200,168,75,0.25);font-size:13px;}
+.history-list{display:flex;flex-direction:column;gap:8px;}
+.history-item{
+  background:rgba(0,0,0,0.2);border:1px solid rgba(200,168,75,0.1);
+  border-radius:9px;padding:12px 14px;cursor:pointer;
+  transition:all 0.2s;display:flex;align-items:center;gap:12px;
+}
+.history-item:hover{border-color:rgba(200,168,75,0.25);background:rgba(200,168,75,0.04);}
+.history-hao-mini{display:flex;gap:3px;flex-shrink:0;}
+.hm{width:10px;height:28px;border-radius:3px;}
+.hm.n{background:linear-gradient(to bottom,#c8a84b,#e8c840);box-shadow:0 0 4px rgba(200,168,75,0.3);}
+.hm.s{background:rgba(200,168,75,0.12);border:1px solid rgba(200,168,75,0.1);}
+.history-info{flex:1;min-width:0;}
+.history-que-name{font-family:'Playfair Display',serif;font-size:14px;color:rgba(200,168,75,0.85);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.history-meta{font-size:11px;color:rgba(200,168,75,0.32);margin-top:2px;}
+.history-cap-badge{font-size:10px;padding:2px 8px;border-radius:10px;flex-shrink:0;}
+
+/* ═══ RESET ═══ */
+.reset-area{display:none;text-align:center;margin-top:22px;}
+.reset-area.visible{display:block;}
+.reset-btn{
+  background:none;border:1px solid rgba(200,168,75,0.2);border-radius:8px;
+  padding:10px 28px;color:rgba(200,168,75,0.5);
+  font-family:'Be Vietnam Pro',sans-serif;font-size:13px;cursor:pointer;
+  transition:all 0.2s;letter-spacing:0.04em;
+}
+.reset-btn:hover{border-color:rgba(200,168,75,0.38);color:var(--gold);background:rgba(200,168,75,0.04);}
+
+/* ═══ TOAST ═══ */
+.toast{
+  position:fixed;bottom:28px;left:50%;
+  transform:translateX(-50%) translateY(60px);
+  background:rgba(14,11,6,0.96);border:1px solid rgba(200,168,75,0.28);
+  border-radius:8px;padding:10px 20px;color:var(--gold-light);
+  font-size:13px;z-index:999;transition:transform 0.3s ease;pointer-events:none;
+  white-space:nowrap;
+}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+/* Sound toggle */
+.sound-toggle{
+  position:fixed;bottom:28px;right:20px;z-index:100;
+  background:rgba(14,11,6,0.8);border:1px solid rgba(200,168,75,0.2);
+  border-radius:50%;width:38px;height:38px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+  transition:all 0.2s;
+}
+.sound-toggle:hover{border-color:rgba(200,168,75,0.4);background:rgba(14,11,6,0.95);}
+
+@media(max-width:480px){
+  .header-title{font-size:22px;}
+  .result-name{font-size:23px;}
+  .result-header{flex-direction:column;}
+  .action-btns{flex-direction:row;}
+  .hao-traditional{gap:3px;}
+}
+</style>
+</head>
+<body>
+
+<button class="sound-toggle" id="soundToggle" onclick="toggleSound()" title="Bật/tắt âm thanh">🔔</button>
+
+<div class="app">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="quan-am-wrap">
+    <div class="quan-am-glow"></div>
+    <img src="QUAN_AM_IMAGE_URL_HERE" alt="Quan Âm Bồ Tát" class="quan-am-image"
+      onerror="this.style.display='none';document.getElementById('qaph').style.display='flex';">
+    <div class="quan-am-placeholder" id="qaph" style="display:none">🪷</div>
+  </div>
+  <div class="header-title">32 Quẻ Quán Âm</div>
+  <div class="header-sub">Nam Mô Đại Từ Đại Bi Quán Thế Âm Bồ Tát</div>
+</div>
+
+<!-- NHẬP TÊN & VIỆC CẦU -->
+<div class="khan-form">
+  <div class="khan-form-title">🕯 Lời Khấn Cá Nhân</div>
+  <div class="khan-inputs">
+    <div class="khan-input-group">
+      <label>Họ &amp; Tên</label>
+      <input type="text" id="inputTen" placeholder="Nhập họ tên..." oninput="capNhatKhan()">
+    </div>
+    <div class="khan-input-group">
+      <label>Việc Cầu</label>
+      <select id="inputViec" onchange="capNhatKhan()">
+        <option value="">— Chọn việc cầu —</option>
+        <option value="cầu tài lộc, làm ăn thuận lợi">Tài lộc / Làm ăn</option>
+        <option value="cầu sức khỏe bình an">Sức khỏe</option>
+        <option value="cầu hôn nhân tốt lành">Hôn nhân</option>
+        <option value="cầu công danh sự nghiệp">Công danh / Sự nghiệp</option>
+        <option value="cầu gia đạo bình an">Gia đạo bình an</option>
+        <option value="cầu tai qua nạn khỏi">Tai qua nạn khỏi</option>
+        <option value="cầu chỉ dẫn cho việc đang phân vân">Phân vân / Quyết định</option>
+        <option value="cầu điều mong ước sớm thành">Điều mong ước</option>
+      </select>
+    </div>
+  </div>
+  <div class="khan-preview" id="khanPreview">
+    <em style="color:rgba(200,168,75,0.3)">Nhập tên và chọn việc cầu để hiển thị lời khấn...</em>
+  </div>
+</div>
+
+<!-- BÀI CHÚ (accordion) -->
+<div class="accordion" id="accChu">
+  <div class="accordion-header" onclick="toggleAccordion('accChu')">
+    <span>☸ Bài Niệm Chú &amp; Hướng Dẫn</span>
+    <span class="accordion-arrow">▾</span>
+  </div>
+  <div class="accordion-body">
+    <div class="chu-niem">
+      Tử kim trăm ức pháp thân sinh,<br>
+      Áo trắng ba mươi hai diệu tướng thành.<br>
+      Cúi lạy Viên Thông Tự Tại Phật,<br>
+      Phổ Đà cảm ứng, Đấng lòng thành.<br><br>
+      <strong>Nam Mô Đại Từ Đại Bi, Linh Cảm Quán Thế Âm Bồ Tát</strong><br>
+      <em style="font-size:12px;opacity:0.7">(Đọc đủ bảy lần)</em>
+    </div>
+    <div class="huong-dan-text">
+      Niệm chú xong, bấm <em>Xốc 5 Đồng Xu</em> để lắc đồng tiền.<br>
+      Rồi lần lượt bấm từng đồng từ <em>Lần 1 → Lần 5</em> (từ dưới lên).<br>
+      Sấp = âm (◑ tối), Ngửa = dương (☀ vàng kim).
+    </div>
+  </div>
+</div>
+
+<!-- XỐC TIỀN -->
+<div class="shake-area">
+  <div class="section-label">Bước 1 — Xốc đồng xu</div>
+  <button class="shake-btn" id="shakeBtn" onclick="xocTien()">
+    <span>🪙</span> Xốc 5 Đồng Xu
+  </button>
+  <div class="shake-hint" id="shakeHint">Bấm để lắc và định quẻ (thuật toán ngẫu nhiên)</div>
+</div>
+
+<!-- 5 ĐỒNG TIỀN -->
+<div class="coins-section">
+  <div class="section-label">Bước 2 — Lần lượt lật từng đồng (từ dưới lên)</div>
+  <div class="coins-grid" id="coinsGrid">
+
+    <div class="coin-row">
+      <div class="coin-label-wrap"><span class="coin-label">Vị 5</span><span class="coin-label-num">Trên cùng</span></div>
+      <div class="coin-scene">
+        <div class="coin-3d" id="coin3d-5">
+          <div class="coin-face coin-front" id="coinFront5" onclick="latDong(5)">
+            <span class="coin-icon">◎</span><span class="coin-text-label">Lần 5</span>
+          </div>
+          <div class="coin-face coin-back" id="coinBack5">
+            <span class="coin-icon" id="coinIcon5">◎</span>
+            <span class="coin-text-label" id="coinLabel5">—</span>
+            <span class="coin-back-num">#5</span>
+          </div>
+        </div>
+      </div>
+      <div class="coin-status-dot" id="dot5">○</div>
+    </div>
+
+    <div class="coin-row">
+      <div class="coin-label-wrap"><span class="coin-label">Vị 4</span></div>
+      <div class="coin-scene">
+        <div class="coin-3d" id="coin3d-4">
+          <div class="coin-face coin-front" id="coinFront4" onclick="latDong(4)">
+            <span class="coin-icon">◎</span><span class="coin-text-label">Lần 4</span>
+          </div>
+          <div class="coin-face coin-back" id="coinBack4">
+            <span class="coin-icon" id="coinIcon4">◎</span>
+            <span class="coin-text-label" id="coinLabel4">—</span>
+            <span class="coin-back-num">#4</span>
+          </div>
+        </div>
+      </div>
+      <div class="coin-status-dot" id="dot4">○</div>
+    </div>
+
+    <div class="coin-row">
+      <div class="coin-label-wrap"><span class="coin-label">Vị 3</span></div>
+      <div class="coin-scene">
+        <div class="coin-3d" id="coin3d-3">
+          <div class="coin-face coin-front" id="coinFront3" onclick="latDong(3)">
+            <span class="coin-icon">◎</span><span class="coin-text-label">Lần 3</span>
+          </div>
+          <div class="coin-face coin-back" id="coinBack3">
+            <span class="coin-icon" id="coinIcon3">◎</span>
+            <span class="coin-text-label" id="coinLabel3">—</span>
+            <span class="coin-back-num">#3</span>
+          </div>
+        </div>
+      </div>
+      <div class="coin-status-dot" id="dot3">○</div>
+    </div>
+
+    <div class="coin-row">
+      <div class="coin-label-wrap"><span class="coin-label">Vị 2</span></div>
+      <div class="coin-scene">
+        <div class="coin-3d" id="coin3d-2">
+          <div class="coin-face coin-front" id="coinFront2" onclick="latDong(2)">
+            <span class="coin-icon">◎</span><span class="coin-text-label">Lần 2</span>
+          </div>
+          <div class="coin-face coin-back" id="coinBack2">
+            <span class="coin-icon" id="coinIcon2">◎</span>
+            <span class="coin-text-label" id="coinLabel2">—</span>
+            <span class="coin-back-num">#2</span>
+          </div>
+        </div>
+      </div>
+      <div class="coin-status-dot" id="dot2">○</div>
+    </div>
+
+    <div class="coin-row">
+      <div class="coin-label-wrap"><span class="coin-label">Vị 1</span><span class="coin-label-num">Dưới cùng</span></div>
+      <div class="coin-scene">
+        <div class="coin-3d" id="coin3d-1">
+          <div class="coin-face coin-front" id="coinFront1" onclick="latDong(1)">
+            <span class="coin-icon">◎</span><span class="coin-text-label">Lần 1</span>
+          </div>
+          <div class="coin-face coin-back" id="coinBack1">
+            <span class="coin-icon" id="coinIcon1">◎</span>
+            <span class="coin-text-label" id="coinLabel1">—</span>
+            <span class="coin-back-num">#1</span>
+          </div>
+        </div>
+      </div>
+      <div class="coin-status-dot" id="dot1">○</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- KẾT QUẢ -->
+<div class="result-area" id="resultArea">
+  <div class="result-card" id="resultCard">
+    <div class="result-header">
+      <div>
+        <div class="result-num-label" id="resNumLabel">Quẻ —</div>
+        <div class="result-name" id="resName">—</div>
+        <span class="result-cap" id="resCap">—</span>
+      </div>
+      <div class="action-btns">
+        <button class="act-btn" id="copyBtn" onclick="copyResult()">📋 Sao chép</button>
+        <button class="act-btn" onclick="saveImage()">🖼 Lưu ảnh</button>
+      </div>
+    </div>
+    <div class="result-body">
+      <!-- Hào truyền thống -->
+      <div class="hao-traditional" id="haoTraditional"></div>
+
+      <div class="divider"></div>
+      <div class="result-section-title">Bài Thơ</div>
+      <div class="bai-tho" id="resTho"></div>
+
+      <div class="divider"></div>
+      <div class="result-section-title">Lời Đoán</div>
+      <div class="loi-doan" id="resDoan"></div>
+    </div>
+  </div>
+</div>
+
+<!-- RESET -->
+<div class="reset-area" id="resetArea">
+  <button class="reset-btn" onclick="resetApp()">↩ Gieo Quẻ Lại</button>
+</div>
+
+<!-- NHẬT KÝ -->
+<div class="history-section" id="historySection">
+  <div class="history-header">
+    <span class="history-title">📜 Nhật Ký Gieo Quẻ</span>
+    <button class="history-clear" onclick="clearHistory()">Xóa tất cả</button>
+  </div>
+  <div id="historyList"></div>
+</div>
+
+</div><!-- end .app -->
+
+<div class="toast" id="toast"></div>
+<canvas id="exportCanvas"></canvas>
+
+<script>
+// ═══════════════════════════════════════════════
+// DATA 32 QUẺ
+// key: v1v2v3v4v5 — N=ngửa, S=sấp
+// ═══════════════════════════════════════════════
+const QUE_MAP = {
+  "NNNNN":{so:1,ten:"Thăng Tấn",cap:"Thượng Đại Kiết",tho:"Chim phượng bay vào các gác,\nRùa thiêng ứng điềm lành hào.\nHọa trừ, phước lộc đến nơi,\nHớn hở được danh cao.",doan:"Quẻ ứng cầu tài rất tốt,\nRa vào đẹp ý vui lòng.\nThị phi, kiện cáo đều trừ xong,\nBệnh hoạn từ đây thuyên giảm.\nViệc tính thấy nên trước mắt,\nNgười đi sớm muộn chắc về.\nTai qua họa khỏi, phước nhiều bề,\nMừng được giàu sang phẩm trọng."},
+  "SSSSN":{so:2,ten:"Tùng Cách",cap:"Thượng Trung Kiết",tho:"Lối cũ nên cải sửa liền,\nViệc mới phải cần siêng chuyên.\nCá vượt Long Môn qua khỏi,\nThân phàm hóa Thánh Tiên.",doan:"Quẻ ứng cầu tài đại lợi,\nChỗ trông chắc được có ngày.\nNgười đau bệnh dứt, mạnh không sai,\nToan tính việc chi cũng tốt.\nQuê nhà người về lập nghiệp,\nPhương xa kẻ ở ấm no.\nSang xuân hoa nở, há cần lo,\nMuôn việc khỏi ai ngăn cản."},
+  "SSSNS":{so:3,ten:"Khúc Trực",cap:"Trung Bình",tho:"Cử động nhắm theo thời,\nCầu tài nhờ sức người.\nGặp ngày mậu kỷ thổ,\nTrăm việc ắt xong xuôi.",doan:"Quẻ ứng cầu tài được ít,\nNgười đau sớm muộn khó qua.\nKẻ đi chẳng vội trở về nhà,\nThưa kiện, làm ăn thất bại.\nChỗ muốn không trông nên việc,\nChuyện lo khó được vừa lòng.\nĐến thời Trời độ, vận hanh thông,\nBuồn trước, vui sau sẽ thấy."},
+  "SSNSS":{so:4,ten:"Nhuận Hạ",cap:"Trung Thượng",tho:"Thuyền đắm giữa dòng sâu,\nKhó cầu được bửu châu.\nNên ra sức hết mình,\nPhước đến, dứt ưu sầu.",doan:"Sầu thảm lòng khó giải,\nViệc cầu trăm thứ chẳng xong.\nNên lùi bước, được thong dong,\nNương cậy người giỏi mới tiện.\nDưỡng thân đêm đông sẵn lửa,\nCũng như cây héo gặp xuân.\nĐợi mưa qua khỏi, hết vận xui,\nRồi sẽ thấy ánh sáng tỏ rạng."},
+  "SNSSS":{so:5,ten:"Viêm Thượng",cap:"Trung Bình",tho:"Nam phương quẻ bất tường,\nLửa nóng không thể đương đầu.\nKiện cáo, văn thơ bị trì trệ,\nThêm vào chút họa ương.",doan:"Quẻ ứng nhiều điều lo sợ,\nThường hay do dự trong lòng.\nLùi thì êm việc, tiến thì rắc rối,\nNay nên theo lối cũ.\nMùa Hạ hoa tàn xơ xác,\nSang Thu cúc nở thơm tho.\nTới thời gặp vận, chớ sầu bi,\nLiền thấy tự nhiên nên việc."},
+  "NSSSS":{so:6,ten:"Giá Sắc",cap:"Trung Bình",tho:"Mậu kỷ ở trung ương,\nHết hung gặp kiết tường.\nSang trần, Phu Tử khốn khổ,\nLui tới chưa thông đường.",doan:"Mỗi việc đều bị ngăn trở,\nTrước hay hao tán của tiền.\nKẻ đi chẳng vội trở về liền,\nNgười bệnh khó bề thuyên giảm.\nViệc muốn cầu chưa được,\nĐừng lo thời vận lận đận.\nLúc này ráng giữ kẻo tai ương,\nSắp tới, thoát đường họa hại."},
+  "SSSNN":{so:7,ten:"Viễn Tấn",cap:"Thượng Đại Kiết",tho:"Nhà cửa được bình yên,\nDần dần thấy của tiền.\nCầu đâu nên việc đó,\nTật bệnh giảm thuyên liền.",doan:"Quẻ ứng cầu tài đẹp ý,\nKhởi công chọn ngày canh tân.\nNgười đi xứ lạ, được châu báu,\nBệnh lành trăm điều khỏi tốn.\nTranh luận, đưa quan, thắng kiện,\nRất mừng nên việc vợ chồng.\nCao nhân vừa thấy, đã vui lòng,\nChắc được trùng phùng phước lộc."},
+  "SSNSN":{so:8,ten:"Đắc Trợ",cap:"Thượng Thượng Kiết",tho:"Trời độ, việc đều an,\nCửa nhà tiếp phước ban.\nQuý nhân giúp đỡ sức,\nPhước lộc được hân hoan.",doan:"Quẻ ứng kim sinh thủy,\nÂm dương có kẻ trợ giúp an.\nCầu quan, áo tía mặc vinh quang,\nXứ lạ cầu tài được lợi.\nThành kính đốt hương khấn vái,\nGiúp thầm trên có Thánh Thần.\nSum vầy con cháu rất vui mừng,\nChỗ muốn vừa lòng đẹp ý."},
+  "SNSSN":{so:9,ten:"Hoạch An",cap:"Trung Thượng",tho:"Nay ví như cội mùa đông,\nXơ rơ chưa trổ bông.\nDần dần xuân sắc trổ,\nChồi lộc nảy đều đồng.",doan:"Quẻ ứng lòng thường do dự,\nHết buồn, vui tới, chớ nghi.\nNgười xa áo gấm mặc vinh quy,\nTật bệnh khỏi lo trì trệ.\nGả cưới hòa hợp vinh hiển,\nViệc quan chẳng ngại điều chi.\nDường như hoa liễu nở thơm tho,\nTrước mắt nhiều người hòa thuận."},
+  "NSSSN":{so:10,ten:"Tùy Tâm",cap:"Thượng Thượng",tho:"Mát mẻ cảnh ngày xuân,\nVật tàn bỗng tái hưng.\nMưa lất phất lại gặp,\nGội nhuần đức tu thân.",doan:"Quẻ ứng cầu tài được lợi,\nNgười đi áo gấm về nhà.\nHôn nhân hòa hợp chẳng sai ngoa,\nTranh luận, thị phi đều dứt.\nBỗng được thăng cao tước lộc,\nGiàu sang vinh hiển thỏa lòng.\nĐời nay ruộng phước, nên lo trồng,\nKiếp tới được vàng đầy đống."},
+  "SSNNS":{so:11,ten:"Bá Đạt",cap:"Thượng Thượng",tho:"Tai tan, cửa dữ đóng lại,\nPhước tới, cửa lành mở ra.\nXa cách nay gặp lại nhau,\nChắc phần được tài lộc.",doan:"Quẻ ứng trên hòa dưới thuận,\nTự nhiên hưởng phước thảnh thơi.\nCầu tài bốn phương nên lần đến,\nDanh lợi được theo lòng muốn.\nTrời hạn mạ nhờ mưa rưới,\nThuyền con xuôi gió vững lòng.\nCảnh xuân dòng nước trải về đông,\nTrăm việc đều yên khỏi ngại."},
+  "SNSNS":{so:12,ten:"Để An",cap:"Thượng Đại Kiết",tho:"Nên việc lòng hân hoan,\nTrò nghèo được áo gấm ban.\nTiền trình xuân nhật thấy rõ,\nDạo cảnh bước thảnh thơi.",doan:"Quẻ ứng điềm lành nên việc,\nHợp thời lên tướng phong hầu.\nQuý nhân đứng dắt đến chốn triều đình,\nNhận lãnh ấn vàng đai tía.\nTài lợi cầu thêm gấp bội,\nNgười đi đẹp ý vui lòng.\nTrung thu ánh trăng tỏ rạng trong,\nSoi khắp trời đất thế giới."},
+  "NSSNS":{so:13,ten:"Cử Tấn",cap:"Hạ Hạ",tho:"Trong nước hiện bóng trăng,\nBóng không chẳng thấy hình.\nTiền tài hay thất tán,\nDè dặt mới được an ninh.",doan:"Giáp mộc khắc mậu kỷ thổ,\nThan ôi! Việc tính khó thành.\nHao tài, tổn vật, mất nhân tình,\nĐừng với kẻ tiểu nhân tranh cạnh.\nMuôn việc nên theo lối cũ,\nĐổi dời chẳng gặp điềm may.\nPhải cầu Thần Thánh nguyện hằng ngày,\nMới được ít nhiều duyên phước."},
+  "SNNSS":{so:14,ten:"An Tịnh",cap:"Trung Bình",tho:"Công việc chẳng an vui,\nTính toán sự khó xuôi.\nTốt hơn lo lùi bước,\nGiữ phận họa tai lui.",doan:"Quẻ ứng nên theo lối cũ,\nViệc nên tránh, chớ bày ra.\nGiữ mình tiết kiệm, được an hòa,\nTùy phận, tùy duyên, qua buổi.\nNếu muốn đầy nhà vàng ngọc,\nKhác nào một giấc Nam Kha.\nNên tìm nơi yên tĩnh, niệm Di Đà,\nNguyện độ tai qua nạn khỏi."},
+  "NSNSS":{so:15,ten:"Trở Cách",cap:"Hạ Hạ",tho:"Cây héo gặp xuân tàn,\nThuyền con bị gió đẩy.\nTấm thân không chỗ dựa,\nTrăm việc chẳng hoàn toàn.",doan:"Quẻ ứng nhiều điều ngăn trở,\nTính toán, lòng chẳng thỏa nguyện.\nNên theo lối cũ chốn lâm tuyền,\nMới khỏi buồn rầu tai hại.\nChớ ước quan cao lộc cả,\nĐừng mong ngựa báu, áo quý.\nThuận theo thời vận, chớ cưỡng cầu,\nKhấn vái Phật Trời được phước."},
+  "NNSSS":{so:16,ten:"Tiêu Ách",cap:"Thượng Kiết",tho:"Vầng hồng chiếu bốn phương,\nThiên hạ hưởng thanh nhàn.\nGiao tiếp nên hòa hợp,\nTự nhiên việc được an.",doan:"Bính kỷ hai can chẳng khắc,\nTự nhiên muôn việc an bài.\nChẳng nên giữ cũ, đổi thì hay,\nNgười đến phương xa vô hại.\nThưa kiện, án từ thắng kiện,\nCầu tài điềm ứng thỏa nguyện.\nXem kinh niệm Phật được bình yên,\nSẽ hưởng công hầu vinh hiển."},
+  "SSNNN":{so:17,ten:"Chí Hỉ",cap:"Trung Thượng",tho:"Bệnh dứt, thân thể an,\nĐưa quan, thuận rảnh rang.\nTừ đây theo lối cũ,\nTai họa phải tiêu tan.",doan:"Điềm ứng cương nhu hai lẽ,\nViệc chi hòa hảo mới thành.\nNhỏ nhoi giữ phận, chớ đua tranh,\nNhịn được, tiêu trừ tai họa.\nQuân tử vận thời khó khăn,\nTiểu nhân đắc thế khoe khoang.\nCúc vàng chừng gặp tiết thu sang,\nThơm ngát mùi bay khắp chốn."},
+  "NSSNN":{so:18,ten:"Do Dự",cap:"Hạ Hạ",tho:"Lòng hoảng hốt hằng ngày,\nHao mòn hết của cải.\nHôn nhân rồi khốn hại,\nViệc đời chẳng hòa hài.",doan:"Trăm việc đều không vừa ý,\nTính toán bối rối thảm sầu.\nLàm ơn dày, lại gặp thù sâu,\nGiữ khéo kẻo tiểu nhân kiện cáo.\nLời nói phải dè chừng,\nLợi danh chớ tham quàng.\nThu sang mưa dứt, lúc mây tan,\nTrăng tỏ soi cùng trời đất."},
+  "SNNSN":{so:19,ten:"Phong Nẫm",cap:"Thượng Thượng Kiết",tho:"Vận đến được giàu to,\nCủa tiền chất đầy kho.\nBách tùng khi tiết lạnh,\nLan quế nở thơm tho.",doan:"Phước, lộc, thọ đồng giúp sức,\nTrúng mùa, vật đủ, người giàu.\nViệc chi toan tính, ắt nên mau,\nThân thích phương xa về tới.\nTật bệnh không thầy cũng mạnh,\nThị phi, khẩu thiệt trừ xong.\nThường lo niệm Phật, chẳng nài công,\nSẽ được phong quan vinh hiển."},
+  "NSNSN":{so:20,ten:"Đắc Lộc",cap:"Thượng Thượng Kiết",tho:"Lộc vị bởi cao danh,\nChim lồng được phóng sinh.\nMong tìm tài báu được,\nNơi xa phải thân đến.",doan:"Vận tốt phải toan tiến tới,\nChẳng nên giữ cũ chần chừ.\nMạng phần được mặc áo gấm đẹp,\nNương nhờ kẻ phương xa mới tiện.\nTài lợi thỏa lòng ao ước,\nViệc xong chớ hồ nghi.\nPhải cầu Trời Đất với Thần Kỳ,\nPhù hộ phước lành được hưởng."},
+  "SNNNS":{so:21,ten:"Phước Lộc",cap:"Thượng Thượng Kiết",tho:"Phước lộc được tăng gia,\nTiếng tăm bỗng phát ra.\nThỏa lòng nay gặp vận,\nTiếng tốt khắp truyền xa.",doan:"Quẻ ứng điềm lành phát đạt,\nHọa lui, phước đến vô cùng.\nCầu tài thỏa dạ, được thong dong,\nRực rỡ yên thân, ngựa tốt.\nChỗ ước được theo lòng muốn,\nNgười đi áo gấm về nhà.\nTrong ba mươi hai, chẳng quẻ nào hơn,\nPhước lộc càng theo đầy đủ."},
+  "NNSSN":{so:22,ten:"Minh Hiển",cap:"Thượng Kiết",tho:"Vầng trăng rạng đứng đầu,\nChiếu sáng rực đêm thâu.\nMột mảy mây đã sạch,\nDặm trường cảnh một màu.",doan:"Vận trước hãy còn mờ ám,\nNgày nay đã sáng như gương.\nCầu tài gặp hội, nên làm thương,\nXuôi nước, buồm căng gió thuận.\nKhẩu thiệt, đưa quan tránh khỏi,\nKẻ đau mình được nhẹ dần.\nCầu nguyện Trời, Phật, Thánh, Tiên, Thần,\nGia quyến tự nhiên gặp phước."},
+  "NSNNS":{so:23,ten:"Ngưng Trệ",cap:"Hạ Hạ",tho:"Ngựa gầy vượt nghìn dặm,\nNgười đói bước đường trường.\nThân phận, thời không hợp,\nViệc chi cũng lỡ làng.",doan:"Quẻ ứng ra điềm ngăn trở,\nViệc chi cũng hóa trì trệ.\nChớ lìa nhà, xứ lạ ra đi,\nTài lợi khó cầu cho gặp.\nCãi lẫy sinh ra kiện cáo,\nCoi chừng tật bệnh vấn vương.\nMuốn cho yên ổn, khỏi tai ương,\nVan vái Thần linh mới tiện."},
+  "NNSNS":{so:24,ten:"Vinh Hiển",cap:"Thượng Thượng Kiết",tho:"Tam gia dưỡng tính lành,\nNguyên thủy khí bèn sinh.\nQuả bởi lòng đào tạo,\nTự nhiên các việc thành.",doan:"Quẻ ứng có dấu hiệu thịnh vượng,\nViệc nhà tính tới thì xong.\nChỗ mong cầu đã ứng theo lòng,\nĐược trọn, không sót một.\nKẻ bệnh bỗng liền khỏe mạnh,\nĐưa quan có lý chớ nghi.\nMuốn cầu tài, rất hợp cơ hội,\nKhởi sự làm chi cũng lợi."},
+  "NNNSS":{so:25,ten:"Phước Hậu",cap:"Thượng Thượng",tho:"Xa cách lại trùng phùng,\nMập mờ được rõ ràng.\nChỗ trông đều thỏa dạ,\nVui phận được thong dong.",doan:"Quẻ ứng tương sinh điềm tốt,\nViệc làm gặp phước hân hoan.\nỞ yên, khoái lạc, phận thảnh thơi,\nHòa hợp lòng vui chẳng xiết.\nBuôn bán khỏi lo trở ngại,\nTiếng xấu, điều quấy tiêu trừ.\nNgười đi kể đã mấy năm dư,\nMừng được ngày nay tụ hội."},
+  "SNSNN":{so:26,ten:"Vĩnh Thành",cap:"Thượng Thượng",tho:"Năm tới ít tai ương,\nNhờ âm đức tổ tiên.\nViệc chi toan tính đến,\nTrời sẽ giúp nên liền.",doan:"Quẻ ứng làm chi nên nấy,\nGắng lo trăm việc an bài.\nCửa nhà hưng vượng, được lâu dài,\nPhải ráng giữ gìn nhân đức.\nXứ lạ người đi về đến,\nKẻ đau thân thể nhẹ nhàng.\nThị phi, thù oán đã tiêu tan,\nHọa dứt đời đời hưởng phước."},
+  "NNNNS":{so:27,ten:"Tuế Nẫm",cap:"Thượng Thượng",tho:"Mạ tươi bởi gặp mưa,\nGặt hái khá hơn xưa.\nMuôn việc đều vừa ý,\nRầu lo dạ khỏi ngừa.",doan:"Chẳng khác mùa đông cây thọ,\nBỗng đâu lại bước qua xuân.\nCây khô mưa xuống, cành chồi hưng,\nCỏ cây đều được tươi tốt.\nChín họa, ba tai tiêu tán,\nMuôn hung, ngàn dữ lánh xa.\nLòng vui mừng phú quý vinh hoa,\nVận đến lợi tài đầy dẫy."},
+  "NNSNN":{so:28,ten:"Khai Phát",cap:"Thượng Thượng",tho:"Ngọc sò chiếu rỡ ràng,\nTrong đá ẩn kim cang.\nCác việc cầu đều tốt,\nNgười phàm nhập cõi Thánh.",doan:"Hòa hảo là điềm thật quý,\nThời nên lộc vị thêm cao.\nThẻ ngà, giày thấm, áo gấm đỏ,\nNgực tốt, gươm vàng đẹp đẽ.\nBệnh hoạn đều mau mạnh khỏe,\nCầu tài tiền của được nhiều.\nRáng trau lòng niệm Phật sớm chiều,\nThời ắt họa tai tiêu diệt."},
+  "SNNNN":{so:29,ten:"Thiên Lộc",cap:"Thượng Thượng",tho:"Thắng giặc chốn sa trường,\nBan sư được nghỉ an.\nCông thành danh chí toại,\nNhà cửa rất thảnh thơi.",doan:"Muôn việc đều lành tốt,\nLộc Trời số vận gặp thì.\nQuý nhân thường giúp sức phò trì,\nQuan chức càng thêm cao trọng.\nPhước đến cho người mạng tốt,\nHọa tai tiêu diệt bình an.\nVóc hình khỏe mạnh, dạ hân hoan,\nTiền của đầy dẫy châu báu."},
+  "NNNSN":{so:30,ten:"Hậu Hỉ",cap:"Trung Kiết",tho:"Đến bến mới lìa thuyền,\nKhỏi cầu gặp đất liền.\nRộn ràng lo hiểm trở,\nThong thả được lòng yên.",doan:"Làm việc lòng còn nghi ngại,\nDù nên chưa chắc thỏa nguyện.\nCầu quan tuy được dùng cao,\nSong cũng chẳng vừa lòng muốn.\nHiểm trở kìm lòng chớ ngại,\nDần dần tai qua khỏi mình.\nKhác nào như gấm, sắc hoa xinh,\nTước lộc càng thêm vinh hiển."},
+  "NSNNN":{so:31,ten:"Trì Trệ",cap:"Hạ Hạ",tho:"Muôn dặm thẳng vời vợi,\nĐầu non khuất mặt trời.\nLòng lo không chỗ trú,\nKhởi việc chẳng nhằm thời.",doan:"Mạng vận rất nên hiểm trở,\nVí như xe sụp xuống lầy.\nĐường dài mặt trời lặng về tây,\nKhó liệu tìm phương cư ngụ.\nKhó kiếm người quen nương dựa,\nCầu tài cạn vốn không lời.\nNên xem kinh, niệm Phật, cầu Trời,\nMới được Thần Tiên che chở."},
+  "SSSSS":{so:32,ten:"Tuyệt Tích",cap:"Hạ Hạ",tho:"Bụi lấp kiến lu lờ,\nNgọc quỳnh vùi dưới dơ.\nNhư trong hang đá tối,\nBao giờ khỏi lờ mờ.",doan:"Quẻ ấy là điềm lo ngại,\nVận thời như tối ban đêm.\nGiữ theo lối cũ, chớ bày thêm,\nE phải thị phi, bệnh hoạn.\nMuôn việc đều không được tốt,\nĐổi dời lo lắng chẳng thành.\nNên cầu Trời Phật ráng làm lành,\nMới được họa tai tiêu diệt."}
+};
+
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+let thuatToan = null;
+let revealed = 0;
+let soundOn = true;
+let audioCtx = null;
+
+// ═══════════════════════════════════════════════
+// WEB AUDIO — tạo âm thanh không cần file ngoài
+// ═══════════════════════════════════════════════
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+function playSound(type) {
+  if (!soundOn) return;
+  try {
+    const ctx = getAudioCtx();
+    if (type === 'shake') {
+      // Tiếng lắc xu — nhiễu ngắn
+      for (let i = 0; i < 6; i++) {
+        setTimeout(() => {
+          const buf = ctx.createBuffer(1, ctx.sampleRate * 0.04, ctx.sampleRate);
+          const d = buf.getChannelData(0);
+          for (let j = 0; j < d.length; j++) d[j] = (Math.random() * 2 - 1) * (1 - j / d.length);
+          const src = ctx.createBufferSource();
+          const gain = ctx.createGain();
+          src.buffer = buf;
+          gain.gain.value = 0.12;
+          src.connect(gain); gain.connect(ctx.destination);
+          src.start();
+        }, i * 70);
+      }
+    } else if (type === 'flip') {
+      // Tiếng cạch đồng xu
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(1200, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(400, ctx.currentTime + 0.08);
+      gain.gain.setValueAtTime(0.18, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(); osc.stop(ctx.currentTime + 0.12);
+    } else if (type === 'reveal') {
+      // Chuỗi nốt thiền khi ra quẻ
+      const notes = [523.25, 659.25, 783.99, 1046.50];
+      notes.forEach((freq, i) => {
+        setTimeout(() => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.value = freq;
+          gain.gain.setValueAtTime(0.1, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+          osc.connect(gain); gain.connect(ctx.destination);
+          osc.start(); osc.stop(ctx.currentTime + 0.5);
+        }, i * 140);
+      });
+    } else if (type === 'ngua') {
+      // Ngửa — nốt sáng cao
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(880, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.1);
+      gain.gain.setValueAtTime(0.12, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.25);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(); osc.stop(ctx.currentTime + 0.25);
+    } else if (type === 'sap') {
+      // Sấp — nốt trầm
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(330, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(220, ctx.currentTime + 0.15);
+      gain.gain.setValueAtTime(0.1, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(); osc.stop(ctx.currentTime + 0.3);
+    }
+  } catch(e) {}
+}
+
+function toggleSound() {
+  soundOn = !soundOn;
+  document.getElementById('soundToggle').textContent = soundOn ? '🔔' : '🔕';
+  showToast(soundOn ? 'Đã bật âm thanh' : 'Đã tắt âm thanh');
+}
+
+// ═══════════════════════════════════════════════
+// LỜI KHẤN CÁ NHÂN
+// ═══════════════════════════════════════════════
+function capNhatKhan() {
+  const ten = document.getElementById('inputTen').value.trim();
+  const viec = document.getElementById('inputViec').value;
+  const el = document.getElementById('khanPreview');
+  if (!ten && !viec) {
+    el.innerHTML = '<em style="color:rgba(200,168,75,0.3)">Nhập tên và chọn việc cầu để hiển thị lời khấn...</em>';
+    return;
+  }
+  const tenHien = ten || '(tên đệ tử)';
+  const viecHien = viec || '(việc đang cầu)';
+  el.innerHTML = `"Nay đệ tử là <strong style="color:rgba(200,168,75,0.9)">${tenHien}</strong> vì việc <strong style="color:rgba(200,168,75,0.9)">${viecHien}</strong>, xin Bồ Tát chứng minh, trong ba mươi hai quẻ, được một quẻ, cho biết họa phước tốt xấu."`;
+}
+
+// ═══════════════════════════════════════════════
+// ACCORDION
+// ═══════════════════════════════════════════════
+function toggleAccordion(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+// ═══════════════════════════════════════════════
+// THUẬT TOÁN NGẪU NHIÊN (crypto + time entropy)
+// ═══════════════════════════════════════════════
+function taoNgauNhien() {
+  const arr = new Uint32Array(16);
+  crypto.getRandomValues(arr);
+  const t = Math.floor(performance.now() * 10000);
+  const coins = [];
+  for (let i = 0; i < 5; i++) {
+    const mix = arr[i*3] ^ arr[i*3+1] ^ arr[i*3+2] ^ (t >> (i * 3));
+    coins.push(mix % 2 === 0 ? 'N' : 'S');
+  }
+  return coins;
+}
+
+// ═══════════════════════════════════════════════
+// XỐC TIỀN
+// ═══════════════════════════════════════════════
+function xocTien() {
+  playSound('shake');
+  const btn = document.getElementById('shakeBtn');
+  btn.classList.add('shaking');
+  setTimeout(() => btn.classList.remove('shaking'), 560);
+
+  thuatToan = null; revealed = 0;
+  document.getElementById('resultArea').classList.remove('visible');
+  document.getElementById('resetArea').classList.remove('visible');
+
+  // Reset tất cả đồng về waiting
+  for (let i = 1; i <= 5; i++) {
+    document.getElementById('coin3d-' + i).classList.remove('flipped');
+    const front = document.getElementById('coinFront' + i);
+    front.className = 'coin-face coin-front';
+    front.onclick = null;
+    front.innerHTML = `<span class="coin-icon">◎</span><span class="coin-text-label">Lần ${i}</span>`;
+    const back = document.getElementById('coinBack' + i);
+    back.className = 'coin-face coin-back';
+    document.getElementById('dot' + i).className = 'coin-status-dot';
+    document.getElementById('dot' + i).textContent = '○';
+  }
+
+  setTimeout(() => {
+    thuatToan = taoNgauNhien();
+    // Enable đồng 1
+    activateCoin(1);
+    const hint = document.getElementById('shakeHint');
+    hint.textContent = 'Đã xốc xong! Bấm lần lượt từ Lần 1 → Lần 5 ↑';
+    hint.classList.add('active');
+    showToast('Đã xốc xong — hãy lật từng đồng!');
+  }, 560);
+}
+
+function activateCoin(n) {
+  const front = document.getElementById('coinFront' + n);
+  front.className = 'coin-face coin-front ready';
+  front.onclick = () => latDong(n);
+  front.innerHTML = `<span class="coin-icon">🪙</span><span class="coin-text-label">Lần ${n} — Bấm!</span>`;
+}
+
+// ═══════════════════════════════════════════════
+// LẬT ĐỒNG
+// ═══════════════════════════════════════════════
+function latDong(viTri) {
+  if (!thuatToan || viTri !== revealed + 1) return;
+  revealed++;
+
+  const ket = thuatToan[viTri - 1];
+  playSound(ket === 'N' ? 'ngua' : 'sap');
+
+  // Cập nhật mặt sau trước khi flip
+  const back = document.getElementById('coinBack' + viTri);
+  const icon = document.getElementById('coinIcon' + viTri);
+  const label = document.getElementById('coinLabel' + viTri);
+  if (ket === 'N') {
+    back.className = 'coin-face coin-back ngua';
+    icon.textContent = '☀';
+    label.textContent = 'Ngửa';
+  } else {
+    back.className = 'coin-face coin-back sap';
+    icon.textContent = '◑';
+    label.textContent = 'Sấp';
+  }
+
+  // Disable front
+  const front = document.getElementById('coinFront' + viTri);
+  front.className = 'coin-face coin-front';
+  front.onclick = null;
+
+  // Flip 3D
+  setTimeout(() => {
+    document.getElementById('coin3d-' + viTri).classList.add('flipped');
+    document.getElementById('dot' + viTri).className = 'coin-status-dot done';
+    document.getElementById('dot' + viTri).textContent = '●';
+  }, 30);
+
+  if (revealed < 5) {
+    setTimeout(() => activateCoin(viTri + 1), 350);
+  } else {
+    setTimeout(traQue, 600);
+  }
+}
+
+// ═══════════════════════════════════════════════
+// TRA QUẺ & REVEAL
+// ═══════════════════════════════════════════════
+function traQue() {
+  const key = thuatToan.join('');
+  const que = QUE_MAP[key];
+  if (!que) { showToast('Không tìm thấy quẻ — key: ' + key); return; }
+
+  playSound('reveal');
+
+  // Fill header
+  document.getElementById('resNumLabel').textContent = `Quẻ số ${que.so}`;
+  const nameEl = document.getElementById('resName');
+  nameEl.textContent = que.ten;
+
+  const capEl = document.getElementById('resCap');
+  capEl.textContent = que.cap;
+  capEl.className = 'result-cap ' + getCapClass(que.cap);
+
+  // Hào truyền thống — vị 5 trái → vị 1 phải (từ trên xuống trong layout)
+  const haoEl = document.getElementById('haoTraditional');
+  haoEl.innerHTML = '';
+  for (let i = 5; i >= 1; i--) {
+    const v = thuatToan[i - 1];
+    const col = document.createElement('div');
+    col.className = 'hao-col';
+    if (v === 'N') {
+      col.innerHTML = `<div class="hao-line-wrap"><div class="hao-lien"></div></div><div class="hao-num-label">Vị ${i}</div><div class="hao-label-txt">DƯƠNG</div>`;
+    } else {
+      col.innerHTML = `<div class="hao-line-wrap"><div class="hao-dut"><div class="hao-dut-seg"></div><div class="hao-dut-seg"></div></div></div><div class="hao-num-label">Vị ${i}</div><div class="hao-label-txt">ÂM</div>`;
+    }
+    haoEl.appendChild(col);
+  }
+
+  document.getElementById('resTho').innerHTML = que.tho.replace(/\n/g, '<br>');
+  document.getElementById('resDoan').innerHTML = que.doan.replace(/\n/g, '<br>');
+
+  // Show result
+  const resultArea = document.getElementById('resultArea');
+  resultArea.classList.add('visible');
+
+  // Staggered reveal animation
+  setTimeout(() => { nameEl.classList.add('show'); capEl.classList.add('show'); }, 80);
+  setTimeout(() => { haoEl.classList.add('show'); }, 200);
+  setTimeout(() => { document.getElementById('resTho').classList.add('show'); }, 420);
+  setTimeout(() => { document.getElementById('resDoan').classList.add('show'); }, 640);
+
+  document.getElementById('resetArea').classList.add('visible');
+
+  // Lưu nhật ký
+  luuLichSu(que, key);
+
+  setTimeout(() => {
+    resultArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 300);
+}
+
+function getCapClass(cap) {
+  if (cap.includes('Hạ Hạ')) return 'cap-xau';
+  if (cap.includes('Thượng Thượng') || cap.includes('Đại Cát')) return 'cap-dai-cat';
+  if (cap.includes('Kiết') || cap.includes('Thượng')) return 'cap-kiet';
+  return 'cap-trung';
+}
+
+// ═══════════════════════════════════════════════
+// SAO CHÉP
+// ═══════════════════════════════════════════════
+function copyResult() {
+  if (!thuatToan) return;
+  const key = thuatToan.join('');
+  const que = QUE_MAP[key];
+  if (!que) return;
+  const ten = document.getElementById('inputTen').value.trim();
+  const viec = document.getElementById('inputViec').value;
+  const haoText = thuatToan.map((v,i)=>`  Vị ${i+1}: ${v==='N'?'Ngửa (Dương)':'Sấp (Âm)'}`).join('\n');
+  const khanLine = ten ? `\nNgười gieo: ${ten}${viec?' — '+viec:''}` : '';
+  const text = `━━━━━━━━━━━━━━━━━━━━
+32 QUẺ QUÁN ÂM${khanLine}
+Ngày: ${new Date().toLocaleDateString('vi-VN')} ${new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'})}
+━━━━━━━━━━━━━━━━━━━━
+Quẻ số ${que.so} — ${que.ten}
+Cấp độ: ${que.cap}
+
+Hào (từ dưới lên):
+${haoText}
+
+▌ BÀI THƠ
+${que.tho}
+
+▌ LỜI ĐOÁN
+${que.doan}
+━━━━━━━━━━━━━━━━━━━━
+Nam Mô Đại Từ Đại Bi Quán Thế Âm Bồ Tát`;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.classList.add('copied');
+    btn.innerHTML = '✓ Đã sao chép';
+    showToast('Đã sao chép nội dung quẻ!');
+    setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = '📋 Sao chép'; }, 2500);
+  }).catch(() => showToast('Không thể sao chép — vui lòng copy thủ công'));
+}
+
+// ═══════════════════════════════════════════════
+// LƯU ẢNH (Canvas)
+// ═══════════════════════════════════════════════
+function saveImage() {
+  if (!thuatToan) return;
+  const key = thuatToan.join('');
+  const que = QUE_MAP[key];
+  if (!que) return;
+
+  const canvas = document.getElementById('exportCanvas');
+  const W = 640, H = 900;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // Background
+  const bg = ctx.createLinearGradient(0, 0, 0, H);
+  bg.addColorStop(0, '#0f0d08'); bg.addColorStop(1, '#1a1410');
+  ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+
+  // Grid pattern
+  ctx.strokeStyle = 'rgba(200,168,75,0.04)'; ctx.lineWidth = 1;
+  for (let x = 0; x < W; x += 40) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+  for (let y = 0; y < H; y += 40) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+
+  // Top line
+  const gl = ctx.createLinearGradient(0,0,W,0);
+  gl.addColorStop(0,'transparent'); gl.addColorStop(0.5,'#c8a84b'); gl.addColorStop(1,'transparent');
+  ctx.fillStyle = gl; ctx.fillRect(0, 0, W, 2);
+
+  // Title
+  ctx.textAlign = 'center';
+  ctx.fillStyle = 'rgba(200,168,75,0.5)';
+  ctx.font = '13px "Be Vietnam Pro", sans-serif';
+  ctx.fillText('32 QUẺ QUÁN ÂM', W/2, 48);
+  ctx.fillStyle = 'rgba(200,168,75,0.18)';
+  ctx.fillRect(W/2 - 120, 58, 240, 1);
+
+  // Quẻ name
+  ctx.fillStyle = '#c8a84b';
+  ctx.font = 'bold 38px "Playfair Display", serif';
+  ctx.fillText(que.ten, W/2, 110);
+
+  // Số quẻ
+  ctx.fillStyle = 'rgba(200,168,75,0.4)';
+  ctx.font = '13px "Be Vietnam Pro", sans-serif';
+  ctx.fillText(`Quẻ số ${que.so}  •  ${que.cap}`, W/2, 138);
+
+  // Hào truyền thống
+  const haoW = 52, haoGap = 16;
+  const haoTotalW = 5 * haoW + 4 * haoGap;
+  const haoX0 = (W - haoTotalW) / 2;
+  const haoY = 168;
+
+  for (let i = 0; i < 5; i++) {
+    const v = thuatToan[4 - i]; // vị 5 bên trái → vị 1 bên phải
+    const x = haoX0 + i * (haoW + haoGap);
+    if (v === 'N') {
+      const grad = ctx.createLinearGradient(x, haoY, x + haoW, haoY);
+      grad.addColorStop(0, '#b8941e'); grad.addColorStop(0.5, '#e8c840'); grad.addColorStop(1, '#b8941e');
+      ctx.fillStyle = grad;
+      ctx.shadowColor = 'rgba(200,168,75,0.6)'; ctx.shadowBlur = 8;
+      ctx.beginPath(); ctx.roundRect(x, haoY, haoW, 10, 4); ctx.fill();
+      ctx.shadowBlur = 0;
+    } else {
+      const sw = (haoW - 8) / 2;
+      ctx.fillStyle = 'rgba(200,168,75,0.22)';
+      ctx.beginPath(); ctx.roundRect(x, haoY, sw, 10, 4); ctx.fill();
+      ctx.beginPath(); ctx.roundRect(x + haoW - sw, haoY, sw, 10, 4); ctx.fill();
+    }
+    ctx.fillStyle = 'rgba(200,168,75,0.3)';
+    ctx.font = '10px "Be Vietnam Pro", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(`Vị ${5 - i}`, x + haoW / 2, haoY + 24);
+  }
+  ctx.textAlign = 'center';
+
+  // Divider
+  ctx.fillStyle = 'rgba(200,168,75,0.15)';
+  ctx.fillRect(60, 215, W - 120, 1);
+
+  // Bài thơ
+  ctx.fillStyle = 'rgba(200,168,75,0.45)';
+  ctx.font = '11px "Be Vietnam Pro", sans-serif';
+  ctx.fillText('BÀI THƠ', W/2, 238);
+  ctx.fillStyle = 'rgba(245,233,192,0.8)';
+  ctx.font = 'italic 17px "Playfair Display", serif';
+  const thoLines = que.tho.split('\n');
+  thoLines.forEach((line, i) => ctx.fillText(line, W/2, 265 + i * 30));
+
+  // Divider 2
+  ctx.fillStyle = 'rgba(200,168,75,0.12)';
+  ctx.fillRect(60, 400, W - 120, 1);
+
+  // Lời đoán
+  ctx.fillStyle = 'rgba(200,168,75,0.45)';
+  ctx.font = '11px "Be Vietnam Pro", sans-serif';
+  ctx.fillText('LỜI ĐOÁN', W/2, 425);
+  ctx.fillStyle = 'rgba(245,233,192,0.72)';
+  ctx.font = '14px "Be Vietnam Pro", sans-serif';
+  const doanLines = que.doan.split('\n');
+  doanLines.forEach((line, i) => ctx.fillText(line, W/2, 452 + i * 28));
+
+  // Footer
+  const ten = document.getElementById('inputTen').value.trim();
+  const now = new Date();
+  ctx.fillStyle = 'rgba(200,168,75,0.25)';
+  ctx.fillRect(60, H - 70, W - 120, 1);
+  ctx.font = '11px "Be Vietnam Pro", sans-serif';
+  ctx.fillStyle = 'rgba(200,168,75,0.3)';
+  ctx.fillText('Nam Mô Đại Từ Đại Bi Quán Thế Âm Bồ Tát', W/2, H - 45);
+  if (ten) ctx.fillText(ten + ' — ' + now.toLocaleDateString('vi-VN'), W/2, H - 25);
+  else ctx.fillText(now.toLocaleDateString('vi-VN') + ' ' + now.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}), W/2, H - 25);
+
+  // Bottom line
+  ctx.fillStyle = gl;
+  ctx.fillRect(0, H - 2, W, 2);
+
+  // Download
+  const link = document.createElement('a');
+  link.download = `que-${que.so}-${que.ten.replace(/\s/g,'-')}.png`;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+  showToast('Đã lưu ảnh quẻ!');
+}
+
+// ═══════════════════════════════════════════════
+// NHẬT KÝ (localStorage)
+// ═══════════════════════════════════════════════
+function luuLichSu(que, key) {
+  const ten = document.getElementById('inputTen').value.trim();
+  const viec = document.getElementById('inputViec').value;
+  const entry = {
+    ts: Date.now(),
+    so: que.so, ten: que.ten, cap: que.cap,
+    key, nguoi: ten, viec
+  };
+  let history = JSON.parse(localStorage.getItem('quequanam_history') || '[]');
+  history.unshift(entry);
+  if (history.length > 20) history = history.slice(0, 20);
+  localStorage.setItem('quequanam_history', JSON.stringify(history));
+  renderHistory();
+}
+
+function renderHistory() {
+  const history = JSON.parse(localStorage.getItem('quequanam_history') || '[]');
+  const el = document.getElementById('historyList');
+  if (!history.length) {
+    el.innerHTML = '<div class="history-empty">Chưa có lần gieo quẻ nào được lưu.</div>';
+    return;
+  }
+  el.innerHTML = history.map((h, idx) => {
+    const date = new Date(h.ts);
+    const dateStr = date.toLocaleDateString('vi-VN') + ' ' + date.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'});
+    const haoMini = h.key.split('').map(v => `<div class="hm ${v==='N'?'n':'s'}"></div>`).join('');
+    const capClass = getCapClass(h.cap);
+    const meta = [h.nguoi, h.viec].filter(Boolean).join(' — ') || dateStr;
+    return `<div class="history-item" onclick="loadHistory(${idx})">
+      <div class="history-hao-mini">${haoMini}</div>
+      <div class="history-info">
+        <div class="history-que-name">Quẻ ${h.so} — ${h.ten}</div>
+        <div class="history-meta">${meta}${h.nguoi ? ' · ' + dateStr : ''}</div>
+      </div>
+      <span class="history-cap-badge ${capClass}">${h.cap.split(' ')[0]}</span>
+    </div>`;
+  }).join('');
+}
+
+function loadHistory(idx) {
+  const history = JSON.parse(localStorage.getItem('quequanam_history') || '[]');
+  const h = history[idx];
+  if (!h) return;
+  // Hiển thị lại quẻ đã gieo
+  thuatToan = h.key.split('');
+  const que = QUE_MAP[h.key];
+  if (!que) return;
+
+  // Flip tất cả đồng
+  for (let i = 1; i <= 5; i++) {
+    const v = thuatToan[i - 1];
+    const back = document.getElementById('coinBack' + i);
+    const icon = document.getElementById('coinIcon' + i);
+    const label = document.getElementById('coinLabel' + i);
+    if (v === 'N') { back.className='coin-face coin-back ngua'; icon.textContent='☀'; label.textContent='Ngửa'; }
+    else { back.className='coin-face coin-back sap'; icon.textContent='◑'; label.textContent='Sấp'; }
+    document.getElementById('coin3d-' + i).classList.add('flipped');
+    document.getElementById('dot' + i).className = 'coin-status-dot done';
+    document.getElementById('dot' + i).textContent = '●';
+    const front = document.getElementById('coinFront' + i);
+    front.className = 'coin-face coin-front';
+    front.onclick = null;
+  }
+  revealed = 5;
+  if (h.nguoi) document.getElementById('inputTen').value = h.nguoi;
+  if (h.viec) document.getElementById('inputViec').value = h.viec;
+  capNhatKhan();
+  traQue();
+  showToast('Đã tải lại quẻ từ lịch sử');
+}
+
+function clearHistory() {
+  if (!confirm('Xóa toàn bộ nhật ký gieo quẻ?')) return;
+  localStorage.removeItem('quequanam_history');
+  renderHistory();
+  showToast('Đã xóa nhật ký');
+}
+
+// ═══════════════════════════════════════════════
+// RESET
+// ═══════════════════════════════════════════════
+function resetApp() {
+  thuatToan = null; revealed = 0;
+  document.getElementById('resultArea').classList.remove('visible');
+  document.getElementById('resetArea').classList.remove('visible');
+  for (let i = 1; i <= 5; i++) {
+    document.getElementById('coin3d-' + i).classList.remove('flipped');
+    const front = document.getElementById('coinFront' + i);
+    front.className = 'coin-face coin-front';
+    front.onclick = null;
+    front.innerHTML = `<span class="coin-icon">◎</span><span class="coin-text-label">Lần ${i}</span>`;
+    document.getElementById('coinBack' + i).className = 'coin-face coin-back';
+    document.getElementById('dot' + i).className = 'coin-status-dot';
+    document.getElementById('dot' + i).textContent = '○';
+  }
+  // Reset reveal animations
+  ['resName','resCap','haoTraditional','resTho','resDoan'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('show');
+  });
+  const hint = document.getElementById('shakeHint');
+  hint.textContent = 'Bấm để lắc và định quẻ (thuật toán ngẫu nhiên)';
+  hint.classList.remove('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ═══════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  renderHistory();
+  capNhatKhan();
+});
+</script>
+</body>
+</html>
