@@ -809,7 +809,57 @@ function renderLucResult(results, target, cid, taQuai) {
     </div>
   </div>`;
 
-  // ── 1b. Phân tích sức khoẻ diễn tiến ──
+  // ── 1b. Tổng kết hao lực TA (chỉ khi xem lực TA) ──
+  if(target === taQuai) {
+    // Gom toàn bộ lines từ tất cả KT
+    const allLines = ktR.flatMap(r => r ? r.lines : []);
+
+    // 1. TA bị Q/Q' khắc → type:'khac', srcQ có lục thân Q hoặc Q'
+    let haoDoQ = 0;
+    allLines.filter(l => l.type==='khac').forEach(l => {
+      const lt = lucThan(taQuai, l.srcQ);
+      if(lt==='Q' || lt==="Q'") haoDoQ += Math.abs(l.val);
+    });
+
+    // 2. TA khắc T/T' → type:'hao', dstQ có lục thân T hoặc T'
+    let haoDoKhacT = 0;
+    allLines.filter(l => l.type==='hao').forEach(l => {
+      const lt = lucThan(taQuai, l.dstQ);
+      if(lt==='T' || lt==="T'") haoDoKhacT += Math.abs(l.val);
+    });
+
+    // 3. TA sinh C/C' → type:'tieu', dstQ có lục thân C hoặc C'
+    let haoDoSinhC = 0;
+    allLines.filter(l => l.type==='tieu').forEach(l => {
+      const lt = lucThan(taQuai, l.dstQ);
+      if(lt==='C' || lt==="C'") haoDoSinhC += Math.abs(l.val);
+    });
+
+    const hasAny = haoDoQ > 0 || haoDoKhacT > 0 || haoDoSinhC > 0;
+    if(hasAny) {
+      const row = (label, val, color, desc) => val > 0 ? `
+        <div style="display:flex;align-items:baseline;gap:10px;padding:7px 0;border-bottom:1px solid rgba(92,61,30,0.2);">
+          <span style="font-size:0.72rem;color:${color};font-weight:bold;min-width:28px">${label}</span>
+          <span style="font-size:0.72rem;color:var(--text-dim);flex:1">${desc}</span>
+          <span style="font-size:0.88rem;font-weight:bold;color:${color}">−${val.toFixed(3)}</span>
+        </div>` : '';
+
+      html += `<div style="background:rgba(180,50,50,0.06);border:1px solid rgba(220,100,100,0.2);border-radius:8px;padding:14px 16px;margin-bottom:16px;">
+        <div style="font-size:0.68rem;color:var(--red-soft);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px;font-weight:bold">
+          ⚠ Tổng Hao Lực TA Qua ${results.length} Không Thời
+        </div>
+        ${row("Q/Q'", haoDoQ, 'var(--red-soft)', 'Bị Q/Q\u2019 khắc trực tiếp')}
+        ${row("T/T'", haoDoKhacT, 'var(--orange)', 'Hao tổn do TA phải đi khắc T/T\u2019')}
+        ${row("C/C'", haoDoSinhC, 'var(--purple-soft)', 'Tiêu tán do TA phải đi sinh C/C\u2019')}
+        <div style="display:flex;justify-content:flex-end;padding-top:8px;margin-top:2px;">
+          <span style="font-size:0.7rem;color:var(--text-dim);margin-right:10px">Tổng hao lực TA</span>
+          <span style="font-size:1rem;font-weight:bold;color:var(--red-soft)">−${(haoDoQ+haoDoKhacT+haoDoSinhC).toFixed(3)}</span>
+        </div>
+      </div>`;
+    }
+  }
+
+  // ── 1c. Phân tích sức khoẻ diễn tiến ──
   if(sucKhoeInsights.length>0){
     html += `<div style="background:rgba(0,0,0,0.2);border:1px solid rgba(92,61,30,0.4);border-radius:8px;padding:14px 16px;margin-bottom:16px;">
       <div style="font-size:0.68rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px">
