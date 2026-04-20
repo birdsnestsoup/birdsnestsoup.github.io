@@ -48,10 +48,9 @@
     position: relative;
     z-index: 1;
     width: 100%;
-    max-width: 560px;
+    max-width: 600px;
   }
 
-  /* Scroll top/bottom decorations */
   .scroll-cap {
     height: 18px;
     background: linear-gradient(90deg, #6b4c1e 0%, #c9a84c 30%, #f0d880 50%, #c9a84c 70%, #6b4c1e 100%);
@@ -78,7 +77,6 @@
     pointer-events: none;
   }
 
-  /* Header */
   .header {
     text-align: center;
     margin-bottom: 24px;
@@ -119,7 +117,6 @@
     font-size: 1.1rem;
   }
 
-  /* Input section */
   .label {
     font-size: 0.72rem;
     letter-spacing: 0.25em;
@@ -151,7 +148,6 @@
   }
   textarea::placeholder { color: #b8a070; font-style: italic; }
 
-  /* Buttons */
   .btn-row {
     display: flex;
     gap: 10px;
@@ -196,7 +192,64 @@
   .btn-copy:hover { border-color: var(--gold); background: rgba(154,122,42,0.08); }
   .btn-copy.visible { display: block; }
 
-  /* Results */
+  /* ============================================================
+     CHARACTER CONTROL PANEL (mới thêm từ Code 1)
+  ============================================================ */
+  .char-panel {
+    margin-top: 18px;
+    display: none;
+  }
+  .char-panel.show { display: block; }
+
+  .char-stats {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+
+  .cstat {
+    flex: 1;
+    min-width: 90px;
+    padding: 7px 10px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  .cstat-one  { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+  .cstat-two  { background: #fffde7; color: #f57f17; border: 1px solid #fff9c4; }
+  .cstat-punct{ background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
+  .cstat-total{ background: rgba(255,255,255,0.45); color: #4a2c0a; border: 1px solid var(--aged2); }
+
+  .char-tokens {
+    background: rgba(255,255,255,0.28);
+    border: 1px solid var(--aged2);
+    border-radius: 4px;
+    padding: 10px 12px;
+    line-height: 2.2;
+    font-size: 0.9rem;
+    min-height: 36px;
+    word-break: break-all;
+  }
+
+  /* token chips */
+  .tok {
+    display: inline-block;
+    padding: 1px 5px;
+    margin: 2px;
+    border-radius: 3px;
+    cursor: default;
+    font-size: 0.88rem;
+  }
+  .tok-one   { background: #d4edda; border-bottom: 2px solid #28a745; color: #155724; }
+  .tok-two   { background: #ffeeba; border-bottom: 2px solid #ffc107; color: #856404; }
+  .tok-punct { background: #f8d7da; border-bottom: 2px solid #dc3545; color: #721c24; }
+
+  /* ============================================================
+     RESULTS
+  ============================================================ */
   .result-section {
     margin-top: 24px;
     opacity: 0;
@@ -245,13 +298,17 @@
 
   .hline {
     display: flex;
-    gap: 4px;
+    gap: 0;           /* no extra gap — widths controlled per element */
     align-items: center;
     height: 10px;
     position: relative;
   }
 
-  /* Yang line = solid bar */
+  /* ============================================================
+     FIXED: Yang & Yin vạch cùng tổng chiều rộng = 54px
+     Yang: 1 thanh 54px
+     Yin:  thanh trái 22px + khoảng giữa 10px + thanh phải 22px = 54px
+  ============================================================ */
   .hline.yang .bar {
     width: 54px;
     height: 10px;
@@ -259,7 +316,6 @@
     border-radius: 1px;
   }
 
-  /* Yin line = two bars with gap */
   .hline.yin .bar-left,
   .hline.yin .bar-right {
     width: 22px;
@@ -267,7 +323,7 @@
     background: var(--line-yang);
     border-radius: 1px;
   }
-  .hline.yin .gap { width: 10px; }
+  .hline.yin .gap { width: 10px; }   /* 22 + 10 + 22 = 54px ✓ */
 
   /* Moving line = red */
   .hline.moving .bar,
@@ -287,18 +343,14 @@
   }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
-  /* Trigram separator line */
   .hex-sep {
-    width: 60px;
+    width: 54px;
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--aged2), transparent);
     margin: 3px 0;
   }
 
-  /* Hex info text */
-  .hex-info {
-    flex: 1;
-  }
+  .hex-info { flex: 1; }
 
   .hex-name-han {
     font-family: 'Ma Shan Zheng', serif;
@@ -339,7 +391,6 @@
     letter-spacing: 0.08em;
   }
 
-  /* Copy toast */
   .toast {
     position: fixed;
     bottom: 24px;
@@ -362,7 +413,6 @@
     transform: translateX(-50%) translateY(0);
   }
 
-  /* Error */
   .error-msg {
     font-size: 0.8rem;
     color: var(--red);
@@ -371,13 +421,29 @@
   }
   .error-msg.show { display: block; }
 
-  /* Footnote */
   .footnote {
     text-align: center;
     font-size: 0.66rem;
     color: #a08050;
     margin-top: 18px;
     letter-spacing: 0.12em;
+  }
+
+  /* Legend strip */
+  .legend {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+    font-size: 0.72rem;
+    color: #6a4a20;
+  }
+  .legend-dot {
+    display: inline-block;
+    width: 10px; height: 10px;
+    border-radius: 2px;
+    margin-right: 4px;
+    vertical-align: middle;
   }
 </style>
 </head>
@@ -402,10 +468,27 @@
       <button class="btn btn-copy" id="btnCopy">⎘ Sao Chép</button>
     </div>
 
+    <!-- ====== BẢNG KIỂM SOÁT KÝ TỰ (mới thêm) ====== -->
+    <div class="char-panel" id="charPanel">
+      <div class="divider" style="margin:14px 0 10px;"><span class="divider-symbol" style="font-size:0.75rem;">Bảng Kiểm Soát Ký Tự</span></div>
+      <div class="char-stats">
+        <div class="cstat cstat-total">Tổng: <strong id="cpTotal">0</strong></div>
+        <div class="cstat cstat-one">🟩 Đơn: <strong id="cpOne">0</strong></div>
+        <div class="cstat cstat-two">🟨 Đôi: <strong id="cpTwo">0</strong></div>
+        <div class="cstat cstat-punct">🟥 Dấu: <strong id="cpPunct">0</strong></div>
+      </div>
+      <div class="char-tokens" id="charTokens"></div>
+      <div class="legend">
+        <span><span class="legend-dot" style="background:#d4edda;border-bottom:2px solid #28a745;"></span>Ký tự đơn (= 1)</span>
+        <span><span class="legend-dot" style="background:#ffeeba;border-bottom:2px solid #ffc107;"></span>Ký tự đôi + thanh (= 2)</span>
+        <span><span class="legend-dot" style="background:#f8d7da;border-bottom:2px solid #dc3545;"></span>Dấu câu (= 1)</span>
+      </div>
+    </div>
+
     <div class="result-section" id="result">
       <div class="stats-row" id="statsRow"></div>
       <div class="hex-display" id="hexDisplay"></div>
-      <div class="footnote">Tiên Thiên Bát Quái · Biến Thể B (Ký Tự + Thanh Điệu)</div>
+      <div class="footnote">Tiên Thiên Bát Quái · Logic đếm theo quy ước ký tự (toneMap)</div>
     </div>
 
   </div>
@@ -419,20 +502,6 @@
 // DATA
 // ============================================================
 
-// Tien Thien Ba Quai (1-8)
-const BAGUA = {
-  1: { name: 'Kiền', han: '乾', lines: [1,1,1], element: 'Kim', image: 'Trời' },
-  2: { name: 'Đoài', han: '兌', lines: [1,1,0], element: 'Kim', image: 'Đầm' },
-  3: { name: 'Ly',   han: '離', lines: [1,0,1], element: 'Hỏa', image: 'Lửa' },
-  4: { name: 'Chấn', han: '震', lines: [0,0,1], element: 'Mộc', image: 'Sấm' },
-  5: { name: 'Tốn',  han: '巽', lines: [0,1,1], element: 'Mộc', image: 'Gió' },
-  6: { name: 'Khảm', han: '坎', lines: [0,1,0], element: 'Thủy', image: 'Nước' },
-  7: { name: 'Cấn',  han: '艮', lines: [0,0,1], element: 'Thổ', image: 'Núi' },
-  8: { name: 'Khôn', han: '坤', lines: [0,0,0], element: 'Thổ', image: 'Đất' },
-};
-
-// Chấn và Cấn lines cần check lại theo Tiên Thiên
-// Tiên Thiên: Kiền=111, Đoài=110, Ly=101, Chấn=100, Tốn=011, Khảm=010, Cấn=001, Khôn=000
 const BAGUA_CORRECT = {
   1: { name: 'Kiền', han: '乾', lines: [1,1,1], element: 'Kim',  image: 'Trời' },
   2: { name: 'Đoài', han: '兌', lines: [1,1,0], element: 'Kim',  image: 'Đầm'  },
@@ -444,7 +513,6 @@ const BAGUA_CORRECT = {
   8: { name: 'Khôn', han: '坤', lines: [0,0,0], element: 'Thổ',  image: 'Đất'  },
 };
 
-// 64 quẻ: key = "thuong_ha" (số Tiên Thiên)
 const HEX64 = {
   '1_1':'Thuần Kiền','1_2':'Thiên Trạch Lý','1_3':'Thiên Hỏa Đồng Nhân',
   '1_4':'Thiên Lôi Vô Vọng','1_5':'Thiên Phong Cấu','1_6':'Thiên Thủy Tụng',
@@ -472,7 +540,6 @@ const HEX64 = {
   '8_7':'Địa Sơn Khiêm','8_8':'Thuần Khôn',
 };
 
-// Han character for hexagram (simplified mapping by name)
 const HEX_HAN = {
   'Thuần Kiền':'乾','Thiên Trạch Lý':'履','Thiên Hỏa Đồng Nhân':'同','Thiên Lôi Vô Vọng':'妄',
   'Thiên Phong Cấu':'姤','Thiên Thủy Tụng':'訟','Thiên Sơn Độn':'遯','Thiên Địa Bĩ':'否',
@@ -493,84 +560,82 @@ const HEX_HAN = {
 };
 
 // ============================================================
-// COUNTING LOGIC — Biến thể B
+// COUNTING LOGIC — lấy từ Code 1 (toneMap, đúng quy ước)
 // ============================================================
 
-const TONE_MARKS = /[̣́̀̉̃]/u; // combining diacritics (NFC)
-// Normalise then count codepoints that are:
-// - base letter (a-z + Vietnamese extended)
-// - tone mark (combining)
-// - punctuation we count: . , ? ! ; :
-// Each = 1 ký tự theo quy tắc B
+const toneMap = {
+  'á':'a','à':'a','ả':'a','ã':'a','ạ':'a',
+  'ắ':'ă','ằ':'ă','ẳ':'ă','ẵ':'ă','ặ':'ă',
+  'ấ':'â','ầ':'â','ẩ':'â','ẫ':'â','ậ':'â',
+  'é':'e','è':'e','ẻ':'e','ẽ':'e','ẹ':'e',
+  'ế':'ê','ề':'ê','ể':'ê','ễ':'ê','ệ':'ê',
+  'í':'i','ì':'i','ỉ':'i','ĩ':'i','ị':'i',
+  'ó':'o','ò':'o','ỏ':'o','õ':'o','ọ':'o',
+  'ố':'ô','ồ':'ô','ổ':'ô','ỗ':'ô','ộ':'ô',
+  'ớ':'ơ','ờ':'ơ','ở':'ơ','ỡ':'ơ','ợ':'ơ',
+  'ú':'u','ù':'u','ủ':'u','ũ':'u','ụ':'u',
+  'ứ':'ư','ừ':'ư','ử':'ư','ữ':'ư','ự':'ư',
+  'ý':'y','ỳ':'y','ỷ':'y','ỹ':'y','ỵ':'y'
+};
 
-function countCharacters(text) {
-  // Normalise to NFD so tone marks become separate combining chars
-  const nfd = text.normalize('NFD');
+function isPunctuation(char) {
+  return /[.,?!&;:]/.test(char);
+}
 
-  let count = 0;
-  // We'll go codepoint by codepoint
-  for (const ch of nfd) {
-    const cp = ch.codePointAt(0);
-    if (!cp) continue;
+/**
+ * Phân tích văn bản → { total, countOne, countTwo, countPunct, tokens }
+ * tokens = mảng { char, type:'one'|'two'|'punct', value:1|2 }
+ */
+function analyzeText(text) {
+  let total = 0, countOne = 0, countTwo = 0, countPunct = 0;
+  const tokens = [];
 
-    // Skip pure whitespace
-    if (/\s/.test(ch)) continue;
+  for (const char of text) {
+    if (char.trim() === '') continue;
 
-    // Combining diacritical marks (tone / shape modifier) — count as 1
-    if (cp >= 0x0300 && cp <= 0x036F) { count++; continue; }
-
-    // Counted punctuation: . , ? ! ; :
-    if (['.', ',', '?', '!', ';', ':'].includes(ch)) { count++; continue; }
-
-    // Ordinary letters (Latin + Vietnamese base chars after NFD decomposition)
-    if (/[a-zA-Zàáâãèéêìíòóôõùúýăđơư]/i.test(ch)) { count++; continue; }
-
-    // For any other visible character, count it
-    if (!/[\u0300-\u036F]/.test(ch) && ch.trim() !== '') count++;
+    if (toneMap[char]) {
+      total += 2; countTwo++;
+      tokens.push({ char, type: 'two', value: 2 });
+    } else if (isPunctuation(char)) {
+      total += 1; countPunct++;
+      tokens.push({ char, type: 'punct', value: 1 });
+    } else {
+      total += 1; countOne++;
+      tokens.push({ char, type: 'one', value: 1 });
+    }
   }
-  return count;
+
+  return { total, countOne, countTwo, countPunct, tokens };
 }
 
-function countWordsAndPunctuation(text) {
-  // Biến thể A: đếm số TỪ + dấu câu
-  const words = text.trim().split(/\s+/).filter(w => w.length > 0);
-  const puncts = (text.match(/[.,?!;:]/g) || []).length;
-  return words.length + puncts;
-}
+// ============================================================
+// QUẺ LOGIC (giữ nguyên từ Code 2)
+// ============================================================
 
-function mod8(n) {
-  const r = n % 8;
-  return r === 0 ? 8 : r;
-}
-function mod6(n) {
-  const r = n % 6;
-  return r === 0 ? 6 : r;
-}
+function mod8(n) { const r = n % 8; return r === 0 ? 8 : r; }
+function mod6(n) { const r = n % 6; return r === 0 ? 6 : r; }
 
 function lapQue(ta2) {
-  // Split TA2 into thuong + ha
   let thuong, ha;
   if (ta2 % 2 === 0) {
     thuong = ta2 / 2;
     ha = ta2 / 2;
   } else {
-    thuong = Math.floor(ta2 / 2);     // ít hơn 1
+    thuong = Math.floor(ta2 / 2);
     ha = Math.ceil(ta2 / 2);
   }
-
   const soThuong = mod8(thuong);
   const soHa    = mod8(ha);
   const haoDong  = mod6(ta2);
-
   return { thuong, ha, soThuong, soHa, haoDong };
 }
 
 // ============================================================
-// RENDER
+// RENDER HEX LINES
 // ============================================================
 
 function renderHexLine(lineVal, idx, movingIdx) {
-  const isMoving = (idx + 1) === movingIdx; // idx 0-based, hào tính từ 1
+  const isMoving = (idx + 1) === movingIdx;
   const cls = ['hline', lineVal === 1 ? 'yang' : 'yin', isMoving ? 'moving' : ''].filter(Boolean).join(' ');
   let inner = '';
   if (lineVal === 1) {
@@ -583,44 +648,46 @@ function renderHexLine(lineVal, idx, movingIdx) {
 }
 
 function buildLines(thuong, ha, haoDong) {
-  // Hexagram lines: hào 1 ở dưới → hào 6 ở trên
-  // Lower trigram (ha): lines 1,2,3; Upper trigram (thuong): lines 4,5,6
-  const linesHa     = BAGUA_CORRECT[ha].lines;     // [top, mid, bot] of trigram
+  const linesHa     = BAGUA_CORRECT[ha].lines;
   const linesThuong = BAGUA_CORRECT[thuong].lines;
-
-  // Trigram lines array [index 2 = bottom line, index 0 = top line]
-  // Hào 1 = ha lines[2], hào 2 = ha[1], hào 3 = ha[0]
-  // Hào 4 = thuong[2], hào 5 = thuong[1], hào 6 = thuong[0]
   const allLines = [
     linesHa[2], linesHa[1], linesHa[0],
     linesThuong[2], linesThuong[1], linesThuong[0]
   ];
-
   let html = '';
-  // Render from hào 6 down to hào 1 (visual top to bottom)
-  // But hex-lines uses flex-direction:column-reverse so we render 1→6
   for (let i = 0; i < 6; i++) {
-    if (i === 3) html += `<div class="hex-sep"></div>`; // separator between trigrams
+    if (i === 3) html += `<div class="hex-sep"></div>`;
     html += renderHexLine(allLines[i], i, haoDong);
   }
   return html;
 }
 
-function renderResult(question, ta, ta2, soThuong, soHa, haoDong, thuong, ha) {
+function getHexNumber(t, h) {
+  const seq = {
+    '1_1':1,'8_8':2,'6_4':3,'7_6':4,'6_1':5,'1_6':6,'8_6':7,'8_3':8,
+    '5_1':9,'1_5':10,'8_1':11,'1_8':12,'1_3':13,'3_1':14,'8_7':15,'8_4':16,
+    '2_4':17,'7_5':18,'8_2':19,'5_8':20,'3_4':21,'7_3':22,'8_7':23,'8_4':24,
+    '1_4':25,'7_1':26,'7_4':27,'5_2':28,'6_6':29,'3_3':30,'2_7':31,'4_5':32,
+    '1_7':33,'4_1':34,'3_8':35,'8_3':36,'5_3':37,'3_5':38,'6_7':39,'4_6':40,
+    '7_2':41,'5_4':42,'2_1':43,'1_5':44,'2_8':45,'8_5':46,'2_6':47,'6_5':48,
+    '2_3':49,'3_5':50,'4_4':51,'7_7':52,'5_7':53,'4_2':54,'3_4':55,'3_7':56,
+    '5_5':57,'2_2':58,'5_6':59,'6_2':60,'5_2':61,'4_7':62,'6_3':63,'3_6':64,
+  };
+  return seq[`${t}_${h}`] || '–';
+}
+
+function renderResult(ta2, soThuong, soHa, haoDong, thuong, ha) {
   const queName = HEX64[`${soThuong}_${soHa}`] || `Quẻ ${soThuong}-${soHa}`;
   const qg = BAGUA_CORRECT[soThuong];
   const qh = BAGUA_CORRECT[soHa];
 
-  // Stats
   document.getElementById('statsRow').innerHTML = `
-    <div class="stat-chip">Từ + Dấu: <strong>${ta}</strong></div>
     <div class="stat-chip">Tổng Ký Tự (TA2): <strong>${ta2}</strong></div>
     <div class="stat-chip">Thượng: <strong>${thuong} → ${soThuong} (${qg.name})</strong></div>
     <div class="stat-chip">Hạ: <strong>${ha} → ${soHa} (${qh.name})</strong></div>
   `;
 
   const linesHtml = buildLines(soThuong, soHa, haoDong);
-
   const hanChar = HEX_HAN[queName] || '易';
 
   document.getElementById('hexDisplay').innerHTML = `
@@ -640,21 +707,6 @@ function renderResult(question, ta, ta2, soThuong, soHa, haoDong, thuong, ha) {
   return queName;
 }
 
-function getHexNumber(t, h) {
-  // King Wen sequence — approximate lookup
-  const seq = {
-    '1_1':1,'8_8':2,'6_4':3,'7_6':4,'6_1':5,'1_6':6,'8_6':7,'8_3':8,
-    '5_1':9,'1_5':10,'8_1':11,'1_8':12,'1_3':13,'3_1':14,'8_7':15,'8_4':16,
-    '2_4':17,'7_5':18,'8_2':19,'5_8':20,'3_4':21,'7_3':22,'8_7':23,'8_4':24,
-    '1_4':25,'7_1':26,'7_4':27,'5_2':28,'6_6':29,'3_3':30,'2_7':31,'4_5':32,
-    '1_7':33,'4_1':34,'3_8':35,'8_3':36,'5_3':37,'3_5':38,'6_7':39,'4_6':40,
-    '7_2':41,'5_4':42,'2_1':43,'1_5':44,'2_8':45,'8_5':46,'2_6':47,'6_5':48,
-    '2_3':49,'3_5':50,'4_4':51,'7_7':52,'5_7':53,'4_2':54,'3_4':55,'3_7':56,
-    '5_5':57,'2_2':58,'5_6':59,'6_2':60,'5_2':61,'4_7':62,'6_3':63,'3_6':64,
-  };
-  return seq[`${t}_${h}`] || '–';
-}
-
 // ============================================================
 // STATE
 // ============================================================
@@ -670,14 +722,33 @@ document.getElementById('btnLapQue').addEventListener('click', () => {
   }
   errEl.classList.remove('show');
 
-  const ta  = countWordsAndPunctuation(q);
-  const ta2 = countCharacters(q);
+  // --- Phân tích ký tự (logic Code 1) ---
+  const { total, countOne, countTwo, countPunct, tokens } = analyzeText(q);
 
-  const { thuong, ha, soThuong, soHa, haoDong } = lapQue(ta2);
+  // Cập nhật bảng kiểm soát
+  document.getElementById('cpTotal').textContent = total;
+  document.getElementById('cpOne').textContent   = countOne;
+  document.getElementById('cpTwo').textContent   = countTwo;
+  document.getElementById('cpPunct').textContent = countPunct;
 
-  const queName = renderResult(q, ta, ta2, soThuong, soHa, haoDong, thuong, ha);
+  const tokensEl = document.getElementById('charTokens');
+  tokensEl.innerHTML = '';
+  for (const t of tokens) {
+    const span = document.createElement('span');
+    span.className = 'tok tok-' + t.type;
+    span.textContent = t.char;
+    const labels = { one: '= 1 (đơn)', two: '= 2 (đôi + thanh)', punct: '= 1 (dấu câu)' };
+    span.title = t.char + ' ' + labels[t.type];
+    tokensEl.appendChild(span);
+  }
 
-  lastResult = { q, ta, ta2, soThuong, soHa, haoDong, queName,
+  document.getElementById('charPanel').classList.add('show');
+
+  // --- Lập quẻ ---
+  const { thuong, ha, soThuong, soHa, haoDong } = lapQue(total);
+  const queName = renderResult(total, soThuong, soHa, haoDong, thuong, ha);
+
+  lastResult = { q, ta2: total, soThuong, soHa, haoDong, queName,
     tgThuong: BAGUA_CORRECT[soThuong].name,
     tgHa: BAGUA_CORRECT[soHa].name };
 
@@ -690,10 +761,9 @@ document.getElementById('btnLapQue').addEventListener('click', () => {
 
 document.getElementById('btnCopy').addEventListener('click', () => {
   if (!lastResult) return;
-  const { q, ta, ta2, queName, tgThuong, tgHa, haoDong } = lastResult;
+  const { q, ta2, queName, tgThuong, tgHa, haoDong } = lastResult;
   const text =
 `📖 CÂU HỎI: ${q}
-📊 Từ + Dấu câu (TA): ${ta}
 🔢 Tổng ký tự (TA2): ${ta2}
 ☯ QUẺ CHỦ: ${queName}
    Thượng quái: ${tgThuong} | Hạ quái: ${tgHa}
