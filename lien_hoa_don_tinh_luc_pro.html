@@ -89,11 +89,24 @@
 
   /* QUE CARDS */
   .que-grid { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
+  .que-card-wrap { display: flex; align-items: stretch; gap: 10px; flex: 1 1 180px; min-width: 170px; max-width: 260px; }
   .que-card {
     background: var(--paper); border: 1px solid var(--border);
-    border-radius: 8px; overflow: hidden; flex: 1 1 180px; min-width: 170px; max-width: 230px;
+    border-radius: 8px; overflow: hidden; flex: 1 1 0; min-width: 0;
   }
   .que-card.chinh-card { border-color: var(--gold); box-shadow: 0 0 16px rgba(201,146,42,0.12); }
+  .chu-kt-wrap {
+    display: flex; flex-direction: column; flex-shrink: 0; min-width: 34px;
+  }
+  .chu-kt-spacer { flex: 0 0 28px; } /* khớp chiều cao card-header */
+  .chu-kt-body {
+    flex: 1; display: flex; align-items: center; justify-content: flex-start;
+  }
+  .chu-kt-badge {
+    font-size: 1.45rem; font-weight: 900; letter-spacing: -0.01em;
+    line-height: 1; white-space: nowrap; text-align: left;
+    text-shadow: 0 0 16px currentColor;
+  }
   .card-header {
     background: rgba(201,146,42,0.08); border-bottom: 1px solid var(--border);
     padding: 6px 10px; display: flex; align-items: center; justify-content: space-between;
@@ -966,10 +979,29 @@ function ltBadge(lt) {
 // ================================================================
 // RENDER QUẺ (có Lục Thân)
 // ================================================================
+function chuKhongThoiLucThan(q, taQuai) {
+  // Hào 1-3 động → Hạ quái động → Thượng quái làm Chủ
+  // Hào 4-6 động → Thượng quái động → Hạ quái làm Chủ
+  const chuQue = (q.hao >= 1 && q.hao <= 3) ? q.thuong : q.ha;
+  return taQuai ? lucThan(taQuai, chuQue) : '';
+}
+
 function makeCard(q, i, taQuai) {
   const lbl = i===0 ? 'Quẻ Chính' : `Không Thời ${i+1}`;
   const lb = (queNum) => taQuai ? ltBadge(lucThan(taQuai, queNum)) : '';
-  return `<div class="que-card ${i===0?'chinh-card':''}">
+
+  // Tính Chủ KT và badge bên phải
+  const chuLt = chuKhongThoiLucThan(q, taQuai);
+  const chuColor = chuLt ? (LT_COLOR[chuLt] || '#aaa') : 'transparent';
+  const chuBadge = `<div class="chu-kt-wrap">
+    <div class="chu-kt-spacer"></div>
+    <div class="chu-kt-body">
+      ${chuLt ? `<span class="chu-kt-badge" style="color:${chuColor}">${chuLt}</span>` : ''}
+    </div>
+  </div>`;
+
+  return `<div class="que-card-wrap">
+  <div class="que-card ${i===0?'chinh-card':''}">
     <div class="card-header">
       <span class="card-title">${i+1}. ${lbl}</span>
       <span class="hao-badge">Hào ${q.hao} động</span>
@@ -996,6 +1028,7 @@ function makeCard(q, i, taQuai) {
         <div class="que-ha">${ten(q.bienHa)}${lb(q.bienHa)}</div>
       </div>
     </div>
+  </div>${chuBadge}
   </div>`;
 }
 
