@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vietnam Real Locals — Ask a Vietnamese</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red: #C8102E;
+    --gold: #DAA520;
+    --cream: #FDF6EC;
+    --dark: #1A1208;
+    --warm: #3D2B1F;
+    --muted: #7A6652;
+    --accent: #E8C547;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    background: var(--dark);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem 1.5rem;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(200,16,46,0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 80% 90%, rgba(218,165,32,0.12) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .flag-stripe {
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--red) 60%, var(--gold) 100%);
+  }
+
+  .star {
+    font-size: 3rem;
+    color: var(--gold);
+    animation: pulse 3s ease-in-out infinite;
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.08); }
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 7vw, 5rem);
+    color: var(--cream);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    max-width: 800px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    margin-top: 1.5rem;
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    color: rgba(253,246,236,0.65);
+    max-width: 540px;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .pill-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    justify-content: center;
+    margin-top: 2.5rem;
+  }
+  .pill {
+    background: rgba(253,246,236,0.08);
+    border: 1px solid rgba(253,246,236,0.15);
+    color: rgba(253,246,236,0.8);
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    letter-spacing: 0.03em;
+  }
+
+  .hero-cta {
+    margin-top: 3rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--red);
+    color: #fff;
+    padding: 0.9rem 2rem;
+    border-radius: 999px;
+    font-weight: 500;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+    box-shadow: 0 4px 24px rgba(200,16,46,0.35);
+  }
+  .hero-cta:hover { background: #a50d25; transform: translateY(-2px); }
+
+  .free-badge {
+    margin-top: 1rem;
+    color: var(--gold);
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── SECTION BASE ── */
+  section { padding: 5rem 1.5rem; }
+  .container { max-width: 900px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--red);
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    color: var(--warm);
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+
+  /* ── WHY US ── */
+  .why { background: #fff; }
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+  .why-card {
+    border-left: 3px solid var(--gold);
+    padding-left: 1.25rem;
+  }
+  .why-card .icon { font-size: 1.8rem; margin-bottom: 0.75rem; display: block; }
+  .why-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--warm);
+    margin-bottom: 0.5rem;
+  }
+  .why-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+
+  /* ── SERVICES ── */
+  .services { background: var(--cream); }
+  .service-list { margin-top: 3rem; display: flex; flex-direction: column; gap: 1.25rem; }
+  .service-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 12px rgba(26,18,8,0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .service-item:hover { transform: translateY(-3px); box-shadow: 0 6px 24px rgba(26,18,8,0.1); }
+  .service-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+    width: 52px; height: 52px;
+    background: var(--cream);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .service-text h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--warm);
+    margin-bottom: 0.4rem;
+  }
+  .service-text p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+
+  /* ── HOW IT WORKS ── */
+  .how { background: var(--dark); }
+  .how .section-title { color: var(--cream); }
+  .how .section-label { color: var(--gold); }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+    counter-reset: step;
+  }
+  .step {
+    text-align: center;
+    position: relative;
+  }
+  .step-num {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: var(--red);
+    color: #fff;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1rem;
+  }
+  .step h3 {
+    color: var(--cream);
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+  .step p { font-size: 0.82rem; color: rgba(253,246,236,0.5); line-height: 1.6; }
+
+  /* ── PAYMENT ── */
+  .payment { background: #fff; }
+  .payment-box {
+    background: linear-gradient(135deg, var(--cream) 0%, #fff 100%);
+    border: 2px solid var(--gold);
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin-top: 2rem;
+    text-align: center;
+  }
+  .payment-box .big { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--warm); margin-bottom: 1rem; }
+  .payment-box p { color: var(--muted); line-height: 1.7; font-size: 0.95rem; max-width: 520px; margin: 0 auto; }
+  .pi-logo { font-size: 2.5rem; margin-bottom: 0.5rem; display: block; }
+
+  /* ── CONTACT ── */
+  .contact { background: var(--cream); text-align: center; }
+  .contact-card {
+    background: var(--red);
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    color: #fff;
+    margin-top: 2rem;
+  }
+  .contact-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    margin-bottom: 1rem;
+  }
+  .contact-card p { opacity: 0.85; line-height: 1.7; max-width: 480px; margin: 0 auto 2rem; }
+  .contact-methods { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
+  .contact-btn {
+    background: rgba(255,255,255,0.15);
+    border: 2px solid rgba(255,255,255,0.4);
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: background 0.2s;
+    font-weight: 500;
+  }
+  .contact-btn:hover { background: rgba(255,255,255,0.25); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark);
+    color: rgba(253,246,236,0.4);
+    text-align: center;
+    padding: 2rem 1.5rem;
+    font-size: 0.8rem;
+    line-height: 1.8;
+  }
+  footer span { color: var(--gold); }
+
+  /* ── ANIMATIONS ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-in.visible { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="flag-stripe"></div>
+  <span class="star">★</span>
+  <h1>Real answers from<br><em>real Vietnamese locals</em></h1>
+  <p class="hero-sub">
+    Planning a trip to Vietnam? Living here? Lost in paperwork?<br>
+    Ask us anything — we are locals, not a guidebook.
+  </p>
+  <div class="pill-row">
+    <span class="pill">🗺️ Travel & Hidden Spots</span>
+    <span class="pill">📋 Visa & Legal</span>
+    <span class="pill">🍜 Food & Culture</span>
+    <span class="pill">🏠 Expat Life</span>
+    <span class="pill">💼 Digital Nomads</span>
+  </div>
+  <a href="#contact" class="hero-cta">💬 Ask a Local Now</a>
+  <p class="free-badge">✦ Free to ask &nbsp;·&nbsp; Pay with Pi if you love us ✦</p>
+</section>
+
+<!-- WHY US -->
+<section class="why">
+  <div class="container fade-in">
+    <p class="section-label">Why choose us</p>
+    <h2 class="section-title">Not a travel agency.<br>Your local friends.</h2>
+    <div class="why-grid">
+      <div class="why-card">
+        <span class="icon">🤝</span>
+        <h3>Honest & Unfiltered</h3>
+        <p>We tell you the truth — good areas, bad areas, real prices. No commissions, no hidden agenda.</p>
+      </div>
+      <div class="why-card">
+        <span class="icon">🌐</span>
+        <h3>Any Language</h3>
+        <p>Send your message in any language. We use AI translation to reply in your language clearly.</p>
+      </div>
+      <div class="why-card">
+        <span class="icon">⚖️</span>
+        <h3>Legal Expertise</h3>
+        <p>Our team includes people with real knowledge in Vietnamese visa, work permit and legal procedures.</p>
+      </div>
+      <div class="why-card">
+        <span class="icon">📍</span>
+        <h3>Local Network</h3>
+        <p>Multiple locals across different cities — not just one person's limited experience.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services">
+  <div class="container fade-in">
+    <p class="section-label">What we help with</p>
+    <h2 class="section-title">5 areas we know inside out</h2>
+    <div class="service-list">
+      <div class="service-item">
+        <div class="service-icon">🗺️</div>
+        <div class="service-text">
+          <h3>Travel & Hidden Gems</h3>
+          <p>Best spots that tourists never find. Safe neighborhoods, honest transport tips, how to avoid overpricing. From Ha Noi to Phu Quoc.</p>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-icon">🍜</div>
+        <div class="service-text">
+          <h3>Food, Culture & Local Life</h3>
+          <p>What to eat, where locals actually go, cultural customs to respect. The real Vietnam, not the tourist version.</p>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-icon">📋</div>
+        <div class="service-text">
+          <h3>Visa, Permits & Legal</h3>
+          <p>E-visa, tourist visa extension, work permit, business setup, TRC — explained simply by people who know the real process.</p>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-icon">🏠</div>
+        <div class="service-text">
+          <h3>Expat & Long-term Living</h3>
+          <p>Finding honest housing, healthcare, schools, banking, daily life tips. How to live well in Vietnam on any budget.</p>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-icon">💻</div>
+        <div class="service-text">
+          <h3>Digital Nomad Setup</h3>
+          <p>Best cities for remote work, coworking spaces, SIM cards, internet reliability, cost of living breakdowns by city.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how">
+  <div class="container fade-in">
+    <p class="section-label">How it works</p>
+    <h2 class="section-title">Simple as sending a message</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Send your question</h3>
+        <p>Any language. Any topic about Vietnam. No registration needed.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>We read & translate</h3>
+        <p>Our local team receives your message and understands what you need.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Real local answers</h3>
+        <p>We reply with honest, practical guidance — in your language.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h3>Pay what you feel</h3>
+        <p>Satisfied? Send us Pi as a thank-you. Not satisfied? Nothing owed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAYMENT -->
+<section class="payment">
+  <div class="container fade-in">
+    <p class="section-label">Payment model</p>
+    <h2 class="section-title">No pressure. Ever.</h2>
+    <div class="payment-box">
+      <span class="pi-logo">π</span>
+      <p class="big">Pay with Pi — only if you want to</p>
+      <p>
+        Our service is free. We believe in community and trust first.<br><br>
+        If our advice saved you money, time, or stress — you can choose to
+        send us <strong>Pi Network (π)</strong> tokens as a thank-you.
+        No minimum. No obligation. No hard feelings either way.<br><br>
+        <em>This is what "bình dân" means — accessible to everyone.</em>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="container fade-in">
+    <div class="contact-card">
+      <h2>Ready to ask your first question?</h2>
+      <p>
+        Reach out on any platform below. Write in your language —
+        English, French, Korean, Japanese, anything. We will understand and reply.
+      </p>
+      <div class="contact-methods">
+        <a href="#" class="contact-btn">💬 Facebook Messenger</a>
+        <a href="#" class="contact-btn">✈️ Telegram</a>
+        <a href="#" class="contact-btn">📱 WhatsApp</a>
+        <a href="#" class="contact-btn">π Pi Browser App</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p><span>Vietnam Real Locals</span> — Honest guidance by people who live here.</p>
+  <p style="margin-top:0.4rem">Powered by community · Accepted on Pi Network · Open to everyone</p>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
