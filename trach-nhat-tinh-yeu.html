@@ -352,8 +352,30 @@ body {
 .select-inline:focus { border-color: var(--gold); }
 
 /* NGUYEN VAN selector */
-.phi-input-grid { display: grid; grid-template-columns: repeat(3,1fr) 1.5fr; gap: 0.8rem; }
-@media(max-width:700px){ .phi-input-grid { grid-template-columns: 1fr 1fr; } }
+.phi-input-grid { display: grid; grid-template-columns: repeat(6,1fr); gap: 0.8rem; }
+@media(max-width:900px){ .phi-input-grid { grid-template-columns: repeat(3,1fr); } }
+@media(max-width:600px){ .phi-input-grid { grid-template-columns: 1fr 1fr; } }
+
+/* TRỌNG SỐ ALERT */
+.trong-so-alert {
+  background: rgba(178,34,34,0.12);
+  border: 1px solid rgba(178,34,34,0.5);
+  border-left: 3px solid var(--red-light);
+  padding: 0.7rem 1rem;
+  margin: 0.6rem 0;
+  font-size: 0.78rem;
+  line-height: 1.7;
+}
+.trong-so-alert.warning { border-color: rgba(200,120,20,0.5); border-left-color: #e8a060; background: rgba(200,120,20,0.08); }
+.trong-so-alert.good { border-color: rgba(74,155,114,0.5); border-left-color: var(--jade-light); background: rgba(74,155,114,0.07); }
+.trong-so-title { font-family:'Cinzel',serif; font-size:0.65rem; letter-spacing:0.12em; font-weight:700; margin-bottom:0.3rem; text-transform:uppercase; }
+.trong-so-alert.bad .trong-so-title { color: var(--red-light); }
+.trong-so-alert.warning .trong-so-title { color: #e8a060; }
+.trong-so-alert.good .trong-so-title { color: var(--jade-light); }
+.trong-so-score-grid { display:flex; gap:0.6rem; flex-wrap:wrap; margin:0.5rem 0; }
+.ts-score-box { background:rgba(0,0,0,0.3); border:1px solid var(--border); padding:0.5rem 0.8rem; text-align:center; min-width:80px; }
+.ts-score-box .tsb-num { font-family:'Cinzel',serif; font-size:1.5rem; font-weight:800; }
+.ts-score-box .tsb-lbl { font-size:0.58rem; color:var(--text-dim); margin-top:0.1rem; }
 
 /* TƯƠNG HỢP TABLE extra */
 .compat-summary { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
@@ -408,6 +430,8 @@ body {
       <div class="panel-body" id="chi-relations"></div></div>
     <div class="panel"><div class="panel-header"><span class="panel-icon">∞</span><h3>12 Trạng Thái Trường Sinh (Âm Dương Can)</h3></div>
       <div class="panel-body" id="truong-sinh"></div></div>
+    <div class="panel"><div class="panel-header"><span class="panel-icon">⚖</span><h3>Phân Tích Trọng Tâm · Tháng & Giờ Tác Động Ngày & Năm</h3></div>
+      <div class="panel-body" id="trong-so-section"></div></div>
     <div class="panel"><div class="panel-header"><span class="panel-icon">☠</span><h3>Thần Sát & Cát Thần</h3></div>
       <div class="panel-body" id="than-sat"></div></div>
     <div class="panel"><div class="panel-header"><span class="panel-icon">🧭</span><h3>Ảnh Hưởng Phương Vị</h3></div>
@@ -420,10 +444,23 @@ body {
 <div id="tab-phi" class="tab-content">
 <div class="container">
   <div class="panel">
-    <div class="panel-header"><span class="panel-icon">✦</span><h3>Phi Tinh Lạc Cung · Huyền Không Tam Nguyên</h3></div>
+    <div class="panel-header"><span class="panel-icon">✦</span><h3>Phi Tinh Lạc Cung · Huyền Không Tam Nguyên Cổ Pháp</h3></div>
     <div class="panel-body">
-      <div class="info-box">Huyền Không Phi Tinh dùng Can + Chi của Năm để xác định đúng sao Trung Cung. Mỗi chu kỳ 60 Can Chi tương ứng 60 sao khác nhau theo vòng 9. Thượng Nguyên: Giáp Tý 1864 / 1924 / 1984. Trung Nguyên: Giáp Tý 1924+60=... Hạ Nguyên: 1984+60=2044.</div>
+      <div class="info-box">Cổ pháp Huyền Không: chọn <b>Nguyên</b> (Thượng/Trung/Hạ) và <b>tiết khí</b> (Đông Chí / Hạ Chí) để xác định chiều phi thuận hay nghịch và sao gốc Trung Cung đúng theo tam nguyên cửu vận. Thượng Nguyên: 1864–1923 · Trung Nguyên: 1924–1983 · Hạ Nguyên: 1984–2043.</div>
       <div class="phi-input-grid">
+        <div class="tru-card"><div class="tru-label">Nguyên</div>
+          <select id="phi-nguyen" class="select-inline">
+            <option value="ha">Hạ Nguyên (1984–2043)</option>
+            <option value="trung">Trung Nguyên (1924–1983)</option>
+            <option value="thuong">Thượng Nguyên (1864–1923)</option>
+          </select>
+        </div>
+        <div class="tru-card"><div class="tru-label">Tiết Khí Cơ Sở</div>
+          <select id="phi-tiet-khi" class="select-inline">
+            <option value="dong_chi">Đông Chí (Dương Thuận ↑)</option>
+            <option value="ha_chi">Hạ Chí (Âm Nghịch ↓)</option>
+          </select>
+        </div>
         <div class="tru-card"><div class="tru-label">Thiên Can Năm</div><select id="phi-nam-can" class="select-inline"></select></div>
         <div class="tru-card"><div class="tru-label">Địa Chi Năm</div><select id="phi-nam-chi" class="select-inline"></select></div>
         <div class="tru-card"><div class="tru-label">Địa Chi Tháng (tùy chọn)</div><select id="phi-thang-chi" class="select-inline"><option value="">-- Chọn --</option></select></div>
@@ -1066,6 +1103,249 @@ function switchTab(name, el) {
 }
 
 // ╔═══════════════════════════════════════════════════════════════╗
+// ║         THUẬT TOÁN TRỌNG SỐ BÁT TỰ (NGÀY > NĂM > THÁNG)   ║
+// ╚═══════════════════════════════════════════════════════════════╝
+// Ngày = hành khách (trọng tâm): trọng số 3x
+// Năm  = thân tàu (an toàn cốt lõi): trọng số 2x
+// Tháng= động cơ (quan trọng nhưng phụ): trọng số 1x
+// Giờ  = ảnh hưởng nhất đến Ngày, yếu hơn đến Năm: trọng số 1x
+const TRONG_SO = { GIO: 1, NGAY: 3, THANG: 1, NAM: 2 };
+
+// Trả về các quan hệ địa chi giữa 2 trụ cụ thể
+function getChiRelations(chiA, chiB) {
+  const rels = [];
+  if(!chiA || !chiB) return rels;
+  if(LUC_XUNG[chiA]===chiB) rels.push({rel:'Lục Xung', type:'bad', score:-2});
+  if(LUC_HOP[chiA]===chiB)  { const h=LUC_HOP_HOA[`${chiA}-${chiB}`]||LUC_HOP_HOA[`${chiB}-${chiA}`]||''; rels.push({rel:`Lục Hợp→${h}`, type:'good', score:2}); }
+  if(LUC_PHA[chiA]===chiB)  rels.push({rel:'Lục Phá', type:'bad', score:-1});
+  if(LUC_HAI[chiA]===chiB)  rels.push({rel:'Lục Hại', type:'warning', score:-1});
+  const h = checkHinh(chiA,chiB)||checkHinh(chiB,chiA);
+  if(h) rels.push({rel:h, type:'bad', score:-2});
+  // Bán Hợp
+  const bk1=`${chiA}-${chiB}`, bk2=`${chiB}-${chiA}`;
+  if(BAN_HOP[bk1]||BAN_HOP[bk2]) rels.push({rel:`Bán Hợp ${BAN_HOP[bk1]||BAN_HOP[bk2]}`, type:'good', score:1});
+  return rels;
+}
+
+// Phân tích tác động của Tháng lên Năm & Ngày (trụ quan trọng)
+function analyzeThangImpact(tru) {
+  // tru: [{lbl, can, chi}, ...] theo thứ tự GIO, NGAY, THANG, NAM
+  const thang = tru.find(t=>t.lbl.includes('Tháng'));
+  const ngay  = tru.find(t=>t.lbl.includes('Ngày'));
+  const nam   = tru.find(t=>t.lbl.includes('Năm'));
+  const gio   = tru.find(t=>t.lbl.includes('Giờ'));
+  if(!thang) return { html:'', alertLevel:'none', thangToNgay:[], thangToNam:[], gioToNgay:[], gioToNam:[] };
+
+  const thangToNgay = thang.chi && ngay.chi ? getChiRelations(thang.chi, ngay.chi) : [];
+  const thangToNam  = thang.chi && nam.chi  ? getChiRelations(thang.chi, nam.chi)  : [];
+  const gioToNgay   = gio && gio.chi && ngay.chi ? getChiRelations(gio.chi, ngay.chi) : [];
+  const gioToNam    = gio && gio.chi && nam.chi  ? getChiRelations(gio.chi, nam.chi)  : [];
+
+  // Kiểm tra Tam Hợp có Tháng tham gia (cần xét cả bộ 3)
+  const allChi = tru.filter(t=>t.chi).map(t=>t.chi);
+  const tamHopCoChua = [];
+  for(const [combo,hanh] of Object.entries(TAM_HOP)){
+    const members=combo.split('-');
+    if(members.includes(thang.chi) && members.every(m=>allChi.includes(m))){
+      tamHopCoChua.push({combo:members.join('-'),hanh});
+    }
+  }
+
+  // Tính tổng điểm tác động hung/cát của Tháng lên {Ngày, Năm}
+  const thangNgayScore = thangToNgay.reduce((s,r)=>s+r.score,0);
+  const thangNamScore  = thangToNam.reduce((s,r)=>s+r.score,0);
+  const gioNgayScore   = gioToNgay.reduce((s,r)=>s+r.score,0);
+  const gioNamScore    = gioToNam.reduce((s,r)=>s+r.score,0);
+
+  const bothHurt = (thangNgayScore < 0) && (thangNamScore < 0);
+  const ngayHurt = thangNgayScore < 0;
+  const namHurt  = thangNamScore < 0;
+  const bothGood = (thangNgayScore > 0) && (thangNamScore > 0);
+
+  // Xét thêm: Tháng Hình cả Năm & Ngày → báo động đỏ
+  const thangHinhNgay = thangToNgay.some(r=>r.rel.includes('Hình'));
+  const thangHinhNam  = thangToNam.some(r=>r.rel.includes('Hình'));
+  const thangXungNgay = thangToNgay.some(r=>r.rel.includes('Xung'));
+  const thangXungNam  = thangToNam.some(r=>r.rel.includes('Xung'));
+
+  let alertLevel = 'none';
+  if((thangHinhNgay||thangXungNgay) && (thangHinhNam||thangXungNam)) alertLevel = 'critical';
+  else if(bothHurt) alertLevel = 'bad';
+  else if(ngayHurt || namHurt) alertLevel = 'warning';
+  else if(bothGood) alertLevel = 'good';
+
+  // Build HTML
+  let html = '<div class="section-title">⚖ Phân Tích Trọng Tâm: Tháng & Giờ tác động lên Ngày & Năm</div>';
+  html += '<div class="info-box" style="margin-bottom:0.8rem">Ngày = Hành Khách (×3) · Năm = Thân Tàu (×2) · Tháng = Động Cơ (×1) · Giờ (×1). Tháng tốt nhưng gây xung hại Ngày & Năm = tiêu cực.</div>';
+
+  // Score boxes
+  html += `<div class="trong-so-score-grid">
+    <div class="ts-score-box"><div class="tsb-num" style="color:${thangNgayScore>=0?'#6dc89a':'#e07070'}">${thangNgayScore>0?'+':''}${thangNgayScore}</div><div class="tsb-lbl">Tháng→Ngày</div></div>
+    <div class="ts-score-box"><div class="tsb-num" style="color:${thangNamScore>=0?'#6dc89a':'#e07070'}">${thangNamScore>0?'+':''}${thangNamScore}</div><div class="tsb-lbl">Tháng→Năm</div></div>
+    <div class="ts-score-box"><div class="tsb-num" style="color:${gioNgayScore>=0?'#6dc89a':'#e07070'}">${gioNgayScore>0?'+':''}${gioNgayScore}</div><div class="tsb-lbl">Giờ→Ngày</div></div>
+    <div class="ts-score-box"><div class="tsb-num" style="color:${gioNamScore>=0?'#6dc89a':'#e07070'}">${gioNamScore>0?'+':''}${gioNamScore}</div><div class="tsb-lbl">Giờ→Năm</div></div>
+  </div>`;
+
+  // Alert box theo mức độ
+  if(alertLevel==='critical') {
+    html += `<div class="trong-so-alert bad"><div class="trong-so-title">☠ NGUY HIỂM — THÁNG HÌNH / XUNG CẢ NGÀY & NĂM</div>
+    Tháng <b>${thang.chi}</b> gây quan hệ tiêu cực nặng lên cả Ngày <b>${ngay.chi||'—'}</b> và Năm <b>${nam.chi||'—'}</b>.<br>
+    Đây là dấu hiệu "Động Cơ Phá Tàu" — Tháng (động cơ) làm hại thân tàu (Năm) lẫn hành khách (Ngày). Cuộc đời người này nhiều buồn, căng thẳng tai ương, ít hạnh phúc bền.
+    ${thangHinhNgay&&thangHinhNam?'<br><span style="color:#e07070">● Hình cả 2 trụ trọng tâm — cực kỳ bất lợi theo cổ pháp.</span>':''}
+    </div>`;
+  } else if(alertLevel==='bad') {
+    html += `<div class="trong-so-alert bad"><div class="trong-so-title">⚠ THÁNG GÂY HẠI CẢ NGÀY & NĂM</div>
+    Tháng <b>${thang.chi}</b> tác động tiêu cực đến cả 2 trụ quan trọng nhất. Dù Tháng có cát thần, kết quả tổng hòa vẫn bất lợi.</div>`;
+  } else if(ngayHurt) {
+    html += `<div class="trong-so-alert warning"><div class="trong-so-title">⚡ THÁNG GÂY HẠI NGÀY</div>
+    Tháng <b>${thang.chi}</b> tác động tiêu cực lên Ngày <b>${ngay.chi||'—'}</b> — hành khách bị ảnh hưởng, tâm tư bất an.</div>`;
+  } else if(namHurt) {
+    html += `<div class="trong-so-alert warning"><div class="trong-so-title">⚡ THÁNG GÂY HẠI NĂM</div>
+    Tháng <b>${thang.chi}</b> tác động tiêu cực lên Năm <b>${nam.chi||'—'}</b> — thân tàu bị rạn nứt, nền tảng an nguy.</div>`;
+  } else if(bothGood) {
+    html += `<div class="trong-so-alert good"><div class="trong-so-title">✦ THÁNG THUẬN CẢ NGÀY & NĂM</div>
+    Tháng <b>${thang.chi}</b> hỗ trợ tích cực cả Ngày và Năm. Động cơ chạy tốt, tàu bền, hành khách an vui.</div>`;
+  }
+
+  // Chi tiết bảng
+  if(thangToNgay.length||thangToNam.length||gioToNgay.length||gioToNam.length){
+    html+='<table class="data-table" style="margin-top:0.8rem"><thead><tr><th>Cặp Trụ</th><th>Quan Hệ</th><th>Mức Độ</th><th>Điểm Cơ Sở</th></tr></thead><tbody>';
+    thangToNgay.forEach(r=>{
+      html+=`<tr><td>${tag('Tháng','neutral')}(${thang.chi}) → ${tag('Ngày','neutral')}(${ngay.chi||'—'})</td><td>${tag(r.rel,r.type)}</td><td>${tag('Ngày ×'+TRONG_SO.NGAY,'warning')}</td><td>${tag(r.score>0?'+'+r.score:''+r.score,r.score>0?'good':r.score<0?'bad':'neutral')}</td></tr>`;
+    });
+    thangToNam.forEach(r=>{
+      html+=`<tr><td>${tag('Tháng','neutral')}(${thang.chi}) → ${tag('Năm','neutral')}(${nam.chi||'—'})</td><td>${tag(r.rel,r.type)}</td><td>${tag('Năm ×'+TRONG_SO.NAM,'info')}</td><td>${tag(r.score>0?'+'+r.score:''+r.score,r.score>0?'good':r.score<0?'bad':'neutral')}</td></tr>`;
+    });
+    gioToNgay.forEach(r=>{
+      html+=`<tr><td>${tag('Giờ','neutral')}(${gio.chi}) → ${tag('Ngày','neutral')}(${ngay.chi||'—'})</td><td>${tag(r.rel,r.type)}</td><td>${tag('Ngày ×'+TRONG_SO.NGAY,'warning')}</td><td>${tag(r.score>0?'+'+r.score:''+r.score,r.score>0?'good':r.score<0?'bad':'neutral')}</td></tr>`;
+    });
+    gioToNam.forEach(r=>{
+      html+=`<tr><td>${tag('Giờ','neutral')}(${gio.chi}) → ${tag('Năm','neutral')}(${nam.chi||'—'})</td><td>${tag(r.rel,r.type)}</td><td>${tag('Năm ×'+TRONG_SO.NAM,'info')}</td><td>${tag(r.score>0?'+'+r.score:''+r.score,r.score>0?'good':r.score<0?'bad':'neutral')}</td></tr>`;
+    });
+    html+='</tbody></table>';
+  }
+
+  if(tamHopCoChua.length){
+    html+=`<div class="info-box" style="margin-top:0.6rem">⚠ Tháng <b>${thang.chi}</b> tham gia <b>Tam Hợp ${tamHopCoChua.map(t=>t.combo+' ('+t.hanh+')').join(', ')}</b> — có thể tăng mạnh tác động lên Ngày & Năm nếu Tam Hợp hại.</div>`;
+  }
+
+  return { html, alertLevel, thangNgayScore, thangNamScore, gioNgayScore, gioNamScore };
+}
+
+// Tính điểm tổng hoà theo trọng số Ngày > Năm > Tháng
+function calcWeightedScore(catScore, hungScore, thangImpact, tru) {
+  // Base score nhân trọng số
+  // Mỗi quan hệ đã được tính catScore/hungScore ở phần thông thường
+  // Thêm: nhân đôi ảnh hưởng tiêu cực lên Ngày (×TRONG_SO.NGAY=3) và Năm (×TRONG_SO.NAM=2)
+  const {thangNgayScore, thangNamScore, gioNgayScore, gioNamScore} = thangImpact;
+
+  // Điểm bổ sung trọng số (chỉ tính phần âm—dương đã có trong catScore/hungScore)
+  let bonusCat = 0, bonusHung = 0;
+
+  // Tháng→Ngày: nếu tiêu cực thêm (NGAY_WEIGHT-1)×|score|
+  if(thangNgayScore < 0) bonusHung += Math.abs(thangNgayScore) * (TRONG_SO.NGAY - 1);
+  else bonusCat += thangNgayScore * (TRONG_SO.NGAY - 1);
+
+  // Tháng→Năm
+  if(thangNamScore < 0) bonusHung += Math.abs(thangNamScore) * (TRONG_SO.NAM - 1);
+  else bonusCat += thangNamScore * (TRONG_SO.NAM - 1);
+
+  // Giờ→Ngày (trọng số thêm)
+  if(gioNgayScore < 0) bonusHung += Math.abs(gioNgayScore) * (TRONG_SO.NGAY - 1);
+  else bonusCat += gioNgayScore * (TRONG_SO.NGAY - 1);
+
+  // Giờ→Năm
+  if(gioNamScore < 0) bonusHung += Math.abs(gioNamScore) * (TRONG_SO.NAM - 1);
+  else bonusCat += gioNamScore * (TRONG_SO.NAM - 1);
+
+  return {
+    weightedCat: catScore + bonusCat,
+    weightedHung: hungScore + bonusHung,
+    bonusCat, bonusHung
+  };
+}
+
+// ╔═══════════════════════════════════════════════════════════════╗
+// ║              PHÂN TÍCH TƯƠNG TÁC 2 BÁT TỰ (TRỌNG SỐ)      ║
+// ╚═══════════════════════════════════════════════════════════════╝
+// Phân tích tác động của BT2 (thời gian/người B) lên Ngày & Năm của BT1
+function analyzeExternalImpact(batu1, batu2, label1, label2) {
+  const ngay1 = batu1.find(t=>t.lbl==='Ngày')||{};
+  const nam1  = batu1.find(t=>t.lbl==='Năm')||{};
+  const thang2= batu2.find(t=>t.lbl==='Tháng')||{};
+  const nam2  = batu2.find(t=>t.lbl==='Năm')||{};
+  const ngay2 = batu2.find(t=>t.lbl==='Ngày')||{};
+
+  // Kiểm tra BT2 tác động lên Ngày & Năm của BT1
+  const bt2ToNgay1 = [];
+  const bt2ToNam1  = [];
+
+  batu2.forEach(t2 => {
+    if(!t2.chi) return;
+    const toN = getChiRelations(t2.chi, ngay1.chi);
+    toN.forEach(r => bt2ToNgay1.push({from:`${label2} ${t2.lbl}(${t2.chi})`, ...r}));
+    const toY = getChiRelations(t2.chi, nam1.chi);
+    toY.forEach(r => bt2ToNam1.push({from:`${label2} ${t2.lbl}(${t2.chi})`, ...r}));
+  });
+
+  // Tam Hợp liên trụ (BT2 có Tam Hợp chứa chi của BT1 Ngày/Năm)
+  const allChi1 = batu1.filter(t=>t.chi).map(t=>t.chi);
+  const allChi2 = batu2.filter(t=>t.chi).map(t=>t.chi);
+  const tamHopCross = [];
+  for(const [combo,hanh] of Object.entries(TAM_HOP)){
+    const members = combo.split('-');
+    const fromBT2 = members.filter(m=>allChi2.includes(m));
+    const fromBT1 = members.filter(m=>allChi1.includes(m));
+    if(fromBT2.length>=2 && fromBT1.length>=1) {
+      const isNgayNam = fromBT1.some(m=>m===ngay1.chi||m===nam1.chi);
+      if(isNgayNam) tamHopCross.push({combo:members.join('-'),hanh,fromBT2,fromBT1});
+    }
+  }
+
+  const ngay1Score = bt2ToNgay1.reduce((s,r)=>s+r.score,0);
+  const nam1Score  = bt2ToNam1.reduce((s,r)=>s+r.score,0);
+  const bothBad = ngay1Score<0 && nam1Score<0;
+  const critLevel = bt2ToNgay1.some(r=>r.rel.includes('Hình')||r.rel.includes('Xung')) &&
+                    bt2ToNam1.some(r=>r.rel.includes('Hình')||r.rel.includes('Xung'));
+
+  let html = `<div class="section-title">⚖ ${label2} tác động lên Ngày & Năm của ${label1}</div>`;
+  html += `<div class="trong-so-score-grid">
+    <div class="ts-score-box"><div class="tsb-num" style="color:${ngay1Score>=0?'#6dc89a':'#e07070'}">${ngay1Score>0?'+':''}${ngay1Score}</div><div class="tsb-lbl">${label2}→Ngày ${label1}</div></div>
+    <div class="ts-score-box"><div class="tsb-num" style="color:${nam1Score>=0?'#6dc89a':'#e07070'}">${nam1Score>0?'+':''}${nam1Score}</div><div class="tsb-lbl">${label2}→Năm ${label1}</div></div>
+  </div>`;
+
+  if(critLevel) {
+    html+=`<div class="trong-so-alert bad"><div class="trong-so-title">☠ ${label2} HÌNH/XUNG CẢ NGÀY & NĂM CỦA ${label1}</div>
+    ${label2} gây tác động xung hình nặng lên cả 2 trụ trọng tâm của ${label1}. Thời điểm/người này rất bất lợi — làm tăng nặng bất cập sẵn có trong bát tự ${label1}.</div>`;
+  } else if(bothBad) {
+    html+=`<div class="trong-so-alert bad"><div class="trong-so-title">⚠ ${label2} ÁP XẤU LÊN CẢ NGÀY & NĂM</div>Tác động tiêu cực lên cả 2 trụ quan trọng nhất.</div>`;
+  } else if(ngay1Score<0) {
+    html+=`<div class="trong-so-alert warning"><div class="trong-so-title">⚡ ${label2} ẢNH HƯỞNG XẤU NGÀY</div>Hành khách (Ngày) bị tác động tiêu cực.</div>`;
+  } else if(nam1Score<0) {
+    html+=`<div class="trong-so-alert warning"><div class="trong-so-title">⚡ ${label2} ẢNH HƯỞNG XẤU NĂM</div>Thân tàu (Năm) bị áp lực tiêu cực.</div>`;
+  } else if(ngay1Score>0 && nam1Score>0) {
+    html+=`<div class="trong-so-alert good"><div class="trong-so-title">✦ ${label2} HỖ TRỢ CẢ NGÀY & NĂM</div>Tác động tích cực lên cả 2 trụ quan trọng — thời điểm/người này hỗ trợ tốt cho ${label1}.</div>`;
+  }
+
+  if(bt2ToNgay1.length||bt2ToNam1.length){
+    html+='<table class="data-table" style="margin-top:0.6rem"><thead><tr><th>Tác Động Từ</th><th>Đến Trụ</th><th>Quan Hệ</th><th>Điểm</th></tr></thead><tbody>';
+    bt2ToNgay1.forEach(r=>html+=`<tr><td>${r.from}</td><td>${tag('Ngày (×'+TRONG_SO.NGAY+')','warning')} ${ngay1.chi||'—'}</td><td>${tag(r.rel,r.type)}</td><td>${tag(r.score>0?'+'+r.score:''+r.score,r.score>0?'good':r.score<0?'bad':'neutral')}</td></tr>`);
+    bt2ToNam1.forEach(r=>html+=`<tr><td>${r.from}</td><td>${tag('Năm (×'+TRONG_SO.NAM+')','info')} ${nam1.chi||'—'}</td><td>${tag(r.rel,r.type)}</td><td>${tag(r.score>0?'+'+r.score:''+r.score,r.score>0?'good':r.score<0?'bad':'neutral')}</td></tr>`);
+    html+='</tbody></table>';
+  }
+
+  if(tamHopCross.length){
+    html+=`<div class="info-box" style="margin-top:0.6rem">`;
+    tamHopCross.forEach(t=>{
+      html+=`⚠ Tam Hợp liên trụ <b>${t.combo} (${t.hanh})</b>: ${label2} có [${t.fromBT2.join(',')}] kết hợp với ${label1} có [${t.fromBT1.join(',')}] → Cục ${t.hanh} hình thành, tăng mạnh tác động. `;
+    });
+    html+='</div>';
+  }
+
+  return html;
+}
+
+// ╔═══════════════════════════════════════════════════════════════╗
 // ║                    PHÂN TÍCH TỨ TRỤ                         ║
 // ╚═══════════════════════════════════════════════════════════════╝
 function analyze() {
@@ -1293,6 +1573,19 @@ function analyze() {
   }
   document.getElementById('truong-sinh').innerHTML = tsinhHtml;
 
+  // ── PHÂN TÍCH TRỌNG SỐ THÁNG → NGÀY & NĂM ────────────────────
+  const truForImpact = [
+    {lbl:'時 Giờ',  can:gioCan,   chi:gioChi},
+    {lbl:'日 Ngày', can:ngayCan,  chi:ngayChi},
+    {lbl:'月 Tháng',can:thangCan, chi:thangChi},
+    {lbl:'年 Năm',  can:namCan,   chi:namChi}
+  ];
+  const thangImpact = analyzeThangImpact(truForImpact);
+
+  // Chèn panel trọng số vào kết quả
+  let trongSoHtml = thangImpact.html;
+  document.getElementById('trong-so-section').innerHTML = trongSoHtml;
+
   // ── THẦN SÁT & CÁT THẦN ─────────────────────────────────────────
   let tsHtml = '';
 
@@ -1434,18 +1727,22 @@ function analyze() {
   tsHtml += '</div>'; // end cat grid
   document.getElementById('than-sat').innerHTML = tsHtml;
 
-  // ── SCORE ─────────────────────────────────────────────────────
-  const total = catScore - hungScore;
+  // ── SCORE (TRỌNG SỐ) ──────────────────────────────────────────
+  const wScore = calcWeightedScore(catScore, hungScore, thangImpact, tru);
+  const total = wScore.weightedCat - wScore.weightedHung;
   const sc = total>=3?'score-good':total<0?'score-bad':'score-mid';
   const sl = total>=6?'Đại Cát ✦':total>=3?'Cát':total>=1?'Tiểu Cát':total===0?'Trung Bình':total>=-3?'Tiểu Hung':'Đại Hung ☠';
   document.getElementById('score-section').innerHTML=`
     <div class="score-number ${sc}">${total>0?'+':''}${total}</div>
     <div class="score-label">${sl}</div>
-    <div style="margin-top:0.8rem;font-size:0.7rem;color:var(--text-dim)">Cát: <span style="color:#6dc89a">+${catScore}</span> &nbsp;|&nbsp; Hung: <span style="color:#e07070">−${hungScore}</span></div>`;
-  const maxBar = Math.max(catScore+hungScore, 1);
+    <div style="margin-top:0.8rem;font-size:0.7rem;color:var(--text-dim)">
+      Cát: <span style="color:#6dc89a">+${wScore.weightedCat}</span> &nbsp;|&nbsp; Hung: <span style="color:#e07070">−${wScore.weightedHung}</span><br>
+      <span style="font-size:0.63rem;color:var(--gold-dark)">Điểm cơ sở: Cát ${catScore} / Hung ${hungScore} · Trọng số thêm: +${wScore.bonusCat}/-${wScore.bonusHung}</span>
+    </div>`;
+  const maxBar = Math.max(wScore.weightedCat+wScore.weightedHung, 1);
   document.getElementById('energy-bars').innerHTML =
-    energyBar('Cát Thần',catScore,maxBar,'good') +
-    energyBar('Hung Sát',hungScore,maxBar,'bad');
+    energyBar('Cát Thần (có trọng số)',wScore.weightedCat,maxBar,'good') +
+    energyBar('Hung Sát (có trọng số)',wScore.weightedHung,maxBar,'bad');
 
   // Energy Trend
   const dominant = Object.entries(hanhCount).sort((a,b)=>b[1]-a[1])[0];
@@ -1478,30 +1775,120 @@ function analyze() {
 // ╔═══════════════════════════════════════════════════════════════╗
 // ║                    PHI TINH LẠC CUNG                        ║
 // ╚═══════════════════════════════════════════════════════════════╝
+
+// ── CỔ PHÁP TAM NGUYÊN CỬU VẬN ────────────────────────────────
+// Bảng sao gốc Trung Cung cho từng Vận (mỗi Vận 20 năm), theo Nguyên
+// Thượng Nguyên: Vận 1(1864-83)=1, Vận 2(1884-03)=2, Vận 3(1904-23)=3
+// Trung Nguyên: Vận 4(1924-43)=4, Vận 5(1944-63)=5, Vận 6(1964-83)=6
+// Hạ Nguyên: Vận 7(1984-03)=7, Vận 8(2004-23)=8, Vận 9(2024-43)=9
+const VAN_TABLE = {
+  thuong: [{start:1864,star:1},{start:1884,star:2},{start:1904,star:3}],
+  trung:  [{start:1924,star:4},{start:1944,star:5},{start:1964,star:6}],
+  ha:     [{start:1984,star:7},{start:2004,star:8},{start:2024,star:9}]
+};
+
+// Sao năm trong Vận: từ sao đầu Vận, mỗi năm ±1 theo chiều
+// Đông Chí = Dương Thuận (sao tăng +1 mỗi năm từ năm đầu Vận)
+// Hạ Chí = Âm Nghịch (sao giảm -1 mỗi năm)
+// Thực tế Huyền Không: chiều phi sao NĂM luôn đi ngược (-1/năm)
+// chiều phi sao THÁNG trong năm Dương: thuận; năm Âm: nghịch
+function getYearStarCoPhap(namCan, namChi, nguyen, tietKhi) {
+  const idx = getCanChiIndex(namCan, namChi);
+  if(idx < 0) return {star:5, van:0, vanStar:0, info:''};
+
+  // Tìm Vận và sao đầu Vận
+  const vanList = VAN_TABLE[nguyen] || VAN_TABLE.ha;
+  // Ước tính năm dương lịch từ Can Chi
+  // Dùng Hạ Nguyên 1984 làm mốc: Giáp Tý 1984 = idx 0
+  // Năm = 1984 + (idx - 0 + offset*60)
+  // Xác định Nguyên để tính offset
+  const nguyenOffset = nguyen==='thuong' ? -2 : nguyen==='trung' ? -1 : 0;
+  const baseYear = 1984 + nguyenOffset * 60;
+  // idx trong vòng 60 → năm gần nhất với baseYear
+  let year = baseYear + idx;
+  // Tìm vận chứa năm đó
+  let vanStar = 7, vanStart = 1984;
+  for(let i=vanList.length-1; i>=0; i--) {
+    if(year >= vanList[i].start) { vanStar = vanList[i].star; vanStart = vanList[i].start; break; }
+  }
+  // Sao năm: từ sao đầu vận, mỗi năm đi ngược -1 (cổ pháp chuẩn)
+  const yearOffset = year - vanStart;
+  let star;
+  if(tietKhi === 'ha_chi') {
+    // Hạ Chí: Âm Nghịch → sao đi thuận +1/năm
+    const raw = ((vanStar - 1 + yearOffset) % 9 + 9) % 9;
+    star = raw === 0 ? 9 : raw;
+  } else {
+    // Đông Chí: Dương Thuận → sao đi ngược -1/năm
+    const raw = ((vanStar - 1 - yearOffset) % 9 + 9) % 9;
+    star = raw === 0 ? 9 : raw;
+  }
+
+  // Chiều phi tháng: Can Năm Dương→thuận, Âm→nghịch
+  const isDuongNam = CAN_AM_DUONG[namCan] === 'Dương';
+
+  const nguyenNames = {thuong:'Thượng Nguyên',trung:'Trung Nguyên',ha:'Hạ Nguyên'};
+  const tietNames = {dong_chi:'Đông Chí (Dương Thuận)',ha_chi:'Hạ Chí (Âm Nghịch)'};
+  return {
+    star, year, vanStar, vanStart,
+    isDuongNam,
+    info: `${nguyenNames[nguyen]} · ${tietNames[tietKhi]} · Vận ${vanStar} (${vanStart}–${vanStart+19}) · Năm ước ~${year} · Sao TC Năm: ${star}`
+  };
+}
+
+function getMonthStarCoPhap(chiThang, yearStar, isDuongNam) {
+  // Cổ pháp: năm Dương Can → tháng phi thuận (+1); năm Âm Can → phi nghịch (-1)
+  // Sao tháng Dần (tháng 1): nhóm theo sao năm
+  // Sao năm 1,4,7 → Dần = 8 (thuận) hoặc 2 (nghịch)
+  // Sao năm 2,5,8 → Dần = 5 (thuận) hoặc 5 (nghịch — giống)
+  // Sao năm 3,6,9 → Dần = 2 (thuận) hoặc 8 (nghịch)
+  let danStar;
+  const grp = ((yearStar - 1) % 3); // 0=nhóm 1/4/7, 1=nhóm 2/5/8, 2=nhóm 3/6/9
+  if(!isDuongNam) {
+    // Âm Can nghịch
+    danStar = grp===0 ? 2 : grp===1 ? 5 : 8;
+  } else {
+    // Dương Can thuận
+    danStar = grp===0 ? 8 : grp===1 ? 5 : 2;
+  }
+  const chiIdx = CHI.indexOf(chiThang);
+  const danIdx = 2; // Dần = index 2
+  const offset = (chiIdx - danIdx + 12) % 12;
+  let raw;
+  if(!isDuongNam) {
+    raw = ((danStar - 1 - offset) % 9 + 9) % 9;
+  } else {
+    raw = ((danStar - 1 + offset) % 9 + 9) % 9;
+  }
+  return raw === 0 ? 9 : raw;
+}
+
 function calcPhiTinh() {
-  const namCan  = document.getElementById('phi-nam-can').value;
-  const namChi  = document.getElementById('phi-nam-chi').value;
-  const thangChi= document.getElementById('phi-thang-chi').value;
-  const ngayChi = document.getElementById('phi-ngay-chi').value;
+  const namCan   = document.getElementById('phi-nam-can').value;
+  const namChi   = document.getElementById('phi-nam-chi').value;
+  const thangChi = document.getElementById('phi-thang-chi').value;
+  const ngayChi  = document.getElementById('phi-ngay-chi').value;
+  const nguyen   = document.getElementById('phi-nguyen').value;
+  const tietKhi  = document.getElementById('phi-tiet-khi').value;
   if(!namCan || !namChi) { alert('Vui lòng chọn cả Can và Chi Năm'); return; }
 
-  const yearStar  = getYearStar(namCan, namChi);
-  const monthStar = thangChi ? getMonthStar(thangChi, yearStar) : null;
-  // Phi tinh ngày cần Can+Chi ngày, ở đây chỉ có Chi → dùng Can giả định hoặc disable
-  // Dùng chi ngày kết hợp với year star làm proxy (có giới hạn)
+  const {star: yearStar, isDuongNam, info} = getYearStarCoPhap(namCan, namChi, nguyen, tietKhi);
+  const monthStar = thangChi ? getMonthStarCoPhap(thangChi, yearStar, isDuongNam) : null;
+
   let dayStar = null;
   if(ngayChi) {
-    // Dùng công thức đơn giản hóa: chi ngày trong vòng 9
     const idx = CHI.indexOf(ngayChi);
     const raw = ((yearStar - 1 + idx) % 9 + 9) % 9;
     dayStar = raw === 0 ? 9 : raw;
   }
 
   // Info box
-  const canChiIdx = getCanChiIndex(namCan, namChi);
+  const phiChieu = isDuongNam ? '↑ Thuận (Dương Can)' : '↓ Nghịch (Âm Can)';
   let infoHtml = `<div class="info-box">
-    <b>${namCan} ${namChi}</b> → Can Chi index trong vòng 60: ${canChiIdx+1} · Sao Trung Cung Năm: 
-    <span style="color:${starColor(yearStar)};font-weight:700">${yearStar} - ${STAR_INFO[yearStar].name}</span> · ${STAR_INFO[yearStar].nature}
+    <b>${namCan} ${namChi}</b> · ${info}<br>
+    Chiều phi tháng: <b>${phiChieu}</b> &nbsp;|&nbsp; Sao Trung Cung:
+    <span style="color:${starColor(yearStar)};font-weight:700;font-size:1.1rem"> ${yearStar} · ${STAR_INFO[yearStar].name}</span>
+    <span class="tag tag-${starQuality(yearStar)}" style="margin-left:0.5rem">${STAR_INFO[yearStar].nature}</span>
   </div>`;
   document.getElementById('phi-year-info').innerHTML = infoHtml;
 
@@ -1522,11 +1909,11 @@ function calcPhiTinh() {
     const ts = thangStars ? thangStars[i] : null;
     const ds = ngayStars  ? ngayStars[i]  : null;
     const combo = [ns, ts, ds].filter(Boolean);
-    const has5  = combo.includes(5);
-    const hasHung = combo.some(s=>[2,3,7].includes(s));
-    const hasCat  = combo.some(s=>[1,4,6,8].includes(s));
-    let eval_; 
-    if(has5) eval_={label:'Đại Hung (5)', type:'bad'};
+    const has5   = combo.includes(5);
+    const hasHung= combo.some(s=>[2,3,7].includes(s));
+    const hasCat = combo.some(s=>[1,4,6,8].includes(s));
+    let eval_;
+    if(has5) eval_={label:'Đại Hung (5 Hoàng)', type:'bad'};
     else if(hasHung&&!hasCat) eval_={label:'Hung', type:'bad'};
     else if(hasCat&&!hasHung) eval_={label:'Cát', type:'good'};
     else if(hasCat&&hasHung) eval_={label:'Trung Hòa', type:'neutral'};
@@ -1540,7 +1927,12 @@ function calcPhiTinh() {
     </tr>`;
   });
   overlayHtml+='</tbody></table>';
-  overlayHtml+=`<div class="info-box" style="margin-top:0.8rem">★ Ngũ Hoàng (5) Đại Hung — tuyệt đối tránh động thổ, xây cất. Nhị Hắc (2) Bệnh. Tam Bích (3) Thị Phi. Thất Xích (7) Tai họa. Nhất Bạch (1), Tứ Lục (4), Lục Bạch (6), Bát Bạch (8) Cát.</div>`;
+  overlayHtml+=`<div class="info-box" style="margin-top:0.8rem">
+    ★ <b>Ngũ Hoàng (5)</b> Đại Hung — tuyệt đối tránh động thổ, xây cất tại phương này.<br>
+    ★ <b>Nhị Hắc (2)</b> Bệnh tật. <b>Tam Bích (3)</b> Thị phi, kiện tụng. <b>Thất Xích (7)</b> Trộm cướp, tai họa.<br>
+    ★ <b>Nhất Bạch (1)</b>, <b>Tứ Lục (4)</b>, <b>Lục Bạch (6)</b>, <b>Bát Bạch (8)</b> — Cát thần.
+    <br><span style="color:var(--gold-dark);font-style:italic">Chiều phi tháng: ${phiChieu} | Cổ pháp: ${tietKhi==='dong_chi'?'Đông Chí khởi Dương Thuận':'Hạ Chí khởi Âm Nghịch'}</span>
+  </div>`;
   document.getElementById('phi-overlay').innerHTML = overlayHtml;
   document.getElementById('phi-result').classList.remove('hidden');
 }
@@ -1611,6 +2003,11 @@ function analyzeInteractionPair(batu1, batu2, containerId, label1, label2) {
   const sc=total>=3?'score-good':total<0?'score-bad':'score-mid';
   const sl=total>=6?'Đại Hợp ✦':total>=3?'Tương Hợp':total>=1?'Có Duyên':total===0?'Cân Bằng':total>=-3?'Có Xung Khắc':'Nhiều Xung Khắc ☠';
 
+  // Tính tác động trọng số: BT2 → Ngày & Năm của BT1
+  const normBatu1 = batu1.map(t=>({lbl:t.lbl,can:t.can,chi:t.chi}));
+  const normBatu2 = batu2.map(t=>({lbl:t.lbl,can:t.can,chi:t.chi}));
+  const impactHtml = analyzeExternalImpact(normBatu1, normBatu2, label1, label2);
+
   let html=`<div class="panel"><div class="panel-header"><span>⟐</span><h3>${label1} × ${label2}</h3></div><div class="panel-body">`;
   html+=`<div class="compat-summary">
     <div class="compat-box"><div class="compat-box cb-num ${sc}">${total>0?'+':''}${total}</div><div class="cb-lbl">${sl}</div></div>
@@ -1632,6 +2029,7 @@ function analyzeInteractionPair(batu1, batu2, containerId, label1, label2) {
     html+='</tbody></table>';
   }
   if(!events.length && !canEvents.length) html+='<p class="note">Không phát hiện quan hệ xung hợp giữa 2 bát tự.</p>';
+  html += impactHtml;
   html+='</div></div>';
 
   document.getElementById(containerId).innerHTML=html;
@@ -1641,32 +2039,32 @@ function analyzeInteractionPair(batu1, batu2, containerId, label1, label2) {
 
 function analyzeInteract1() {
   const batu1=[
-    {lbl:'Giờ',can:document.getElementById('lich-gio-can').value,chi:document.getElementById('lich-gio-chi').value},
-    {lbl:'Ngày',can:document.getElementById('lich-ngay-can').value,chi:document.getElementById('lich-ngay-chi').value},
+    {lbl:'Giờ', can:document.getElementById('lich-gio-can').value,  chi:document.getElementById('lich-gio-chi').value},
+    {lbl:'Ngày',can:document.getElementById('lich-ngay-can').value, chi:document.getElementById('lich-ngay-chi').value},
     {lbl:'Tháng',can:document.getElementById('lich-thang-can').value,chi:document.getElementById('lich-thang-chi').value},
-    {lbl:'Năm',can:document.getElementById('lich-nam-can').value,chi:document.getElementById('lich-nam-chi').value}
+    {lbl:'Năm', can:document.getElementById('lich-nam-can').value,  chi:document.getElementById('lich-nam-chi').value}
   ];
   const batu2=[
-    {lbl:'Giờ',can:document.getElementById('bt-gio-can').value,chi:document.getElementById('bt-gio-chi').value},
-    {lbl:'Ngày',can:document.getElementById('bt-ngay-can').value,chi:document.getElementById('bt-ngay-chi').value},
+    {lbl:'Giờ', can:document.getElementById('bt-gio-can').value,  chi:document.getElementById('bt-gio-chi').value},
+    {lbl:'Ngày',can:document.getElementById('bt-ngay-can').value, chi:document.getElementById('bt-ngay-chi').value},
     {lbl:'Tháng',can:document.getElementById('bt-thang-can').value,chi:document.getElementById('bt-thang-chi').value},
-    {lbl:'Năm',can:document.getElementById('bt-nam-can').value,chi:document.getElementById('bt-nam-chi').value}
+    {lbl:'Năm', can:document.getElementById('bt-nam-can').value,  chi:document.getElementById('bt-nam-chi').value}
   ];
   analyzeInteractionPair(batu1,batu2,'interact1-result','Tứ Trụ Lịch','Bát Tự Cá Nhân');
 }
 
 function analyzeInteract2() {
   const batu1=[
-    {lbl:'Giờ',can:document.getElementById('a-gio-can').value,chi:document.getElementById('a-gio-chi').value},
-    {lbl:'Ngày',can:document.getElementById('a-ngay-can').value,chi:document.getElementById('a-ngay-chi').value},
+    {lbl:'Giờ', can:document.getElementById('a-gio-can').value,  chi:document.getElementById('a-gio-chi').value},
+    {lbl:'Ngày',can:document.getElementById('a-ngay-can').value, chi:document.getElementById('a-ngay-chi').value},
     {lbl:'Tháng',can:document.getElementById('a-thang-can').value,chi:document.getElementById('a-thang-chi').value},
-    {lbl:'Năm',can:document.getElementById('a-nam-can').value,chi:document.getElementById('a-nam-chi').value}
+    {lbl:'Năm', can:document.getElementById('a-nam-can').value,  chi:document.getElementById('a-nam-chi').value}
   ];
   const batu2=[
-    {lbl:'Giờ',can:document.getElementById('b-gio-can').value,chi:document.getElementById('b-gio-chi').value},
-    {lbl:'Ngày',can:document.getElementById('b-ngay-can').value,chi:document.getElementById('b-ngay-chi').value},
+    {lbl:'Giờ', can:document.getElementById('b-gio-can').value,  chi:document.getElementById('b-gio-chi').value},
+    {lbl:'Ngày',can:document.getElementById('b-ngay-can').value, chi:document.getElementById('b-ngay-chi').value},
     {lbl:'Tháng',can:document.getElementById('b-thang-can').value,chi:document.getElementById('b-thang-chi').value},
-    {lbl:'Năm',can:document.getElementById('b-nam-can').value,chi:document.getElementById('b-nam-chi').value}
+    {lbl:'Năm', can:document.getElementById('b-nam-can').value,  chi:document.getElementById('b-nam-chi').value}
   ];
   analyzeInteractionPair(batu1,batu2,'interact2-result','Người A','Người B');
 }
