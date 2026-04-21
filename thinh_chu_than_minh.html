@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Thần Minh Chỉ Lộ – Tập Thể Động Tâm</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Ma+Shan+Zheng&family=Cinzel+Decorative:wght@700&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --crimson: #8b0000;
+  --gold: #c9a227;
+  --gold-bright: #f0d060;
+  --gold-dim: #7a5c10;
+  --ink: #0d0500;
+  --parchment: #f5e8c0;
+  --ember: #ff4500;
+  --smoke: rgba(255,255,255,0.04);
+  --glow-red: 0 0 30px rgba(180,20,20,0.7);
+  --glow-gold: 0 0 25px rgba(201,162,39,0.8);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: #060100;
+  color: var(--gold);
+  font-family: 'Noto Serif', 'Times New Roman', serif;
+  text-align: center;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* === BACKGROUND TEXTURE === */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(100,10,10,0.5) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 80% at 20% 100%, rgba(60,5,5,0.4) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 100%, rgba(60,5,5,0.4) 0%, transparent 60%),
+    repeating-linear-gradient(0deg, transparent, transparent 50px, rgba(255,200,0,0.012) 50px, rgba(255,200,0,0.012) 51px),
+    repeating-linear-gradient(90deg, transparent, transparent 50px, rgba(255,200,0,0.012) 50px, rgba(255,200,0,0.012) 51px);
+  pointer-events: none;
+}
+
+/* Grain overlay */
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.page-wrapper {
+  position: relative; z-index: 1;
+  padding: 20px 12px 60px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* === HEADER === */
+.site-header {
+  padding: 30px 0 15px;
+  position: relative;
+}
+
+.site-header::before, .site-header::after {
+  content: '⸻⸻⸻';
+  display: block;
+  color: var(--gold-dim);
+  letter-spacing: 4px;
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+.seal {
+  width: 72px; height: 72px;
+  margin: 0 auto 12px;
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px;
+  background: radial-gradient(circle, rgba(120,15,15,0.6), rgba(30,5,5,0.9));
+  box-shadow: var(--glow-red), inset 0 0 20px rgba(0,0,0,0.5);
+  animation: sealPulse 3s ease-in-out infinite;
+  position: relative;
+}
+
+.seal::before {
+  content: '';
+  position: absolute; inset: -6px;
+  border: 1px solid rgba(201,162,39,0.3);
+  border-radius: 50%;
+  animation: sealRing 8s linear infinite;
+}
+
+@keyframes sealPulse {
+  0%,100% { box-shadow: var(--glow-red), inset 0 0 20px rgba(0,0,0,0.5); }
+  50% { box-shadow: 0 0 50px rgba(200,30,30,0.9), 0 0 80px rgba(255,80,0,0.3), inset 0 0 20px rgba(0,0,0,0.5); }
+}
+@keyframes sealRing {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+h1 {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(14px, 4vw, 22px);
+  letter-spacing: 4px;
+  color: var(--gold-bright);
+  text-shadow: 0 0 15px rgba(240,208,96,0.6), 0 0 40px rgba(255,80,0,0.3);
+  line-height: 1.4;
+  margin: 8px 0 4px;
+}
+
+.subtitle {
+  font-size: 12px;
+  color: var(--gold-dim);
+  letter-spacing: 2px;
+  font-style: italic;
+  margin-bottom: 4px;
+}
+
+.quote-banner {
+  margin: 16px auto;
+  padding: 10px 20px;
+  border-top: 1px solid rgba(201,162,39,0.3);
+  border-bottom: 1px solid rgba(201,162,39,0.3);
+  font-style: italic;
+  color: #c8a856;
+  font-size: 13px;
+  letter-spacing: 1px;
+  max-width: 460px;
+}
+
+/* === SETUP BOX === */
+.setup-box {
+  background: linear-gradient(160deg, rgba(60,10,10,0.7), rgba(20,5,5,0.9));
+  border: 1px solid rgba(201,162,39,0.4);
+  border-radius: 12px;
+  padding: 24px 20px;
+  margin: 20px auto;
+  max-width: 420px;
+  position: relative;
+  overflow: hidden;
+}
+
+.setup-box::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    45deg, transparent, transparent 20px,
+    rgba(201,162,39,0.02) 20px, rgba(201,162,39,0.02) 21px
+  );
+}
+
+.setup-label {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--gold-dim);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.select-wrapper {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 18px;
+}
+
+select {
+  appearance: none;
+  padding: 10px 40px 10px 16px;
+  font-size: 15px;
+  font-family: 'Noto Serif', serif;
+  background: rgba(20,5,5,0.9);
+  color: var(--gold-bright);
+  border: 1px solid var(--gold-dim);
+  border-radius: 6px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.3s;
+  min-width: 200px;
+}
+select:focus { border-color: var(--gold); }
+.select-arrow {
+  position: absolute; right: 12px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--gold-dim);
+  pointer-events: none;
+  font-size: 10px;
+}
+
+/* === BUTTONS === */
+.btn-primary {
+  background: linear-gradient(160deg, #c9a227, #8b6e12);
+  color: #1a0800;
+  border: none;
+  border-radius: 8px;
+  padding: 13px 28px;
+  font-size: 13px;
+  font-family: 'Cinzel Decorative', serif;
+  font-weight: bold;
+  letter-spacing: 2px;
+  cursor: pointer;
+  width: 100%;
+  max-width: 260px;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+  text-transform: uppercase;
+}
+.btn-primary::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(160deg, rgba(255,255,255,0.15), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.btn-primary:hover:not(:disabled)::after { opacity: 1; }
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(201,162,39,0.5);
+}
+.btn-primary:active:not(:disabled) { transform: translateY(0); }
+.btn-primary:disabled { opacity: 0.25; cursor: not-allowed; filter: grayscale(0.8); }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--gold-dim);
+  border: 1px solid var(--gold-dim);
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 12px;
+  font-family: 'Noto Serif', serif;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.btn-secondary:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: rgba(201,162,39,0.08);
+}
+
+/* === MAIN APP === */
+#mainApp { display: none; }
+
+.section-divider {
+  display: flex; align-items: center; gap: 12px;
+  margin: 24px 0 16px;
+  color: var(--gold-dim);
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+.section-divider::before, .section-divider::after {
+  content: ''; flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,162,39,0.4), transparent);
+}
+
+/* === QUE BOX === */
+.que-box {
+  background: linear-gradient(160deg, rgba(40,8,8,0.85), rgba(15,4,4,0.95));
+  border: 1px solid rgba(201,162,39,0.35);
+  border-radius: 14px;
+  padding: 24px 18px;
+  margin: 0 auto 20px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.6s ease;
+}
+
+.que-box.locked {
+  opacity: 0.2;
+  pointer-events: none;
+  filter: grayscale(0.5);
+}
+.que-box.unlocked { opacity: 1; }
+
+/* Corner ornaments */
+.que-box::before {
+  content: '✦';
+  position: absolute; top: 10px; left: 14px;
+  color: rgba(201,162,39,0.3);
+  font-size: 12px;
+}
+.que-box::after {
+  content: '✦';
+  position: absolute; top: 10px; right: 14px;
+  color: rgba(201,162,39,0.3);
+  font-size: 12px;
+}
+
+.que-title {
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--gold-dim);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.que-title span { color: var(--gold); font-size: 12px; }
+
+/* Energy slots */
+.energy-slots {
+  display: flex; justify-content: center; flex-wrap: wrap;
+  gap: 8px; margin: 16px 0; min-height: 54px;
+}
+
+.slot {
+  width: 46px; height: 46px;
+  border: 1px dashed rgba(201,162,39,0.3);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  color: rgba(201,162,39,0.3);
+  background: rgba(0,0,0,0.3);
+  transition: all 0.5s cubic-bezier(0.34,1.56,0.64,1);
+  position: relative;
+  font-family: 'Noto Serif SC', serif;
+}
+
+.slot.active {
+  border: 1px solid var(--gold);
+  background: rgba(201,162,39,0.12);
+  box-shadow: 0 0 15px rgba(201,162,39,0.4), inset 0 0 10px rgba(201,162,39,0.1);
+  color: var(--gold-bright);
+  transform: scale(1.08);
+}
+
+.slot.active::after {
+  content: '';
+  position: absolute; inset: -4px;
+  border: 1px solid rgba(201,162,39,0.2);
+  border-radius: 10px;
+  animation: slotRing 2s linear infinite;
+}
+@keyframes slotRing {
+  from { transform: rotate(0); opacity: 1; }
+  to { transform: rotate(360deg); opacity: 0.3; }
+}
+
+/* Big character display */
+.han-char {
+  font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
+  font-size: clamp(80px, 20vw, 120px);
+  line-height: 1;
+  margin: 16px 0 10px;
+  min-height: 120px;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+
+.han-char .char-inner {
+  display: inline-block;
+  color: var(--gold-bright);
+  text-shadow: 0 0 30px rgba(240,208,96,0.7), 0 0 60px rgba(255,80,0,0.3);
+  transition: all 0.5s;
+  position: relative;
+}
+
+.han-char .char-inner.revealed {
+  animation: charReveal 0.8s cubic-bezier(0.34,1.2,0.64,1) forwards;
+}
+
+@keyframes charReveal {
+  0% { opacity: 0; transform: scale(0.3) rotate(-15deg); filter: blur(20px); }
+  60% { opacity: 1; filter: blur(0); }
+  80% { transform: scale(1.1) rotate(2deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+.char-glow-ring {
+  position: absolute; inset: -20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,100,0,0.15) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 1s;
+}
+.char-glow-ring.show { opacity: 1; animation: glowPulse 2.5s ease-in-out infinite; }
+@keyframes glowPulse {
+  0%,100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.15); opacity: 1; }
+}
+
+.que-waiting { color: var(--gold-dim); font-size: 28px; opacity: 0.3; }
+
+/* Info text */
+.que-info {
+  font-size: 13px;
+  color: #c8a856;
+  min-height: 28px;
+  letter-spacing: 0.5px;
+  margin: 8px 0 16px;
+  transition: all 0.4s;
+  font-style: italic;
+}
+
+.que-result-badge {
+  display: none;
+  background: rgba(201,162,39,0.1);
+  border: 1px solid rgba(201,162,39,0.3);
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 13px;
+  color: var(--gold-bright);
+  margin: 0 0 16px;
+  letter-spacing: 1px;
+}
+.que-result-badge.show { display: block; }
+
+/* Stroke dots */
+.stroke-indicator {
+  display: flex; justify-content: center; flex-wrap: wrap;
+  gap: 3px; max-width: 280px; margin: 0 auto 16px;
+  min-height: 14px;
+}
+.stroke-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--gold-dim);
+  opacity: 0.4;
+  animation: dotFade 0.5s ease forwards;
+}
+@keyframes dotFade { from { opacity: 0; transform: scale(0); } to { opacity: 0.4; transform: scale(1); } }
+
+/* === INCENSE ANIMATION === */
+.incense-wrap {
+  position: relative;
+  height: 50px;
+  margin: 0 auto 12px;
+  display: flex; align-items: flex-end; justify-content: center;
+  gap: 16px;
+  opacity: 0;
+  transition: opacity 1s;
+}
+.incense-wrap.show { opacity: 1; }
+.incense-stick {
+  width: 2px; height: 40px;
+  background: linear-gradient(to top, #3a1a0a, #c8a856);
+  border-radius: 2px;
+  position: relative;
+}
+.incense-stick::before {
+  content: '';
+  position: absolute; top: -6px; left: 50%;
+  transform: translateX(-50%);
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: #ff6600;
+  box-shadow: 0 0 8px #ff4400;
+  animation: emberFlicker 1.5s ease-in-out infinite;
+}
+@keyframes emberFlicker {
+  0%,100% { opacity: 1; transform: translateX(-50%) scale(1); }
+  50% { opacity: 0.6; transform: translateX(-50%) scale(0.8); }
+}
+.smoke-line {
+  position: absolute;
+  bottom: 46px; left: 50%; transform: translateX(-50%);
+  width: 1px;
+  background: linear-gradient(to top, rgba(200,168,86,0.5), transparent);
+  animation: smokeRise 3s ease-in-out infinite;
+  border-radius: 4px;
+}
+@keyframes smokeRise {
+  0% { height: 0; opacity: 0.6; bottom: 46px; }
+  100% { height: 60px; opacity: 0; bottom: 80px; }
+}
+
+/* === COUNTDOWN === */
+.countdown-ring {
+  display: none;
+  margin: 0 auto 14px;
+  width: 48px; height: 48px;
+  position: relative;
+}
+.countdown-ring.show { display: block; }
+.countdown-ring svg { transform: rotate(-90deg); }
+.countdown-ring .ring-bg { stroke: rgba(201,162,39,0.15); }
+.countdown-ring .ring-fill { stroke: var(--gold); stroke-linecap: round; transition: stroke-dashoffset 1s linear; }
+.countdown-ring .ring-num {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: bold;
+  color: var(--gold);
+  transform: rotate(0);
+}
+
+/* === FINAL REVEAL === */
+#resultBox {
+  display: none;
+  margin: 20px auto 0;
+}
+
+.result-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 13px;
+  letter-spacing: 4px;
+  color: var(--gold-bright);
+  text-shadow: var(--glow-gold);
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.double-char-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin: 20px auto;
+}
+
+.final-char-block {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 8px;
+}
+
+.final-char-label {
+  font-size: 9px; letter-spacing: 3px;
+  color: var(--gold-dim); text-transform: uppercase;
+}
+
+.final-char-big {
+  font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
+  font-size: clamp(64px, 15vw, 100px);
+  line-height: 1;
+  color: var(--gold-bright);
+  text-shadow: 0 0 30px rgba(240,208,96,0.8), 0 0 60px rgba(255,100,0,0.4);
+  animation: finalCharAnim 1s cubic-bezier(0.34,1.2,0.64,1) forwards;
+}
+@keyframes finalCharAnim {
+  0% { opacity: 0; transform: scale(0.5); filter: blur(15px); }
+  100% { opacity: 1; transform: scale(1); filter: blur(0); }
+}
+
+.final-char-name {
+  font-size: 12px; color: var(--gold);
+  max-width: 130px; line-height: 1.4;
+}
+.final-char-strokes {
+  font-size: 10px; color: var(--gold-dim); letter-spacing: 1px;
+}
+
+.yinyang-divider {
+  font-size: 28px; color: rgba(201,162,39,0.5);
+  margin-top: 10px;
+  animation: rotate 10s linear infinite;
+}
+@keyframes rotate { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+
+.guahex-band {
+  margin: 16px auto;
+  padding: 12px 18px;
+  background: rgba(201,162,39,0.06);
+  border: 1px solid rgba(201,162,39,0.2);
+  border-radius: 8px;
+  max-width: 420px;
+}
+
+.guahex-relation {
+  font-size: 13px;
+  color: var(--gold);
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.guahex-note {
+  font-size: 11px; color: var(--gold-dim);
+  font-style: italic; line-height: 1.6;
+}
+
+.result-scroll {
+  margin: 16px auto 0;
+  padding: 16px;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(201,162,39,0.25);
+  border-radius: 8px;
+  max-width: 480px;
+}
+
+textarea {
+  width: 100%;
+  background: transparent;
+  color: var(--gold);
+  border: none;
+  outline: none;
+  font-family: 'Noto Serif', serif;
+  font-size: 13px;
+  line-height: 1.8;
+  resize: none;
+  height: 180px;
+  letter-spacing: 0.5px;
+}
+
+.btn-row {
+  display: flex; gap: 10px; justify-content: center;
+  flex-wrap: wrap; margin-top: 16px;
+}
+
+/* === LOADING ANIM === */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.loading-text {
+  background: linear-gradient(90deg, var(--gold-dim) 0%, var(--gold-bright) 50%, var(--gold-dim) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 2s linear infinite;
+}
+
+/* === PARTICLES === */
+.particles-container {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+}
+.particle {
+  position: absolute;
+  width: 2px; height: 2px;
+  border-radius: 50%;
+  background: var(--gold);
+  opacity: 0;
+  animation: particleFloat linear infinite;
+}
+@keyframes particleFloat {
+  0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+  10% { opacity: 0.4; }
+  90% { opacity: 0.2; }
+  100% { transform: translateY(-20px) translateX(var(--dx)); opacity: 0; }
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 380px) {
+  h1 { font-size: 12px; letter-spacing: 2px; }
+  .han-char { font-size: 80px; min-height: 90px; }
+  .slot { width: 38px; height: 38px; font-size: 16px; }
+  .final-char-big { font-size: 64px; }
+}
+</style>
+</head>
+<body>
+
+<div class="particles-container" id="particles"></div>
+
+<div class="page-wrapper">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="seal">☯</div>
+    <h1>THẦN MINH CHỈ LỘ</h1>
+    <div class="subtitle">神明指路 · Tập Thể Động Tâm</div>
+    <div class="quote-banner">「 Đồng thanh tương ứng &ensp;·&ensp; Đồng khí tương cầu 」</div>
+  </header>
+
+  <!-- SETUP -->
+  <div class="setup-box" id="setupBox">
+    <div class="setup-label">▸ Chuẩn Bị Lễ Thỉnh ◂</div>
+    <div style="color:#b8942a; font-size:12px; margin-bottom:16px; line-height:1.7;">
+      Mỗi người sẽ lần lượt góp tâm năng lượng.<br>
+      Tâm thức cộng hưởng tạo thành Thần Ý.
+    </div>
+    <div class="select-wrapper">
+      <select id="memberCount">
+        <option value="1">1 người – Đơn Tâm</option>
+        <option value="2">2 người – Song Hành</option>
+        <option value="3" selected>3 người – Tam Tài</option>
+        <option value="4">4 người – Tứ Tượng</option>
+        <option value="5">5 người – Ngũ Hành</option>
+        <option value="6">6 người – Lục Hợp</option>
+        <option value="7">7 người – Thất Tinh</option>
+        <option value="8">8 người – Bát Quái</option>
+        <option value="9">9 người – Cửu Cung</option>
+      </select>
+      <div class="select-arrow">▾</div>
+    </div>
+    <br>
+    <button class="btn-primary" id="btnStart">⸻ Khai Lễ ⸻</button>
+  </div>
+
+  <!-- MAIN APP -->
+  <div id="mainApp">
+
+    <!-- QUẺ THƯỢNG -->
+    <div class="section-divider"><span>PHẦN I</span></div>
+
+    <div class="que-box" id="boxThuong">
+      <div class="que-title">Thỉnh Quẻ <span>THƯỢNG</span></div>
+
+      <div class="incense-wrap" id="incenseThuong">
+        <div class="incense-stick"><div class="smoke-line"></div></div>
+        <div class="incense-stick" style="height:34px"><div class="smoke-line" style="animation-delay:1s"></div></div>
+        <div class="incense-stick"><div class="smoke-line" style="animation-delay:0.5s"></div></div>
+      </div>
+
+      <div class="energy-slots" id="slotsThuong"></div>
+
+      <div class="han-char" id="thuongChar">
+        <div class="char-glow-ring" id="glowThuong"></div>
+        <div class="char-inner que-waiting" id="thuongCharInner">⋯</div>
+      </div>
+
+      <div class="stroke-indicator" id="strokesThuong"></div>
+      <div class="que-result-badge" id="badgeThuong"></div>
+      <div class="que-info" id="thuongInfo">Cung thỉnh người thứ 1 Động Tâm...</div>
+
+      <div class="countdown-ring" id="countdownThuong">
+        <svg width="48" height="48" viewBox="0 0 48 48">
+          <circle class="ring-bg" cx="24" cy="24" r="20" fill="none" stroke-width="2"/>
+          <circle class="ring-fill" id="ringFillThuong" cx="24" cy="24" r="20" fill="none" stroke-width="2"
+            stroke-dasharray="125.7" stroke-dashoffset="0"/>
+        </svg>
+        <div class="ring-num" id="ringNumThuong">5</div>
+      </div>
+
+      <button class="btn-primary" id="btnActionThuong">Góp Tâm Năng Lượng</button>
+    </div>
+
+    <!-- QUẺ HẠ -->
+    <div class="section-divider"><span>PHẦN II</span></div>
+
+    <div class="que-box locked" id="boxHa">
+      <div class="que-title">Thỉnh Quẻ <span>HẠ</span></div>
+
+      <div class="incense-wrap" id="incenseHa">
+        <div class="incense-stick"><div class="smoke-line"></div></div>
+        <div class="incense-stick" style="height:34px"><div class="smoke-line" style="animation-delay:1s"></div></div>
+        <div class="incense-stick"><div class="smoke-line" style="animation-delay:0.5s"></div></div>
+      </div>
+
+      <div class="energy-slots" id="slotsHa"></div>
+
+      <div class="han-char" id="haChar">
+        <div class="char-glow-ring" id="glowHa"></div>
+        <div class="char-inner que-waiting" id="haCharInner">⋯</div>
+      </div>
+
+      <div class="stroke-indicator" id="strokesHa"></div>
+      <div class="que-result-badge" id="badgeHa"></div>
+      <div class="que-info" id="haInfo">Chờ hoàn tất Quẻ Thượng...</div>
+
+      <div class="countdown-ring" id="countdownHa">
+        <svg width="48" height="48" viewBox="0 0 48 48">
+          <circle class="ring-bg" cx="24" cy="24" r="20" fill="none" stroke-width="2"/>
+          <circle class="ring-fill" id="ringFillHa" cx="24" cy="24" r="20" fill="none" stroke-width="2"
+            stroke-dasharray="125.7" stroke-dashoffset="0"/>
+        </svg>
+        <div class="ring-num" id="ringNumHa">5</div>
+      </div>
+
+      <button class="btn-primary" id="btnActionHa" disabled>Góp Tâm Năng Lượng</button>
+    </div>
+
+  </div><!-- /mainApp -->
+
+  <!-- KẾT QUẢ -->
+  <div id="resultBox">
+    <div class="section-divider"><span>THẦN Ý TẬP THỂ</span></div>
+
+    <div class="que-box" style="border-color:rgba(201,162,39,0.6); box-shadow: 0 0 40px rgba(201,162,39,0.15);">
+      <div class="result-title">☯ Lưỡng Nghi Định Hình ☯</div>
+
+      <div class="double-char-display">
+        <div class="final-char-block">
+          <div class="final-char-label">Quẻ Thượng</div>
+          <div class="final-char-big" id="finalThuong">?</div>
+          <div class="final-char-name" id="finalThuongName"></div>
+          <div class="final-char-strokes" id="finalThuongStrokes"></div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+          <div class="yinyang-divider">☯</div>
+        </div>
+
+        <div class="final-char-block">
+          <div class="final-char-label">Quẻ Hạ</div>
+          <div class="final-char-big" id="finalHa">?</div>
+          <div class="final-char-name" id="finalHaName"></div>
+          <div class="final-char-strokes" id="finalHaStrokes"></div>
+        </div>
+      </div>
+
+      <div class="guahex-band" id="guaRelation">
+        <div class="guahex-relation" id="relationText"></div>
+        <div class="guahex-note" id="relationNote"></div>
+      </div>
+
+      <div class="result-scroll">
+        <textarea id="resultText" readonly></textarea>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-primary" onclick="copyResult()" style="max-width:160px;font-size:11px;">Sao Chép</button>
+        <button class="btn-secondary" onclick="location.reload()">✦ Thỉnh Quẻ Mới</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page-wrapper -->
+
+<script>
+/* ====================================================
+   ENTROPY POOL – Thu thập ngẫu nhiên đa nguồn
+   Kết hợp: crypto.getRandomValues + performance.now
+   + mouse/touch events + thời gian giữa các thao tác
+   + số nét của quẻ trước → đảm bảo bất khả tiên đoán
+   ==================================================== */
+
+const EntropyPool = (() => {
+  let pool = new Uint32Array(16);
+  let cursor = 0;
+  let lastActionTime = 0;
+
+  // Seed ban đầu từ crypto
+  try { crypto.getRandomValues(pool); } catch(e) {}
+
+  // Thu thập từ mouse/touch
+  const collectMouse = (e) => {
+    const x = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+    const y = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+    pool[cursor % 16] ^= Math.floor(x * 1000 + y * 17 + performance.now() * 3);
+    cursor++;
+  };
+  document.addEventListener('mousemove', collectMouse, { passive: true });
+  document.addEventListener('touchmove', collectMouse, { passive: true });
+
+  const mix = (seed) => {
+    // Xorshift128+ mix
+    let s = seed >>> 0;
+    s ^= s << 13; s ^= s >>> 17; s ^= s << 5;
+    return s >>> 0;
+  };
+
+  return {
+    harvest(extraBias = 0) {
+      const now = performance.now();
+      const gap = lastActionTime ? (now - lastActionTime) : 9999;
+      lastActionTime = now;
+
+      let a = 0;
+      for (let i = 0; i < 16; i++) a ^= pool[i];
+
+      // Kết hợp: pool tích lũy + thời gian hiện tại + khoảng cách thao tác + bias
+      const combined = (
+        mix(a) ^
+        mix(Math.floor(now * 137)) ^
+        mix(Math.floor(gap * 99991)) ^
+        mix(extraBias * 2654435761)
+      ) >>> 0;
+
+      // Cập nhật lại pool
+      pool[cursor % 16] = mix(combined);
+      cursor++;
+
+      return combined;
+    }
+  };
+})();
+
+/* ====================================================
+   NGŨ HÀNH & TƯƠNG SINH/KHẮC
+   ==================================================== */
+const NHANH_MAP = {
+  Kim: ['金','劍','珠','玉','璧'],
+  Mộc: ['木','草','松','蘭','竹','梧','桐','樹','林'],
+  Thủy: ['水','海','河','雲','露','雨','霜','溪','淵','川','流'],
+  Hỏa: ['火','離','光','日','炎','丹','赤'],
+  Thổ: ['土','地','坤','山','田','墓','壇','城'],
+};
+
+const TUONG_SINH = { Kim:'Thủy', Thủy:'Mộc', Mộc:'Hỏa', Hỏa:'Thổ', Thổ:'Kim' };
+const TUONG_KHAC = { Kim:'Mộc', Mộc:'Thổ', Thổ:'Thủy', Thủy:'Hỏa', Hỏa:'Kim' };
+
+function getNguhanhOfChar(char) {
+  for (const [hanh, list] of Object.entries(NHANH_MAP)) {
+    if (list.includes(char)) return hanh;
+  }
+  return null;
+}
+
+function getRelationNote(charThuong, charHa) {
+  const hThuong = getNguhanhOfChar(charThuong);
+  const hHa = getNguhanhOfChar(charHa);
+  if (!hThuong || !hHa) return null;
+  if (hThuong === hHa) return { rel:'Đồng Hành', note:`Cả hai thuộc ${hThuong}. Khí đồng, lực cộng — thuận chiều, thăng hoa.` };
+  if (TUONG_SINH[hThuong] === hHa) return { rel:'Tương Sinh ✦', note:`${hThuong} sinh ${hHa}. Thượng quẻ dẫn lộ, Hạ quẻ thừa thụ — vạn sự hanh thông.` };
+  if (TUONG_SINH[hHa] === hThuong) return { rel:'Tương Sinh ✦', note:`${hHa} sinh ${hThuong}. Căn bản vững, kết quả tốt — duyên phận trợ duyên.` };
+  if (TUONG_KHAC[hThuong] === hHa) return { rel:'Tương Khắc ◈', note:`${hThuong} khắc ${hHa}. Có thử thách, cần khéo điều hòa — không nản lòng.` };
+  if (TUONG_KHAC[hHa] === hThuong) return { rel:'Tương Khắc ◈', note:`${hHa} khắc ${hThuong}. Nghịch cảnh tôi luyện — kiên trì ắt thắng.` };
+  return { rel:'Trung Hòa', note:'Hai khí trung hòa, không tương sinh cũng không tương khắc — tùy nhân duyên mà ứng.' };
+}
+
+/* ====================================================
+   DỮ LIỆU CHỮ HÁN (giữ nguyên từ bản gốc)
+   ==================================================== */
+const NET_CO_BAN = ["丶","一","丨","丿","乀","㇀","┐","亅"];
+const HAN_DATA = [
+  {c:"乾",v:"Càn (Trời)",n:11},{c:"坤",v:"Khôn (Đất)",n:8},{c:"震",v:"Chấn (Sấm)",n:15},{c:"巽",v:"Tốn (Gió)",n:12},
+  {c:"坎",v:"Khảm (Nước)",n:7},{c:"離",v:"Ly (Lửa)",n:19},{c:"艮",v:"Cấn (Núi)",n:7},{c:"兌",v:"Đoài (Đầm)",n:7},
+  {c:"天",v:"Thiên (Trời)",n:4},{c:"地",v:"Địa (Đất)",n:6},{c:"玄",v:"Huyền (Sâu kín)",n:5},{c:"黃",v:"Hoàng (Vàng)",n:12},
+  {c:"宇",v:"Vũ (Không gian)",n:6},{c:"宙",v:"Trụ (Thời gian)",n:8},{c:"洪",v:"Hồng (Lớn)",n:9},{c:"荒",v:"Hoang (Vắng)",n:10},
+  {c:"日",v:"Nhật (Mặt trời)",n:4},{c:"月",v:"Nguyệt (Mặt trăng)",n:4},{c:"盈",v:"Doanh (Đầy)",n:9},{c:"昃",v:"Trắc (Nghiêng)",n:8},
+  {c:"辰",v:"Thần (Sao)",n:7},{c:"宿",v:"Tú (Chòm sao)",n:11},{c:"列",v:"Liệt (Hàng)",n:6},{c:"張",v:"Trương (Bủa ra)",n:11},
+  {c:"寒",v:"Hàn (Lạnh)",n:12},{c:"來",v:"Lai (Đến)",n:8},{c:"暑",v:"Thử (Nóng)",n:13},{c:"往",v:"Vãng (Đi)",n:8},
+  {c:"秋",v:"Thu (Mùa thu)",n:9},{c:"收",v:"Thu (Gặt)",n:6},{c:"冬",v:"Đông (Mùa đông)",n:5},{c:"藏",v:"Tàng (Cất)",n:18},
+  {c:"閏",v:"Nhuận (Dư)",n:12},{c:"餘",v:"Dư (Thừa)",n:15},{c:"成",v:"Thành (Nên)",n:6},{c:"歲",v:"Tuế (Năm)",n:13},
+  {c:"律",v:"Luật (Pháp luật)",n:9},{c:"呂",v:"Lữ (Âm luật)",n:7},{c:"調",v:"Điều (Hòa hợp)",n:15},{c:"陽",v:"Dương (Sáng)",n:12},
+  {c:"雲",v:"Vân (Mây)",n:12},{c:"騰",v:"Đằng (Bay lên)",n:20},{c:"致",v:"Trí (Đưa đến)",n:10},{c:"雨",v:"Vũ (Mưa)",n:8},
+  {c:"露",v:"Lộ (Sương)",n:21},{c:"結",v:"Kết (Đọng lại)",n:12},{c:"為",v:"Vi (Làm)",n:12},{c:"霜",v:"Sương (Móc)",n:17},
+  {c:"金",v:"Kim (Vàng)",n:8},{c:"生",v:"Sinh (Nảy nở)",n:5},{c:"麗",v:"Lệ (Đẹp)",n:19},{c:"水",v:"Thủy (Nước)",n:4},
+  {c:"玉",v:"Ngọc (Đá quý)",n:5},{c:"出",v:"Xuất (Ra)",n:5},{c:"崑",v:"Côn (Tên núi)",n:11},{c:"岡",v:"Cương (Chỏm núi)",n:8},
+  {c:"劍",v:"Kiếm (Gươm)",n:15},{c:"號",v:"Hiệu (Tên gọi)",n:13},{c:"巨",v:"Cự (Lớn)",n:5},{c:"闕",v:"Khuyết (Cửa cung)",n:18},
+  {c:"珠",v:"Châu (Ngọc trai)",n:10},{c:"稱",v:"Xưng (Khen)",n:14},{c:"夜",v:"Dạ (Đêm)",n:8},{c:"光",v:"Quang (Sáng)",n:6},
+  {c:"果",v:"Quả (Trái)",n:8},{c:"珍",v:"Trân (Quý)",n:10},{c:"菜",v:"Thái (Rau)",n:12},{c:"薑",v:"Khương (Gừng)",n:17},
+  {c:"海",v:"Hải (Biển)",n:10},{c:"鹹",v:"Hàm (Mặn)",n:20},{c:"河",v:"Hà (Sông)",n:8},{c:"淡",v:"Đạm (Nhạt)",n:11},
+  {c:"鱗",v:"Lân (Vảy cá)",n:23},{c:"潛",v:"Tiềm (Chìm)",n:15},{c:"羽",v:"Vũ (Lông chim)",n:6},{c:"翔",v:"Tường (Bay)",n:12},
+  {c:"龍",v:"Long (Rồng)",n:16},{c:"師",v:"Sư (Thầy)",n:10},{c:"火",v:"Hỏa (Lửa)",n:4},{c:"帝",v:"Đế (Vua)",n:9},
+  {c:"鳥",v:"Điểu (Chim)",n:11},{c:"官",v:"Quan (Chức quan)",n:8},{c:"人",v:"Nhân (Người)",n:2},{c:"皇",v:"Hoàng (Vua)",n:9},
+  {c:"始",v:"Thủy (Đầu)",n:8},{c:"制",v:"Chế (Làm ra)",n:8},{c:"文",v:"Văn (Chữ viết)",n:4},{c:"字",v:"Tự (Chữ)",n:6},
+  {c:"道",v:"Đạo (Đạo lý)",n:12},{c:"德",v:"Đức (Đạo đức)",n:15},{c:"仁",v:"Nhân (Lòng nhân)",n:4},{c:"義",v:"Nghĩa (Lẽ phải)",n:13},
+  {c:"禮",v:"Lễ (Nghi lễ)",n:17},{c:"智",v:"Trí (Trí tuệ)",n:12},{c:"信",v:"Tín (Tin)",n:9},{c:"忠",v:"Trung (Hết lòng)",n:8},
+  {c:"孝",v:"Hiếu (Hiếu thảo)",n:7},{c:"廉",v:"Liêm (Sạch)",n:13},{c:"善",v:"Thiện (Tốt lành)",n:12},{c:"福",v:"Phúc (May mắn)",n:13},
+  {c:"祿",v:"Lộc (Bổng lộc)",n:12},{c:"壽",v:"Thọ (Trường thọ)",n:14},{c:"喜",v:"Hỷ (Mừng vui)",n:12},{c:"財",v:"Tài (Tài lộc)",n:10},
+  {c:"吉",v:"Cát (Lành)",n:6},{c:"祥",v:"Tường (Điềm lành)",n:11},{c:"安",v:"An (Bình an)",n:6},{c:"平",v:"Bình (Yên)",n:5},
+  {c:"泰",v:"Thái (Thông suốt)",n:10},{c:"和",v:"Hòa (Hòa thuận)",n:8},{c:"興",v:"Hưng (Hưng thịnh)",n:16},{c:"旺",v:"Vượng (Phồn thịnh)",n:8},
+  {c:"盛",v:"Thịnh (Sung thịnh)",n:11},{c:"榮",v:"Vinh (Vinh hiển)",n:14},{c:"貴",v:"Quý (Quý giá)",n:12},{c:"昌",v:"Xương (Hưng thịnh)",n:8},
+  {c:"明",v:"Minh (Sáng)",n:8},{c:"靈",v:"Linh (Linh thiêng)",n:24},{c:"神",v:"Thần (Tinh thần)",n:10},{c:"聖",v:"Thánh (Bậc thánh)",n:13},
+  {c:"誠",v:"Thành (Chân thành)",n:14},{c:"正",v:"Chánh (Ngay thẳng)",n:5},{c:"清",v:"Thanh (Trong sạch)",n:11},{c:"靜",v:"Tĩnh (Yên tĩnh)",n:16},
+  {c:"定",v:"Định (Ổn định)",n:8},{c:"慧",v:"Tuệ (Trí tuệ)",n:15},{c:"覺",v:"Giác (Giác ngộ)",n:20},{c:"悟",v:"Ngộ (Thấu hiểu)",n:10},
+  {c:"緣",v:"Duyên (Nhân duyên)",n:15},{c:"命",v:"Mạng (Tính mạng)",n:8},{c:"運",v:"Vận (Vận mệnh)",n:12},{c:"數",v:"Số (Số mệnh)",n:15},
+  {c:"心",v:"Tâm (Lòng)",n:4},{c:"志",v:"Chí (Chí hướng)",n:7},{c:"意",v:"Ý (Ý chí)",n:13},{c:"念",v:"Niệm (Tâm niệm)",n:8},
+  {c:"願",v:"Nguyện (Tâm nguyện)",n:19},{c:"力",v:"Lực (Sức mạnh)",n:2},{c:"勇",v:"Dũng (Dũng cảm)",n:9},{c:"毅",v:"Nghị (Kiên nghị)",n:15},
+  {c:"剛",v:"Cương (Cứng rắn)",n:10},{c:"柔",v:"Nhu (Mềm mại)",n:9},{c:"謙",v:"Khiêm (Khiêm tốn)",n:17},{c:"遜",v:"Tốn (Nhún nhường)",n:13},
+  {c:"寬",v:"Khoan (Rộng lượng)",n:15},{c:"容",v:"Dung (Bao dung)",n:10},{c:"厚",v:"Hậu (Hậu đức)",n:9},{c:"朴",v:"Phác (Chất phác)",n:6},
+  {c:"真",v:"Chân (Chân thật)",n:10},{c:"純",v:"Thuần (Thuần khiết)",n:10},{c:"貞",v:"Trinh (Trinh bạch)",n:9},{c:"潔",v:"Khiết (Trong sạch)",n:15},
+  {c:"木",v:"Mộc (Cây)",n:4},{c:"火",v:"Hỏa (Lửa)",n:4},{c:"土",v:"Thổ (Đất)",n:3},{c:"金",v:"Kim (Vàng)",n:8},
+  {c:"山",v:"Sơn (Núi)",n:3},{c:"川",v:"Xuyên (Sông)",n:3},{c:"草",v:"Thảo (Cỏ)",n:10},{c:"木",v:"Mộc (Cây cối)",n:4},
+  {c:"松",v:"Tùng (Cây tùng)",n:8},{c:"竹",v:"Trúc (Tre)",n:6},{c:"梅",v:"Mai (Hoa mai)",n:11},{c:"蘭",v:"Lan (Hoa lan)",n:20},
+  {c:"菊",v:"Cúc (Hoa cúc)",n:11},{c:"荷",v:"Hà (Hoa sen)",n:10},{c:"桃",v:"Đào (Đào hoa)",n:10},{c:"柳",v:"Liễu (Cây liễu)",n:9},
+  {c:"風",v:"Phong (Gió)",n:9},{c:"雷",v:"Lôi (Sấm)",n:13},{c:"電",v:"Điện (Chớp)",n:13},{c:"虹",v:"Hồng (Cầu vồng)",n:9},
+  {c:"星",v:"Tinh (Sao)",n:9},{c:"辰",v:"Thần (Tinh tú)",n:7},{c:"曙",v:"Thự (Bình minh)",n:17},{c:"暮",v:"Mộ (Hoàng hôn)",n:14},
+  {c:"春",v:"Xuân (Mùa xuân)",n:9},{c:"夏",v:"Hạ (Mùa hạ)",n:10},{c:"秋",v:"Thu (Mùa thu)",n:9},{c:"冬",v:"Đông (Mùa đông)",n:5},
+  {c:"子",v:"Tử (Con cái)",n:3},{c:"丑",v:"Sửu (Con trâu)",n:4},{c:"寅",v:"Dần (Con hổ)",n:11},{c:"卯",v:"Mão (Con mèo)",n:5},
+  {c:"辰",v:"Thần (Con rồng)",n:7},{c:"巳",v:"Tỵ (Con rắn)",n:3},{c:"午",v:"Ngọ (Con ngựa)",n:4},{c:"未",v:"Mùi (Con dê)",n:5},
+  {c:"申",v:"Thân (Con khỉ)",n:5},{c:"酉",v:"Dậu (Con gà)",n:7},{c:"戌",v:"Tuất (Con chó)",n:6},{c:"亥",v:"Hợi (Con heo)",n:6},
+  {c:"坐",v:"Tọa (Ngồi)",n:7},{c:"朝",v:"Triều (Chầu)",n:12},{c:"問",v:"Vấn (Hỏi)",n:11},{c:"學",v:"Học (Học tập)",n:16},
+  {c:"功",v:"Công (Công lao)",n:5},{c:"業",v:"Nghiệp (Sự nghiệp)",n:13},{c:"名",v:"Danh (Tiếng tăm)",n:6},{c:"立",v:"Lập (Đứng vững)",n:5},
+  {c:"進",v:"Tiến (Tiến lên)",n:12},{c:"退",v:"Thoái (Lùi bước)",n:10},{c:"升",v:"Thăng (Lên cao)",n:4},{c:"降",v:"Giáng (Xuống)",n:9},
+  {c:"得",v:"Đắc (Được)",n:11},{c:"失",v:"Thất (Mất)",n:5},{c:"取",v:"Thủ (Lấy)",n:8},{c:"捨",v:"Xả (Buông bỏ)",n:11},
+  {c:"開",v:"Khai (Mở ra)",n:12},{c:"關",v:"Quan (Đóng lại)",n:19},{c:"動",v:"Động (Vận động)",n:11},{c:"靜",v:"Tĩnh (Yên nghỉ)",n:16},
+  {c:"剛",v:"Cương (Mạnh)",n:10},{c:"健",v:"Kiện (Khỏe mạnh)",n:11},{c:"潤",v:"Nhuận (Nhuần nhị)",n:15},{c:"澤",v:"Trạch (Ân trạch)",n:17},
+];
+
+/* ====================================================
+   STATE
+   ==================================================== */
+let totalMembers = 3;
+let currentThuong = 0, currentHa = 0;
+let accThuong = 0, accHa = 0;
+let prevNetsThuong = 0; // tích lũy số nét các lần trước
+let finalCharThuong = null, finalCharHa = null;
+
+/* ====================================================
+   INIT PARTICLES
+   ==================================================== */
+function initParticles() {
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 25; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const delay = Math.random() * 15;
+    const dur = 8 + Math.random() * 12;
+    const x = Math.random() * 100;
+    const dx = (Math.random() - 0.5) * 100;
+    p.style.cssText = `
+      left:${x}%; bottom:0;
+      --dx:${dx}px;
+      animation-duration:${dur}s;
+      animation-delay:-${delay}s;
+      opacity:0;
+      width:${1+Math.random()*2}px;
+      height:${1+Math.random()*2}px;
+    `;
+    container.appendChild(p);
+  }
+}
+
+/* ====================================================
+   CREATE SLOTS
+   ==================================================== */
+function createSlots(id, count) {
+  const c = document.getElementById(id);
+  c.innerHTML = '';
+  for (let i = 0; i < count; i++) {
+    const d = document.createElement('div');
+    d.className = 'slot';
+    d.id = id + '_' + i;
+    d.textContent = '?';
+    c.appendChild(d);
+  }
+}
+
+/* ====================================================
+   STROKE DOTS
+   ==================================================== */
+function showStrokeDots(containerId, n) {
+  const c = document.getElementById(containerId);
+  c.innerHTML = '';
+  const max = Math.min(n, 30);
+  for (let i = 0; i < max; i++) {
+    const d = document.createElement('div');
+    d.className = 'stroke-dot';
+    d.style.animationDelay = (i * 0.03) + 's';
+    c.appendChild(d);
+  }
+}
+
+/* ====================================================
+   COUNTDOWN RING
+   ==================================================== */
+async function runCountdown(type, seconds) {
+  const prefix = type === 'thuong' ? 'Thuong' : 'Ha';
+  const ring = document.getElementById('countdown' + prefix);
+  const fill = document.getElementById('ringFill' + prefix);
+  const num = document.getElementById('ringNum' + prefix);
+  const CIRCUMFERENCE = 125.7;
+
+  ring.classList.add('show');
+  for (let i = seconds; i > 0; i--) {
+    num.textContent = i;
+    fill.style.strokeDashoffset = CIRCUMFERENCE * (1 - i / seconds);
+    await new Promise(r => setTimeout(r, 1000));
+  }
+  ring.classList.remove('show');
+}
+
+/* ====================================================
+   THUẬT TOÁN THỈNH CHỮ (cải tiến)
+   
+   Nguyên lý cổ pháp:
+   - Mỗi người bấm đóng góp 1 "hào" (nét vạch ngẫu nhiên)
+   - Seed tích lũy qua từng lượt (accThuong/accHa)
+   - Cuối cùng dùng số nét của các nét vạch + seed tổng hợp
+     làm modulo chọn chữ → số nét có ý nghĩa phong thủy
+   - Thêm prevNets bias để quẻ Hạ bị ảnh hưởng bởi quẻ Thượng
+     (tượng trưng cho quẻ trên/dưới liên thông)
+   ==================================================== */
+async function handleAction(type) {
+  const isThuong = type === 'thuong';
+  const btn = document.getElementById(isThuong ? 'btnActionThuong' : 'btnActionHa');
+  if (btn.disabled) return;
+  btn.disabled = true;
+
+  const info = document.getElementById(isThuong ? 'thuongInfo' : 'haInfo');
+  const slotsId = isThuong ? 'slotsThuong_' : 'slotsHa_';
+  const count = isThuong ? currentThuong : currentHa;
+
+  // Thu entropy: bias = vị trí người + nét tích lũy trước đó (nếu có)
+  const bias = (count + 1) * 1367 + prevNetsThuong;
+  const entropy = EntropyPool.harvest(bias);
+
+  const netIdx = entropy % 8;
+  const net = NET_CO_BAN[netIdx];
+
+  // Tích lũy seed
+  if (isThuong) {
+    accThuong = ((accThuong ^ entropy) * 1000003 + netIdx * 7919) >>> 0;
+    currentThuong++;
+  } else {
+    accHa = ((accHa ^ entropy) * 1000003 + netIdx * 7919 + prevNetsThuong) >>> 0;
+    currentHa++;
+  }
+
+  // Hiển thị slot với hiệu ứng
+  const slot = document.getElementById(slotsId + count);
+  slot.textContent = net;
+  slot.classList.add('active');
+
+  // Thêm micro-flash
+  slot.style.backgroundColor = 'rgba(255,220,100,0.25)';
+  setTimeout(() => slot.style.backgroundColor = '', 600);
+
+  const nextCount = isThuong ? currentThuong : currentHa;
+
+  if (nextCount < totalMembers) {
+    // Chờ người tiếp theo
+    info.innerHTML = `<span class="loading-text">Khí năng đang tích tụ...</span>`;
+    await runCountdown(type, 5);
+    info.textContent = `Cung thỉnh người thứ ${nextCount + 1} Động Tâm...`;
+    btn.disabled = false;
+  } else {
+    // Tất cả đã góp tâm → Định hình chữ
+    info.innerHTML = `<span class="loading-text">Tập thể khế hợp. Thần ý đang hiển lộ...</span>`;
+    await new Promise(r => setTimeout(r, 1800));
+
+    // Thuật toán chọn chữ cuối:
+    // Lấy thêm 1 lượt entropy lúc "định hình" (cộng thêm yếu tố thời điểm)
+    const finalEntropy = EntropyPool.harvest(isThuong ? accThuong : accHa);
+    const combinedSeed = isThuong
+      ? (accThuong ^ finalEntropy) >>> 0
+      : (accHa ^ finalEntropy ^ prevNetsThuong) >>> 0;
+
+    // Chọn chữ: dùng double-hash để tránh bias modulo
+    const idx1 = combinedSeed % HAN_DATA.length;
+    const idx2 = (Math.floor(combinedSeed / HAN_DATA.length) + 7) % HAN_DATA.length;
+    // Xor của 2 index, đảm bảo trong phạm vi
+    const finalIdx = ((idx1 * 31 + idx2 * 17) ^ (combinedSeed >>> 8)) % HAN_DATA.length;
+    const finalCharObj = HAN_DATA[finalIdx];
+
+    if (isThuong) {
+      finalCharThuong = finalCharObj;
+      prevNetsThuong = finalCharObj.n; // truyền số nét quẻ Thượng sang quẻ Hạ
+
+      // Hiển thị chữ với animation
+      const inner = document.getElementById('thuongCharInner');
+      inner.className = 'char-inner';
+      inner.textContent = finalCharObj.c;
+      void inner.offsetWidth;
+      inner.className = 'char-inner revealed';
+      document.getElementById('glowThuong').classList.add('show');
+
+      showStrokeDots('strokesThuong', finalCharObj.n);
+
+      const badge = document.getElementById('badgeThuong');
+      badge.textContent = `${finalCharObj.c} · ${finalCharObj.v} · ${finalCharObj.n} nét`;
+      badge.classList.add('show');
+      info.textContent = `Quẻ Thượng định hình: ${finalCharObj.v}`;
+
+      // Mở khóa Quẻ Hạ
+      await new Promise(r => setTimeout(r, 1000));
+      document.getElementById('boxHa').classList.remove('locked');
+      document.getElementById('boxHa').classList.add('unlocked');
+      document.getElementById('incenseHa').classList.add('show');
+      document.getElementById('btnActionHa').disabled = false;
+      document.getElementById('haInfo').textContent = 'Cung thỉnh người thứ 1 bắt đầu Quẻ Hạ...';
+      document.getElementById('boxHa').scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    } else {
+      finalCharHa = finalCharObj;
+
+      const inner = document.getElementById('haCharInner');
+      inner.className = 'char-inner';
+      inner.textContent = finalCharObj.c;
+      void inner.offsetWidth;
+      inner.className = 'char-inner revealed';
+      document.getElementById('glowHa').classList.add('show');
+
+      showStrokeDots('strokesHa', finalCharObj.n);
+
+      const badge = document.getElementById('badgeHa');
+      badge.textContent = `${finalCharObj.c} · ${finalCharObj.v} · ${finalCharObj.n} nét`;
+      badge.classList.add('show');
+      info.textContent = `Quẻ Hạ định hình: ${finalCharObj.v}`;
+
+      await new Promise(r => setTimeout(r, 1200));
+      showFinal();
+    }
+  }
+}
+
+/* ====================================================
+   HIỂN THỊ KẾT QUẢ CUỐI
+   ==================================================== */
+function showFinal() {
+  const resultBox = document.getElementById('resultBox');
+  resultBox.style.display = 'block';
+
+  // Điền chữ lớn
+  document.getElementById('finalThuong').textContent = finalCharThuong.c;
+  document.getElementById('finalThuongName').textContent = finalCharThuong.v;
+  document.getElementById('finalThuongStrokes').textContent = `${finalCharThuong.n} nét`;
+
+  document.getElementById('finalHa').textContent = finalCharHa.c;
+  document.getElementById('finalHaName').textContent = finalCharHa.v;
+  document.getElementById('finalHaStrokes').textContent = `${finalCharHa.n} nét`;
+
+  // Tương sinh/khắc
+  const relation = getRelationNote(finalCharThuong.c, finalCharHa.c);
+  if (relation) {
+    document.getElementById('relationText').textContent = `Quan hệ Ngũ Hành: ${relation.rel}`;
+    document.getElementById('relationNote').textContent = relation.note;
+  } else {
+    document.getElementById('guaRelation').style.display = 'none';
+  }
+
+  // Text sao chép
+  const now = new Date();
+  const timeStr = `${now.getHours()}:${now.getMinutes().toString().padStart(2,'0')} ngày ${now.toLocaleDateString('vi-VN')}`;
+  document.getElementById('resultText').value =
+    `══════ THẦN MINH CHỈ LỘ ══════\n` +
+    `Số người cộng hưởng: ${totalMembers}\n` +
+    `Thời gian: ${timeStr}\n\n` +
+    `QUẺ THƯỢNG: ${finalCharThuong.c} — ${finalCharThuong.v} (${finalCharThuong.n} nét)\n` +
+    `QUẺ HẠ: ${finalCharHa.c} — ${finalCharHa.v} (${finalCharHa.n} nét)\n\n` +
+    (relation ? `NGŨ HÀNH: ${relation.rel}\n${relation.note}\n\n` : '') +
+    `"Thần ý tại tâm, vạn sự tùy duyên.\nTập tâm lực mới có thể thấu triệt."`;
+
+  resultBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function copyResult() {
+  const ta = document.getElementById('resultText');
+  ta.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  if (navigator.clipboard) navigator.clipboard.writeText(ta.value).catch(() => {});
+}
+
+/* ====================================================
+   KHỞI ĐỘNG
+   ==================================================== */
+initParticles();
+document.getElementById('incenseThuong').classList.add('show');
+
+document.getElementById('btnStart').onclick = () => {
+  totalMembers = parseInt(document.getElementById('memberCount').value);
+  document.getElementById('setupBox').style.display = 'none';
+  document.getElementById('mainApp').style.display = 'block';
+  createSlots('slotsThuong', totalMembers);
+  createSlots('slotsHa', totalMembers);
+};
+
+document.getElementById('btnActionThuong').onclick = () => handleAction('thuong');
+document.getElementById('btnActionHa').onclick = () => handleAction('ha');
+</script>
+</body>
+</html>
