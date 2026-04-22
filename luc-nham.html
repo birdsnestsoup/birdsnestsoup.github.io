@@ -433,6 +433,28 @@
     font-size: 0.9rem;
     line-height: 1.6;
   }
+
+  /* SAO CHÉP BUTTON */
+  .btn-copy {
+    background: var(--jade);
+    color: var(--paper);
+    box-shadow: 0 3px 10px rgba(26,92,58,0.35);
+  }
+  .btn-copy:hover { background: var(--jade-light); transform: translateY(-1px); box-shadow: 0 5px 16px rgba(26,92,58,0.45); }
+  .btn-copy.copied {
+    background: var(--gold);
+    color: var(--ink);
+    box-shadow: 0 3px 10px rgba(184,134,11,0.35);
+  }
+  .copy-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--paper-darker);
+    flex-wrap: wrap;
+    align-items: center;
+  }
 </style>
 </head>
 <body>
@@ -621,6 +643,12 @@
 
       <!-- KHÓA PHÁP -->
       <div class="khoa-phap-box" id="khoa-phap-box"></div>
+
+      <!-- SAO CHÉP -->
+      <div class="copy-row">
+        <button class="btn btn-copy" id="btn-sao-chep" onclick="saoChetKetQua()">📋 Sao Chép Kết Quả</button>
+        <span id="copy-status" style="font-size:0.85rem;color:var(--jade);font-style:italic;display:none">✓ Đã sao chép vào clipboard!</span>
+      </div>
     </div>
 
     <!-- THIÊN TƯỚNG / THẦN SÁT -->
@@ -1014,7 +1042,12 @@ function lapQue() {
 // ============================================================
 // HIỂN THỊ
 // ============================================================
+
+// Lưu dữ liệu quẻ hiện tại để dùng cho Sao Chép
+let _queData = null;
+
 function hienThiKetQua(d) {
+  _queData = d; // lưu lại để saoChetKetQua dùng
   document.getElementById('result-area').classList.add('visible');
 
   // Header
@@ -1276,6 +1309,144 @@ function hienThiChuThich(d) {
     <div class="form-note">
       <b>Lưu ý lập quẻ:</b> Ứng dụng này theo <b>《大六壬指南》và 《六壬大全》</b> — bộ sách chuẩn mực của Lục Nhâm cổ pháp. Mỗi quẻ cần phối hợp đầy đủ: Khóa Pháp + Tam Truyền + Thiên Tướng + Thần Sát + Ngũ Hành để luận đoán toàn diện.
     </div>`;
+}
+
+function saoChetKetQua() {
+  if (!_queData) return;
+  const d = _queData;
+
+  // ---- Các bảng tên dùng trong data ----
+  const TIET_KHI_TEN = ['Lập Xuân','Vũ Thủy','Kinh Trập','Xuân Phân','Thanh Minh','Cốc Vũ',
+    'Lập Hạ','Tiểu Mãn','Mang Chủng','Hạ Chí','Tiểu Thử','Đại Thử',
+    'Lập Thu','Xử Thử','Bạch Lộ','Thu Phân','Hàn Lộ','Sương Giáng',
+    'Lập Đông','Tiểu Tuyết','Đại Tuyết','Đông Chí','Tiểu Hàn','Đại Hàn'];
+  const TAM_NGUYEN_TEN = ['Thượng Nguyên 上元','Trung Nguyên 中元','Hạ Nguyên 下元'];
+  const CHIEU_MO_TEN = ['Chiêu (ban ngày) 晝','Mộ (ban đêm) 夜'];
+
+  // ---- Thông tin nhập vào ----
+  const canNamTen  = CAN[d.canNam] + CAN_ZH[d.canNam];
+  const chiNamTen  = CHI[d.chiNam] + CHI_ZH[d.chiNam];
+  const chiThangTen = CHI[d.chiThang] + CHI_ZH[d.chiThang];
+  const canNgayTen = CAN[d.canNgay] + CAN_ZH[d.canNgay];
+  const chiNgayTen = CHI[d.chiNgay] + CHI_ZH[d.chiNgay];
+  const chiGioTen  = CHI[d.chiGio]  + CHI_ZH[d.chiGio];
+  const nguyetTuongTen = THIEN_TUONG_NAME[d.nguyetTuong] + ' — ' + CHI[d.nguyetTuong] + CHI_ZH[d.nguyetTuong];
+  const tietKhiTen = TIET_KHI_TEN[d.tietKhi];
+
+  // Tam Nguyên: đọc từ select (không lưu trong d, đọc lại từ DOM)
+  const tamNguyenVal = parseInt(document.getElementById('tam-nguyen').value);
+  const tamNguyenTen = TAM_NGUYEN_TEN[tamNguyenVal];
+  const chieuMoTen = CHIEU_MO_TEN[d.chieu_mo];
+
+  // ---- Kết quả thuật toán ----
+  const tt = d.tamTruyen;
+  const khoaPhapTen = tt.khoaPhap;
+
+  // Tứ Khóa
+  const tuKhoaLines = d.tuKhoa.map((k, i) => {
+    const nhTren = CHI_NGU_HANH[k.tren];
+    const nhDuoi = CHI_NGU_HANH[k.duoi];
+    const isPhat = tuongKhac(nhDuoi, nhTren);
+    const isThuong = tuongKhac(nhTren, nhDuoi);
+    const kq = isPhat ? '↑ Hạ khắc Thượng (Phát)' : isThuong ? '↓ Thượng khắc Hạ' : '—';
+    const ttuong = TUONG_TEN[d.tuong[k.duoi]];
+    return `  ${k.label}: Thượng=${CHI[k.tren]}${CHI_ZH[k.tren]} / Hạ=${CHI[k.duoi]}${CHI_ZH[k.duoi]} [${kq}] Tướng=${ttuong}`;
+  }).join('\n');
+
+  // Tam Truyền
+  const ttSoTuong   = TUONG_TEN[d.tuong[tt.so]];
+  const ttTrungTuong = TUONG_TEN[d.tuong[tt.trung]];
+  const ttMatTuong  = TUONG_TEN[d.tuong[tt.mat]];
+
+  // Thiên Tướng 12 cung
+  const thuanBanLines = Array.from({length:12}, (_,i) => {
+    const tbChi = d.thienBan[i];
+    const ttuong = d.tuong[i];
+    const ch = TUONG_CAT_HUNG[ttuong] === 'good' ? 'Cát' : TUONG_CAT_HUNG[ttuong] === 'bad' ? 'Hung' : 'Trung';
+    const isSo = i === tt.so ? ' ◀Sơ' : i === tt.trung ? ' ◀Trung' : i === tt.mat ? ' ◀Mạt' : '';
+    return `  ĐB: ${CHI[i]}${CHI_ZH[i]} | TB: ${CHI[tbChi]}${CHI_ZH[tbChi]}${isSo} | Tướng: ${TUONG_TEN[ttuong]} ${TUONG_ZH[ttuong]} | ${ch}`;
+  }).join('\n');
+
+  // Luận giải
+  const nhCan = CAN_NGU_HANH[d.canNgay];
+  const nhSo    = CHI_NGU_HANH[tt.so];
+  const nhTrung = CHI_NGU_HANH[tt.trung];
+  const nhMat   = CHI_NGU_HANH[tt.mat];
+  const qhSo    = quanHe(nhCan, nhSo);
+  const qhTrung = quanHe(nhCan, nhTrung);
+  const qhMat   = quanHe(nhCan, nhMat);
+  const catHungSo    = TUONG_CAT_HUNG[d.tuong[tt.so]];
+  const catHungTrung = TUONG_CAT_HUNG[d.tuong[tt.trung]];
+  const catHungMat   = TUONG_CAT_HUNG[d.tuong[tt.mat]];
+  const catCount = [catHungSo,catHungTrung,catHungMat].filter(x=>x==='good').length;
+  const hungCount = [catHungSo,catHungTrung,catHungMat].filter(x=>x==='bad').length;
+  const tongLuan = catCount>=2 ? 'Thiên Tướng đa Cát — thuận lợi, quý nhân phù trợ.' :
+                   hungCount>=2 ? 'Thiên Tướng đa Hung — trắc trở, cần đề phòng.' :
+                   'Cát Hung xen lẫn — cần thận trọng từng bước.';
+  const ketQua = catHungMat==='good' ? 'Mạt Truyền Cát Tướng — kết cuộc tốt đẹp.' :
+                 catHungMat==='bad'  ? 'Mạt Truyền Hung Tướng — kết cuộc không như ý.' :
+                 'Mạt Truyền Trung Tính — kết cuộc bình thường.';
+
+  // ---- Ghép toàn bộ text ----
+  const text = `================================================================
+六壬大遁 — LỤC NHÂM ĐẠI ĐỘN
+================================================================
+
+【THÔNG TIN NHẬP】
+Năm    : ${canNamTen} - ${chiNamTen}
+Tháng  : ${chiThangTen}
+Ngày   : ${canNgayTen} - ${chiNgayTen}
+Giờ    : ${chiGioTen}
+Nguyệt Tướng : ${nguyetTuongTen}
+Tiết Khí     : ${tietKhiTen}
+Nguyên       : ${tamNguyenTen}
+Chiêu / Mộ   : ${chieuMoTen}
+
+================================================================
+【KẾT QUẢ】
+Khóa Pháp : ${khoaPhapTen}
+
+--- Tứ Khóa ---
+${tuKhoaLines}
+
+--- Tam Truyền ---
+  Sơ Truyền  (Phát dụng) : ${CHI[tt.so]}${CHI_ZH[tt.so]} · ${nhSo} · ${ttSoTuong} | Quan hệ Can Ngày: ${qhSo}
+  Trung Truyền (Diễn biến): ${CHI[tt.trung]}${CHI_ZH[tt.trung]} · ${nhTrung} · ${ttTrungTuong} | Quan hệ Can Ngày: ${qhTrung}
+  Mạt Truyền  (Kết quả)  : ${CHI[tt.mat]}${CHI_ZH[tt.mat]} · ${nhMat} · ${ttMatTuong} | Quan hệ Can Ngày: ${qhMat}
+
+--- Thiên Tướng 12 Cung ---
+${thuanBanLines}
+
+--- Luận Giải ---
+  Can Ngày   : ${CAN[d.canNgay]}${CAN_ZH[d.canNgay]} · Ngũ Hành: ${nhCan}
+  Chi Ngày   : ${CHI[d.chiNgay]}${CHI_ZH[d.chiNgay]} · Ngũ Hành: ${CHI_NGU_HANH[d.chiNgay]}
+  Tổng Luận  : ${tongLuan}
+  Kết Quả    : ${ketQua}
+
+================================================================`;
+
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('btn-sao-chep');
+    const status = document.getElementById('copy-status');
+    btn.classList.add('copied');
+    btn.textContent = '✓ Đã Sao Chép!';
+    status.style.display = 'inline';
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.textContent = '📋 Sao Chép Kết Quả';
+      status.style.display = 'none';
+    }, 2500);
+  }).catch(() => {
+    // Fallback cho trình duyệt không hỗ trợ clipboard API
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    alert('Đã sao chép kết quả vào clipboard!');
+  });
 }
 
 function resetForm() {
