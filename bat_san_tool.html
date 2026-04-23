@@ -406,7 +406,7 @@
         });
 
         // 2. Logic Bát San mới
-        const items = analyzeBatSan(val);
+        const items = analyzeBatSan(val).sort((a, b) => a.idx - b.idx);
         const stats = analyzeStats(items);
         const pairLines = analyzePairInteraction(items);
         const nhData = analyzeNguHanh(items);
