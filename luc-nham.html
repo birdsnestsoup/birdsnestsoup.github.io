@@ -433,28 +433,6 @@
     font-size: 0.9rem;
     line-height: 1.6;
   }
-
-  /* SAO CHÉP BUTTON */
-  .btn-copy {
-    background: var(--jade);
-    color: var(--paper);
-    box-shadow: 0 3px 10px rgba(26,92,58,0.35);
-  }
-  .btn-copy:hover { background: var(--jade-light); transform: translateY(-1px); box-shadow: 0 5px 16px rgba(26,92,58,0.45); }
-  .btn-copy.copied {
-    background: var(--gold);
-    color: var(--ink);
-    box-shadow: 0 3px 10px rgba(184,134,11,0.35);
-  }
-  .copy-row {
-    display: flex;
-    gap: 12px;
-    margin-top: 16px;
-    padding-top: 16px;
-    border-top: 1px solid var(--paper-darker);
-    flex-wrap: wrap;
-    align-items: center;
-  }
 </style>
 </head>
 <body>
@@ -547,24 +525,32 @@
       <div class="form-group">
         <label>Nguyệt Tướng <span class="zh-label">月將</span></label>
         <select id="nguyet-tuong">
-          <option value="1">Đại Cát — Sửu 大吉丑 (Tiểu Hàn→Đại Hàn)</option>
-          <option value="2">Công Tào — Dần 功曹寅 (Đại Hàn→Vũ Thủy)</option>
-          <option value="3">Thái Xung — Mão 太衝卯 (Vũ Thủy→Xuân Phân)</option>
-          <option value="4">Thiên Cương — Thìn 天罡辰 (Lập Xuân→Kinh Trập)</option>
-          <option value="5">Thái Ất — Tỵ 太乙巳 (Kinh Trập→Xuân Phân)</option>
-          <option value="6">Thắng Quang — Ngọ 勝光午 (Xuân Phân→Cốc Vũ)</option>
-          <option value="7">Tiểu Cát — Mùi 小吉未 (Thanh Minh→Lập Hạ)</option>
-          <option value="8">Truyền Tống — Thân 傳送申 (Cốc Vũ→Tiểu Mãn)</option>
-          <option value="9">Tòng Khôi — Dậu 從魁酉 (Lập Hạ→Mang Chủng)</option>
-          <option value="10">Hà Khôi — Tuất 河魁戌 (Tiểu Mãn→Hạ Chí)</option>
-          <option value="11">Đăng Minh — Hợi 登明亥 (Mang Chủng→Tiểu Thử)</option>
-          <option value="0">Thần Hậu — Tý 神后子 (Hạ Chí→Đại Thử)</option>
+          <!--
+            Cổ pháp 《大六壬指南》: Nguyệt Tướng = tên của 12 Thần khi ở Địa Bàn.
+            Chuyển Nguyệt Tướng theo TRUNG KHÍ (không phải đầu Tiết).
+            12 Trung Khí: Vũ Thủy, Xuân Phân, Cốc Vũ, Tiểu Mãn, Hạ Chí, Đại Thử,
+                          Xử Thử, Thu Phân, Sương Giáng, Tiểu Tuyết, Đông Chí, Đại Hàn.
+            Nguyệt Tướng tương ứng NGHỊCH chiều so với Mặt Trời (Thái Dương tại Mão → NT Thái Xung Mão).
+            Bảng chuẩn (sau Trung Khí → dùng NT tương ứng):
+          -->
+          <option value="3"> Thái Xung — Mão 太衝卯  | Vũ Thủy  → Xuân Phân</option>
+          <option value="4"> Thiên Cương — Thìn 天罡辰 | Xuân Phân → Cốc Vũ</option>
+          <option value="5"> Thái Ất — Tỵ 太乙巳      | Cốc Vũ   → Hạ Chí</option>
+          <option value="6"> Thắng Quang — Ngọ 勝光午  | Hạ Chí   → Đại Thử</option>
+          <option value="7"> Tiểu Cát — Mùi 小吉未     | Đại Thử  → Xử Thử</option>
+          <option value="8"> Truyền Tống — Thân 傳送申  | Xử Thử   → Thu Phân</option>
+          <option value="9"> Tòng Khôi — Dậu 從魁酉    | Thu Phân → Sương Giáng</option>
+          <option value="10">Hà Khôi — Tuất 河魁戌      | Sương Giáng → Tiểu Tuyết</option>
+          <option value="11">Đăng Minh — Hợi 登明亥     | Tiểu Tuyết → Đông Chí</option>
+          <option value="0"> Thần Hậu — Tý 神后子       | Đông Chí → Đại Hàn</option>
+          <option value="1"> Đại Cát — Sửu 大吉丑       | Đại Hàn  → Vũ Thủy (Xuân Phân năm sau)</option>
+          <option value="2"> Công Tào — Dần 功曹寅       | (xem ghi chú *)</option>
         </select>
       </div>
       <div class="form-group">
         <label style="visibility:hidden">_</label>
         <div class="form-note">
-          <b>Cách tra Nguyệt Tướng:</b> Tìm Tiết Khí hiện tại trên lịch vạn niên, chọn Nguyệt Tướng tương ứng. Nguyệt Tướng <b>lùi sau Trung Khí</b> (ngày giữa tháng), không phải đầu tháng.
+          <b>Cách tra Nguyệt Tướng 月將:</b> Nguyệt Tướng chuyển theo <b>Trung Khí</b> (12 ngày giữa tháng âm lịch), không phải đầu Tiết. 12 Trung Khí theo thứ tự: Vũ Thủy → Xuân Phân → Cốc Vũ → Tiểu Mãn → Hạ Chí → Đại Thử → Xử Thử → Thu Phân → Sương Giáng → Tiểu Tuyết → Đông Chí → Đại Hàn. Ví dụ: ngày 25/7 nằm giữa <b>Hạ Chí và Đại Thử</b> → chọn <b>Thắng Quang Ngọ</b>.
         </div>
       </div>
     </div>
@@ -643,12 +629,6 @@
 
       <!-- KHÓA PHÁP -->
       <div class="khoa-phap-box" id="khoa-phap-box"></div>
-
-      <!-- SAO CHÉP -->
-      <div class="copy-row">
-        <button class="btn btn-copy" id="btn-sao-chep" onclick="saoChetKetQua()">📋 Sao Chép Kết Quả</button>
-        <span id="copy-status" style="font-size:0.85rem;color:var(--jade);font-style:italic;display:none">✓ Đã sao chép vào clipboard!</span>
-      </div>
     </div>
 
     <!-- THIÊN TƯỚNG / THẦN SÁT -->
@@ -726,17 +706,11 @@ const THIEN_TUONG_DESC = [
 // NT[i] = chi index của Nguyệt Tướng i (theo thứ tự Thần Hậu→Đăng Minh)
 // Thực ra Nguyệt Tướng chính là tên gọi 12 Thiên Tướng khi ở vị trí Địa Bàn tương ứng
 
-// Quý Nhân (貴人) an vị theo Nhật Can — theo 《六壬大全》《大六壬指南》
-// Chiêu (ngày): Dương Quý Nhân
-// Mộ (đêm):  Âm Quý Nhân
-// Giáp/Mậu/Canh → Chiêu: Mùi(7), Mộ: Sửu(1)
-// Ất/Kỷ       → Chiêu: Thân(8), Mộ: Tý(0)
-// Bính/Đinh   → Chiêu: Dậu(9),  Mộ: Hợi(11)
-// Nhâm/Quý   → Chiêu: Mão(3),  Mộ: Tỵ(5)
-// Tân         → Chiêu: Ngọ(6),  Mộ: Dần(2)
-//              Giáp Ất Bính Đinh Mậu Kỷ Canh Tân Nhâm Quý
-const QUY_NHAN_CHIEU = [ 7,  8,  9,  9,  7,  8,  7,  6,  3,  3]; // index CHI
-const QUY_NHAN_MO    = [ 1,  0, 11, 11,  1,  0,  1,  2,  5,  5];
+// Quý Nhân (贵人) an vị theo Nhật Can
+// Chiêu (ngày): Quý Nhân Dương
+// Mộ (đêm): Quý Nhân Âm
+const QUY_NHAN_CHIEU = [2, 0, 11, 9, 2, 0, 8, 6, 2, 4]; // index CHI
+const QUY_NHAN_MO    = [8, 6, 1, 7, 8, 6, 0, 2, 8, 10];
 
 // Ngũ Hành tương sinh tương khắc
 function tuongSinh(a, b) { // a sinh b?
@@ -757,7 +731,9 @@ function quanHe(a, b) {
 }
 
 // 12 Thiên Tướng an tại 12 Địa Chi (Địa Bàn cố định)
+// ThuTuDiaBan[i] = Thiên Tướng nào ngồi tại Chi i (Tý=0...Hợi=11) của Địa Bàn
 // Địa Bàn cố định: Thần Hậu→Tý, Đại Cát→Sửu, ..., Đăng Minh→Hợi
+// => ThuTuDiaBan[chiIndex] = chiIndex (chính là 12 vị trí cố định)
 
 // ============================================================
 // THUẬT TOÁN LẬP THIÊN BÀN
@@ -867,106 +843,54 @@ function timTamTruyen(tuKhoa, canNgay, chiNgay, thienBan) {
       soTruyen = tuKhoa[khoaPhat[0]].duoi;
       khoaPhap = 'Nguyên Thủy Khóa 元首課';
     } else {
-      // Nhiều khóa phát → TRÙNG THẨM KHÓA (重審課)
-      // Cổ pháp: Can Dương → ưu tiên Khóa Ngày (k3,k4); Can Âm → ưu tiên Khóa Can (k1,k2)
-      // Nếu trong phần ưu tiên có nhiều hơn 1, thì chọn tiếp theo Âm Dương của Hạ khớp Can
+      // Nhiều khóa phát → TRÙNG THẨM KHÓA
+      // Lấy khóa dương nếu Can Dương, khóa âm nếu Can Âm
       let canAD = CAN_AM_DUONG[canNgay];
       let chon = null;
-
-      // Phân nhóm: khóa Can (index 0,1) và khóa Ngày (index 2,3)
-      let khoaCanPhat  = khoaPhat.filter(i => i < 2);
-      let khoaNgayPhat = khoaPhat.filter(i => i >= 2);
-
-      // Chọn nhóm ưu tiên
-      let nhom = canAD === 'Dương' ? khoaNgayPhat : khoaCanPhat;
-      if (nhom.length === 0) nhom = khoaPhat; // fallback nếu nhóm ưu tiên không có
-
-      // Trong nhóm, chọn cái có Âm Dương Hạ khớp Can
-      chon = nhom.find(i => CHI_AM_DUONG[tuKhoa[i].duoi] === canAD);
-      if (chon === undefined) chon = nhom[0];
-
+      for (let idx of khoaPhat) {
+        let chiAD = CHI_AM_DUONG[tuKhoa[idx].duoi];
+        if (canAD === chiAD) { chon = idx; break; }
+      }
+      if (chon === null) chon = khoaPhat[0];
       soTruyen = tuKhoa[chon].duoi;
       khoaPhap = 'Trùng Thẩm Khóa 重審課';
     }
   } else if (khoaThuongKhac.length > 0) {
-    // Thượng khắc Hạ → THIỆP HẠI KHÓA (涉害課)
-    // Cổ pháp: So sánh độ "thiệp" = số cung đi qua trên Địa Bàn tính từ Địa Bàn
-    // của Thượng đến khi gặp Hạ (đi theo chiều thuận 12 cung).
-    // Lấy khóa có độ thiệp SÂU NHẤT (nhiều nhất).
-    // Nếu bằng nhau: Can Dương lấy ngày (khóa 3-4), Can Âm lấy can (khóa 1-2).
-    // Cụ thể đếm: từ DB của thượng, đi thuận đến gặp hành bị khắc = số bước.
+    // Thượng khắc hạ → THIỆP HẠI KHÓA (涉害課)
+    // Theo cổ pháp: khởi từ bên tác động (tham nhất khắc)
+    // Lấy cái bị khắc nhiều nhất (sâu nhất) — Thiệp Hại
+    // Đơn giản: lấy khóa đầu tiên thượng khắc hạ, phân Can Am/Duong
     let canAD = CAN_AM_DUONG[canNgay];
-
-    function tinhDoThiep(khoaIdx) {
-      let tren = tuKhoa[khoaIdx].tren; // Địa Bàn Thượng
-      let duoi = tuKhoa[khoaIdx].duoi; // Thiên Bàn Hạ (chi bị khắc)
-      let nhDuoi = CHI_NGU_HANH[duoi];
-      // Đi thuận từ tren+1, đếm số bước cho đến khi gặp chi có NH = nhDuoi
-      // (qua bao nhiêu cung trung gian bị khắc bởi nhTren)
-      let nhTren = CHI_NGU_HANH[tren];
-      let count = 0;
-      let cur = tren;
-      for (let step = 1; step <= 12; step++) {
-        cur = (cur + 1) % 12;
-        let nhCur = CHI_NGU_HANH[cur];
-        if (tuongKhac(nhTren, nhCur)) count++; // gặp cung bị khắc trên đường đi
-        if (cur === duoi) break;
-      }
-      return count;
-    }
-
-    let maxThiep = -1;
     let chon = null;
-    let doThiepList = khoaThuongKhac.map(idx => ({ idx, thiep: tinhDoThiep(idx) }));
-
-    // Tìm độ thiệp sâu nhất
-    doThiepList.forEach(x => { if (x.thiep > maxThiep) maxThiep = x.thiep; });
-    let candidates = doThiepList.filter(x => x.thiep === maxThiep).map(x => x.idx);
-
-    if (candidates.length === 1) {
-      chon = candidates[0];
-    } else {
-      // Bằng nhau: Can Dương ưu tiên khóa Ngày (k3,k4), Can Âm ưu tiên khóa Can (k1,k2)
-      if (canAD === 'Dương') {
-        let dayKhoa = candidates.find(i => i >= 2); // k3 hoặc k4
-        chon = dayKhoa !== undefined ? dayKhoa : candidates[0];
-      } else {
-        let canKhoa = candidates.find(i => i < 2); // k1 hoặc k2
-        chon = canKhoa !== undefined ? canKhoa : candidates[0];
-      }
+    // Ưu tiên: khóa có độ "thiệp" sâu hơn (tức là ở cung xa hơn)
+    let maxThiep = -1;
+    for (let idx of khoaThuongKhac) {
+      // Đếm số lần khắc qua các cung trung gian (Địa Bàn đến Thiên Bàn)
+      // Cổ pháp: so sánh theo Âm Dương Can Ngày
+      let chiAD = CHI_AM_DUONG[tuKhoa[idx].duoi];
+      if (canAD === chiAD) { chon = idx; break; }
     }
-    soTruyen = tuKhoa[chon].tren; // Thiệp Hại: Sơ Truyền = Thượng (cái khắc)
+    if (chon === null) chon = khoaThuongKhac[0];
+    soTruyen = tuKhoa[chon].tren; // Thiệp Hại: lấy thượng (cái khắc)
     khoaPhap = 'Thiệp Hại Khóa 涉害課';
   } else {
-    // Không có khắc trong Tứ Khóa
-    // DAO KHẮC KHÓA (遙剋課): ưu tiên TB khắc Can, sau đó Can khắc TB
-    // Khi nhiều ứng viên: Can Dương chọn chi Dương, Can Âm chọn chi Âm
+    // Không có khắc → DAO KHẮC KHÓA hay BIỆT TRÁCH (遙剋 / 別責)
+    // Dao Khắc: Can Ngày khắc hoặc bị khắc bởi Thiên Bàn
     let nhCan = CAN_NGU_HANH[canNgay];
-    let canAD = CAN_AM_DUONG[canNgay];
-
-    let daoTBkhacCan = [];
-    let daoCankhacTB = [];
+    let chonDao = null;
     for (let i = 0; i < 12; i++) {
-      let tbChi = thienBan[i];
-      let nhTB = CHI_NGU_HANH[tbChi];
-      if (tuongKhac(nhTB, nhCan)) daoTBkhacCan.push(tbChi);
-      else if (tuongKhac(nhCan, nhTB)) daoCankhacTB.push(tbChi);
+      let nhTB = CHI_NGU_HANH[thienBan[i]];
+      if (tuongKhac(nhCan, nhTB) || tuongKhac(nhTB, nhCan)) {
+        chonDao = thienBan[i];
+        break;
+      }
     }
-
-    function chonTheoAmDuong(ds, ad) {
-      if (ds.length === 0) return null;
-      let f = ds.find(c => CHI_AM_DUONG[c] === ad);
-      return f !== undefined ? f : ds[0];
-    }
-
-    if (daoTBkhacCan.length > 0) {
-      soTruyen = chonTheoAmDuong(daoTBkhacCan, canAD);
-      khoaPhap = 'Dao Khắc Khóa 遙剋課';
-    } else if (daoCankhacTB.length > 0) {
-      soTruyen = chonTheoAmDuong(daoCankhacTB, canAD);
+    if (chonDao !== null) {
+      soTruyen = chonDao;
       khoaPhap = 'Dao Khắc Khóa 遙剋課';
     } else {
-      // PHỤC NGÂM KHÓA (伏吟課)
+      // PHỤC NGÂM / BIỆT TRÁCH: Thiên Bàn = Địa Bàn (không xoay được)
+      // Lấy Chi Ngày làm Sơ Truyền
       soTruyen = chiNgay;
       khoaPhap = 'Phục Ngâm Khóa 伏吟課';
     }
@@ -992,10 +916,6 @@ const TUONG_TEN = ['Quý Nhân','Đằng Xà','Chu Tước','Lục Hợp','Câu 
                     'Thiên Không','Bạch Hổ','Thái Thường','Huyền Vũ','Thái Âm','Thiên Hậu'];
 const TUONG_ZH  = ['貴人','騰蛇','朱雀','六合','勾陳','青龍',
                     '天空','白虎','太常','玄武','太陰','天后'];
-// Cát Hung 12 Thiên Tướng theo cổ pháp 《大六壬指南》:
-// Quý Nhân Cát, Đằng Xà Hung, Chu Tước Hung, Lục Hợp Cát,
-// Câu Trận Hung, Thanh Long Cát, Thiên Không Hung, Bạch Hổ Hung,
-// Thái Thường Cát, Huyền Vũ Hung, Thái Âm Trung (thiên về Cát), Thiên Hậu Cát
 const TUONG_CAT_HUNG = ['good','bad','bad','good','bad','good','bad','bad','good','bad','neutral','good'];
 const TUONG_DESC = [
   'Quý nhân phù trợ, vạn sự hanh thông, quan quý giúp đỡ',
@@ -1013,27 +933,23 @@ const TUONG_DESC = [
 ];
 
 function anThienTuong(canNgay, chieu_mo, thienBan) {
-  // Quý Nhân an tại chi nào (theo Can Ngày và Chiêu/Mộ)
+  // Quý Nhân an tại Chi nào (theo Can Ngày và Chiêu/Mộ)
   let quyNhanChi = chieu_mo === 0 ? QUY_NHAN_CHIEU[canNgay] : QUY_NHAN_MO[canNgay];
 
-  // Tìm Quý Nhân đang đứng trên Địa Bàn nào (DB mà TB = quyNhanChi)
+  // Xác định Quý Nhân ở trên Thiên Bàn nào (tìm vị trí Địa Bàn mà TB = quyNhanChi)
   let quyNhanDB = -1;
   for (let i = 0; i < 12; i++) {
     if (thienBan[i] === quyNhanChi) { quyNhanDB = i; break; }
   }
 
-  // Thứ tự 12 Thiên Tướng kể từ Quý Nhân:
-  // 0=Quý Nhân, 1=Đằng Xà, 2=Chu Tước, 3=Lục Hợp, 4=Câu Trận, 5=Thanh Long,
-  // 6=Thiên Không, 7=Bạch Hổ, 8=Thái Thường, 9=Huyền Vũ, 10=Thái Âm, 11=Thiên Hậu
-  //
-  // Chiêu (ngày) → xếp THUẬN từ Quý Nhân: DB_QuýNhân+0=QuýNhân, +1=ĐằngXà, ...
-  // Mộ  (đêm)  → xếp NGHỊCH từ Quý Nhân: DB_QuýNhân-0=QuýNhân, -1=ĐằngXà, ...
+  // An 12 Thiên Tướng: Chiêu thuận, Mộ nghịch
+  // tuong[i] = Thiên Tướng index tại Địa Bàn i
   let tuong = new Array(12);
   for (let i = 0; i < 12; i++) {
     let offset;
-    if (chieu_mo === 0) { // Chiêu: thuận
+    if (chieu_mo === 0) { // thuận
       offset = (i - quyNhanDB + 12) % 12;
-    } else {              // Mộ: nghịch
+    } else { // nghịch
       offset = (quyNhanDB - i + 12) % 12;
     }
     tuong[i] = offset; // 0=Quý Nhân, 1=Đằng Xà,...
@@ -1106,12 +1022,7 @@ function lapQue() {
 // ============================================================
 // HIỂN THỊ
 // ============================================================
-
-// Lưu dữ liệu quẻ hiện tại để dùng cho Sao Chép
-let _queData = null;
-
 function hienThiKetQua(d) {
-  _queData = d; // lưu lại để saoChetKetQua dùng
   document.getElementById('result-area').classList.add('visible');
 
   // Header
@@ -1252,10 +1163,9 @@ function hienThiKhoaPhap(d) {
   const moTa = {
     'Nguyên Thủy Khóa 元首課': 'Quẻ có duy nhất một Khóa Hạ khắc Thượng. Sự việc rõ ràng, nguyên nhân trực tiếp, kết quả minh bạch. Cổ thư nói: <i>"Nguyên Thủy vi chính, quang minh chính đại"</i> — mưu sự hanh thông, thủy chung như nhất.',
     'Trùng Thẩm Khóa 重審課': 'Có nhiều Khóa Hạ khắc Thượng, phải xét kỹ (Trùng Thẩm). Sự việc phức tạp, có ẩn tình, cần thẩm tra lại. Cổ thư: <i>"Trùng Thẩm sự đa nghi"</i> — việc nhiều nghi vấn, cần thận trọng.',
-    'Thiệp Hại Khóa 涉害課': 'Thượng khắc Hạ trong Tứ Khóa — phải vượt qua trở ngại trên đường. Cổ pháp chọn Sơ Truyền là Thượng của Khóa có độ thiệp sâu nhất (đi qua nhiều cung bị khắc nhất). Cổ thư: <i>"Thiệp Hại vi gian, lợi kiên nhẫn"</i>.',
-    'Dao Khắc Khóa 遙剋課': 'Tứ Khóa không có khắc trực tiếp (cả Hạ lẫn Thượng đều không khắc). Can Ngày dao khắc từ xa với Thiên Bàn. Ưu tiên lấy Thiên Bàn khắc vào Can, nếu không có thì lấy Can khắc Thiên Bàn. Sự việc xa cách, khó thấy rõ đầu mối. Cổ thư: <i>"Dao Khắc vi ám, ẩn mật khó lường"</i>.',
-    'Phục Ngâm Khóa 伏吟課': 'Thiên Bàn và Địa Bàn trùng nhau (Nguyệt Tướng bằng Giờ). Sự việc trì trệ, không tiến không lùi, úp mặt mà than. Cổ thư: <i>"Phục Ngâm vi trệ, vạn sự đình đốn"</i> — không nên khởi sự mới.',
-    'Biệt Trách Khóa 別責課': 'Quẻ đặc biệt hiếm gặp: Tứ Khóa không có khắc, Thiên Bàn cũng không dao khắc với Can. Can tự trách mình. Cổ thư: <i>"Biệt Trách vi cô, tự mưu tự chủ"</i> — phải tự lực, không nhờ người khác.'
+    'Thiệp Hại Khóa 涉害課': 'Thượng khắc Hạ (Can khắc Chi, hoặc Thiên Bàn khắc Địa Bàn). Phải vượt qua trở ngại. Cổ thư: <i>"Thiệp Hại vi gian, lợi kiên nhẫn"</i> — gian khổ nhưng kiên trì ắt thành.',
+    'Dao Khắc Khóa 遙剋課': 'Không có khắc trực tiếp trong Tứ Khóa, Can Ngày dao khắc từ xa. Sự việc xa cách, mờ ảo, khó thấy rõ. Cổ thư: <i>"Dao Khắc vi ám, ẩn mật khó lường"</i>.',
+    'Phục Ngâm Khóa 伏吟課': 'Thiên Bàn và Địa Bàn trùng nhau. Sự việc trì trệ, không tiến không lùi. Cổ thư: <i>"Phục Ngâm vi trệ, vạn sự đình đốn"</i> — không nên khởi sự mới.'
   };
 
   el.innerHTML = `<strong>Khóa Pháp: ${kp}</strong>
@@ -1374,144 +1284,6 @@ function hienThiChuThich(d) {
     <div class="form-note">
       <b>Lưu ý lập quẻ:</b> Ứng dụng này theo <b>《大六壬指南》và 《六壬大全》</b> — bộ sách chuẩn mực của Lục Nhâm cổ pháp. Mỗi quẻ cần phối hợp đầy đủ: Khóa Pháp + Tam Truyền + Thiên Tướng + Thần Sát + Ngũ Hành để luận đoán toàn diện.
     </div>`;
-}
-
-function saoChetKetQua() {
-  if (!_queData) return;
-  const d = _queData;
-
-  // ---- Các bảng tên dùng trong data ----
-  const TIET_KHI_TEN = ['Lập Xuân','Vũ Thủy','Kinh Trập','Xuân Phân','Thanh Minh','Cốc Vũ',
-    'Lập Hạ','Tiểu Mãn','Mang Chủng','Hạ Chí','Tiểu Thử','Đại Thử',
-    'Lập Thu','Xử Thử','Bạch Lộ','Thu Phân','Hàn Lộ','Sương Giáng',
-    'Lập Đông','Tiểu Tuyết','Đại Tuyết','Đông Chí','Tiểu Hàn','Đại Hàn'];
-  const TAM_NGUYEN_TEN = ['Thượng Nguyên 上元','Trung Nguyên 中元','Hạ Nguyên 下元'];
-  const CHIEU_MO_TEN = ['Chiêu (ban ngày) 晝','Mộ (ban đêm) 夜'];
-
-  // ---- Thông tin nhập vào ----
-  const canNamTen  = CAN[d.canNam] + CAN_ZH[d.canNam];
-  const chiNamTen  = CHI[d.chiNam] + CHI_ZH[d.chiNam];
-  const chiThangTen = CHI[d.chiThang] + CHI_ZH[d.chiThang];
-  const canNgayTen = CAN[d.canNgay] + CAN_ZH[d.canNgay];
-  const chiNgayTen = CHI[d.chiNgay] + CHI_ZH[d.chiNgay];
-  const chiGioTen  = CHI[d.chiGio]  + CHI_ZH[d.chiGio];
-  const nguyetTuongTen = THIEN_TUONG_NAME[d.nguyetTuong] + ' — ' + CHI[d.nguyetTuong] + CHI_ZH[d.nguyetTuong];
-  const tietKhiTen = TIET_KHI_TEN[d.tietKhi];
-
-  // Tam Nguyên: đọc từ select (không lưu trong d, đọc lại từ DOM)
-  const tamNguyenVal = parseInt(document.getElementById('tam-nguyen').value);
-  const tamNguyenTen = TAM_NGUYEN_TEN[tamNguyenVal];
-  const chieuMoTen = CHIEU_MO_TEN[d.chieu_mo];
-
-  // ---- Kết quả thuật toán ----
-  const tt = d.tamTruyen;
-  const khoaPhapTen = tt.khoaPhap;
-
-  // Tứ Khóa
-  const tuKhoaLines = d.tuKhoa.map((k, i) => {
-    const nhTren = CHI_NGU_HANH[k.tren];
-    const nhDuoi = CHI_NGU_HANH[k.duoi];
-    const isPhat = tuongKhac(nhDuoi, nhTren);
-    const isThuong = tuongKhac(nhTren, nhDuoi);
-    const kq = isPhat ? '↑ Hạ khắc Thượng (Phát)' : isThuong ? '↓ Thượng khắc Hạ' : '—';
-    const ttuong = TUONG_TEN[d.tuong[k.duoi]];
-    return `  ${k.label}: Thượng=${CHI[k.tren]}${CHI_ZH[k.tren]} / Hạ=${CHI[k.duoi]}${CHI_ZH[k.duoi]} [${kq}] Tướng=${ttuong}`;
-  }).join('\n');
-
-  // Tam Truyền
-  const ttSoTuong   = TUONG_TEN[d.tuong[tt.so]];
-  const ttTrungTuong = TUONG_TEN[d.tuong[tt.trung]];
-  const ttMatTuong  = TUONG_TEN[d.tuong[tt.mat]];
-
-  // Thiên Tướng 12 cung
-  const thuanBanLines = Array.from({length:12}, (_,i) => {
-    const tbChi = d.thienBan[i];
-    const ttuong = d.tuong[i];
-    const ch = TUONG_CAT_HUNG[ttuong] === 'good' ? 'Cát' : TUONG_CAT_HUNG[ttuong] === 'bad' ? 'Hung' : 'Trung';
-    const isSo = i === tt.so ? ' ◀Sơ' : i === tt.trung ? ' ◀Trung' : i === tt.mat ? ' ◀Mạt' : '';
-    return `  ĐB: ${CHI[i]}${CHI_ZH[i]} | TB: ${CHI[tbChi]}${CHI_ZH[tbChi]}${isSo} | Tướng: ${TUONG_TEN[ttuong]} ${TUONG_ZH[ttuong]} | ${ch}`;
-  }).join('\n');
-
-  // Luận giải
-  const nhCan = CAN_NGU_HANH[d.canNgay];
-  const nhSo    = CHI_NGU_HANH[tt.so];
-  const nhTrung = CHI_NGU_HANH[tt.trung];
-  const nhMat   = CHI_NGU_HANH[tt.mat];
-  const qhSo    = quanHe(nhCan, nhSo);
-  const qhTrung = quanHe(nhCan, nhTrung);
-  const qhMat   = quanHe(nhCan, nhMat);
-  const catHungSo    = TUONG_CAT_HUNG[d.tuong[tt.so]];
-  const catHungTrung = TUONG_CAT_HUNG[d.tuong[tt.trung]];
-  const catHungMat   = TUONG_CAT_HUNG[d.tuong[tt.mat]];
-  const catCount = [catHungSo,catHungTrung,catHungMat].filter(x=>x==='good').length;
-  const hungCount = [catHungSo,catHungTrung,catHungMat].filter(x=>x==='bad').length;
-  const tongLuan = catCount>=2 ? 'Thiên Tướng đa Cát — thuận lợi, quý nhân phù trợ.' :
-                   hungCount>=2 ? 'Thiên Tướng đa Hung — trắc trở, cần đề phòng.' :
-                   'Cát Hung xen lẫn — cần thận trọng từng bước.';
-  const ketQua = catHungMat==='good' ? 'Mạt Truyền Cát Tướng — kết cuộc tốt đẹp.' :
-                 catHungMat==='bad'  ? 'Mạt Truyền Hung Tướng — kết cuộc không như ý.' :
-                 'Mạt Truyền Trung Tính — kết cuộc bình thường.';
-
-  // ---- Ghép toàn bộ text ----
-  const text = `================================================================
-六壬大遁 — LỤC NHÂM ĐẠI ĐỘN
-================================================================
-
-【THÔNG TIN NHẬP】
-Năm    : ${canNamTen} - ${chiNamTen}
-Tháng  : ${chiThangTen}
-Ngày   : ${canNgayTen} - ${chiNgayTen}
-Giờ    : ${chiGioTen}
-Nguyệt Tướng : ${nguyetTuongTen}
-Tiết Khí     : ${tietKhiTen}
-Nguyên       : ${tamNguyenTen}
-Chiêu / Mộ   : ${chieuMoTen}
-
-================================================================
-【KẾT QUẢ】
-Khóa Pháp : ${khoaPhapTen}
-
---- Tứ Khóa ---
-${tuKhoaLines}
-
---- Tam Truyền ---
-  Sơ Truyền  (Phát dụng) : ${CHI[tt.so]}${CHI_ZH[tt.so]} · ${nhSo} · ${ttSoTuong} | Quan hệ Can Ngày: ${qhSo}
-  Trung Truyền (Diễn biến): ${CHI[tt.trung]}${CHI_ZH[tt.trung]} · ${nhTrung} · ${ttTrungTuong} | Quan hệ Can Ngày: ${qhTrung}
-  Mạt Truyền  (Kết quả)  : ${CHI[tt.mat]}${CHI_ZH[tt.mat]} · ${nhMat} · ${ttMatTuong} | Quan hệ Can Ngày: ${qhMat}
-
---- Thiên Tướng 12 Cung ---
-${thuanBanLines}
-
---- Luận Giải ---
-  Can Ngày   : ${CAN[d.canNgay]}${CAN_ZH[d.canNgay]} · Ngũ Hành: ${nhCan}
-  Chi Ngày   : ${CHI[d.chiNgay]}${CHI_ZH[d.chiNgay]} · Ngũ Hành: ${CHI_NGU_HANH[d.chiNgay]}
-  Tổng Luận  : ${tongLuan}
-  Kết Quả    : ${ketQua}
-
-================================================================`;
-
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.getElementById('btn-sao-chep');
-    const status = document.getElementById('copy-status');
-    btn.classList.add('copied');
-    btn.textContent = '✓ Đã Sao Chép!';
-    status.style.display = 'inline';
-    setTimeout(() => {
-      btn.classList.remove('copied');
-      btn.textContent = '📋 Sao Chép Kết Quả';
-      status.style.display = 'none';
-    }, 2500);
-  }).catch(() => {
-    // Fallback cho trình duyệt không hỗ trợ clipboard API
-    const ta = document.createElement('textarea');
-    ta.value = text;
-    ta.style.position = 'fixed'; ta.style.opacity = '0';
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
-    alert('Đã sao chép kết quả vào clipboard!');
-  });
 }
 
 function resetForm() {
