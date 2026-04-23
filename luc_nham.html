@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>六壬大遁 — Lục Nhâm Đại Độn v2</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1008; --ink-light: #3d2b1a;
+  --paper: #f5edd6; --paper-dark: #e8d9b8; --paper-darker: #d4c49a;
+  --red: #c0392b; --red-dark: #922b21;
+  --gold: #b8860b; --gold-light: #d4a017;
+  --jade: #1a5c3a; --jade-light: #2d8a5a;
+  --shadow: rgba(26,16,8,0.18);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--ink);
+  font-family: 'Crimson Pro','Noto Serif SC',serif;
+  color: var(--ink); min-height: 100vh;
+  background-image:
+    repeating-linear-gradient(90deg,rgba(255,255,255,.015) 0,rgba(255,255,255,.015) 1px,transparent 1px,transparent 60px),
+    repeating-linear-gradient(0deg,rgba(255,255,255,.015) 0,rgba(255,255,255,.015) 1px,transparent 1px,transparent 60px);
+}
+.wrap { max-width: 1100px; margin: 0 auto; padding: 24px 16px 60px; }
+
+/* HEADER */
+header { text-align:center; padding:40px 20px 28px; }
+.hdr-orn { color:var(--gold); font-size:1.1rem; letter-spacing:8px; opacity:.7; margin-bottom:12px; font-family:'Ma Shan Zheng',serif; }
+header h1 { font-family:'Ma Shan Zheng',serif; font-size:clamp(2.6rem,7vw,4.2rem); color:var(--paper); line-height:1; letter-spacing:.05em; text-shadow:0 2px 20px rgba(192,57,43,.5),0 0 60px rgba(184,134,11,.2); }
+header h1 span { color:var(--red); }
+.hdr-sub { color:var(--paper-darker); font-size:1.05rem; margin-top:10px; font-style:italic; letter-spacing:2px; opacity:.8; }
+.divider { display:flex; align-items:center; gap:16px; margin:18px 0; color:var(--gold); opacity:.5; }
+.divider::before,.divider::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
+
+/* CARD */
+.card { background:var(--paper); border-radius:4px; padding:28px 32px; margin-bottom:20px;
+  box-shadow:0 4px 24px var(--shadow),0 1px 0 var(--gold) inset; border:1px solid var(--paper-darker); position:relative; }
+.card::before { content:''; position:absolute; top:6px; left:6px; right:6px; bottom:6px;
+  border:1px solid rgba(184,134,11,.2); border-radius:2px; pointer-events:none; }
+.card-title { font-family:'Ma Shan Zheng',serif; font-size:1.3rem; color:var(--red-dark);
+  margin-bottom:20px; padding-bottom:10px; border-bottom:1px solid var(--paper-darker);
+  display:flex; align-items:center; gap:10px; }
+.card-title .zh { font-size:1rem; color:var(--gold); margin-left:auto; opacity:.8; }
+
+/* FORM */
+.sec-label { font-family:'Ma Shan Zheng',serif; font-size:1rem; color:var(--gold);
+  margin:16px 0 12px; display:flex; align-items:center; gap:8px; }
+.sec-label::after { content:''; flex:1; height:1px; background:var(--paper-darker); }
+.fgrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:16px; }
+.fg { display:flex; flex-direction:column; gap:6px; }
+label { font-size:.78rem; font-weight:600; color:var(--ink-light); letter-spacing:1.5px; text-transform:uppercase; }
+label .zl { font-family:'Noto Serif SC',serif; font-size:.85rem; color:var(--red); margin-left:4px; text-transform:none; }
+select,input { background:var(--paper-dark); border:1px solid var(--paper-darker); border-radius:3px;
+  padding:9px 12px; font-family:'Crimson Pro',serif; font-size:1rem; color:var(--ink);
+  outline:none; transition:border-color .2s,box-shadow .2s; -webkit-appearance:none; cursor:pointer; }
+select:focus,input:focus { border-color:var(--gold); box-shadow:0 0 0 2px rgba(184,134,11,.15); }
+.fnote { font-size:.82rem; color:var(--ink-light); font-style:italic; padding:10px 14px;
+  background:rgba(192,57,43,.05); border-left:3px solid var(--red); border-radius:0 3px 3px 0;
+  margin-top:4px; line-height:1.6; }
+
+/* BUTTONS */
+.btn-row { display:flex; gap:12px; margin-top:22px; flex-wrap:wrap; }
+.btn { padding:11px 28px; border:none; border-radius:3px; font-family:'Ma Shan Zheng',serif;
+  font-size:1.05rem; cursor:pointer; transition:all .2s; letter-spacing:1px; }
+.btn-p { background:var(--red); color:var(--paper); box-shadow:0 3px 10px rgba(192,57,43,.35); }
+.btn-p:hover { background:var(--red-dark); transform:translateY(-1px); }
+.btn-s { background:transparent; color:var(--gold); border:1px solid var(--gold); }
+.btn-s:hover { background:rgba(184,134,11,.1); }
+.btn-c { background:var(--jade); color:var(--paper); box-shadow:0 3px 10px rgba(26,92,58,.3); }
+.btn-c:hover { background:var(--jade-light); transform:translateY(-1px); }
+.btn-c.ok { background:var(--gold); color:var(--ink); }
+
+/* RESULT */
+#result-area { display:none; }
+#result-area.vis { display:block; animation:fadeUp .5s ease; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:none} }
+
+/* GUA HEADER */
+.gua-hdr { text-align:center; padding:16px; background:var(--ink); color:var(--paper);
+  border-radius:3px 3px 0 0; margin:-28px -32px 24px; font-family:'Ma Shan Zheng',serif;
+  font-size:1.1rem; letter-spacing:3px; }
+.gua-hdr .gname { font-size:1.5rem; color:var(--gold); }
+.stamp { position:absolute; top:12px; right:12px; width:52px; height:52px;
+  border:2px solid var(--red); border-radius:4px; display:flex; align-items:center;
+  justify-content:center; font-family:'Ma Shan Zheng',serif; font-size:.75rem;
+  color:var(--red); text-align:center; line-height:1.3; opacity:.55; transform:rotate(12deg); }
+
+/* LAYOUT RESULT */
+.ban-wrap { display:flex; gap:20px; margin-bottom:20px; flex-wrap:wrap; }
+.ban-sec { flex:1; min-width:260px; }
+.ban-title { font-family:'Ma Shan Zheng',serif; color:var(--red-dark); font-size:1rem; margin-bottom:10px; text-align:center; }
+
+/* SVG CIRCLE */
+.svg-wrap { overflow:visible; display:block; margin:0 auto; }
+
+/* TỨ KHÓA */
+.tkgrid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:14px; }
+.kcell { background:var(--paper-dark); border:1px solid var(--paper-darker); border-radius:4px;
+  padding:10px 6px; text-align:center; }
+.kcell.phat { border-color:var(--red); background:rgba(192,57,43,.07); }
+.kcell.tkhac { border-color:var(--gold); background:rgba(184,134,11,.06); }
+.knum { font-size:.65rem; color:var(--gold); font-family:'Ma Shan Zheng',serif; display:block; margin-bottom:3px; }
+.ktren { font-family:'Noto Serif SC',serif; font-size:1rem; color:var(--ink); font-weight:600; }
+.kduoi { font-family:'Noto Serif SC',serif; font-size:.9rem; color:var(--ink-light); }
+.krel { font-size:.6rem; color:var(--red); margin:2px 0; }
+.ktuong { font-size:.62rem; color:var(--jade); margin-top:2px; }
+
+/* TAM TRUYỀN */
+.tt-wrap { display:flex; border:1px solid var(--paper-darker); border-radius:4px; overflow:hidden; margin-bottom:14px; }
+.tt-cell { flex:1; padding:14px 8px; text-align:center; background:var(--paper-dark); border-right:1px solid var(--paper-darker); }
+.tt-cell:last-child { border-right:none; }
+.tt-cell.so { background:rgba(192,57,43,.06); }
+.tt-cell.trung { background:rgba(184,134,11,.06); }
+.tt-cell.mat { background:rgba(26,92,58,.06); }
+.tt-name { font-family:'Ma Shan Zheng',serif; font-size:.82rem; color:var(--gold); display:block; margin-bottom:5px; }
+.tt-chi { font-family:'Noto Serif SC',serif; font-size:1.5rem; color:var(--ink); font-weight:600; }
+.tt-sub { font-size:.72rem; color:var(--ink-light); margin-top:2px; }
+.tt-tuong { font-size:.68rem; color:var(--jade-light); margin-top:3px; }
+.tt-vi { font-size:.64rem; color:var(--red); margin-top:2px; }
+
+/* KHOA PHAP BOX */
+.kp-box { background:linear-gradient(135deg,rgba(26,16,8,.04),rgba(184,134,11,.06));
+  border:1px solid var(--paper-darker); border-left:3px solid var(--gold);
+  border-radius:0 4px 4px 0; padding:14px 18px; margin-bottom:14px; }
+.kp-box strong { color:var(--red-dark); font-family:'Noto Serif SC',serif; }
+.kp-box p { font-size:.87rem; line-height:1.75; color:var(--ink-light); margin-top:6px; }
+
+/* COPY ROW */
+.copy-row { display:flex; gap:12px; margin-top:16px; padding-top:16px;
+  border-top:1px solid var(--paper-darker); flex-wrap:wrap; align-items:center; }
+#copy-ok { font-size:.85rem; color:var(--jade); font-style:italic; display:none; }
+
+/* TABLE */
+.ltable { width:100%; border-collapse:collapse; font-size:.88rem; margin-bottom:14px; }
+.ltable th { background:var(--ink); color:var(--paper); padding:8px 12px; text-align:left;
+  font-family:'Ma Shan Zheng',serif; font-weight:400; font-size:.88rem; }
+.ltable td { padding:8px 12px; border-bottom:1px solid var(--paper-darker); vertical-align:top; line-height:1.65; }
+.ltable tr:nth-child(even) td { background:rgba(0,0,0,.025); }
+.ltable td:first-child { font-weight:600; color:var(--red-dark); white-space:nowrap; font-family:'Noto Serif SC',serif; }
+.tag { display:inline-block; padding:1px 6px; border-radius:2px; font-size:.7rem; font-weight:600; margin-left:4px; vertical-align:middle; }
+.tag.c { background:rgba(26,92,58,.12); color:var(--jade); border:1px solid var(--jade-light); }
+.tag.h { background:rgba(192,57,43,.1); color:var(--red); border:1px solid var(--red); }
+.tag.n { background:rgba(184,134,11,.1); color:var(--gold); border:1px solid var(--gold); }
+
+/* NOTE */
+.note { font-size:.82rem; color:var(--ink-light); font-style:italic; padding:10px 14px;
+  background:rgba(192,57,43,.05); border-left:3px solid var(--red); border-radius:0 3px 3px 0;
+  margin-bottom:12px; line-height:1.65; }
+
+@media(max-width:600px){
+  .card{padding:20px 16px;} .gua-hdr{margin:-20px -16px 20px;}
+  .tkgrid{grid-template-columns:repeat(2,1fr);}
+  .ban-sec{min-width:100%;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="hdr-orn">☰ ☱ ☲ ☳ ☴ ☵ ☶ ☷</div>
+  <h1>六壬<span>大</span>遁</h1>
+  <div class="hdr-sub">Lục Nhâm Đại Độn — Cổ Pháp Trung Hoa</div>
+  <div class="divider"><span>✦</span></div>
+</header>
+
+<!-- FORM -->
+<div class="card">
+  <div class="card-title">Nhập Thời Gian Chiêm <span class="zh">占時輸入</span></div>
+
+  <div class="sec-label">Can Chi Năm – Tháng – Ngày – Giờ <small style="font-size:.75rem;color:var(--ink-light);font-family:serif">(lịch Can Chi theo Tiết Khí)</small></div>
+  <div class="fgrid">
+    <div class="fg">
+      <label>Thiên Can Năm <span class="zl">年干</span></label>
+      <select id="can-nam">
+        <option value="0">Giáp 甲</option><option value="1">Ất 乙</option>
+        <option value="2">Bính 丙</option><option value="3">Đinh 丁</option>
+        <option value="4">Mậu 戊</option><option value="5">Kỷ 己</option>
+        <option value="6">Canh 庚</option><option value="7">Tân 辛</option>
+        <option value="8">Nhâm 壬</option><option value="9">Quý 癸</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>Địa Chi Năm <span class="zl">年支</span></label>
+      <select id="chi-nam">
+        <option value="0">Tý 子</option><option value="1">Sửu 丑</option>
+        <option value="2">Dần 寅</option><option value="3">Mão 卯</option>
+        <option value="4">Thìn 辰</option><option value="5">Tỵ 巳</option>
+        <option value="6">Ngọ 午</option><option value="7">Mùi 未</option>
+        <option value="8">Thân 申</option><option value="9">Dậu 酉</option>
+        <option value="10">Tuất 戌</option><option value="11">Hợi 亥</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>Tháng (Chi) <span class="zl">月支</span></label>
+      <select id="chi-thang">
+        <option value="2">T.Giêng — Dần 寅</option>
+        <option value="3">T.Hai — Mão 卯</option>
+        <option value="4">T.Ba — Thìn 辰</option>
+        <option value="5">T.Tư — Tỵ 巳</option>
+        <option value="6">T.Năm — Ngọ 午</option>
+        <option value="7">T.Sáu — Mùi 未</option>
+        <option value="8">T.Bảy — Thân 申</option>
+        <option value="9">T.Tám — Dậu 酉</option>
+        <option value="10">T.Chín — Tuất 戌</option>
+        <option value="11">T.Mười — Hợi 亥</option>
+        <option value="0">T.11 — Tý 子</option>
+        <option value="1">T.Chạp — Sửu 丑</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>Thiên Can Ngày <span class="zl">日干</span></label>
+      <select id="can-ngay">
+        <option value="0">Giáp 甲</option><option value="1">Ất 乙</option>
+        <option value="2">Bính 丙</option><option value="3">Đinh 丁</option>
+        <option value="4">Mậu 戊</option><option value="5">Kỷ 己</option>
+        <option value="6">Canh 庚</option><option value="7">Tân 辛</option>
+        <option value="8">Nhâm 壬</option><option value="9">Quý 癸</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>Địa Chi Ngày <span class="zl">日支</span></label>
+      <select id="chi-ngay">
+        <option value="0">Tý 子</option><option value="1">Sửu 丑</option>
+        <option value="2">Dần 寅</option><option value="3">Mão 卯</option>
+        <option value="4">Thìn 辰</option><option value="5">Tỵ 巳</option>
+        <option value="6">Ngọ 午</option><option value="7">Mùi 未</option>
+        <option value="8">Thân 申</option><option value="9">Dậu 酉</option>
+        <option value="10">Tuất 戌</option><option value="11">Hợi 亥</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>Giờ Chiêm <span class="zl">占時</span></label>
+      <select id="chi-gio">
+        <option value="0">Tý 子 (23–1h)</option>
+        <option value="1">Sửu 丑 (1–3h)</option>
+        <option value="2">Dần 寅 (3–5h)</option>
+        <option value="3">Mão 卯 (5–7h)</option>
+        <option value="4">Thìn 辰 (7–9h)</option>
+        <option value="5">Tỵ 巳 (9–11h)</option>
+        <option value="6">Ngọ 午 (11–13h)</option>
+        <option value="7">Mùi 未 (13–15h)</option>
+        <option value="8">Thân 申 (15–17h)</option>
+        <option value="9">Dậu 酉 (17–19h)</option>
+        <option value="10">Tuất 戌 (19–21h)</option>
+        <option value="11">Hợi 亥 (21–23h)</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- NGUYỆT TƯỚNG -->
+  <div class="sec-label">Nguyệt Tướng <span style="font-size:.78rem;color:var(--ink-light)">月將 — Tra Trung Khí trên lịch vạn niên</span></div>
+  <div class="fgrid" style="grid-template-columns:1fr 1fr;">
+    <div class="fg">
+      <label>Nguyệt Tướng <span class="zl">月將</span></label>
+      <select id="nguyet-tuong">
+        <!--
+          Cổ pháp 《大六壬指南》《六壬大全》:
+          Nguyệt Tướng chuyển theo TRUNG KHÍ (ngày giữa tháng), không phải đầu Tiết.
+          12 Trung Khí (theo thứ tự): Vũ Thủy, Xuân Phân, Cốc Vũ, Tiểu Mãn,
+          Hạ Chí, Đại Thử, Xử Thử, Thu Phân, Sương Giáng, Tiểu Tuyết, Đông Chí, Đại Hàn.
+          Mỗi Nguyệt Tướng = chi Thiên Bàn đứng tại vị trí Địa Bàn của giờ chiêm.
+          Chiều Thiên Bàn: NGHỊCH chiều kim đồng hồ (Hợi→Tuất→Dậu...).
+        -->
+        <option value="3"> Thái Xung — Mão 太衝卯  ║ Vũ Thủy  → Xuân Phân (Tháng Giêng)</option>
+        <option value="4"> Thiên Cương — Thìn 天罡辰 ║ Xuân Phân → Cốc Vũ   (Tháng Hai)</option>
+        <option value="5"> Thái Ất — Tỵ 太乙巳      ║ Cốc Vũ   → Hạ Chí    (Tháng Ba)</option>
+        <option value="6"> Thắng Quang — Ngọ 勝光午  ║ Hạ Chí   → Đại Thử   (Tháng Tư)</option>
+        <option value="7"> Tiểu Cát — Mùi 小吉未     ║ Đại Thử  → Xử Thử    (Tháng Năm)</option>
+        <option value="8"> Truyền Tống — Thân 傳送申  ║ Xử Thử   → Thu Phân  (Tháng Sáu)</option>
+        <option value="9"> Tòng Khôi — Dậu 從魁酉    ║ Thu Phân → Sương Giáng(Tháng Bảy)</option>
+        <option value="10">Hà Khôi — Tuất 河魁戌      ║ Sương Giáng→Tiểu Tuyết(Tháng Tám)</option>
+        <option value="11">Đăng Minh — Hợi 登明亥     ║ Tiểu Tuyết→ Đông Chí  (Tháng Chín)</option>
+        <option value="0"> Thần Hậu — Tý 神后子       ║ Đông Chí → Đại Hàn    (Tháng Mười)</option>
+        <option value="1"> Đại Cát — Sửu 大吉丑       ║ Đại Hàn  → Vũ Thủy    (Tháng 11)</option>
+        <option value="2"> Công Tào — Dần 功曹寅       ║ (dùng khi Mặt Trời tại Dần — hiếm)</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label style="visibility:hidden">_</label>
+      <div class="fnote">
+        <b>Tra Nguyệt Tướng:</b> Tìm ngày chiêm nằm giữa hai Trung Khí nào → chọn NT tương ứng. Ví dụ: ngày 20/7 nằm giữa <b>Hạ Chí (21/6) và Đại Thử (23/7)</b> → chọn <b>Thắng Quang Ngọ</b>. Nguyệt Tướng chuyển vào đúng ngày Trung Khí, không phải đầu Tiết.
+      </div>
+    </div>
+  </div>
+
+  <!-- PHỤ TRỢ -->
+  <div class="sec-label">Thông Tin Phụ Trợ <span style="font-size:.78rem;color:var(--ink-light)">(tra lịch vạn niên để nhập đúng)</span></div>
+  <div class="fgrid">
+    <div class="fg">
+      <label>Tiết Khí hiện tại</label>
+      <select id="tiet-khi">
+        <option value="0">Lập Xuân 立春</option><option value="1">Vũ Thủy 雨水</option>
+        <option value="2">Kinh Trập 驚蟄</option><option value="3">Xuân Phân 春分</option>
+        <option value="4">Thanh Minh 清明</option><option value="5">Cốc Vũ 穀雨</option>
+        <option value="6">Lập Hạ 立夏</option><option value="7">Tiểu Mãn 小滿</option>
+        <option value="8">Mang Chủng 芒種</option><option value="9">Hạ Chí 夏至</option>
+        <option value="10">Tiểu Thử 小暑</option><option value="11">Đại Thử 大暑</option>
+        <option value="12">Lập Thu 立秋</option><option value="13">Xử Thử 處暑</option>
+        <option value="14">Bạch Lộ 白露</option><option value="15">Thu Phân 秋分</option>
+        <option value="16">Hàn Lộ 寒露</option><option value="17">Sương Giáng 霜降</option>
+        <option value="18">Lập Đông 立冬</option><option value="19">Tiểu Tuyết 小雪</option>
+        <option value="20">Đại Tuyết 大雪</option><option value="21">Đông Chí 冬至</option>
+        <option value="22">Tiểu Hàn 小寒</option><option value="23">Đại Hàn 大寒</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>Tam Nguyên <span class="zl">三元</span></label>
+      <select id="tam-nguyen">
+        <option value="0">Thượng Nguyên 上元</option>
+        <option value="1">Trung Nguyên 中元</option>
+        <option value="2">Hạ Nguyên 下元</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>Chiêu / Mộ <span class="zl">晝夜</span></label>
+      <select id="chieu-mo">
+        <option value="0">Chiêu — Ban Ngày 晝 (Mão→Dậu)</option>
+        <option value="1">Mộ — Ban Đêm 夜 (Dậu→Mão)</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-p" onclick="lapQue()">⊕ Lập Quẻ Lục Nhâm</button>
+    <button class="btn btn-s" onclick="resetForm()">↺ Nhập Lại</button>
+  </div>
+</div><!-- end form card -->
+
+<!-- KẾT QUẢ -->
+<div id="result-area">
+
+  <!-- CARD CHÍNH -->
+  <div class="card">
+    <div class="gua-hdr">
+      <div style="font-size:.82rem;opacity:.65;margin-bottom:4px">六壬課式</div>
+      <div class="gname" id="r-khoaphap">—</div>
+      <div style="font-size:.8rem;opacity:.6;margin-top:4px" id="r-info">—</div>
+    </div>
+    <div class="stamp">六壬<br>課式</div>
+
+    <div class="ban-wrap">
+      <!-- VÒNG TRÒN -->
+      <div class="ban-sec">
+        <div class="ban-title">Thiên Bàn 天盤 / Địa Bàn 地盤</div>
+        <div id="svg-circle"></div>
+      </div>
+      <!-- TỨ KHÓA + TAM TRUYỀN -->
+      <div class="ban-sec">
+        <div class="ban-title">Tứ Khóa 四課</div>
+        <div class="tkgrid" id="r-tukhoa"></div>
+        <div class="ban-title" style="margin-top:12px">Tam Truyền 三傳</div>
+        <div class="tt-wrap" id="r-tamtruyen"></div>
+        <div class="kp-box" id="r-khoaphap-box"></div>
+      </div>
+    </div>
+
+    <div class="copy-row">
+      <button class="btn btn-c" id="btn-copy" onclick="saoCopy()">📋 Sao Chép Kết Quả</button>
+      <span id="copy-ok">✓ Đã sao chép!</span>
+    </div>
+  </div>
+
+  <!-- THIÊN TƯỚNG -->
+  <div class="card">
+    <div class="card-title">Thiên Tướng 12 Cung <span class="zh">十二天將</span></div>
+    <div id="r-thientuong"></div>
+  </div>
+
+  <!-- LUẬN GIẢI -->
+  <div class="card">
+    <div class="card-title">Luận Giải Tam Truyền <span class="zh">三傳論斷</span></div>
+    <div id="r-luangiai"></div>
+  </div>
+
+  <!-- CHÚ THÍCH -->
+  <div class="card">
+    <div class="card-title">Chú Thích Cổ Pháp <span class="zh">古法注解</span></div>
+    <div id="r-chuthich"></div>
+  </div>
+
+</div><!-- end result -->
+</div><!-- end wrap -->
+
+<script>
+/* ============================================================
+   LỤC NHÂM ĐẠI ĐỘN — CORE ENGINE v2
+   Nguồn: 《大六壬指南》《六壬大全》《六壬粹言》《壬學瑣記》
+   ============================================================ */
+
+// ── CƠ SỞ DỮ LIỆU ──────────────────────────────────────────
+
+const CAN    = ['Giáp','Ất','Bính','Đinh','Mậu','Kỷ','Canh','Tân','Nhâm','Quý'];
+const CAN_ZH = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+const CHI    = ['Tý','Sửu','Dần','Mão','Thìn','Tỵ','Ngọ','Mùi','Thân','Dậu','Tuất','Hợi'];
+const CHI_ZH = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+
+// Ngũ Hành 12 Chi — cổ pháp chuẩn
+// Tý=Thủy, Sửu=Thổ, Dần=Mộc, Mão=Mộc, Thìn=Thổ, Tỵ=Hỏa,
+// Ngọ=Hỏa, Mùi=Thổ, Thân=Kim, Dậu=Kim, Tuất=Thổ, Hợi=Thủy
+const CHI_NH = ['Thủy','Thổ','Mộc','Mộc','Thổ','Hỏa','Hỏa','Thổ','Kim','Kim','Thổ','Thủy'];
+
+// Ngũ Hành 10 Can
+const CAN_NH = ['Mộc','Mộc','Hỏa','Hỏa','Thổ','Thổ','Kim','Kim','Thủy','Thủy'];
+
+// Âm Dương
+const CAN_AD = ['D','A','D','A','D','A','D','A','D','A']; // D=Dương A=Âm
+const CHI_AD = ['D','A','D','A','D','A','D','A','D','A','D','A'];
+
+/* Quý Nhân (贵人) — theo 《大六壬指南》《六壬大全》
+   Giáp/Mậu/Canh: Chiêu→Mùi(7),  Mộ→Sửu(1)
+   Ất/Kỷ:         Chiêu→Thân(8),  Mộ→Tý(0)
+   Bính/Đinh:     Chiêu→Dậu(9),   Mộ→Hợi(11)
+   Tân:           Chiêu→Ngọ(6),   Mộ→Dần(2)
+   Nhâm/Quý:      Chiêu→Mão(3),   Mộ→Tỵ(5)
+   Index: Giáp=0 Ất=1 Bính=2 Đinh=3 Mậu=4 Kỷ=5 Canh=6 Tân=7 Nhâm=8 Quý=9 */
+const QN_CHIEU = [7, 8, 9, 9, 7, 8, 7, 6, 3, 3];
+const QN_MO    = [1, 0,11,11, 1, 0, 1, 2, 5, 5];
+
+/* Can Ký Cung (寄宮) — vị trí Địa Bàn tương ứng với mỗi Can Ngày
+   Theo 《大六壬指南》:
+   Giáp→Dần(2), Ất→Thìn(4), Bính→Ngọ(6), Đinh→Mùi(7),
+   Mậu→Tỵ(5),  Kỷ→Mùi(7),  Canh→Thân(8), Tân→Tuất(10),
+   Nhâm→Hợi(11), Quý→Sửu(1)
+   Lưu ý: Bính→Ngọ(6) [Hỏa Dương ký Ngọ], Mậu→Tỵ(5) [Thổ ký Tỵ vì Mậu là Can Dương Thổ] */
+const KY_CUNG = [2, 4, 6, 7, 5, 7, 8, 10, 11, 1];
+
+/* 12 Thiên Tướng (thứ tự từ Quý Nhân):
+   0=Quý Nhân, 1=Đằng Xà, 2=Chu Tước, 3=Lục Hợp, 4=Câu Trận, 5=Thanh Long,
+   6=Thiên Không, 7=Bạch Hổ, 8=Thái Thường, 9=Huyền Vũ, 10=Thái Âm, 11=Thiên Hậu */
+const TT_TEN = ['Quý Nhân','Đằng Xà','Chu Tước','Lục Hợp','Câu Trận','Thanh Long',
+                'Thiên Không','Bạch Hổ','Thái Thường','Huyền Vũ','Thái Âm','Thiên Hậu'];
+const TT_ZH  = ['貴人','騰蛇','朱雀','六合','勾陳','青龍','天空','白虎','太常','玄武','太陰','天后'];
+
+/* Cát Hung 12 Thiên Tướng — theo 《大六壬指南》
+   c=Cát, h=Hung, n=Trung (thiên Cát) */
+const TT_CH  = ['c','h','h','c','h','c','h','h','c','h','n','c'];
+
+const TT_DESC = [
+  'Quý nhân phù trợ, vạn sự hanh thông, quan quý tương trợ, cầu mưu đắc lợi',
+  'Kinh hoàng biến cố, ưu sầu bất an, tai họa bất ngờ, mộng mị, bệnh tật',
+  'Văn thư kiện tụng, miệng lưỡi thị phi, quan tụng, khẩu thiệt',
+  'Hòa hợp thân thiết, hôn nhân hỉ sự, hợp đồng giao thương thuận lợi',
+  'Tranh chấp kiện tụng, giam giữ trói buộc, trở ngại chậm trễ, hung mạnh',
+  'Tài lộc phúc đức, xuất hành hanh thông, công danh sự nghiệp tốt',
+  'Hao tán trống rỗng, sự việc đình trệ, hứa hẹn không thành, thất bại',
+  'Hình phạt đổ máu, tang ma bệnh nặng, đao thương phẫu thuật, đại hung',
+  'Phú quý an khang, y phục ẩm thực đầy đủ, sự nghiệp ổn định bền lâu',
+  'Trộm cắp thất thoát, tiểu nhân âm mưu, quan họa, mất của bị lừa',
+  'Bí mật ẩn giấu, nữ nhân tình ái, tài lộc ẩn tàng, cần kiên nhẫn tìm',
+  'Quý nhân nữ phù hộ, hôn nhân phúc lộc, âm đức bảo hộ, vạn sự an lành'
+];
+
+// ── NGŨ HÀNH SINH KHẮC ───────────────────────────────────────
+
+// a sinh b?
+function sinh(a,b){ return ({Mộc:'Hỏa',Hỏa:'Thổ',Thổ:'Kim',Kim:'Thủy',Thủy:'Mộc'})[a]===b; }
+// a khắc b?
+function khac(a,b){ return ({Mộc:'Thổ',Thổ:'Thủy',Thủy:'Hỏa',Hỏa:'Kim',Kim:'Mộc'})[a]===b; }
+
+function quanHe(a,b){
+  if(a===b) return 'Tỷ Hòa 比和';
+  if(sinh(a,b)) return 'Sinh xuất 生出';
+  if(sinh(b,a)) return 'Được sinh 受生';
+  if(khac(a,b)) return 'Khắc xuất 剋出';
+  if(khac(b,a)) return 'Bị khắc 受剋';
+  return '—';
+}
+
+/* Vị Thần (旺相休囚死) theo mùa — cổ pháp Ngũ Hành
+   Mùa Xuân: Mộc Vượng, Hỏa Tướng, Thủy Hưu, Kim Tù, Thổ Tử
+   Mùa Hạ:   Hỏa Vượng, Thổ Tướng, Mộc Hưu, Thủy Tù, Kim Tử
+   Mùa Thu:  Kim Vượng, Thủy Tướng, Thổ Hưu, Hỏa Tù, Mộc Tử
+   Mùa Đông: Thủy Vượng, Mộc Tướng, Kim Hưu, Thổ Tù, Hỏa Tử
+   Tứ Quý (18 ngày cuối mỗi mùa): Thổ Vượng — nhưng ở đây dùng Tiết Khí đại diện */
+function viThan(chiIdx, tietKhi){
+  const nh = CHI_NH[chiIdx];
+  // Phân mùa: 0=Xuân 1=Hạ 2=Thu 3=Đông
+  // Tiết Khí: 0-5=Xuân(Lập Xuân→Cốc Vũ), 6-11=Hạ, 12-17=Thu, 18-23=Đông
+  let mua = Math.floor(tietKhi/6); // 0,1,2,3
+  // Bảng [mua]: [Vượng, Tướng, Hưu, Tù, Tử]
+  const bang = [
+    ['Mộc','Hỏa','Thủy','Kim','Thổ'],  // Xuân
+    ['Hỏa','Thổ','Mộc','Thủy','Kim'],  // Hạ
+    ['Kim','Thủy','Thổ','Hỏa','Mộc'],  // Thu
+    ['Thủy','Mộc','Kim','Thổ','Hỏa'],  // Đông
+  ];
+  const ten = ['Vượng','Tướng','Hưu','Tù','Tử'];
+  const idx = bang[mua].indexOf(nh);
+  return idx>=0 ? ten[idx] : '—';
+}
+
+// ── THIÊN BÀN (天盤) ─────────────────────────────────────────
+/*
+  Cổ pháp《大六壬指南》: "以月將加時，即是天盤"
+  Nghĩa: Nguyệt Tướng (chi) đặt lên trên Giờ Chiêm (chi) trên Địa Bàn.
+  Thiên Bàn xoay NGHỊCH chiều so với Địa Bàn (Hợi→Tuất→Dậu→...).
+
+  Quy tắc:
+  - Địa Bàn cố định: Tý(0) ở Bắc, Mão(3) ở Đông, Ngọ(6) ở Nam, Dậu(9) ở Tây.
+  - Thiên Bàn: Nguyệt Tướng đứng TẠI vị trí Giờ trên Địa Bàn.
+  - Các cung khác của Thiên Bàn: đi NGHỊCH từ đó.
+
+  Công thức:
+  thienBan[i] = (nguyetTuong - (i - gioChi) + 120) % 12
+              = (nguyetTuong + gioChi - i + 120) % 12
+*/
+function lapThienBan(nt, gio){
+  // nt: chi index Nguyệt Tướng (0-11)
+  // gio: chi index Giờ Chiêm (0-11)
+  // thienBan[i] = chi Thiên Bàn đứng tại Địa Bàn cung i
+  const tb = [];
+  for(let i=0;i<12;i++){
+    tb[i] = (nt + gio - i + 120) % 12;
+  }
+  return tb;
+}
+
+// ── TỨ KHÓA (四課) ───────────────────────────────────────────
+/*
+  Cổ pháp《大六壬指南》:
+  Khóa 1 (Nhật Can Thượng Thần): Thượng = Ký Cung của Can Ngày, Hạ = TB tại đó
+  Khóa 2 (Nhật Can Hạ Thần):     Thượng = Hạ của K1,            Hạ = TB tại đó
+  Khóa 3 (Nhật Chi Thượng Thần): Thượng = Chi Ngày,             Hạ = TB tại Chi Ngày
+  Khóa 4 (Nhật Chi Hạ Thần):     Thượng = Hạ của K3,            Hạ = TB tại đó
+*/
+function lapTuKhoa(canNgay, chiNgay, tb){
+  const k1t = KY_CUNG[canNgay];
+  const k1d = tb[k1t];
+  const k2t = k1d;
+  const k2d = tb[k2t];
+  const k3t = chiNgay;
+  const k3d = tb[k3t];
+  const k4t = k3d;
+  const k4d = tb[k4t];
+  return [
+    {t:k1t, d:k1d, label:'Nhất Khóa 一課'},
+    {t:k2t, d:k2d, label:'Nhị Khóa 二課'},
+    {t:k3t, d:k3d, label:'Tam Khóa 三課'},
+    {t:k4t, d:k4d, label:'Tứ Khóa 四課'},
+  ];
+}
+
+// ── TAM TRUYỀN (三傳) — KHÓA PHÁP ───────────────────────────
+/*
+  Thứ tự ưu tiên theo 《大六壬指南》《六壬大全》:
+  1. Nguyên Thủy Khóa 元首課  — 1 Hạ khắc Thượng
+  2. Trùng Thẩm Khóa 重審課  — nhiều Hạ khắc Thượng
+  3. Thiệp Hại Khóa 涉害課   — Thượng khắc Hạ (không có Hạ khắc Thượng)
+  4. Dao Khắc Khóa 遙剋課    — không có khắc trong Tứ Khóa
+  5. Biệt Trách Khóa 別責課  — đặc biệt: Can trùng Chi
+  6. Phục Ngâm Khóa 伏吟課   — TB = DB (NT = Giờ)
+*/
+function timTamTruyen(tk, canNgay, chiNgay, tb){
+  const canAD = CAN_AD[canNgay];
+  const nhCan = CAN_NH[canNgay];
+
+  // Phân loại 4 khóa
+  const hKhacT = [], tKhacH = [], trung = [];
+  for(let i=0;i<4;i++){
+    const nht = CHI_NH[tk[i].t];
+    const nhd = CHI_NH[tk[i].d];
+    if(khac(nhd, nht)) hKhacT.push(i);
+    else if(khac(nht, nhd)) tKhacH.push(i);
+    else trung.push(i);
+  }
+
+  let so, kp;
+
+  // ── 1 & 2: Nguyên Thủy / Trùng Thẩm ──
+  if(hKhacT.length === 1){
+    so = tk[hKhacT[0]].d;
+    kp = 'Nguyên Thủy Khóa 元首課';
+  }
+  else if(hKhacT.length > 1){
+    /* Trùng Thẩm: Can Dương ưu tiên Khóa Ngày (k3,k4); Can Âm ưu tiên Khóa Can (k1,k2).
+       Nếu trong nhóm ưu tiên có nhiều hơn 1, chọn tiếp theo Âm Dương Hạ = Can. */
+    const nhom = canAD==='D'
+      ? hKhacT.filter(i=>i>=2).concat(hKhacT.filter(i=>i<2))
+      : hKhacT.filter(i=>i<2).concat(hKhacT.filter(i=>i>=2));
+    // Trong nhóm ưu tiên chọn cái có Âm Dương Hạ khớp Can
+    const chon = nhom.find(i=>CHI_AD[tk[i].d]===canAD) ?? nhom[0];
+    so = tk[chon].d;
+    kp = 'Trùng Thẩm Khóa 重審課';
+  }
+
+  // ── 3: Thiệp Hại ──
+  else if(tKhacH.length > 0){
+    /* Cổ pháp Thiệp Hại:
+       Tính số cung đi qua trên Địa Bàn từ vị trí Thượng đến vị trí Hạ (đi theo chiều
+       THUẬN của Địa Bàn), đếm bao nhiêu cung trung gian có NGŨ HÀNH BỊ KHẮC BỞI THƯỢNG.
+       Khóa có số thiệp NHIỀU NHẤT là Sơ Truyền (Thượng = Sơ Truyền).
+       Nếu bằng nhau: Can Dương → Khóa Ngày (k3,k4); Can Âm → Khóa Can (k1,k2).
+       Nếu vẫn bằng nhau: chọn Khóa đầu tiên trong nhóm ưu tiên. */
+    function doThiep(idx){
+      const t = tk[idx].t, d = tk[idx].d;
+      const nht = CHI_NH[t];
+      let cnt = 0, cur = t;
+      for(let s=1;s<=11;s++){
+        cur = (cur+1)%12;
+        if(khac(nht, CHI_NH[cur])) cnt++;
+        if(cur===d) break;
+      }
+      return cnt;
+    }
+    const scores = tKhacH.map(i=>({i, sc:doThiep(i)}));
+    const max = Math.max(...scores.map(x=>x.sc));
+    const best = scores.filter(x=>x.sc===max).map(x=>x.i);
+    const nhom = canAD==='D'
+      ? best.filter(i=>i>=2).concat(best.filter(i=>i<2))
+      : best.filter(i=>i<2).concat(best.filter(i=>i>=2));
+    so = tk[nhom[0]].t; // Thiệp Hại: Sơ Truyền = THƯỢNG (bên khắc)
+    kp = 'Thiệp Hại Khóa 涉害課';
+  }
+
+  // ── 4: Dao Khắc ──
+  else {
+    /* Dao Khắc: Tứ Khóa không có khắc. Can Ngày dao khắc với 12 Thiên Bàn.
+       Ưu tiên: TB khắc Can (trước), rồi Can khắc TB (sau).
+       Khi có nhiều ứng viên: Thiên Bàn đứng tại cung Ngày (k3 hạ) ưu tiên;
+       tiếp theo theo Âm Dương Can. */
+    const tbKhacCan=[], canKhacTB=[];
+    for(let i=0;i<12;i++){
+      const nhTB = CHI_NH[tb[i]];
+      if(khac(nhTB, nhCan)) tbKhacCan.push(tb[i]);
+      else if(khac(nhCan, nhTB)) canKhacTB.push(tb[i]);
+    }
+    function chonAD(ds){
+      if(!ds.length) return null;
+      return ds.find(c=>CHI_AD[c]===canAD) ?? ds[0];
+    }
+
+    if(tbKhacCan.length>0){
+      so = chonAD(tbKhacCan);
+      kp = 'Dao Khắc Khóa 遙剋課';
+    } else if(canKhacTB.length>0){
+      so = chonAD(canKhacTB);
+      kp = 'Dao Khắc Khóa 遙剋課';
+    } else {
+      /* Biệt Trách / Phục Ngâm:
+         - Nếu NT = Giờ → Phục Ngâm Khóa (TB=DB hoàn toàn)
+           Sơ Truyền: Can Dương→TB tại Can Ký Cung; Can Âm→TB tại Chi Ngày
+         - Nếu không → Biệt Trách (Tứ Khóa toàn trùng hành, không khắc được)
+           Sơ Truyền: lấy TB tại Can Ký Cung */
+      // Kiểm tra Phục Ngâm: TB[i]=i với mọi i (NT=Giờ)
+      const isPhuNgam = tb.every((v,i)=>v===i);
+      if(isPhuNgam){
+        // Phục Ngâm — cổ pháp: Can Dương lấy TB tại Ký Cung, Can Âm lấy TB tại Chi Ngày
+        so = canAD==='D' ? tb[KY_CUNG[canNgay]] : tb[chiNgay];
+        kp = 'Phục Ngâm Khóa 伏吟課';
+      } else {
+        // Biệt Trách — lấy TB tại Chi Ngày làm Sơ Truyền
+        so = tb[chiNgay];
+        kp = 'Biệt Trách Khóa 別責課';
+      }
+    }
+  }
+
+  const trungT = tb[so];
+  const matT   = tb[trungT];
+  return { so, trung:trungT, mat:matT, kp };
+}
+
+// ── AN THIÊN TƯỚNG (安天將) ──────────────────────────────────
+/*
+  Cổ pháp《大六壬指南》:
+  1. Xác định chi của Quý Nhân theo Can Ngày & Chiêu/Mộ.
+  2. Tìm vị trí Địa Bàn mà Thiên Bàn = chi Quý Nhân → đó là cung Quý Nhân an.
+  3. Chiêu (ban ngày) → 12 Thiên Tướng xếp THUẬN từ cung Quý Nhân.
+     Mộ (ban đêm)    → 12 Thiên Tướng xếp NGHỊCH từ cung Quý Nhân.
+  4. tuong[i] = index Thiên Tướng (0-11) tại Địa Bàn cung i.
+*/
+function anThienTuong(canNgay, chieuMo, tb){
+  const qnChi = chieuMo===0 ? QN_CHIEU[canNgay] : QN_MO[canNgay];
+  // Tìm Địa Bàn cung nào có TB = qnChi
+  let qnDB = 0;
+  for(let i=0;i<12;i++){ if(tb[i]===qnChi){ qnDB=i; break; } }
+
+  const tt = new Array(12);
+  for(let i=0;i<12;i++){
+    if(chieuMo===0){
+      // Chiêu: thuận — cung đi từ qnDB+0, qnDB+1,...
+      tt[i] = (i - qnDB + 12) % 12;
+    } else {
+      // Mộ: nghịch — cung đi từ qnDB-0, qnDB-1,...
+      tt[i] = (qnDB - i + 12) % 12;
+    }
+  }
+  return { tt, qnChi, qnDB };
+}
+
+// ── HÀM CHÍNH ────────────────────────────────────────────────
+let _D = null; // dữ liệu quẻ hiện tại
+
+function lapQue(){
+  const canNam   = +document.getElementById('can-nam').value;
+  const chiNam   = +document.getElementById('chi-nam').value;
+  const chiThang = +document.getElementById('chi-thang').value;
+  const canNgay  = +document.getElementById('can-ngay').value;
+  const chiNgay  = +document.getElementById('chi-ngay').value;
+  const chiGio   = +document.getElementById('chi-gio').value;
+  const nt       = +document.getElementById('nguyet-tuong').value;
+  const tietKhi  = +document.getElementById('tiet-khi').value;
+  const chieuMo  = +document.getElementById('chieu-mo').value;
+
+  const tb   = lapThienBan(nt, chiGio);
+  const tk   = lapTuKhoa(canNgay, chiNgay, tb);
+  const tam  = timTamTruyen(tk, canNgay, chiNgay, tb);
+  const {tt, qnChi, qnDB} = anThienTuong(canNgay, chieuMo, tb);
+
+  _D = { canNam, chiNam, chiThang, canNgay, chiNgay, chiGio,
+         nt, tietKhi, chieuMo, tb, tk, tam, tt, qnChi, qnDB };
+
+  render(_D);
+  document.getElementById('result-area').classList.add('vis');
+  document.getElementById('result-area').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ── RENDER ───────────────────────────────────────────────────
+function render(d){
+  // Header
+  document.getElementById('r-khoaphap').textContent = d.tam.kp;
+  document.getElementById('r-info').textContent =
+    `Ngày ${CAN[d.canNgay]}${CAN_ZH[d.canNgay]} ${CHI[d.chiNgay]}${CHI_ZH[d.chiNgay]}`+
+    ` • Giờ ${CHI[d.chiGio]}${CHI_ZH[d.chiGio]}`+
+    ` • NT ${CHI[d.nt]}${CHI_ZH[d.nt]}`+
+    ` • QN: ${CHI[d.qnChi]}${CHI_ZH[d.qnChi]}`;
+
+  veVong(d);
+  rTuKhoa(d);
+  rTamTruyen(d);
+  rKhoaPhap(d);
+  rThienTuong(d);
+  rLuanGiai(d);
+  rChuThich(d);
+}
+
+// ── VẼ VÒNG TRÒN SVG ─────────────────────────────────────────
+/*
+  Địa Bàn: 12 Chi cố định, vẽ THUẬN chiều kim đồng hồ (Tý trên cùng, Sửu sang trái, Dần...).
+  Thực ra cổ pháp vẽ NGHỊCH chiều kim đồng hồ (như đồng hồ mặt trời nhìn từ trên):
+  Tý(Bắc/Trên) → Sửu(ĐôngBắc) → Dần(Đông) → ...
+  Góc: Tý=90° (trên), mỗi cung +30° theo chiều kim đồng hồ ngược.
+*/
+function veVong(d){
+  const W=300,H=300,CX=150,CY=150;
+  const RO=122, RI=78;
+  function pos(chiIdx, R){
+    // Tý=đỉnh(90°CCW=đỉnh), mỗi cung tiếp theo -30° (thuận chiều kim đồng hồ = chiều Địa Bàn)
+    // Trong SVG: 0°=phải, +°=xuống. Tý ở trên = 270° (hoặc -90°).
+    // Địa Bàn thuận: Tý, Sửu, Dần... đi NGƯỢC chiều kim đồng hồ khi nhìn từ trên
+    // → góc Tý=270°, Sửu=240°, Dần=210°,...
+    const ang = (270 - chiIdx*30) * Math.PI/180;
+    return { x: CX+R*Math.cos(ang), y: CY+R*Math.sin(ang) };
+  }
+
+  const tamSo=d.tam.so, tamTrung=d.tam.trung, tamMat=d.tam.mat;
+
+  let s = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" class="svg-wrap">
+  <circle cx="${CX}" cy="${CY}" r="${RO}" fill="rgba(184,134,11,.04)" stroke="#b8860b" stroke-width="1.5"/>
+  <circle cx="${CX}" cy="${CY}" r="${RI}" fill="rgba(192,57,43,.04)" stroke="#c0392b" stroke-width="1.5"/>
+  <circle cx="${CX}" cy="${CY}" r="28" fill="#e8d9b8" stroke="#3d2b1a" stroke-width="1"/>
+  <text x="${CX}" y="${CY-6}" text-anchor="middle" font-size="8" font-family="Ma Shan Zheng,serif" fill="#3d2b1a">天盤</text>
+  <text x="${CX}" y="${CY+9}" text-anchor="middle" font-size="8" font-family="Ma Shan Zheng,serif" fill="#922b21">地盤</text>`;
+
+  for(let i=0;i<12;i++){
+    const tbChi = d.tb[i];
+    const ttIdx = d.tt[i]; // Thiên Tướng tại cung này
+    const pDB = pos(i, RI);
+    const pTB = pos(i, RO);
+
+    // Highlight Tam Truyền trên TB
+    const isSo=(i===tamSo), isTrung=(i===tamTrung), isMat=(i===tamMat);
+
+    // Đường nối mờ
+    s+=`<line x1="${pDB.x.toFixed(1)}" y1="${pDB.y.toFixed(1)}" x2="${pTB.x.toFixed(1)}" y2="${pTB.y.toFixed(1)}" stroke="#d4c49a" stroke-width="0.4"/>`;
+
+    // Địa Bàn (vòng trong) — Chi cố định
+    s+=`<g transform="translate(${pDB.x.toFixed(1)},${pDB.y.toFixed(1)})">
+      <circle r="15" fill="#e8d9b8" stroke="#c0392b" stroke-width="1.1"/>
+      <text y="-2" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="9" font-weight="700" fill="#1a1008">${CHI_ZH[i]}</text>
+      <text y="8" text-anchor="middle" font-family="serif" font-size="6.5" fill="#922b21">${CHI_NH[i].substring(0,1)}</text>
+    </g>`;
+
+    // Thiên Bàn (vòng ngoài) — chi xoay
+    const ringColor = isSo ? '#c0392b' : isTrung ? '#b8860b' : isMat ? '#1a5c3a' : '#b8860b';
+    const ringW = (isSo||isTrung||isMat) ? 2 : 1.1;
+    const ttCH = TT_CH[ttIdx];
+    const ttColor = ttCH==='c' ? '#1a5c3a' : ttCH==='h' ? '#c0392b' : '#b8860b';
+    const markerTxt = isSo ? '初' : isTrung ? '中' : isMat ? '末' : '';
+
+    s+=`<g transform="translate(${pTB.x.toFixed(1)},${pTB.y.toFixed(1)})">
+      <circle r="18" fill="#f5edd6" stroke="${ringColor}" stroke-width="${ringW}"/>
+      <text y="-5" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="9.5" font-weight="700" fill="#1a1008">${CHI_ZH[tbChi]}</text>
+      <text y="5" text-anchor="middle" font-family="serif" font-size="6" fill="${ttColor}">${TT_ZH[ttIdx]}</text>
+      ${markerTxt ? `<text y="14" text-anchor="middle" font-size="6" fill="${ringColor}" font-weight="bold">${markerTxt}</text>` : ''}
+    </g>`;
+  }
+  s+=`</svg>`;
+  document.getElementById('svg-circle').innerHTML=s;
+}
+
+// ── TỨ KHÓA ─────────────────────────────────────────────────
+function rTuKhoa(d){
+  const el = document.getElementById('r-tukhoa');
+  let h='';
+  for(let i=0;i<4;i++){
+    const k=d.tk[i];
+    const nht=CHI_NH[k.t], nhd=CHI_NH[k.d];
+    const isPhat=khac(nhd,nht), isTKhac=khac(nht,nhd);
+    const ttIdx=d.tt[k.d];
+    const cls = isPhat ? ' phat' : isTKhac ? ' tkhac' : '';
+    const relTxt = isPhat
+      ? `<span style="color:var(--red);font-weight:600">Hạ khắc T↑</span>`
+      : isTKhac
+      ? `<span style="color:var(--gold)">T khắc Hạ↓</span>`
+      : `<span style="color:var(--ink-light)">Không khắc</span>`;
+    h+=`<div class="kcell${cls}">
+      <span class="knum">${k.label}</span>
+      <div class="ktren">${CHI_ZH[k.t]}<small style="font-size:.6rem;font-weight:400"> ${CHI[k.t]}</small></div>
+      <div class="krel">${relTxt}</div>
+      <div class="kduoi">${CHI_ZH[k.d]}<small style="font-size:.6rem"> ${CHI[k.d]}</small></div>
+      <div class="ktuong">${TT_ZH[ttIdx]} ${TT_TEN[ttIdx]}</div>
+    </div>`;
+  }
+  el.innerHTML=h;
+}
+
+// ── TAM TRUYỀN ───────────────────────────────────────────────
+function rTamTruyen(d){
+  const el=document.getElementById('r-tamtruyen');
+  const info=[
+    {k:'so',  nm:'Sơ Truyền 初傳', cls:'so',   zh:'發用·Khởi'},
+    {k:'trung',nm:'Trung Truyền 中傳',cls:'trung',zh:'引從·Diễn'},
+    {k:'mat', nm:'Mạt Truyền 末傳', cls:'mat',  zh:'歸計·Kết'},
+  ];
+  let h='';
+  for(const x of info){
+    const ci=d.tam[x.k];
+    const ttIdx=d.tt[ci];
+    h+=`<div class="tt-cell ${x.cls}">
+      <span class="tt-name">${x.nm}</span>
+      <div class="tt-chi">${CHI_ZH[ci]}</div>
+      <div class="tt-sub">${CHI[ci]} · ${CHI_NH[ci]}</div>
+      <div class="tt-tuong">${TT_ZH[ttIdx]} ${TT_TEN[ttIdx]}</div>
+      <div class="tt-vi">${viThan(ci,d.tietKhi)} · ${x.zh}</div>
+    </div>`;
+  }
+  el.innerHTML=h;
+}
+
+// ── KHÓA PHÁP MÔ TẢ ─────────────────────────────────────────
+function rKhoaPhap(d){
+  const el=document.getElementById('r-khoaphap-box');
+  const mp={
+    'Nguyên Thủy Khóa 元首課':
+      'Duy nhất một Khóa có Hạ khắc Thượng → Sơ Truyền = cung Hạ đó. '+
+      'Sự việc rõ ràng, nguyên nhân trực tiếp. Cổ thư: <i>"元首為正，光明正大"</i> — mưu sự hanh thông.',
+    'Trùng Thẩm Khóa 重審課':
+      'Nhiều Khóa cùng có Hạ khắc Thượng → phải thẩm định kỹ, chọn Khóa theo Can Âm/Dương và phân Ngày/Can. '+
+      'Sự việc phức tạp nhiều đầu mối. Cổ thư: <i>"重審事多疑"</i> — cần thận trọng.',
+    'Thiệp Hại Khóa 涉害課':
+      'Thượng khắc Hạ trong Tứ Khóa (không có Hạ khắc Thượng). Sơ Truyền = Thượng của Khóa có độ thiệp sâu nhất '+
+      '(đi qua nhiều cung bị khắc nhất). Cổ thư: <i>"涉害為艱，利堅忍"</i> — gian khổ nhưng kiên nhẫn ắt thành.',
+    'Dao Khắc Khóa 遙剋課':
+      'Tứ Khóa không có khắc. Can Ngày dao khắc từ xa với 12 Thiên Bàn. '+
+      'Ưu tiên TB khắc Can (hung mạnh hơn), sau mới Can khắc TB. '+
+      'Cổ thư: <i>"遙剋為暗，隱秘難測"</i> — sự việc ẩn khuất.',
+    'Phục Ngâm Khóa 伏吟課':
+      'Nguyệt Tướng = Giờ Chiêm → Thiên Bàn trùng khớp Địa Bàn (TB[i]=i). '+
+      'Sự việc úp mặt than thở, trì trệ không động. Cổ thư: <i>"伏吟為滯，萬事停頓"</i> — không nên khởi sự.',
+    'Biệt Trách Khóa 別責課':
+      'Tứ Khóa không có khắc, TB cũng không dao khắc với Can. Can tự trách mình. '+
+      'Sự việc cô lập, phải tự lo. Cổ thư: <i>"別責為孤，自謀自主"</i>.',
+  };
+  el.innerHTML=`<strong>Khóa Pháp: ${d.tam.kp}</strong>
+    <p>${mp[d.tam.kp]||'Khóa pháp phức hợp — cần xét toàn bộ Tứ Khóa và Tam Truyền.'}</p>`;
+}
+
+// ── THIÊN TƯỚNG 12 CUNG ──────────────────────────────────────
+function rThienTuong(d){
+  const el=document.getElementById('r-thientuong');
+  let h=`<table class="ltable">
+    <tr><th>Địa Bàn</th><th>Thiên Bàn</th><th>Thiên Tướng</th><th>Ngũ Hành</th><th>Vị Thần</th><th>C/H</th><th>Ý Nghĩa</th></tr>`;
+  for(let i=0;i<12;i++){
+    const tbc=d.tb[i], tti=d.tt[i];
+    const ch=TT_CH[tti];
+    const tag=`<span class="tag ${ch}">${ch==='c'?'Cát':ch==='h'?'Hung':'Trung'}</span>`;
+    const isSo=(i===d.tam.so), isTrung=(i===d.tam.trung), isMat=(i===d.tam.mat);
+    const rs = isSo?'background:rgba(192,57,43,.08)':isTrung?'background:rgba(184,134,11,.07)':isMat?'background:rgba(26,92,58,.06)':'';
+    const mk = isSo?' <b style="color:var(--red)">◀初</b>':isTrung?' <b style="color:var(--gold)">◀中</b>':isMat?' <b style="color:var(--jade)">◀末</b>':'';
+    const isQN=(tti===0)?'<b style="color:var(--gold)"> ★QN</b>':'';
+    h+=`<tr style="${rs}">
+      <td>${CHI_ZH[i]} ${CHI[i]}</td>
+      <td>${CHI_ZH[tbc]} ${CHI[tbc]}${mk}${isQN}</td>
+      <td>${TT_ZH[tti]} ${TT_TEN[tti]}</td>
+      <td>${CHI_NH[tbc]}</td>
+      <td>${viThan(tbc,d.tietKhi)}</td>
+      <td>${tag}</td>
+      <td style="font-size:.8rem">${TT_DESC[tti]}</td>
+    </tr>`;
+  }
+  h+=`</table>`;
+  el.innerHTML=h;
+}
+
+// ── LUẬN GIẢI ────────────────────────────────────────────────
+function rLuanGiai(d){
+  const el=document.getElementById('r-luangiai');
+  const t=d.tam;
+  const nhCan=CAN_NH[d.canNgay], nhChi=CHI_NH[d.chiNgay];
+  const nhSo=CHI_NH[t.so], nhTrung=CHI_NH[t.trung], nhMat=CHI_NH[t.mat];
+  const tti_so=d.tt[t.so], tti_trung=d.tt[t.trung], tti_mat=d.tt[t.mat];
+  const ch_so=TT_CH[tti_so], ch_trung=TT_CH[tti_trung], ch_mat=TT_CH[tti_mat];
+
+  const catN=[ch_so,ch_trung,ch_mat].filter(x=>x==='c').length;
+  const hunN=[ch_so,ch_trung,ch_mat].filter(x=>x==='h').length;
+  const tongLuan = catN>=2 ? 'Thiên Tướng đa Cát — sự việc nhìn chung thuận lợi, quý nhân phù trợ.'
+    : hunN>=2 ? 'Thiên Tướng đa Hung — sự việc trắc trở, cần đề phòng tai họa.'
+    : 'Cát Hung xen lẫn — có thuận có nghịch, cần thận trọng từng bước.';
+  const ketQua = ch_mat==='c' ? 'Mạt Truyền Cát Tướng — kết cuộc tốt đẹp, viên mãn.'
+    : ch_mat==='h' ? 'Mạt Truyền Hung Tướng — kết cuộc không như ý, cần thận trọng.'
+    : 'Mạt Truyền Trung Tính — kết cuộc bình thường.';
+
+  // Chiều vận: Sơ→Trung→Mạt
+  const chieuST = quanHe(nhSo, nhTrung);
+  const chieuTM = quanHe(nhTrung, nhMat);
+  const chieuVan = (() => {
+    if(sinh(nhSo,nhTrung)&&sinh(nhTrung,nhMat)) return 'Tiến sinh — sự việc phát triển thuận lợi, thế lực tăng dần.';
+    if(khac(nhSo,nhTrung)&&khac(nhTrung,nhMat)) return 'Tiến khắc — áp lực liên tục, cần kiên định đối phó.';
+    if(sinh(nhTrung,nhSo)&&sinh(nhMat,nhTrung)) return 'Hồi sinh — ban đầu khó, dần được trợ giúp.';
+    return 'Biến hóa — sự việc diễn biến phức tạp, xem kỹ từng truyền.';
+  })();
+
+  let h=`<table class="ltable">
+    <tr><th>Hạng Mục</th><th>Luận Đoán</th></tr>
+    <tr><td>Can Ngày (Chủ)</td><td>${CAN[d.canNgay]}${CAN_ZH[d.canNgay]} · Ngũ Hành: <b>${nhCan}</b> · ${CAN_AD[d.canNgay]==='D'?'Dương':'Âm'} — Người chiêm / chủ sự</td></tr>
+    <tr><td>Chi Ngày (Khách)</td><td>${CHI[d.chiNgay]}${CHI_ZH[d.chiNgay]} · Ngũ Hành: <b>${nhChi}</b> — Việc chiêm / đối tượng</td></tr>
+    <tr><td>Sơ Truyền 初傳<br><small style="font-weight:400;color:var(--ink-light)">(Phát Dụng — Nhân)</small></td><td>
+      <b>${CHI[t.so]}${CHI_ZH[t.so]}</b> · ${nhSo} · ${TT_TEN[tti_so]} ${TT_ZH[tti_so]}
+      <span class="tag ${ch_so}">${ch_so==='c'?'Cát':ch_so==='h'?'Hung':'Trung'}</span><br>
+      Can↔Sơ: <b>${quanHe(nhCan,nhSo)}</b> | Vị Thần: ${viThan(t.so,d.tietKhi)}<br>
+      <span style="font-size:.82rem;color:var(--ink-light)">Nguyên nhân, khởi đầu. ${TT_DESC[tti_so]}</span>
+    </td></tr>
+    <tr><td>Trung Truyền 中傳<br><small style="font-weight:400;color:var(--ink-light)">(Dẫn Tòng — Hành)</small></td><td>
+      <b>${CHI[t.trung]}${CHI_ZH[t.trung]}</b> · ${nhTrung} · ${TT_TEN[tti_trung]} ${TT_ZH[tti_trung]}
+      <span class="tag ${ch_trung}">${ch_trung==='c'?'Cát':ch_trung==='h'?'Hung':'Trung'}</span><br>
+      Can↔Trung: <b>${quanHe(nhCan,nhTrung)}</b> | Vị Thần: ${viThan(t.trung,d.tietKhi)}<br>
+      Sơ→Trung: <b>${chieuST}</b><br>
+      <span style="font-size:.82rem;color:var(--ink-light)">Diễn biến quá trình. ${TT_DESC[tti_trung]}</span>
+    </td></tr>
+    <tr><td>Mạt Truyền 末傳<br><small style="font-weight:400;color:var(--ink-light)">(Quy Kế — Quả)</small></td><td>
+      <b>${CHI[t.mat]}${CHI_ZH[t.mat]}</b> · ${nhMat} · ${TT_TEN[tti_mat]} ${TT_ZH[tti_mat]}
+      <span class="tag ${ch_mat}">${ch_mat==='c'?'Cát':ch_mat==='h'?'Hung':'Trung'}</span><br>
+      Can↔Mạt: <b>${quanHe(nhCan,nhMat)}</b> | Vị Thần: ${viThan(t.mat,d.tietKhi)}<br>
+      Trung→Mạt: <b>${chieuTM}</b><br>
+      <span style="font-size:.82rem;color:var(--ink-light)">Kết quả cuối. ${TT_DESC[tti_mat]}</span>
+    </td></tr>
+    <tr><td>Chiều Vận Tam Truyền</td><td>${chieuVan}</td></tr>
+    <tr><td>Khóa Pháp</td><td><b>${t.kp}</b></td></tr>
+    <tr><td>Tổng Luận Cát Hung</td><td>${tongLuan}</td></tr>
+    <tr><td>Phán Đoán Kết Quả</td><td><b>${ketQua}</b></td></tr>
+  </table>`;
+  el.innerHTML=h;
+}
+
+// ── CHÚ THÍCH CỔ PHÁP ────────────────────────────────────────
+function rChuThich(d){
+  const el=document.getElementById('r-chuthich');
+  const TKTENS=['Lập Xuân','Vũ Thủy','Kinh Trập','Xuân Phân','Thanh Minh','Cốc Vũ',
+    'Lập Hạ','Tiểu Mãn','Mang Chủng','Hạ Chí','Tiểu Thử','Đại Thử',
+    'Lập Thu','Xử Thử','Bạch Lộ','Thu Phân','Hàn Lộ','Sương Giáng',
+    'Lập Đông','Tiểu Tuyết','Đại Tuyết','Đông Chí','Tiểu Hàn','Đại Hàn'];
+  el.innerHTML=`
+  <div class="note"><b>Thiên Bàn (天盤) — Cổ pháp chính xác:</b>
+    Nguyệt Tướng gia (加) Giờ Chiêm → Thiên Bàn xoay NGHỊCH chiều (Hợi→Tuất→Dậu...).
+    NT an tại Giờ trên Địa Bàn, các cung còn lại đi nghịch. Công thức:
+    <code>TB[i] = (NT + Giờ − i + 120) % 12</code>.
+    Nguyệt Tướng hiện tại: <b>${CHI[d.nt]}${CHI_ZH[d.nt]}</b> (${['Thần Hậu','Đại Cát','Công Tào','Thái Xung','Thiên Cương','Thái Ất','Thắng Quang','Tiểu Cát','Truyền Tống','Tòng Khôi','Hà Khôi','Đăng Minh'][d.nt]}).
+  </div>
+  <div class="note"><b>Quý Nhân (貴人) — Can ${CAN[d.canNgay]}:</b>
+    ${d.chieuMo===0?'Chiêu (ban ngày) → Quý Nhân tại':'Mộ (ban đêm) → Quý Nhân tại'}
+    <b>${CHI[d.qnChi]}${CHI_ZH[d.qnChi]}</b> trên Thiên Bàn.
+    Tìm DB có TB=${CHI_ZH[d.qnChi]} → cung Địa Bàn ${CHI_ZH[d.qnDB]}${CHI_ZH[d.qnDB]}.
+    ${d.chieuMo===0?'Chiêu → 12 Thiên Tướng xếp THUẬN từ đó.':'Mộ → 12 Thiên Tướng xếp NGHỊCH từ đó.'}
+  </div>
+  <div class="note"><b>Tiết Khí hiện tại:</b> <b>${TKTENS[d.tietKhi]}</b>
+    → Mùa: ${d.tietKhi<6?'Xuân 🌱':d.tietKhi<12?'Hạ ☀️':d.tietKhi<18?'Thu 🍂':'Đông ❄️'}
+    → Vị thần hành Mộc: ${['Vượng','Tướng','Hưu','Tù','Tử'][d.tietKhi<6?0:d.tietKhi<12?2:d.tietKhi<18?4:1]}.
+  </div>
+  <div class="note"><b>Nguồn cổ pháp:</b>
+    《大六壬指南》(Đại Lục Nhâm Chỉ Nam) · 《六壬大全》(Lục Nhâm Đại Toàn) ·
+    《六壬粹言》(Lục Nhâm Tụy Ngôn) · 《壬學瑣記》(Nhâm Học Tỏa Ký).
+    Thuật toán: Thiên Bàn nghịch chiều, Tứ Khóa theo Ký Cung chuẩn, Tam Truyền đủ 6 Khóa Pháp,
+    An Thiên Tướng Chiêu thuận/Mộ nghịch, Vị Thần Ngũ Hành đủ 5 cấp theo mùa.
+  </div>`;
+}
+
+// ── SAO CHÉP KẾT QUẢ ─────────────────────────────────────────
+function saoCopy(){
+  if(!_D) return;
+  const d=_D;
+  const tk=d.tk.map((k,i)=>{
+    const nht=CHI_NH[k.t],nhd=CHI_NH[k.d];
+    const rel=khac(nhd,nht)?'Hạ khắc T↑':khac(nht,nhd)?'T khắc Hạ↓':'Không khắc';
+    return `  ${k.label}: ${CHI[k.t]}${CHI_ZH[k.t]} / ${CHI[k.d]}${CHI_ZH[k.d]} [${rel}] — ${TT_TEN[d.tt[k.d]]}`;
+  }).join('\n');
+  const TKTEN=['Lập Xuân','Vũ Thủy','Kinh Trập','Xuân Phân','Thanh Minh','Cốc Vũ',
+    'Lập Hạ','Tiểu Mãn','Mang Chủng','Hạ Chí','Tiểu Thử','Đại Thử',
+    'Lập Thu','Xử Thử','Bạch Lộ','Thu Phân','Hàn Lộ','Sương Giáng',
+    'Lập Đông','Tiểu Tuyết','Đại Tuyết','Đông Chí','Tiểu Hàn','Đại Hàn'];
+  const TNTEN=['Thượng Nguyên','Trung Nguyên','Hạ Nguyên'];
+  const tn=+document.getElementById('tam-nguyen').value;
+  const tb12=Array.from({length:12},(_,i)=>{
+    const tbc=d.tb[i],tti=d.tt[i];
+    const mk=i===d.tam.so?' ◀Sơ':i===d.tam.trung?' ◀Trung':i===d.tam.mat?' ◀Mạt':'';
+    const ch=TT_CH[tti]==='c'?'Cát':TT_CH[tti]==='h'?'Hung':'Trung';
+    return `  ĐB:${CHI[i]}${CHI_ZH[i]} | TB:${CHI[tbc]}${CHI_ZH[tbc]}${mk} | ${TT_TEN[tti]}${TT_ZH[tti]} | ${ch} | ${viThan(tbc,d.tietKhi)}`;
+  }).join('\n');
+  const txt=`================================================================
+六壬大遁 — LỤC NHÂM ĐẠI ĐỘN (Cổ Pháp)
+================================================================
+【NHẬP】
+  Năm   : ${CAN[d.canNam]}${CAN_ZH[d.canNam]} ${CHI[d.chiNam]}${CHI_ZH[d.chiNam]}
+  Tháng : ${CHI[d.chiThang]}${CHI_ZH[d.chiThang]}
+  Ngày  : ${CAN[d.canNgay]}${CAN_ZH[d.canNgay]} ${CHI[d.chiNgay]}${CHI_ZH[d.chiNgay]}
+  Giờ   : ${CHI[d.chiGio]}${CHI_ZH[d.chiGio]}
+  NT    : ${CHI[d.nt]}${CHI_ZH[d.nt]}   Tiết Khí: ${TKTEN[d.tietKhi]}
+  Nguyên: ${TNTEN[tn]}   Chiêu/Mộ: ${d.chieuMo===0?'Chiêu (ngày)':'Mộ (đêm)'}
+  QN    : ${CHI[d.qnChi]}${CHI_ZH[d.qnChi]}
+
+【KHÓA PHÁP】 ${d.tam.kp}
+
+【TỨ KHÓA】
+${tk}
+
+【TAM TRUYỀN】
+  Sơ  (初): ${CHI[d.tam.so]}${CHI_ZH[d.tam.so]}  ${CHI_NH[d.tam.so]}  ${TT_TEN[d.tt[d.tam.so]]}  ${viThan(d.tam.so,d.tietKhi)}
+  Trung(中): ${CHI[d.tam.trung]}${CHI_ZH[d.tam.trung]}  ${CHI_NH[d.tam.trung]}  ${TT_TEN[d.tt[d.tam.trung]]}  ${viThan(d.tam.trung,d.tietKhi)}
+  Mạt  (末): ${CHI[d.tam.mat]}${CHI_ZH[d.tam.mat]}  ${CHI_NH[d.tam.mat]}  ${TT_TEN[d.tt[d.tam.mat]]}  ${viThan(d.tam.mat,d.tietKhi)}
+
+【12 THIÊN TƯỚNG】
+${tb12}
+================================================================`;
+  navigator.clipboard.writeText(txt).then(()=>{
+    const btn=document.getElementById('btn-copy');
+    const ok=document.getElementById('copy-ok');
+    btn.classList.add('ok'); btn.textContent='✓ Đã Sao Chép!';
+    ok.style.display='inline';
+    setTimeout(()=>{ btn.classList.remove('ok'); btn.textContent='📋 Sao Chép Kết Quả'; ok.style.display='none'; },2500);
+  }).catch(()=>{
+    const ta=document.createElement('textarea');
+    ta.value=txt; ta.style.cssText='position:fixed;opacity:0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta); alert('Đã sao chép!');
+  });
+}
+
+function resetForm(){
+  document.getElementById('result-area').classList.remove('vis');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
