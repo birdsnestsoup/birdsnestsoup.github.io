@@ -130,7 +130,97 @@
   .tok-4 { background: #f8d7da; border-bottom: 2px solid #dc3545; color: #721c24; }
   .tok-space { opacity: 0.3; font-size: 0.72rem; color: #aaa; padding: 1px 3px; }
 
-  /* BREAKDOWN TABLE */
+  /* ===================== ABC PANEL ===================== */
+  .abc-wrap {
+    margin-top: 20px;
+    opacity: 0; transform: translateY(6px);
+    transition: opacity 0.4s, transform 0.4s;
+  }
+  .abc-wrap.show { opacity: 1; transform: translateY(0); }
+
+  .abc-panel {
+    background: linear-gradient(135deg, rgba(26,16,8,0.06) 0%, rgba(154,122,42,0.1) 100%);
+    border: 1px solid var(--aged2);
+    border-radius: 6px;
+    padding: 18px 20px 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .abc-panel::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, #6b4c1e, #c9a84c, #f0d880, #c9a84c, #6b4c1e);
+  }
+  .abc-panel-title {
+    font-size: 0.7rem; letter-spacing: 0.28em; color: var(--gold);
+    text-transform: uppercase; margin-bottom: 14px; text-align: center;
+  }
+
+  /* Split row */
+  .abc-split {
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px; margin-bottom: 14px; flex-wrap: wrap;
+    font-size: 0.78rem; color: #6a4a20; letter-spacing: 0.1em;
+  }
+  .abc-split-box {
+    background: rgba(255,255,255,0.5);
+    border: 1px solid var(--aged2); border-radius: 4px;
+    padding: 4px 12px; text-align: center;
+  }
+  .abc-split-lbl { font-size: 0.62rem; color: var(--gold); letter-spacing: 0.2em; text-transform: uppercase; }
+  .abc-split-val { font-family: 'Ma Shan Zheng', serif; font-size: 1.45rem; color: var(--ink); line-height: 1.2; }
+  .abc-arrow { color: var(--gold); font-size: 1rem; }
+
+  /* ABC cards */
+  .abc-cards {
+    display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+  }
+  .abc-card {
+    flex: 1; min-width: 80px; max-width: 140px;
+    background: rgba(255,255,255,0.55);
+    border: 1px solid var(--aged2); border-radius: 6px;
+    padding: 12px 10px 10px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .abc-card-letter {
+    font-family: 'Ma Shan Zheng', serif;
+    font-size: 2rem; color: var(--ink); line-height: 1;
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.6);
+  }
+  .abc-card-val {
+    font-family: 'Ma Shan Zheng', serif;
+    font-size: 2.8rem; line-height: 1.1;
+    font-weight: bold;
+  }
+  .abc-card-val.card-a { color: #b5180e; }
+  .abc-card-val.card-b { color: #1a5276; }
+  .abc-card-val.card-c { color: #2e7d32; }
+  .abc-card-formula {
+    font-size: 0.62rem; color: #8a6a30; letter-spacing: 0.08em;
+    margin-top: 4px; line-height: 1.5;
+    min-height: 28px;
+  }
+  .abc-card-divider {
+    width: 40px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--aged2), transparent);
+    margin: 6px auto;
+  }
+
+  /* step trace */
+  .abc-trace {
+    margin-top: 14px;
+    background: rgba(255,255,255,0.3);
+    border: 1px solid var(--aged2); border-radius: 4px;
+    padding: 10px 14px;
+    font-size: 0.76rem; color: #5a3e18; line-height: 2;
+    letter-spacing: 0.05em;
+  }
+  .abc-trace span { font-weight: 600; color: var(--ink); }
+  .abc-trace .step { display: block; }
+
+  /* ===================== BREAKDOWN TABLE ===================== */
   .breakdown-wrap {
     margin-top: 20px;
     opacity: 0; transform: translateY(6px);
@@ -180,6 +270,7 @@
     .scroll-body { padding: 24px 18px 28px; }
     .total-number { font-size: 2.4rem; }
     .breakdown-table { font-size: 0.76rem; }
+    .abc-card-val { font-size: 2.2rem; }
   }
 </style>
 </head>
@@ -205,6 +296,44 @@
     </div>
 
     <div class="token-strip" id="tokenStrip"><span style="color:#b8a070;font-style:italic;font-size:0.82rem;">Các ký tự sẽ hiện ở đây…</span></div>
+
+    <!-- ===== ABC PANEL ===== -->
+    <div class="abc-wrap" id="abcWrap">
+      <div class="divider" style="margin:18px 0 10px;"><span class="divider-symbol" style="font-size:0.75rem;">Phân Tích A · B · C</span></div>
+      <div class="abc-panel">
+        <div class="abc-panel-title">Tính Chỉ Số A — B — C</div>
+
+        <!-- split Tn/2 -->
+        <div class="abc-split" id="abcSplit">
+          <!-- filled by JS -->
+        </div>
+
+        <!-- cards -->
+        <div class="abc-cards">
+          <div class="abc-card">
+            <div class="abc-card-letter">A</div>
+            <div class="abc-card-divider"></div>
+            <div class="abc-card-val card-a" id="cardA">—</div>
+            <div class="abc-card-formula" id="fmA"></div>
+          </div>
+          <div class="abc-card">
+            <div class="abc-card-letter">B</div>
+            <div class="abc-card-divider"></div>
+            <div class="abc-card-val card-b" id="cardB">—</div>
+            <div class="abc-card-formula" id="fmB"></div>
+          </div>
+          <div class="abc-card">
+            <div class="abc-card-letter">C</div>
+            <div class="abc-card-divider"></div>
+            <div class="abc-card-val card-c" id="cardC">—</div>
+            <div class="abc-card-formula" id="fmC"></div>
+          </div>
+        </div>
+
+        <!-- step-by-step trace -->
+        <div class="abc-trace" id="abcTrace"></div>
+      </div>
+    </div>
 
     <div class="breakdown-wrap" id="breakdownWrap">
       <div class="divider" style="margin:18px 0 10px;"><span class="divider-symbol" style="font-size:0.75rem;">Bảng Phân Loại</span></div>
@@ -237,7 +366,7 @@
 
 <script>
 // ============================================================
-// STROKE MAP — số nét cơ bản cho mỗi chữ cái Latin
+// STROKE MAP
 // ============================================================
 const baseStrokes = {
   a:2, b:2, c:1, d:2, e:1, f:3, g:2, h:2, i:2, j:2,
@@ -245,43 +374,26 @@ const baseStrokes = {
   u:1, v:1, w:1, x:2, y:2, z:1
 };
 
-// Mũ/phụ âm đặc biệt — nét gốc (chưa cộng dấu thanh)
 const specialBase = {
   'â':3, 'ă':3, 'ê':2, 'ô':2, 'ơ':2, 'ư':2, 'đ':3
 };
 
-// Dấu thanh → cộng thêm 1 nét vào nét gốc
-// Map từ ký tự có dấu → chữ gốc (â/ă/ê/ô/ơ/ư) hoặc chữ Latin thường
 const toneToBase = {
-  // a
   'á':'a','à':'a','ả':'a','ã':'a','ạ':'a',
-  // ă
   'ắ':'ă','ằ':'ă','ẳ':'ă','ẵ':'ă','ặ':'ă',
-  // â
   'ấ':'â','ầ':'â','ẩ':'â','ẫ':'â','ậ':'â',
-  // e
   'é':'e','è':'e','ẻ':'e','ẽ':'e','ẹ':'e',
-  // ê
   'ế':'ê','ề':'ê','ể':'ê','ễ':'ê','ệ':'ê',
-  // i
   'í':'i','ì':'i','ỉ':'i','ĩ':'i','ị':'i',
-  // o
   'ó':'o','ò':'o','ỏ':'o','õ':'o','ọ':'o',
-  // ô
   'ố':'ô','ồ':'ô','ổ':'ô','ỗ':'ô','ộ':'ô',
-  // ơ
   'ớ':'ơ','ờ':'ơ','ở':'ơ','ỡ':'ơ','ợ':'ơ',
-  // u
   'ú':'u','ù':'u','ủ':'u','ũ':'u','ụ':'u',
-  // ư
   'ứ':'ư','ừ':'ư','ử':'ư','ữ':'ư','ự':'ư',
-  // y
   'ý':'y','ỳ':'y','ỷ':'y','ỹ':'y','ỵ':'y',
-  // d + dấu (đ handled separately)
   'đ':'đ'
 };
 
-// Ký tự đặc biệt
 const specialStrokes = {
   ':':2, '!':2, '?':2, ';':2, '%':3, '÷':3,
   '^':1, '&':1, '#':4, '*':4, '@':2, '+':2,
@@ -289,33 +401,67 @@ const specialStrokes = {
 };
 
 // ============================================================
-// HÀM TÍNH SỐ NÉT CHO 1 KÝ TỰ
+// STROKE CALC
 // ============================================================
 function strokesFor(ch) {
   const lo = ch.toLowerCase();
-
-  // Ký tự đặc biệt
   if (specialStrokes[ch] !== undefined) return specialStrokes[ch];
-
-  // Ký tự có dấu thanh (toneToBase)
   if (toneToBase[lo] !== undefined) {
     const base = toneToBase[lo];
     const baseVal = specialBase[base] !== undefined ? specialBase[base] : (baseStrokes[base] || 0);
-    return baseVal + 1; // cộng 1 cho dấu thanh
+    return baseVal + 1;
   }
-
-  // Ký tự đặc biệt không dấu (â ă ê ô ơ ư đ không dấu)
   if (specialBase[lo] !== undefined) return specialBase[lo];
-
-  // Chữ Latin thường/hoa
   if (baseStrokes[lo] !== undefined) return baseStrokes[lo];
-
-  // Số
   if (ch >= '0' && ch <= '9') return 1;
-
-  return 0; // bỏ qua các ký tự không xác định
+  return 0;
 }
 
+// ============================================================
+// ABC CALCULATION
+// ============================================================
+/**
+ * Chia lấy dư theo mod, nhưng nếu dư = 0 => kết quả = divisor
+ */
+function modNonZero(num, divisor) {
+  const r = num % divisor;
+  return r === 0 ? divisor : r;
+}
+
+function calcABC(Tn) {
+  // Bước 1: chia đôi Tn
+  const isEven = Tn % 2 === 0;
+  const An_raw = Math.floor(Tn / 2);       // A gốc (trước mod 8)
+  const Bn_raw = isEven ? An_raw : An_raw + 1; // B gốc
+
+  // Bước 2: A = An_raw mod 8 (0→8), B = Bn_raw mod 8 (0→8)
+  const A = modNonZero(An_raw, 8);
+  const B = modNonZero(Bn_raw, 8);
+
+  // Bước 3: C = Tn mod 6 (0→6)
+  const C = modNonZero(Tn, 6);
+
+  // Công thức hiển thị
+  const Adiv = Math.floor(An_raw / 8);
+  const Arem = An_raw % 8;
+  const Bdiv = Math.floor(Bn_raw / 8);
+  const Brem = Bn_raw % 8;
+  const Cdiv = Math.floor(Tn / 6);
+  const Crem = Tn % 6;
+
+  return {
+    isEven,
+    An_raw, Bn_raw,
+    A, B, C,
+    Adiv, Arem,
+    Bdiv, Brem,
+    Cdiv, Crem
+  };
+}
+
+// ============================================================
+// RENDER HELPERS
+// ============================================================
 function strokeClass(n) {
   if (n === 1) return 'tok-1';
   if (n === 2) return 'tok-2';
@@ -330,11 +476,11 @@ function rowBg(n) {
 }
 
 // ============================================================
-// RENDER
+// ANALYZE
 // ============================================================
 function analyze(text) {
   let total = 0;
-  const freq = {}; // char → { strokes, count }
+  const freq = {};
   const tokenHTML = [];
 
   for (const ch of text) {
@@ -343,10 +489,9 @@ function analyze(text) {
       continue;
     }
     const n = strokesFor(ch);
-    if (n === 0) continue; // skip unknown
+    if (n === 0) continue;
     total += n;
 
-    const key = ch.toLowerCase() === ch ? ch : ch; // keep original for display
     const normKey = ch;
     if (!freq[normKey]) freq[normKey] = { strokes: n, count: 0, display: ch };
     freq[normKey].count++;
@@ -357,6 +502,9 @@ function analyze(text) {
   return { total, freq, tokenHTML };
 }
 
+// ============================================================
+// MAIN RENDER
+// ============================================================
 function render() {
   const text = document.getElementById('inp').value;
   const { total, freq, tokenHTML } = analyze(text);
@@ -372,6 +520,15 @@ function render() {
     strip.innerHTML = tokenHTML.join('');
   }
 
+  // ABC panel
+  const abcWrap = document.getElementById('abcWrap');
+  if (total === 0) {
+    abcWrap.classList.remove('show');
+  } else {
+    abcWrap.classList.add('show');
+    renderABC(total);
+  }
+
   // Breakdown table
   const wrap = document.getElementById('breakdownWrap');
   const tbody = document.getElementById('breakdownBody');
@@ -384,7 +541,6 @@ function render() {
   }
   wrap.classList.add('show');
 
-  // Sort by total strokes desc, then alpha
   keys.sort((a,b) => {
     const da = freq[a].strokes * freq[a].count;
     const db = freq[b].strokes * freq[b].count;
@@ -417,6 +573,94 @@ function render() {
       <td>${grandCount} ký tự</td>
       <td>${grandTotal} nét</td>
     </tr>`;
+}
+
+// ============================================================
+// RENDER ABC SECTION
+// ============================================================
+function renderABC(Tn) {
+  const r = calcABC(Tn);
+
+  // Split display
+  const splitEl = document.getElementById('abcSplit');
+  if (r.isEven) {
+    splitEl.innerHTML = `
+      <div class="abc-split-box">
+        <div class="abc-split-lbl">Tổng (Tn)</div>
+        <div class="abc-split-val">${Tn}</div>
+      </div>
+      <span class="abc-arrow">÷ 2 =</span>
+      <div class="abc-split-box">
+        <div class="abc-split-lbl">An (= Bn)</div>
+        <div class="abc-split-val">${r.An_raw}</div>
+      </div>
+      <span style="font-size:0.72rem;color:#8a6a30;">(chia đều)</span>
+    `;
+  } else {
+    splitEl.innerHTML = `
+      <div class="abc-split-box">
+        <div class="abc-split-lbl">Tổng (Tn)</div>
+        <div class="abc-split-val">${Tn}</div>
+      </div>
+      <span class="abc-arrow">÷ 2</span>
+      <div class="abc-split-box">
+        <div class="abc-split-lbl">An</div>
+        <div class="abc-split-val">${r.An_raw}</div>
+      </div>
+      <span class="abc-arrow">/</span>
+      <div class="abc-split-box">
+        <div class="abc-split-lbl">Bn</div>
+        <div class="abc-split-val">${r.Bn_raw}</div>
+      </div>
+      <span style="font-size:0.72rem;color:#8a6a30;">(lẻ, B nhiều hơn 1)</span>
+    `;
+  }
+
+  // Cards
+  document.getElementById('cardA').textContent = r.A;
+  document.getElementById('cardB').textContent = r.B;
+  document.getElementById('cardC').textContent = r.C;
+
+  // Formulas under cards
+  const aRemText = r.Arem === 0 ? `dư 0 → 8` : `dư ${r.Arem}`;
+  const bRemText = r.Brem === 0 ? `dư 0 → 8` : `dư ${r.Brem}`;
+  const cRemText = r.Crem === 0 ? `dư 0 → 6` : `dư ${r.Crem}`;
+
+  document.getElementById('fmA').innerHTML =
+    `${r.An_raw} ÷ 8 = ${r.Adiv}<br>${aRemText}`;
+  document.getElementById('fmB').innerHTML =
+    `${r.Bn_raw} ÷ 8 = ${r.Bdiv}<br>${bRemText}`;
+  document.getElementById('fmC').innerHTML =
+    `${Tn} ÷ 6 = ${r.Cdiv}<br>${cRemText}`;
+
+  // Trace steps
+  const splitDesc = r.isEven
+    ? `${Tn} ÷ 2 = ${r.An_raw} (số nguyên) → An = Bn = <span>${r.An_raw}</span>`
+    : `${Tn} ÷ 2 không nguyên → An = <span>${r.An_raw}</span>, Bn = <span>${r.Bn_raw}</span> (B nhiều hơn A một đơn vị)`;
+
+  const aTrace = r.Arem === 0
+    ? `${r.An_raw} ÷ 8 = ${r.Adiv} dư 0 → <span>A = 8</span>`
+    : `${r.An_raw} ÷ 8 = ${r.Adiv} dư <span>${r.Arem}</span> → <span>A = ${r.A}</span>`;
+
+  const bTrace = r.Brem === 0
+    ? `${r.Bn_raw} ÷ 8 = ${r.Bdiv} dư 0 → <span>B = 8</span>`
+    : `${r.Bn_raw} ÷ 8 = ${r.Bdiv} dư <span>${r.Brem}</span> → <span>B = ${r.B}</span>`;
+
+  const cTrace = r.Crem === 0
+    ? `${Tn} ÷ 6 = ${r.Cdiv} dư 0 → <span>C = 6</span>`
+    : `${Tn} ÷ 6 = ${r.Cdiv} dư <span>${r.Crem}</span> → <span>C = ${r.C}</span>`;
+
+  document.getElementById('abcTrace').innerHTML = `
+    <span class="step">① Chia đôi Tn: ${splitDesc}</span>
+    <span class="step">② Tính A: ${aTrace}</span>
+    <span class="step">③ Tính B: ${bTrace}</span>
+    <span class="step">④ Tính C: ${cTrace}</span>
+    <span class="step" style="margin-top:4px;font-weight:700;color:var(--ink);">
+      Kết quả: A = <span style="color:#b5180e">${r.A}</span> &nbsp;·&nbsp;
+      B = <span style="color:#1a5276">${r.B}</span> &nbsp;·&nbsp;
+      C = <span style="color:#2e7d32">${r.C}</span>
+    </span>
+  `;
 }
 
 document.getElementById('inp').addEventListener('input', render);
