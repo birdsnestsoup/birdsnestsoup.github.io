@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đếm Số Nét</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1008;
+    --paper: #f5edd6;
+    --aged: #e8d9b0;
+    --aged2: #d4c28a;
+    --red: #b5180e;
+    --gold: #9a7a2a;
+    --shadow: rgba(26,16,8,0.18);
+    --green: #2e7d32;
+    --orange: #f57f17;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 24px 12px 40px;
+    font-family: 'Noto Serif', serif;
+    position: relative;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 20%, rgba(120,80,20,0.18) 0%, transparent 70%),
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.02) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.02) 40px);
+    pointer-events: none; z-index: 0;
+  }
+  .scroll-wrap {
+    position: relative; z-index: 1;
+    width: 100%; max-width: 680px;
+  }
+  .scroll-cap {
+    height: 18px;
+    background: linear-gradient(90deg, #6b4c1e 0%, #c9a84c 30%, #f0d880 50%, #c9a84c 70%, #6b4c1e 100%);
+    border-radius: 6px 6px 0 0;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.3);
+  }
+  .scroll-cap.bottom { border-radius: 0 0 6px 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+  .scroll-body {
+    background: linear-gradient(160deg, #f7eedb 0%, #eedfc0 40%, #e5d3a8 100%);
+    border-left: 6px solid #b8923a;
+    border-right: 6px solid #b8923a;
+    padding: 32px 36px 36px;
+    box-shadow: inset 0 0 40px rgba(140,90,20,0.12), 0 4px 24px rgba(0,0,0,0.4);
+    position: relative;
+  }
+  .scroll-body::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.5; pointer-events: none;
+  }
+  .header { text-align: center; margin-bottom: 24px; position: relative; }
+  .title-han { font-family: 'Ma Shan Zheng', serif; font-size: 2.6rem; color: var(--ink); letter-spacing: 0.15em; line-height: 1; text-shadow: 1px 1px 0 rgba(255,255,255,0.4); }
+  .title-viet { font-size: 0.78rem; color: var(--gold); letter-spacing: 0.4em; text-transform: uppercase; margin-top: 4px; }
+  .divider { display: flex; align-items: center; gap: 10px; margin: 14px 0; }
+  .divider::before,.divider::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
+  .divider-symbol { color:var(--gold); font-size:1.1rem; }
+  .label { font-size: 0.72rem; letter-spacing: 0.25em; color: var(--gold); text-transform: uppercase; margin-bottom: 6px; display: block; }
+  textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.35);
+    border: 1px solid var(--aged2);
+    border-radius: 3px;
+    padding: 12px 14px;
+    font-family: 'Noto Serif', serif;
+    font-size: 0.95rem; color: var(--ink);
+    resize: vertical; min-height: 100px; line-height: 1.7;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.06);
+  }
+  textarea:focus { border-color: var(--gold); box-shadow: inset 0 2px 6px rgba(0,0,0,0.06), 0 0 0 2px rgba(154,122,42,0.15); }
+  textarea::placeholder { color: #b8a070; font-style: italic; }
+
+  /* TOTAL BADGE */
+  .total-badge {
+    display: flex; align-items: center; justify-content: center;
+    gap: 16px; margin: 18px 0 0;
+    background: linear-gradient(135deg, rgba(26,16,8,0.07) 0%, rgba(154,122,42,0.08) 100%);
+    border: 1px solid var(--aged2); border-radius: 5px;
+    padding: 14px 20px;
+  }
+  .total-label { font-size: 0.78rem; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; }
+  .total-number {
+    font-family: 'Ma Shan Zheng', serif;
+    font-size: 3.2rem; color: var(--ink); line-height: 1;
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+    transition: all 0.3s;
+  }
+  .total-unit { font-size: 0.75rem; color: #6a4a20; letter-spacing: 0.15em; }
+
+  /* LIVE TOKEN STRIP */
+  .token-strip {
+    margin-top: 14px;
+    background: rgba(255,255,255,0.28);
+    border: 1px solid var(--aged2); border-radius: 4px;
+    padding: 10px 12px;
+    min-height: 40px; line-height: 2.2; word-break: break-all;
+    font-size: 0.9rem;
+  }
+  .tok {
+    display: inline-block; padding: 1px 5px; margin: 2px;
+    border-radius: 3px; cursor: default; font-size: 0.86rem;
+    position: relative;
+  }
+  .tok::after {
+    content: attr(data-n);
+    position: absolute; top: -7px; right: -2px;
+    font-size: 0.52rem; color: #6a4a20; font-weight: bold;
+    background: rgba(255,255,255,0.7); border-radius: 2px;
+    padding: 0 2px; line-height: 1.4;
+  }
+  .tok-1 { background: #d4edda; border-bottom: 2px solid #28a745; color: #155724; }
+  .tok-2 { background: #ffeeba; border-bottom: 2px solid #ffc107; color: #856404; }
+  .tok-3 { background: #cce5ff; border-bottom: 2px solid #0d6efd; color: #004085; }
+  .tok-4 { background: #f8d7da; border-bottom: 2px solid #dc3545; color: #721c24; }
+  .tok-space { opacity: 0.3; font-size: 0.72rem; color: #aaa; padding: 1px 3px; }
+
+  /* BREAKDOWN TABLE */
+  .breakdown-wrap {
+    margin-top: 20px;
+    opacity: 0; transform: translateY(6px);
+    transition: opacity 0.4s, transform 0.4s;
+  }
+  .breakdown-wrap.show { opacity: 1; transform: translateY(0); }
+  .breakdown-title { font-size: 0.72rem; letter-spacing: 0.25em; color: var(--gold); text-transform: uppercase; margin-bottom: 8px; }
+
+  .breakdown-table {
+    width: 100%; border-collapse: collapse;
+    font-size: 0.82rem; color: var(--ink);
+  }
+  .breakdown-table thead tr {
+    background: rgba(154,122,42,0.15);
+  }
+  .breakdown-table th {
+    padding: 7px 10px; text-align: center;
+    font-size: 0.7rem; letter-spacing: 0.12em;
+    color: var(--gold); font-weight: 600; text-transform: uppercase;
+    border-bottom: 1px solid var(--aged2);
+  }
+  .breakdown-table th:first-child { text-align: left; }
+  .breakdown-table td {
+    padding: 5px 10px; text-align: center;
+    border-bottom: 1px solid rgba(212,194,138,0.35);
+    font-family: 'Noto Serif', serif;
+  }
+  .breakdown-table td:first-child { text-align: left; font-size: 1.05rem; letter-spacing: 0.08em; }
+  .breakdown-table tbody tr:hover { background: rgba(255,255,255,0.25); }
+  .breakdown-table tfoot td {
+    font-weight: 700; color: var(--ink);
+    border-top: 2px solid var(--aged2);
+    padding-top: 8px; background: rgba(154,122,42,0.08);
+  }
+  .char-badge {
+    display: inline-block; padding: 1px 7px; border-radius: 3px;
+    font-size: 1.05rem; font-weight: bold;
+  }
+
+  /* LEGEND */
+  .legend { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px; font-size: 0.7rem; color: #6a4a20; }
+  .ldot { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: middle; }
+
+  .footnote { text-align: center; font-size: 0.64rem; color: #a08050; margin-top: 20px; letter-spacing: 0.12em; }
+
+  @media (max-width: 480px) {
+    .scroll-body { padding: 24px 18px 28px; }
+    .total-number { font-size: 2.4rem; }
+    .breakdown-table { font-size: 0.76rem; }
+  }
+</style>
+</head>
+<body>
+<div class="scroll-wrap">
+  <div class="scroll-cap top"></div>
+  <div class="scroll-body">
+    <div class="header">
+      <div class="title-han">筆 畫</div>
+      <div class="title-viet">Đếm Số Nét · Phân Tích Ký Tự</div>
+      <div class="divider"><span class="divider-symbol">✦</span></div>
+    </div>
+
+    <label class="label" for="inp">Nhập Văn Bản</label>
+    <textarea id="inp" placeholder="Gõ văn bản vào đây… (tiếng Việt, tiếng Anh, ký tự đặc biệt)"></textarea>
+
+    <div class="total-badge">
+      <div>
+        <div class="total-label">Tổng Số Nét</div>
+        <div class="total-unit">( strokes )</div>
+      </div>
+      <div class="total-number" id="totalNum">0</div>
+    </div>
+
+    <div class="token-strip" id="tokenStrip"><span style="color:#b8a070;font-style:italic;font-size:0.82rem;">Các ký tự sẽ hiện ở đây…</span></div>
+
+    <div class="breakdown-wrap" id="breakdownWrap">
+      <div class="divider" style="margin:18px 0 10px;"><span class="divider-symbol" style="font-size:0.75rem;">Bảng Phân Loại</span></div>
+      <div class="breakdown-title">Chi Tiết Từng Ký Tự</div>
+      <table class="breakdown-table" id="breakdownTable">
+        <thead>
+          <tr>
+            <th>Ký Tự</th>
+            <th>Số Nét / Ký Tự</th>
+            <th>Số Lần Xuất Hiện</th>
+            <th>Tổng Nét</th>
+          </tr>
+        </thead>
+        <tbody id="breakdownBody"></tbody>
+        <tfoot id="breakdownFoot"></tfoot>
+      </table>
+
+      <div class="legend">
+        <span><span class="ldot" style="background:#d4edda;border-bottom:2px solid #28a745;"></span>1 nét</span>
+        <span><span class="ldot" style="background:#ffeeba;border-bottom:2px solid #ffc107;"></span>2 nét</span>
+        <span><span class="ldot" style="background:#cce5ff;border-bottom:2px solid #0d6efd;"></span>3 nét</span>
+        <span><span class="ldot" style="background:#f8d7da;border-bottom:2px solid #dc3545;"></span>4 nét</span>
+      </div>
+    </div>
+
+    <div class="footnote">Logic đếm nét theo quy ước toneMap · Chữ hoa & thường tính như nhau</div>
+  </div>
+  <div class="scroll-cap bottom"></div>
+</div>
+
+<script>
+// ============================================================
+// STROKE MAP — số nét cơ bản cho mỗi chữ cái Latin
+// ============================================================
+const baseStrokes = {
+  a:2, b:2, c:1, d:2, e:1, f:3, g:2, h:2, i:2, j:2,
+  k:3, l:1, m:3, n:2, o:1, p:2, q:2, r:2, s:1, t:2,
+  u:1, v:1, w:1, x:2, y:2, z:1
+};
+
+// Mũ/phụ âm đặc biệt — nét gốc (chưa cộng dấu thanh)
+const specialBase = {
+  'â':3, 'ă':3, 'ê':2, 'ô':2, 'ơ':2, 'ư':2, 'đ':3
+};
+
+// Dấu thanh → cộng thêm 1 nét vào nét gốc
+// Map từ ký tự có dấu → chữ gốc (â/ă/ê/ô/ơ/ư) hoặc chữ Latin thường
+const toneToBase = {
+  // a
+  'á':'a','à':'a','ả':'a','ã':'a','ạ':'a',
+  // ă
+  'ắ':'ă','ằ':'ă','ẳ':'ă','ẵ':'ă','ặ':'ă',
+  // â
+  'ấ':'â','ầ':'â','ẩ':'â','ẫ':'â','ậ':'â',
+  // e
+  'é':'e','è':'e','ẻ':'e','ẽ':'e','ẹ':'e',
+  // ê
+  'ế':'ê','ề':'ê','ể':'ê','ễ':'ê','ệ':'ê',
+  // i
+  'í':'i','ì':'i','ỉ':'i','ĩ':'i','ị':'i',
+  // o
+  'ó':'o','ò':'o','ỏ':'o','õ':'o','ọ':'o',
+  // ô
+  'ố':'ô','ồ':'ô','ổ':'ô','ỗ':'ô','ộ':'ô',
+  // ơ
+  'ớ':'ơ','ờ':'ơ','ở':'ơ','ỡ':'ơ','ợ':'ơ',
+  // u
+  'ú':'u','ù':'u','ủ':'u','ũ':'u','ụ':'u',
+  // ư
+  'ứ':'ư','ừ':'ư','ử':'ư','ữ':'ư','ự':'ư',
+  // y
+  'ý':'y','ỳ':'y','ỷ':'y','ỹ':'y','ỵ':'y',
+  // d + dấu (đ handled separately)
+  'đ':'đ'
+};
+
+// Ký tự đặc biệt
+const specialStrokes = {
+  ':':2, '!':2, '?':2, ';':2, '%':3, '÷':3,
+  '^':1, '&':1, '#':4, '*':4, '@':2, '+':2,
+  '-':1, '=':2, '(':1, ')':1, '.':1, ',':1
+};
+
+// ============================================================
+// HÀM TÍNH SỐ NÉT CHO 1 KÝ TỰ
+// ============================================================
+function strokesFor(ch) {
+  const lo = ch.toLowerCase();
+
+  // Ký tự đặc biệt
+  if (specialStrokes[ch] !== undefined) return specialStrokes[ch];
+
+  // Ký tự có dấu thanh (toneToBase)
+  if (toneToBase[lo] !== undefined) {
+    const base = toneToBase[lo];
+    const baseVal = specialBase[base] !== undefined ? specialBase[base] : (baseStrokes[base] || 0);
+    return baseVal + 1; // cộng 1 cho dấu thanh
+  }
+
+  // Ký tự đặc biệt không dấu (â ă ê ô ơ ư đ không dấu)
+  if (specialBase[lo] !== undefined) return specialBase[lo];
+
+  // Chữ Latin thường/hoa
+  if (baseStrokes[lo] !== undefined) return baseStrokes[lo];
+
+  // Số
+  if (ch >= '0' && ch <= '9') return 1;
+
+  return 0; // bỏ qua các ký tự không xác định
+}
+
+function strokeClass(n) {
+  if (n === 1) return 'tok-1';
+  if (n === 2) return 'tok-2';
+  if (n === 3) return 'tok-3';
+  return 'tok-4';
+}
+function rowBg(n) {
+  if (n === 1) return '#d4edda';
+  if (n === 2) return '#ffeeba';
+  if (n === 3) return '#cce5ff';
+  return '#f8d7da';
+}
+
+// ============================================================
+// RENDER
+// ============================================================
+function analyze(text) {
+  let total = 0;
+  const freq = {}; // char → { strokes, count }
+  const tokenHTML = [];
+
+  for (const ch of text) {
+    if (ch === ' ' || ch === '\n' || ch === '\t') {
+      tokenHTML.push(`<span class="tok tok-space">·</span>`);
+      continue;
+    }
+    const n = strokesFor(ch);
+    if (n === 0) continue; // skip unknown
+    total += n;
+
+    const key = ch.toLowerCase() === ch ? ch : ch; // keep original for display
+    const normKey = ch;
+    if (!freq[normKey]) freq[normKey] = { strokes: n, count: 0, display: ch };
+    freq[normKey].count++;
+
+    tokenHTML.push(`<span class="tok ${strokeClass(n)}" data-n="${n}" title="${n} nét">${ch}</span>`);
+  }
+
+  return { total, freq, tokenHTML };
+}
+
+function render() {
+  const text = document.getElementById('inp').value;
+  const { total, freq, tokenHTML } = analyze(text);
+
+  // Total
+  document.getElementById('totalNum').textContent = total;
+
+  // Token strip
+  const strip = document.getElementById('tokenStrip');
+  if (tokenHTML.length === 0) {
+    strip.innerHTML = '<span style="color:#b8a070;font-style:italic;font-size:0.82rem;">Các ký tự sẽ hiện ở đây…</span>';
+  } else {
+    strip.innerHTML = tokenHTML.join('');
+  }
+
+  // Breakdown table
+  const wrap = document.getElementById('breakdownWrap');
+  const tbody = document.getElementById('breakdownBody');
+  const tfoot = document.getElementById('breakdownFoot');
+  const keys = Object.keys(freq);
+
+  if (keys.length === 0) {
+    wrap.classList.remove('show');
+    return;
+  }
+  wrap.classList.add('show');
+
+  // Sort by total strokes desc, then alpha
+  keys.sort((a,b) => {
+    const da = freq[a].strokes * freq[a].count;
+    const db = freq[b].strokes * freq[b].count;
+    return db - da || a.localeCompare(b);
+  });
+
+  let rowsHTML = '';
+  let grandTotal = 0;
+  let grandCount = 0;
+
+  for (const ch of keys) {
+    const { strokes, count, display } = freq[ch];
+    const sub = strokes * count;
+    grandTotal += sub;
+    grandCount += count;
+    const bg = rowBg(strokes);
+    rowsHTML += `
+      <tr>
+        <td><span class="char-badge" style="background:${bg}">${display}</span></td>
+        <td>${strokes}</td>
+        <td>${count}</td>
+        <td><strong>${sub}</strong></td>
+      </tr>`;
+  }
+
+  tbody.innerHTML = rowsHTML;
+  tfoot.innerHTML = `
+    <tr>
+      <td colspan="2" style="text-align:left;letter-spacing:0.1em;">TỔNG CỘNG</td>
+      <td>${grandCount} ký tự</td>
+      <td>${grandTotal} nét</td>
+    </tr>`;
+}
+
+document.getElementById('inp').addEventListener('input', render);
+</script>
+</body>
+</html>
