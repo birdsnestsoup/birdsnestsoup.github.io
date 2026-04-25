@@ -559,7 +559,7 @@
       </div>
       <div class="char-tokens" id="charTokens"></div>
       <div class="legend">
-        <span><span class="legend-dot" style="background:#d4edda;border-bottom:2px solid #28a745;"></span>Ký tự cơ bản (a=2, e=1…)</span>
+        <span><span class="legend-dot" style="background:#d4edda;border-bottom:2px solid #28a745;"></span>Cơ bản: thường (a=2…) / HOA (A=3…)</span>
         <span><span class="legend-dot" style="background:#ffeeba;border-bottom:2px solid #ffc107;"></span>Có mũ/phụ âm (â,ă,ê,ô,ơ,ư)</span>
         <span><span class="legend-dot" style="background:#bbdefb;border-bottom:2px solid #1976d2;"></span>Có dấu thanh thêm (+1)</span>
         <span><span class="legend-dot" style="background:#f8d7da;border-bottom:2px solid #dc3545;"></span>Ký tự đặc biệt</span>
@@ -668,46 +668,55 @@ const HEX_HAN = {
 
 /*
   Phân loại ký tự thành 4 loại:
-  A) BASE  — chữ cái cơ bản a-z (hoa = thường)
-  B) MOD   — chữ có mũ / phụ âm thêm KHÔNG có dấu thanh (â,ă,ê,ô,ơ,ư)
-  C) TONE  — chữ có dấu thanh (bao gồm cả base+thanh hoặc mod+thanh)
+  A) BASE  — chữ cái cơ bản a-z / A-Z (hoa và thường tính NÉT KHÁC NHAU)
+  B) MOD   — chữ có mũ / phụ âm thêm KHÔNG có dấu thanh (â,ă,ê,ô,ơ,ư,đ)
+  C) TONE  — chữ có dấu thanh (base+thanh hoặc mod+thanh)
   D) SPEC  — ký tự đặc biệt
 
-  Số nét tính:
-  - a=2, b=2, c=1, d=2, e=1, f=3, g=2, h=2, i=2, j=2, k=3, l=1, m=3, n=2
-  - o=1, p=2, q=2, r=2, s=1, t=2, u=1, v=1, w=1, x=2, y=2, z=1
-  - â = a(2) + mũ(1) = 3
-  - ă = a(2) + móc(1) = 3
-  - ê = e(1) + mũ(1) = 2
-  - ô = o(1) + mũ(1) = 2
-  - ơ = o(1) + móc(1) = 2
-  - ư = u(1) + móc(1) = 2
-  - Dấu thanh (sắc,huyền,hỏi,ngã,nặng): +1 vào ký tự gốc
-  - Ký tự đặc biệt: theo bảng quy ước
+  Quy tắc chữ IN HOA: tính theo số nét viết tay in hoa thực tế.
+  Quy tắc chữ thường: tính theo bảng nét chữ thường.
+  Dấu thanh (+1): áp dụng như cũ.
+  Ký tự đặc biệt: theo bảng quy ước.
 */
 
-// Nét ký tự cơ bản (lowercase, hoa tính như thường)
-const BASE_STROKES = {
+// ── Nét chữ THƯỜNG (a-z) ──
+const LOWER_STROKES = {
   'a':2,'b':2,'c':1,'d':2,'e':1,'f':3,'g':2,'h':2,'i':2,'j':2,
   'k':3,'l':1,'m':3,'n':2,'o':1,'p':2,'q':2,'r':2,'s':1,'t':2,
   'u':1,'v':1,'w':1,'x':2,'y':2,'z':1
 };
 
-// Nét ký tự có mũ / phụ âm (KHÔNG có thanh)
-const MOD_STROKES = {
-  'â':3, 'ă':3, 'ê':2, 'ô':2, 'ơ':2, 'ư':2,
-  'đ':3   // đ = d(2) + gạch(1)
+// ── Nét chữ HOA (A-Z) — tính theo nét bút viết tay in hoa chuẩn ──
+// A=3  B=2  C=1  D=2  E=4  F=3  G=2  H=3  I=3  J=2
+// K=3  L=2  M=4  N=3  O=1  P=2  Q=2  R=3  S=1  T=2
+// U=1  V=1  W=1  X=2  Y=2  Z=3
+const UPPER_STROKES = {
+  'A':3,'B':2,'C':1,'D':2,'E':4,'F':3,'G':2,'H':3,'I':3,'J':2,
+  'K':3,'L':2,'M':4,'N':3,'O':1,'P':2,'Q':2,'R':3,'S':1,'T':2,
+  'U':1,'V':1,'W':1,'X':2,'Y':2,'Z':3
 };
 
-// Ký tự đặc biệt
+// ── Nét ký tự có mũ / phụ âm (KHÔNG có thanh) — chữ thường ──
+// Chữ hoa có mũ không phổ biến trong tiếng Việt thực tế,
+// nếu gặp sẽ dùng nét thường + mũ (cùng quy tắc)
+const MOD_STROKES = {
+  'â':3,  // a(2)+mũ(1)
+  'ă':3,  // a(2)+móc(1)
+  'ê':2,  // e(1)+mũ(1)
+  'ô':2,  // o(1)+mũ(1)
+  'ơ':2,  // o(1)+móc(1)
+  'ư':2,  // u(1)+móc(1)
+  'đ':3   // d(2)+gạch(1)
+};
+
+// ── Ký tự đặc biệt ──
 const SPEC_STROKES = {
   ':':2, '!':2, '?':2, ';':2, '%':3, '÷':3, '^':1, '&':1,
   '#':4, '*':4, '@':2, '+':2, '-':1, '=':2, '(':1, ')':1,
   '.':1, ',':1
 };
 
-// Map ký tự có dấu thanh → ký tự gốc (để lấy nét gốc + 1)
-// key = ký tự đầy đủ, value = ký tự gốc (base hoặc mod)
+// ── Map ký tự có dấu thanh → ký tự gốc (lowercase) ──
 const TONE_MAP = {
   // a + thanh
   'á':'a','à':'a','ả':'a','ã':'a','ạ':'a',
@@ -732,38 +741,47 @@ const TONE_MAP = {
   // ư + thanh
   'ứ':'ư','ừ':'ư','ử':'ư','ữ':'ư','ự':'ư',
   // y + thanh
-  'ý':'y','ỳ':'y','ỷ':'y','ỹ':'y','ỵ':'y',
-  // đ không có dấu thanh tiếng Việt chuẩn nhưng để dự phòng
+  'ý':'y','ỳ':'y','ỷ':'y','ỹ':'y','ỵ':'y'
 };
 
+// Kiểm tra ký tự có phải chữ hoa Latin không
+function isUpperLatin(ch) { return ch >= 'A' && ch <= 'Z'; }
+
 /**
- * Tính số nét của một ký tự, trả về { strokes, type, baseChar }
- * type: 'base' | 'mod' | 'tone' | 'spec' | null (khoảng trắng/unknown)
+ * Tính số nét của một ký tự, trả về { strokes, type, isUpper }
+ * type: 'base' | 'mod' | 'tone' | 'spec' | null
+ * isUpper: true nếu là chữ HOA
  */
 function charInfo(ch) {
   const lower = ch.toLowerCase();
 
   // 1. Ký tự đặc biệt
   if (SPEC_STROKES[ch] !== undefined) {
-    return { strokes: SPEC_STROKES[ch], type: 'spec', baseChar: ch };
+    return { strokes: SPEC_STROKES[ch], type: 'spec', isUpper: false };
   }
 
-  // 2. Có dấu thanh
+  // 2. Có dấu thanh (chỉ có ở chữ thường tiếng Việt)
   if (TONE_MAP[lower]) {
-    const root = TONE_MAP[lower]; // base hoặc mod
-    const rootStrokes = MOD_STROKES[root] !== undefined ? MOD_STROKES[root]
-                      : (BASE_STROKES[root] || 1);
-    return { strokes: rootStrokes + 1, type: 'tone', baseChar: ch };
+    const root = TONE_MAP[lower];
+    const rootStrokes = MOD_STROKES[root] !== undefined
+      ? MOD_STROKES[root]
+      : (LOWER_STROKES[root] || 1);
+    return { strokes: rootStrokes + 1, type: 'tone', isUpper: false };
   }
 
-  // 3. Có mũ / phụ âm (không có thanh)
+  // 3. Có mũ / phụ âm không dấu (â ă ê ô ơ ư đ — chỉ thường)
   if (MOD_STROKES[lower] !== undefined) {
-    return { strokes: MOD_STROKES[lower], type: 'mod', baseChar: lower };
+    return { strokes: MOD_STROKES[lower], type: 'mod', isUpper: false };
   }
 
-  // 4. Chữ cái cơ bản a-z / A-Z
-  if (BASE_STROKES[lower] !== undefined) {
-    return { strokes: BASE_STROKES[lower], type: 'base', baseChar: lower };
+  // 4. Chữ HOA A-Z
+  if (UPPER_STROKES[ch] !== undefined) {
+    return { strokes: UPPER_STROKES[ch], type: 'base', isUpper: true };
+  }
+
+  // 5. Chữ thường a-z
+  if (LOWER_STROKES[lower] !== undefined) {
+    return { strokes: LOWER_STROKES[lower], type: 'base', isUpper: false };
   }
 
   // Khoảng trắng & ký tự không xác định → bỏ qua
@@ -773,12 +791,13 @@ function charInfo(ch) {
 /**
  * Phân tích toàn bộ văn bản
  * Trả về { totalStrokes, tokens, breakdown }
- * breakdown: Map<char_display, { count, strokesEach, totalStrokes, type }>
+ * breakdown: Map<key, { char, count, strokesEach, totalStrokes, type, isUpper }>
+ * key = ch (giữ nguyên hoa/thường) để phân biệt 'a' vs 'A'
  */
 function analyzeText(text) {
   let totalStrokes = 0;
   const tokens = [];
-  const breakdown = new Map(); // key = original char (lowercase for base/mod)
+  const breakdown = new Map();
 
   for (const ch of text) {
     if (ch.trim() === '') continue;
@@ -788,19 +807,20 @@ function analyzeText(text) {
     totalStrokes += info.strokes;
     tokens.push({ char: ch, ...info });
 
-    // key cho breakdown: tone dùng ch (nguyên văn), còn lại dùng lowercase
-    const key = (info.type === 'tone' || info.type === 'spec') ? ch : ch.toLowerCase();
+    // key: giữ nguyên ký tự gốc (phân biệt hoa/thường); tone & spec cũng giữ nguyên
+    const key = ch;
     if (breakdown.has(key)) {
       const b = breakdown.get(key);
       b.count++;
       b.totalStrokes += info.strokes;
     } else {
       breakdown.set(key, {
-        char: key,
+        char: ch,
         count: 1,
         strokesEach: info.strokes,
         totalStrokes: info.strokes,
-        type: info.type
+        type: info.type,
+        isUpper: info.isUpper
       });
     }
   }
@@ -915,18 +935,27 @@ function renderStrokeDetail(breakdown, totalStrokes) {
   const byType = { base: [], mod: [], tone: [], spec: [] };
   for (const [, b] of breakdown) byType[b.type]?.push(b);
 
-  // Sort each group alphabetically
-  Object.values(byType).forEach(arr => arr.sort((a,b) => a.char.localeCompare(b.char)));
+  // Sort: hoa trước thường, rồi alphabetical
+  Object.values(byType).forEach(arr => arr.sort((a, b2) => {
+    if (a.isUpper && !b2.isUpper) return -1;
+    if (!a.isUpper && b2.isUpper) return 1;
+    return a.char.localeCompare(b2.char);
+  }));
 
   function buildGrid(items, cssType) {
     if (!items.length) return '';
-    return items.map(b => `
-      <div class="sdp-row sdp-${cssType}">
-        <span class="sdp-char">${b.char}</span>
-        <span class="sdp-count">×${b.count} · ${b.strokesEach}nét</span>
-        <span class="sdp-total">${b.totalStrokes}</span>
-      </div>
-    `).join('');
+    return items.map(b => {
+      const badge = (cssType === 'base')
+        ? `<span style="font-size:0.58rem;opacity:0.55;margin-left:2px;">${b.isUpper ? 'HOA' : 'thg'}</span>`
+        : '';
+      return `
+        <div class="sdp-row sdp-${cssType}">
+          <span class="sdp-char">${b.char}${badge}</span>
+          <span class="sdp-count">×${b.count} · ${b.strokesEach}nét</span>
+          <span class="sdp-total">${b.totalStrokes}</span>
+        </div>
+      `;
+    }).join('');
   }
 
   document.getElementById('sdpBase').innerHTML = buildGrid(byType.base, 'base');
@@ -1003,7 +1032,7 @@ document.getElementById('btnLapQue').addEventListener('click', () => {
     span.className = 'tok tok-' + t.type;
     span.textContent = t.char;
     span.dataset.strokes = t.strokes;
-    const typeLabel = { base:'cơ bản', mod:'mũ/phụ', tone:'có thanh', spec:'đặc biệt' }[t.type];
+    const typeLabel = { base: t.isUpper ? 'IN HOA' : 'thường', mod:'mũ/phụ', tone:'có thanh', spec:'đặc biệt' }[t.type];
     span.title = `"${t.char}" = ${t.strokes} nét (${typeLabel})`;
     tokensEl.appendChild(span);
   }
