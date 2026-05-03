@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Bói Cỏ Thi — Kinh Dịch Cổ Pháp</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1008;
+  --paper: #f5e9d0;
+  --aged: #e8d5a8;
+  --gold: #c8960c;
+  --gold-light: #f0c040;
+  --red: #8b1a1a;
+  --red-bright: #c0392b;
+  --brush: #2c1810;
+  --yang: #2c1810;
+  --yin-gap: #f5e9d0;
+  --shadow: rgba(30,10,0,0.35);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Noto Serif', serif;
+  background: #0e0a04;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* === BACKGROUND TEXTURE === */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, #2a1500 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 80% 100%, #1a0a00 0%, transparent 60%),
+    #0e0a04;
+  z-index: 0;
+}
+
+.page-wrap {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 560px;
+  padding: 20px 16px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+/* === HEADER === */
+.header {
+  text-align: center;
+  padding: 24px 0 8px;
+}
+
+.title-main {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(1.1rem, 5vw, 1.5rem);
+  color: var(--gold-light);
+  letter-spacing: 0.12em;
+  text-shadow: 0 0 30px rgba(200,150,12,0.6), 0 2px 4px rgba(0,0,0,0.8);
+  line-height: 1.3;
+}
+
+.title-sub {
+  font-size: 0.75rem;
+  color: #a08050;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+
+.divider-orn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0;
+  color: var(--gold);
+  font-size: 0.9rem;
+  opacity: 0.6;
+}
+.divider-orn::before, .divider-orn::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+}
+
+/* === FORM CARD === */
+.form-card {
+  width: 100%;
+  background: linear-gradient(160deg, #2a1f10 0%, #1e1508 100%);
+  border: 1px solid rgba(200,150,12,0.25);
+  border-radius: 4px;
+  padding: 22px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6), inset 0 1px 0 rgba(200,150,12,0.15);
+  position: relative;
+}
+
+.form-card::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(200,150,12,0.08);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.form-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: #a08050;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.question-input {
+  width: 100%;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(200,150,12,0.3);
+  border-radius: 3px;
+  padding: 12px 14px;
+  color: var(--paper);
+  font-family: 'Noto Serif', serif;
+  font-size: 0.95rem;
+  resize: none;
+  outline: none;
+  transition: border-color 0.3s;
+  min-height: 70px;
+}
+.question-input::placeholder { color: #6a5030; }
+.question-input:focus { border-color: rgba(200,150,12,0.6); }
+
+/* Mode selector */
+.mode-wrap {
+  margin-top: 18px;
+}
+
+.mode-title {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: #a08050;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.mode-options {
+  display: flex;
+  gap: 10px;
+}
+
+.mode-btn {
+  flex: 1;
+  padding: 10px 8px;
+  background: transparent;
+  border: 1px solid rgba(200,150,12,0.25);
+  border-radius: 3px;
+  color: #907040;
+  font-family: 'Noto Serif', serif;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.25s;
+  text-align: center;
+  line-height: 1.35;
+}
+
+.mode-btn:hover { border-color: rgba(200,150,12,0.5); color: var(--gold-light); }
+.mode-btn.active {
+  background: rgba(200,150,12,0.15);
+  border-color: var(--gold);
+  color: var(--gold-light);
+  box-shadow: inset 0 0 12px rgba(200,150,12,0.1);
+}
+
+/* === MAIN BUTTON === */
+.cast-btn {
+  width: 100%;
+  padding: 18px;
+  background: linear-gradient(160deg, #7a1010 0%, #5a0808 100%);
+  border: 1px solid rgba(200,80,80,0.4);
+  border-radius: 4px;
+  color: #f5d0a0;
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 6px 24px rgba(139,26,26,0.4), inset 0 1px 0 rgba(255,200,150,0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.cast-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(255,255,255,0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.cast-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 32px rgba(139,26,26,0.55), inset 0 1px 0 rgba(255,200,150,0.2);
+  border-color: rgba(200,100,100,0.6);
+}
+
+.cast-btn:active { transform: translateY(0); }
+.cast-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* === ANIMATION STAGE === */
+#anim-stage {
+  width: 100%;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.anim-card {
+  width: 100%;
+  background: linear-gradient(160deg, #2a1f10 0%, #1e1508 100%);
+  border: 1px solid rgba(200,150,12,0.2);
+  border-radius: 4px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+
+.anim-title {
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  color: #a08050;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+/* Stalk animation area */
+.stalks-scene {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 3px;
+  height: 70px;
+  margin: 10px 0;
+  overflow: hidden;
+}
+
+.stalk {
+  width: 3px;
+  background: linear-gradient(to top, #8B6914, #d4a017, #c8960c);
+  border-radius: 2px 2px 0 0;
+  transform-origin: bottom center;
+  opacity: 0.85;
+}
+
+/* Hào progress */
+.hao-progress-row {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.hao-pip {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid rgba(200,150,12,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  color: #6a5030;
+  transition: all 0.4s;
+  background: rgba(0,0,0,0.3);
+}
+
+.hao-pip.done-yang {
+  background: rgba(44,24,16,0.9);
+  border-color: var(--gold);
+  color: var(--gold-light);
+}
+.hao-pip.done-yin {
+  background: rgba(44,24,16,0.6);
+  border-color: rgba(200,150,12,0.5);
+  color: #a08050;
+}
+.hao-pip.done-yang-moving {
+  background: rgba(139,26,26,0.6);
+  border-color: var(--red-bright);
+  color: #f5d0a0;
+  box-shadow: 0 0 8px rgba(192,57,43,0.5);
+}
+.hao-pip.done-yin-moving {
+  background: rgba(100,20,20,0.4);
+  border-color: rgba(192,57,43,0.6);
+  color: #e09090;
+  box-shadow: 0 0 8px rgba(192,57,43,0.3);
+}
+
+.step-info {
+  font-size: 0.8rem;
+  color: var(--gold);
+  min-height: 22px;
+  margin-top: 6px;
+}
+
+/* === RESULT SECTION === */
+#result-section {
+  display: none;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+}
+
+/* Capture zone */
+#capture-area {
+  width: 100%;
+  background: linear-gradient(175deg, #1e1508 0%, #160e04 100%);
+  border: 1px solid rgba(200,150,12,0.2);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.7);
+}
+
+.capture-header {
+  padding: 18px 20px 12px;
+  border-bottom: 1px solid rgba(200,150,12,0.12);
+  text-align: center;
+}
+
+.capture-logo {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: rgba(200,150,12,0.45);
+  margin-bottom: 6px;
+}
+
+.capture-question {
+  font-style: italic;
+  font-size: 0.85rem;
+  color: #c8a060;
+  line-height: 1.5;
+}
+
+.capture-meta {
+  font-size: 0.65rem;
+  color: #6a5030;
+  margin-top: 4px;
+}
+
+/* Hexagram display area */
+.hex-display-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0;
+  align-items: start;
+}
+
+.hex-panel {
+  padding: 20px 12px 20px;
+  text-align: center;
+  position: relative;
+}
+
+.hex-panel-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #7a6040;
+  margin-bottom: 8px;
+}
+
+.hex-name {
+  font-size: clamp(0.85rem, 3.5vw, 1.05rem);
+  font-weight: 700;
+  color: var(--gold-light);
+  margin-bottom: 14px;
+  min-height: 2.8em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.3;
+  text-shadow: 0 0 20px rgba(200,150,12,0.4);
+}
+
+/* Lines */
+.hexagram-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.hao-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+  position: relative;
+}
+
+.hao-num {
+  font-size: 0.55rem;
+  color: #6a5030;
+  width: 10px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.line-wrap {
+  width: 72px;
+  height: 9px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Yang line */
+.line-yang {
+  width: 100%;
+  height: 9px;
+  background: linear-gradient(to bottom, #4a3020, #2c1810);
+  border-radius: 1px;
+}
+
+/* Yin line */
+.line-yin {
+  width: 100%;
+  height: 9px;
+  display: flex;
+  gap: 0;
+}
+.line-yin::before, .line-yin::after {
+  content: '';
+  flex: 1;
+  height: 100%;
+  background: linear-gradient(to bottom, #4a3020, #2c1810);
+  border-radius: 1px;
+}
+.line-yin::before { margin-right: 12px; }
+.line-yin::after { margin-left: 0; }
+
+/* Moving dot */
+.move-dot {
+  font-size: 11px;
+  width: 14px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.move-dot.yang-m { color: var(--red-bright); }
+.move-dot.yin-m  { color: var(--red-bright); opacity: 0.7; }
+
+.arrow-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 4px;
+  padding-top: 70px;
+}
+
+.arrow-glyph {
+  font-size: 1.2rem;
+  color: rgba(200,150,12,0.4);
+}
+
+/* Moving summary */
+.moving-summary {
+  border-top: 1px solid rgba(200,150,12,0.12);
+  padding: 14px 20px;
+  text-align: center;
+}
+
+.moving-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #7a6040;
+  margin-bottom: 6px;
+}
+
+.moving-haos {
+  font-size: 0.85rem;
+  color: var(--red-bright);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.static-note {
+  font-size: 0.8rem;
+  color: #7a6040;
+  font-style: italic;
+}
+
+.capture-footer {
+  border-top: 1px solid rgba(200,150,12,0.08);
+  padding: 10px;
+  text-align: center;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  color: rgba(200,150,12,0.25);
+  text-transform: uppercase;
+}
+
+/* === BUTTONS AFTER RESULT === */
+.action-row {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.act-btn {
+  flex: 1;
+  padding: 14px 10px;
+  border-radius: 3px;
+  font-family: 'Noto Serif', serif;
+  font-size: 0.82rem;
+  cursor: pointer;
+  border: 1px solid;
+  transition: all 0.25s;
+  letter-spacing: 0.05em;
+}
+
+.act-btn-save {
+  background: linear-gradient(160deg, #1a4a1a 0%, #0f300f 100%);
+  border-color: rgba(50,160,50,0.4);
+  color: #90e090;
+}
+.act-btn-save:hover { border-color: rgba(80,200,80,0.6); color: #b0f0b0; }
+
+.act-btn-reset {
+  background: transparent;
+  border-color: rgba(200,150,12,0.25);
+  color: #907040;
+}
+.act-btn-reset:hover { border-color: rgba(200,150,12,0.5); color: var(--gold-light); }
+
+/* === ANIMATIONS === */
+@keyframes stalkShake {
+  0%,100% { transform: rotate(0deg); }
+  20% { transform: rotate(-8deg); }
+  40% { transform: rotate(6deg); }
+  60% { transform: rotate(-4deg); }
+  80% { transform: rotate(2deg); }
+}
+
+@keyframes stalkSettle {
+  from { transform: scaleY(0); opacity: 0; }
+  to { transform: scaleY(1); opacity: 0.85; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes glowPulse {
+  0%,100% { box-shadow: 0 0 0px transparent; }
+  50% { box-shadow: 0 0 18px rgba(200,150,12,0.3); }
+}
+
+.fade-in-up { animation: fadeInUp 0.6s ease forwards; }
+
+/* Stalk heights generated by JS */
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="title-main">Bói Cỏ Thi</div>
+    <div class="title-sub">Kinh Dịch · Cổ Pháp Chính Truyền</div>
+    <div class="divider-orn">☰ ☷</div>
+  </div>
+
+  <!-- FORM -->
+  <div class="form-card">
+    <label class="form-label">Tâm Vấn — Câu Hỏi Của Bạn</label>
+    <textarea class="question-input" id="userQuestion" placeholder="Ghi lòng thành tâm điều muốn hỏi...&#10;Ví dụ: Sự nghiệp năm nay tiến thoái thế nào?"></textarea>
+
+    <div class="mode-wrap">
+      <span class="mode-title">Chế Độ Hào Động</span>
+      <div class="mode-options">
+        <button class="mode-btn active" id="modeOne" onclick="selectMode('one')">
+          <div style="font-size:1.1rem;margin-bottom:4px;">☯</div>
+          <strong>1 Hào Động</strong><br>
+          <span style="font-size:0.7rem;opacity:0.7">Lực chủ đạo</span>
+        </button>
+        <button class="mode-btn" id="modeMulti" onclick="selectMode('multi')">
+          <div style="font-size:1.1rem;margin-bottom:4px;">✦</div>
+          <strong>Nhiều Hào Động</strong><br>
+          <span style="font-size:0.7rem;opacity:0.7">Cỏ Thi truyền thống</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CAST BUTTON -->
+  <button class="cast-btn" id="castBtn" onclick="startDivination()">
+    ✦ &nbsp; Gieo Cỏ Thi Lập Quẻ &nbsp; ✦
+  </button>
+
+  <!-- ANIMATION STAGE -->
+  <div id="anim-stage">
+    <div class="anim-card">
+      <div class="anim-title">Đang Thực Hành Cỏ Thi</div>
+      <div class="stalks-scene" id="stalksScene"></div>
+      <div class="step-info" id="stepInfo">Chuẩn bị 49 cọng cỏ thi...</div>
+      <div class="hao-progress-row" id="haoPips"></div>
+      <div style="font-size:0.65rem;color:#5a4020;margin-top:14px;letter-spacing:0.12em;">
+        HÀO &nbsp;1 → 2 → 3 → 4 → 5 → 6 &nbsp;(từ dưới lên)
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="result-section">
+    <div id="capture-area">
+      <div class="capture-header">
+        <div class="capture-logo">☰ Kinh Dịch · Bói Cỏ Thi Cổ Pháp ☷</div>
+        <div class="capture-question" id="showQuestion">—</div>
+        <div class="capture-meta" id="showMeta">—</div>
+      </div>
+
+      <div class="hex-display-row">
+        <div class="hex-panel" id="panelChinh">
+          <div class="hex-panel-label">Quẻ Chủ</div>
+          <div class="hex-name" id="nameChinh">—</div>
+          <div class="hexagram-visual" id="hexChinh"></div>
+        </div>
+
+        <div class="arrow-panel"><div class="arrow-glyph">→</div></div>
+
+        <div class="hex-panel" id="panelBien">
+          <div class="hex-panel-label">Quẻ Biến</div>
+          <div class="hex-name" id="nameBien">—</div>
+          <div class="hexagram-visual" id="hexBien"></div>
+        </div>
+      </div>
+
+      <div class="moving-summary">
+        <div class="moving-label">Hào Động</div>
+        <div id="movingDisplay">—</div>
+      </div>
+
+      <div class="capture-footer">Bói Cỏ Thi · Cổ Pháp Kinh Dịch · Chính Truyền</div>
+    </div>
+
+    <div class="action-row">
+      <button class="act-btn act-btn-save" onclick="saveImage()">📥 Lưu Ảnh Quẻ</button>
+      <button class="act-btn act-btn-reset" onclick="resetAll()">↺ Lập Quẻ Mới</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const BAT_QUAI = { 7:"111", 8:"000", 9:"111", 6:"000" };
+// Key: 6-bit string top→bottom, Value: tên quẻ
+const DATA_64 = {
+  "111111":"Thuần Càn","000000":"Thuần Khôn","010001":"Thủy Lôi Truân","100010":"Sơn Thủy Mông",
+  "010111":"Thủy Thiên Nhu","111010":"Thiên Thủy Tụng","000010":"Địa Thủy Sư","010000":"Thủy Địa Tỷ",
+  "110111":"Phong Thiên Tiểu Súc","111011":"Thiên Trạch Lý","000111":"Địa Thiên Thái","111000":"Thiên Địa Bĩ",
+  "111101":"Thiên Hỏa Đồng Nhân","101111":"Hỏa Thiên Đại Hữu","000100":"Địa Sơn Khiêm","001000":"Lôi Địa Dự",
+  "011001":"Trạch Lôi Tùy","100110":"Sơn Phong Cổ","000011":"Địa Trạch Lâm","110000":"Phong Địa Quán",
+  "101001":"Hỏa Lôi Phệ Hạp","100101":"Sơn Hỏa Bí","100000":"Sơn Địa Bác","000001":"Địa Lôi Phục",
+  "111001":"Thiên Lôi Vô Vọng","100111":"Sơn Thiên Đại Súc","100001":"Sơn Lôi Di","011110":"Trạch Phong Đại Quá",
+  "010010":"Thuần Khảm","101101":"Thuần Ly","011100":"Trạch Sơn Hàm","001110":"Lôi Phong Hằng",
+  "111100":"Thiên Sơn Độn","001111":"Lôi Thiên Đại Tráng","101000":"Hỏa Địa Tấn","000101":"Địa Hỏa Minh Di",
+  "110101":"Phong Hỏa Gia Nhân","101011":"Hỏa Trạch Khuê","010100":"Thủy Sơn Kiển","001010":"Lôi Thủy Giải",
+  "100011":"Sơn Trạch Tổn","110001":"Phong Lôi Ích","011111":"Trạch Thiên Quải","111110":"Thiên Phong Cấu",
+  "011000":"Trạch Địa Tụy","000110":"Địa Phong Thăng","011010":"Trạch Thủy Khốn","010110":"Thủy Phong Tỉnh",
+  "011101":"Trạch Hỏa Cách","101110":"Hỏa Phong Đỉnh","001001":"Thuần Chấn","100100":"Thuần Cấn",
+  "110100":"Phong Sơn Tiệm","001011":"Lôi Trạch Quy Muội","001101":"Lôi Hỏa Phong","101100":"Hỏa Sơn Lữ",
+  "110110":"Thuần Tốn","011011":"Thuần Đoài","110010":"Phong Thủy Hoán","010011":"Thủy Trạch Tiết",
+  "110011":"Phong Trạch Trung Phu","001100":"Lôi Sơn Tiểu Quá","010101":"Thủy Hỏa Ký Tế","101010":"Hỏa Thủy Vị Tế"
+};
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let divMode = 'one'; // 'one' | 'multi'
+let animRunning = false;
+let currentLines = []; // array of 6 values 6,7,8,9 from hào 1→6
+
+function selectMode(m) {
+  divMode = m;
+  document.getElementById('modeOne').classList.toggle('active', m === 'one');
+  document.getElementById('modeMulti').classList.toggle('active', m === 'multi');
+}
+
+// ── YARROW STALK ALGORITHM (authentic) ───────────────────────────────────────
+// Returns one of: 6 (old yin), 7 (young yang), 8 (young yin), 9 (old yang)
+function yarrowOneLine() {
+  // Classic 3-division process
+  // Total 49 stalks
+  // Division → left + right + 1 (set aside)
+  // Count off by 4s, remainder (1,2,3,4) goes to pile
+  // Sum of remainders per round: 5 or 9 first round, 4 or 8 subsequent
+  // Three rounds → number = sum of three piles of remainders
+  // 9 → old yang (moving yang), 8 → young yin, 7 → young yang, 6 → old yin (moving yin)
+
+  function division(stalks) {
+    if (stalks < 3) stalks = 3;
+    // Random split into left (L) and right (R)
+    const L = 1 + Math.floor(Math.random() * (stalks - 2));
+    const R = stalks - L;
+    // One stalk held between fingers from right
+    const held = 1;
+    const rRemainder = ((R - held) % 4) || 4;
+    const lRemainder = (L % 4) || 4;
+    const total = lRemainder + rRemainder + held;
+    return { remainder: total, remaining: stalks - total };
+  }
+
+  // Round 1: 49 stalks
+  const r1 = division(49);
+  // Round 2
+  const r2 = division(r1.remaining);
+  // Round 3
+  const r3 = division(r2.remaining);
+
+  // Sum of three remainders: 5+4+4=13→9, 5+4+8=17→8, 5+8+4=17→8, 5+8+8=21→7
+  // 9+4+4=17→8, 9+4+8=21→7, 9+8+4=21→7, 9+8+8=25→6
+  // Normalize by groups of 4
+  const sum = r1.remainder + r2.remainder + r3.remainder;
+  // sum values: 13,17,21,25 → map to 9,8,7,6
+  if (sum === 13) return 9;
+  if (sum === 17) return 8;
+  if (sum === 21) return 7;
+  if (sum === 25) return 6;
+  // fallback (shouldn't happen with authentic algo)
+  return 7;
+}
+
+// Mode: exactly ONE moving line guaranteed
+function yarrowOneMoving() {
+  // Generate 6 lines freely, then if 0 or >1 moving lines, fix
+  let lines = Array.from({length: 6}, yarrowOneLine);
+  const moving = lines.filter(v => v === 6 || v === 9);
+
+  if (moving.length === 1) return lines;
+
+  // Force exactly one: pick random hào, make it moving, rest non-moving
+  lines = lines.map(v => (v === 6 || v === 9) ? (Math.random() < 0.5 ? 7 : 8) : v);
+  const idx = Math.floor(Math.random() * 6);
+  // Decide yang or yin based on original tendency
+  lines[idx] = Math.random() < 0.5 ? 9 : 6;
+  return lines;
+}
+
+// Mode: traditional (0–6 moving lines, natural distribution)
+function yarrowMultiMoving() {
+  return Array.from({length: 6}, yarrowOneLine);
+}
+
+// ── STALK ANIMATION ───────────────────────────────────────────────────────────
+function buildStalks(scene, count) {
+  scene.innerHTML = '';
+  for (let i = 0; i < count; i++) {
+    const s = document.createElement('div');
+    s.className = 'stalk';
+    const h = 30 + Math.random() * 40;
+    s.style.height = h + 'px';
+    s.style.animation = `stalkSettle 0.3s ease ${i * 12}ms both`;
+    scene.appendChild(s);
+  }
+}
+
+function animateStalks(scene, shakeMs) {
+  const stalks = scene.querySelectorAll('.stalk');
+  stalks.forEach((s, i) => {
+    const delay = i * 15;
+    s.style.animation = `stalkShake ${shakeMs}ms ease ${delay}ms infinite`;
+  });
+}
+
+function settleStalks(scene) {
+  const stalks = scene.querySelectorAll('.stalk');
+  stalks.forEach(s => { s.style.animation = 'none'; });
+}
+
+// ── MAIN DIVINATION FLOW ──────────────────────────────────────────────────────
+function startDivination() {
+  if (animRunning) return;
+  animRunning = true;
+
+  document.getElementById('castBtn').disabled = true;
+  document.getElementById('result-section').style.display = 'none';
+
+  // Init pips
+  const pipsEl = document.getElementById('haoPips');
+  pipsEl.innerHTML = '';
+  for (let i = 1; i <= 6; i++) {
+    const pip = document.createElement('div');
+    pip.className = 'hao-pip';
+    pip.id = 'pip' + i;
+    pip.textContent = i;
+    pipsEl.appendChild(pip);
+  }
+
+  const stage = document.getElementById('anim-stage');
+  stage.style.display = 'flex';
+  stage.classList.add('fade-in-up');
+
+  const scene = document.getElementById('stalksScene');
+  buildStalks(scene, 49);
+
+  currentLines = [];
+
+  const lines = divMode === 'one' ? yarrowOneMoving() : yarrowMultiMoving();
+  runLineAnimation(lines, 0, scene);
+}
+
+function runLineAnimation(lines, haoIdx, scene) {
+  if (haoIdx >= 6) {
+    // Done
+    setTimeout(() => showResult(lines), 500);
+    return;
+  }
+
+  const haoNum = haoIdx + 1;
+  const val = lines[haoIdx];
+  document.getElementById('stepInfo').textContent = `Hào ${haoNum}: Chia cọng cỏ, đếm 3 lần...`;
+
+  animateStalks(scene, 600);
+
+  setTimeout(() => {
+    settleStalks(scene);
+    // Rebuild stalks showing "split"
+    buildStalks(scene, 49 - haoIdx * 4);
+
+    const pip = document.getElementById('pip' + haoNum);
+    const isYang = (val === 7 || val === 9);
+    const isMoving = (val === 6 || val === 9);
+    const label = val === 9 ? '⊙ 9' : val === 6 ? '⊗ 6' : val === 7 ? '—7' : '- 8';
+    document.getElementById('stepInfo').textContent =
+      `Hào ${haoNum}: Số ${val} → ${isYang ? 'Dương' : 'Âm'}${isMoving ? ' · HÀO ĐỘNG' : ''}`;
+
+    pip.textContent = label;
+    if (val === 9) pip.className = 'hao-pip done-yang-moving';
+    else if (val === 6) pip.className = 'hao-pip done-yin-moving';
+    else if (val === 7) pip.className = 'hao-pip done-yang';
+    else pip.className = 'hao-pip done-yin';
+
+    currentLines.push(val);
+    setTimeout(() => runLineAnimation(lines, haoIdx + 1, scene), 600);
+  }, 700);
+}
+
+// ── RENDER RESULT ─────────────────────────────────────────────────────────────
+function showResult(lines) {
+  animRunning = false;
+  document.getElementById('castBtn').disabled = false;
+  document.getElementById('anim-stage').style.display = 'none';
+
+  // Build binary strings (top→bottom = hào 6→1)
+  // lines[0]=hào1 ... lines[5]=hào6
+  // binary string: lines[5] ... lines[0] → top to bottom
+  const chinhBin = lines.map(v => (v === 7 || v === 9) ? '1' : '0').reverse().join('');
+  
+  // Bien: moving lines flip
+  const bienArr = lines.map(v => {
+    if (v === 9) return 8; // old yang → young yin
+    if (v === 6) return 7; // old yin → young yang
+    return v;
+  });
+  const bienBin = bienArr.map(v => (v === 7 || v === 9) ? '1' : '0').reverse().join('');
+
+  const movingHaos = [];
+  for (let i = 0; i < 6; i++) {
+    if (lines[i] === 6 || lines[i] === 9) movingHaos.push(i + 1);
+  }
+
+  const nameChinh = DATA_64[chinhBin] || '(Quẻ lạ)';
+  const nameBien = DATA_64[bienBin] || '(Quẻ lạ)';
+
+  // Meta
+  const now = new Date();
+  const meta = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')} · ${now.toLocaleDateString('vi-VN')}`;
+  document.getElementById('showQuestion').textContent = document.getElementById('userQuestion').value || '(Không có câu hỏi)';
+  document.getElementById('showMeta').textContent = meta;
+  document.getElementById('nameChinh').textContent = nameChinh;
+  document.getElementById('nameBien').textContent = nameBien;
+
+  renderHexagram('hexChinh', lines, movingHaos, false);
+  renderHexagram('hexBien', bienArr, [], false);
+
+  // Moving display
+  const movingEl = document.getElementById('movingDisplay');
+  if (movingHaos.length === 0) {
+    movingEl.innerHTML = '<span class="static-note">Quẻ Tĩnh — Không có hào động</span>';
+  } else {
+    movingEl.innerHTML = `<span class="moving-haos">Hào ${movingHaos.join(' · ')}</span>`;
+  }
+
+  const rs = document.getElementById('result-section');
+  rs.style.display = 'flex';
+  rs.classList.add('fade-in-up');
+
+  // Scroll into view
+  setTimeout(() => rs.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+}
+
+function renderHexagram(containerId, lines, movingHaos, isBien) {
+  // lines[0]=hào1 (bottom), lines[5]=hào6 (top)
+  // Display top→bottom so we iterate from 5 down to 0
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+
+  for (let i = 5; i >= 0; i--) {
+    const haoNum = i + 1;
+    const val = lines[i];
+    const isYang = (val === 7 || val === 9);
+    const isMoving = movingHaos.includes(haoNum);
+
+    const row = document.createElement('div');
+    row.className = 'hao-row';
+
+    const numEl = document.createElement('div');
+    numEl.className = 'hao-num';
+    numEl.textContent = haoNum;
+
+    const lineWrap = document.createElement('div');
+    lineWrap.className = 'line-wrap';
+
+    const lineEl = document.createElement('div');
+    lineEl.className = isYang ? 'line-yang' : 'line-yin';
+    if (isMoving) {
+      lineEl.style.opacity = '1';
+      // Tint moving lines
+      if (isYang) {
+        lineEl.style.background = 'linear-gradient(to bottom, #7a2020, #5a1010)';
+      }
+    }
+    lineWrap.appendChild(lineEl);
+
+    const dotEl = document.createElement('div');
+    dotEl.className = 'move-dot';
+    if (isMoving) {
+      dotEl.textContent = '●';
+      dotEl.classList.add(isYang ? 'yang-m' : 'yin-m');
+    }
+
+    row.appendChild(numEl);
+    row.appendChild(lineWrap);
+    row.appendChild(dotEl);
+    container.appendChild(row);
+  }
+}
+
+// ── SAVE IMAGE ────────────────────────────────────────────────────────────────
+function saveImage() {
+  const area = document.getElementById('capture-area');
+  html2canvas(area, {
+    backgroundColor: '#160e04',
+    scale: 2.5,
+    useCORS: true,
+    logging: false
+  }).then(canvas => {
+    const link = document.createElement('a');
+    link.download = `QueKinhDich_${Date.now()}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
+}
+
+// ── RESET ─────────────────────────────────────────────────────────────────────
+function resetAll() {
+  document.getElementById('result-section').style.display = 'none';
+  document.getElementById('anim-stage').style.display = 'none';
+  document.getElementById('userQuestion').value = '';
+  currentLines = [];
+  animRunning = false;
+  document.getElementById('castBtn').disabled = false;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
