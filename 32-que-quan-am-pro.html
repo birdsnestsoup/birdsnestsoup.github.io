@@ -29,7 +29,6 @@ body {
   overflow-x:hidden;
 }
 
-/* BG ambient */
 body::before {
   content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   background:
@@ -79,20 +78,41 @@ body::before {
 .khan-inputs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
 @media(max-width:480px){.khan-inputs{grid-template-columns:1fr;}}
 .khan-input-group label{display:block;font-size:11px;color:rgba(200,168,75,0.45);letter-spacing:0.1em;margin-bottom:5px;text-transform:uppercase;}
-.khan-input-group input,.khan-input-group select{
+.khan-input-group input,.khan-input-group select,.khan-input-group textarea{
   width:100%;background:rgba(0,0,0,0.3);
   border:1px solid rgba(200,168,75,0.2);border-radius:7px;
   padding:9px 12px;color:rgba(245,233,192,0.9);
   font-family:'Be Vietnam Pro',sans-serif;font-size:13px;
   outline:none;transition:border-color 0.2s;
 }
-.khan-input-group input:focus,.khan-input-group select:focus{border-color:rgba(200,168,75,0.5);}
+.khan-input-group input:focus,.khan-input-group select:focus,.khan-input-group textarea:focus{border-color:rgba(200,168,75,0.5);}
 .khan-input-group select option{background:#1a1209;}
+.khan-input-group textarea{
+  resize:vertical;min-height:72px;line-height:1.6;
+}
+.khan-input-full{grid-column:1/-1;}
 .khan-preview{
   font-size:12.5px;color:rgba(200,168,75,0.75);
   font-style:italic;line-height:1.7;
   border-left:2px solid rgba(200,168,75,0.25);padding-left:12px;
   min-height:36px;transition:all 0.3s;
+}
+
+/* câu hỏi cụ thể */
+.cauhoi-wrap{
+  background:rgba(139,26,26,0.06);
+  border:1px solid rgba(200,168,75,0.1);
+  border-radius:8px;padding:12px 14px;margin-top:12px;
+  transition:all 0.3s;
+}
+.cauhoi-wrap.has-question{
+  background:rgba(200,168,75,0.05);
+  border-color:rgba(200,168,75,0.22);
+}
+.cauhoi-label{
+  font-size:10px;letter-spacing:0.15em;text-transform:uppercase;
+  color:rgba(200,168,75,0.4);margin-bottom:7px;
+  display:flex;align-items:center;gap:6px;
 }
 
 /* ═══ CHÚ & HƯỚNG DẪN (collapsible) ═══ */
@@ -165,7 +185,6 @@ body::before {
 .coin-status-dot{width:20px;flex-shrink:0;text-align:center;font-size:10px;color:rgba(200,168,75,0.2);transition:all 0.3s;}
 .coin-status-dot.done{color:var(--gold);}
 
-/* 3D coin container */
 .coin-scene{flex:1;height:58px;perspective:400px;}
 .coin-3d{
   position:relative;width:100%;height:100%;
@@ -183,7 +202,7 @@ body::before {
   transition:box-shadow 0.2s;
   user-select:none;
 }
-.coin-front{/* Trước: trạng thái chờ / ready */
+.coin-front{
   background:linear-gradient(135deg,#1e1810,#2a2214);
   border-color:rgba(200,168,75,0.15);
   color:rgba(200,168,75,0.25);
@@ -198,7 +217,6 @@ body::before {
 .coin-front.ready:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.35) !important;}
 .coin-front:not(.ready){cursor:not-allowed;}
 
-/* Mặt sau: ngửa hoặc sấp */
 .coin-back{transform:rotateY(180deg);}
 .coin-back.ngua{
   background:linear-gradient(135deg,#b8941e,#e8c840,#d4a830,#f0d050,#c09020);
@@ -220,7 +238,6 @@ body::before {
   font-size:9px;opacity:0.45;font-weight:400;letter-spacing:0;
 }
 
-/* ═══ PHẦN HÀO TRUYỀN THỐNG (kết quả nhỏ trên đồng xu) ═══ */
 /* ═══ RESULT REVEAL ═══ */
 .result-area{display:none;}
 .result-area.visible{display:block;}
@@ -234,6 +251,18 @@ body::before {
   content:'';position:absolute;top:0;left:0;right:0;height:2px;
   background:linear-gradient(90deg,transparent,var(--gold),transparent);
 }
+
+/* câu hỏi trong result */
+.result-question-bar{
+  padding:12px 22px;
+  background:rgba(200,168,75,0.04);
+  border-bottom:1px solid rgba(200,168,75,0.1);
+  font-size:13px;color:rgba(245,233,192,0.7);
+  font-style:italic;
+  display:none;
+}
+.result-question-bar.has-q{display:block;}
+.result-question-bar span{color:rgba(200,168,75,0.5);font-size:11px;font-style:normal;letter-spacing:0.1em;text-transform:uppercase;display:block;margin-bottom:3px;}
 
 .result-header{
   padding:22px 22px 16px;
@@ -273,7 +302,6 @@ body::before {
 
 .result-body{padding:18px 22px;}
 
-/* Hào kiểu truyền thống */
 .hao-traditional{
   display:flex;align-items:flex-end;gap:5px;
   margin-bottom:20px;
@@ -283,12 +311,12 @@ body::before {
 .hao-traditional.show{opacity:1;transform:translateY(0);}
 .hao-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;}
 .hao-line-wrap{width:100%;display:flex;align-items:center;justify-content:center;height:14px;}
-.hao-lien{/* vạch liền - ngửa/dương */
+.hao-lien{
   width:90%;height:6px;border-radius:3px;
   background:linear-gradient(90deg,#b8941e,#e8c840,#b8941e);
   box-shadow:0 0 6px rgba(200,168,75,0.4);
 }
-.hao-dut{/* vạch đứt - sấp/âm */
+.hao-dut{
   width:90%;height:6px;display:flex;gap:10%;align-items:center;
 }
 .hao-dut-seg{flex:1;height:6px;border-radius:3px;background:rgba(200,168,75,0.25);border:1px solid rgba(200,168,75,0.15);}
@@ -320,7 +348,6 @@ body::before {
 }
 .loi-doan.show{opacity:1;transform:translateY(0);}
 
-/* ═══ CANVAS EXPORT ═══ */
 #exportCanvas{display:none;}
 
 /* ═══ NHẬT KÝ ═══ */
@@ -375,7 +402,6 @@ body::before {
 }
 .toast.show{transform:translateX(-50%) translateY(0);}
 
-/* Sound toggle */
 .sound-toggle{
   position:fixed;bottom:28px;right:20px;z-index:100;
   background:rgba(14,11,6,0.8);border:1px solid rgba(200,168,75,0.2);
@@ -424,15 +450,35 @@ body::before {
       <label>Việc Cầu</label>
       <select id="inputViec" onchange="capNhatKhan()">
         <option value="">— Chọn việc cầu —</option>
-        <option value="cầu tài lộc, làm ăn thuận lợi">Tài lộc / Làm ăn</option>
-        <option value="cầu sức khỏe bình an">Sức khỏe</option>
-        <option value="cầu hôn nhân tốt lành">Hôn nhân</option>
-        <option value="cầu công danh sự nghiệp">Công danh / Sự nghiệp</option>
-        <option value="cầu gia đạo bình an">Gia đạo bình an</option>
-        <option value="cầu tai qua nạn khỏi">Tai qua nạn khỏi</option>
-        <option value="cầu chỉ dẫn cho việc đang phân vân">Phân vân / Quyết định</option>
-        <option value="cầu điều mong ước sớm thành">Điều mong ước</option>
+        <optgroup label="Tài Lộc & Sự Nghiệp">
+          <option value="cầu tài lộc, làm ăn thuận lợi">Tài lộc / Làm ăn</option>
+          <option value="cầu công danh sự nghiệp">Công danh / Sự nghiệp</option>
+        </optgroup>
+        <optgroup label="Sức Khỏe & Gia Đạo">
+          <option value="cầu sức khỏe bình an">Sức khỏe</option>
+          <option value="cầu gia đạo bình an">Gia đạo bình an</option>
+        </optgroup>
+        <optgroup label="Tình Duyên & Quan Hệ">
+          <option value="cầu hôn nhân tốt lành">Hôn nhân</option>
+          <option value="cầu mối quan hệ, bạn bè và đối tác tốt đẹp">Mối Quan Hệ / Bạn Bè / Đối Tác</option>
+        </optgroup>
+        <optgroup label="Hướng Dẫn & Quyết Định">
+          <option value="cầu chỉ dẫn cho dự định sắp thực hiện">Dự Định</option>
+          <option value="cầu soi sáng cho lựa chọn khó khăn">Lựa Chọn</option>
+          <option value="cầu bình an cho chuyến xuất hành">Xuất Hành</option>
+          <option value="cầu chỉ dẫn cho việc đang phân vân">Phân vân / Quyết định</option>
+        </optgroup>
+        <optgroup label="Khác">
+          <option value="cầu tai qua nạn khỏi">Tai qua nạn khỏi</option>
+          <option value="cầu điều mong ước sớm thành">Điều mong ước</option>
+        </optgroup>
       </select>
+    </div>
+
+    <!-- Câu hỏi cụ thể — full width -->
+    <div class="khan-input-group khan-input-full">
+      <label>✍ Câu Hỏi Cụ Thể <span style="color:rgba(200,168,75,0.3);font-size:9px;letter-spacing:0">(tùy chọn)</span></label>
+      <textarea id="inputCauHoi" placeholder="Ghi rõ câu hỏi hoặc điều bạn muốn Bồ Tát soi sáng..." oninput="capNhatKhan()" rows="3"></textarea>
     </div>
   </div>
   <div class="khan-preview" id="khanPreview">
@@ -568,6 +614,12 @@ body::before {
 <!-- KẾT QUẢ -->
 <div class="result-area" id="resultArea">
   <div class="result-card" id="resultCard">
+    <!-- Câu hỏi cụ thể trong result -->
+    <div class="result-question-bar" id="resQuestionBar">
+      <span>Câu hỏi</span>
+      <span id="resQuestionText"></span>
+    </div>
+
     <div class="result-header">
       <div>
         <div class="result-num-label" id="resNumLabel">Quẻ —</div>
@@ -580,13 +632,10 @@ body::before {
       </div>
     </div>
     <div class="result-body">
-      <!-- Hào truyền thống -->
       <div class="hao-traditional" id="haoTraditional"></div>
-
       <div class="divider"></div>
       <div class="result-section-title">Bài Thơ</div>
       <div class="bai-tho" id="resTho"></div>
-
       <div class="divider"></div>
       <div class="result-section-title">Lời Đoán</div>
       <div class="loi-doan" id="resDoan"></div>
@@ -608,7 +657,7 @@ body::before {
   <div id="historyList"></div>
 </div>
 
-</div><!-- end .app -->
+</div>
 
 <div class="toast" id="toast"></div>
 <canvas id="exportCanvas"></canvas>
@@ -616,7 +665,6 @@ body::before {
 <script>
 // ═══════════════════════════════════════════════
 // DATA 32 QUẺ
-// key: v1v2v3v4v5 — N=ngửa, S=sấp
 // ═══════════════════════════════════════════════
 const QUE_MAP = {
   "NNNNN":{so:1,ten:"Thăng Tấn",cap:"Thượng Đại Kiết",tho:"Chim phượng bay vào các gác,\nRùa thiêng ứng điềm lành hào.\nHọa trừ, phước lộc đến nơi,\nHớn hở được danh cao.",doan:"Quẻ ứng cầu tài rất tốt,\nRa vào đẹp ý vui lòng.\nThị phi, kiện cáo đều trừ xong,\nBệnh hoạn từ đây thuyên giảm.\nViệc tính thấy nên trước mắt,\nNgười đi sớm muộn chắc về.\nTai qua họa khỏi, phước nhiều bề,\nMừng được giàu sang phẩm trọng."},
@@ -629,7 +677,7 @@ const QUE_MAP = {
   "SSNSN":{so:8,ten:"Đắc Trợ",cap:"Thượng Thượng Kiết",tho:"Trời độ, việc đều an,\nCửa nhà tiếp phước ban.\nQuý nhân giúp đỡ sức,\nPhước lộc được hân hoan.",doan:"Quẻ ứng kim sinh thủy,\nÂm dương có kẻ trợ giúp an.\nCầu quan, áo tía mặc vinh quang,\nXứ lạ cầu tài được lợi.\nThành kính đốt hương khấn vái,\nGiúp thầm trên có Thánh Thần.\nSum vầy con cháu rất vui mừng,\nChỗ muốn vừa lòng đẹp ý."},
   "SNSSN":{so:9,ten:"Hoạch An",cap:"Trung Thượng",tho:"Nay ví như cội mùa đông,\nXơ rơ chưa trổ bông.\nDần dần xuân sắc trổ,\nChồi lộc nảy đều đồng.",doan:"Quẻ ứng lòng thường do dự,\nHết buồn, vui tới, chớ nghi.\nNgười xa áo gấm mặc vinh quy,\nTật bệnh khỏi lo trì trệ.\nGả cưới hòa hợp vinh hiển,\nViệc quan chẳng ngại điều chi.\nDường như hoa liễu nở thơm tho,\nTrước mắt nhiều người hòa thuận."},
   "NSSSN":{so:10,ten:"Tùy Tâm",cap:"Thượng Thượng",tho:"Mát mẻ cảnh ngày xuân,\nVật tàn bỗng tái hưng.\nMưa lất phất lại gặp,\nGội nhuần đức tu thân.",doan:"Quẻ ứng cầu tài được lợi,\nNgười đi áo gấm về nhà.\nHôn nhân hòa hợp chẳng sai ngoa,\nTranh luận, thị phi đều dứt.\nBỗng được thăng cao tước lộc,\nGiàu sang vinh hiển thỏa lòng.\nĐời nay ruộng phước, nên lo trồng,\nKiếp tới được vàng đầy đống."},
-  "SSNNS":{so:11,ten:"Bá Đạt",cap:"Thượng Thượng",tho:"Tai tan, cửa dữ đóng lại,\nPhước tới, cửa lành mở ra.\nXa cách nay gặp lại nhau,\nChắc phần được tài lộc.",doan:"Quẻ ứng trên hòa dưới thuận,\nTự nhiên hưởng phước thảnh thơi.\nCầu tài bốn phương nên lần đến,\nDanh lợi được theo lòng muốn.\nTrời hạn mạ nhờ mưa rưới,\nThuyền con xuôi gió vững lòng.\nCảnh xuân dòng nước trải về đông,\nTrăm việc đều yên khỏi ngại."},
+  "SSNNS":{so:11,ten:"Bá Đạt",cap:"Thượng Thượng Kiết",tho:"Tai tan, cửa dữ đóng lại,\nPhước tới, cửa lành mở ra.\nXa cách nay gặp lại nhau,\nChắc phần được tài lộc.",doan:"Quẻ ứng trên hòa dưới thuận,\nTự nhiên hưởng phước thảnh thơi.\nCầu tài bốn phương nên lần đến,\nDanh lợi được theo lòng muốn.\nTrời hạn mạ nhờ mưa rưới,\nThuyền con xuôi gió vững lòng.\nCảnh xuân dòng nước trải về đông,\nTrăm việc đều yên khỏi ngại."},
   "SNSNS":{so:12,ten:"Để An",cap:"Thượng Đại Kiết",tho:"Nên việc lòng hân hoan,\nTrò nghèo được áo gấm ban.\nTiền trình xuân nhật thấy rõ,\nDạo cảnh bước thảnh thơi.",doan:"Quẻ ứng điềm lành nên việc,\nHợp thời lên tướng phong hầu.\nQuý nhân đứng dắt đến chốn triều đình,\nNhận lãnh ấn vàng đai tía.\nTài lợi cầu thêm gấp bội,\nNgười đi đẹp ý vui lòng.\nTrung thu ánh trăng tỏ rạng trong,\nSoi khắp trời đất thế giới."},
   "NSSNS":{so:13,ten:"Cử Tấn",cap:"Hạ Hạ",tho:"Trong nước hiện bóng trăng,\nBóng không chẳng thấy hình.\nTiền tài hay thất tán,\nDè dặt mới được an ninh.",doan:"Giáp mộc khắc mậu kỷ thổ,\nThan ôi! Việc tính khó thành.\nHao tài, tổn vật, mất nhân tình,\nĐừng với kẻ tiểu nhân tranh cạnh.\nMuôn việc nên theo lối cũ,\nĐổi dời chẳng gặp điềm may.\nPhải cầu Thần Thánh nguyện hằng ngày,\nMới được ít nhiều duyên phước."},
   "SNNSS":{so:14,ten:"An Tịnh",cap:"Trung Bình",tho:"Công việc chẳng an vui,\nTính toán sự khó xuôi.\nTốt hơn lo lùi bước,\nGiữ phận họa tai lui.",doan:"Quẻ ứng nên theo lối cũ,\nViệc nên tránh, chớ bày ra.\nGiữ mình tiết kiệm, được an hòa,\nTùy phận, tùy duyên, qua buổi.\nNếu muốn đầy nhà vàng ngọc,\nKhác nào một giấc Nam Kha.\nNên tìm nơi yên tĩnh, niệm Di Đà,\nNguyện độ tai qua nạn khỏi."},
@@ -662,7 +710,7 @@ let soundOn = true;
 let audioCtx = null;
 
 // ═══════════════════════════════════════════════
-// WEB AUDIO — tạo âm thanh không cần file ngoài
+// WEB AUDIO
 // ═══════════════════════════════════════════════
 function getAudioCtx() {
   if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -674,7 +722,6 @@ function playSound(type) {
   try {
     const ctx = getAudioCtx();
     if (type === 'shake') {
-      // Tiếng lắc xu — nhiễu ngắn
       for (let i = 0; i < 6; i++) {
         setTimeout(() => {
           const buf = ctx.createBuffer(1, ctx.sampleRate * 0.04, ctx.sampleRate);
@@ -689,7 +736,6 @@ function playSound(type) {
         }, i * 70);
       }
     } else if (type === 'flip') {
-      // Tiếng cạch đồng xu
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = 'sine';
@@ -700,7 +746,6 @@ function playSound(type) {
       osc.connect(gain); gain.connect(ctx.destination);
       osc.start(); osc.stop(ctx.currentTime + 0.12);
     } else if (type === 'reveal') {
-      // Chuỗi nốt thiền khi ra quẻ
       const notes = [523.25, 659.25, 783.99, 1046.50];
       notes.forEach((freq, i) => {
         setTimeout(() => {
@@ -715,7 +760,6 @@ function playSound(type) {
         }, i * 140);
       });
     } else if (type === 'ngua') {
-      // Ngửa — nốt sáng cao
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = 'triangle';
@@ -726,7 +770,6 @@ function playSound(type) {
       osc.connect(gain); gain.connect(ctx.destination);
       osc.start(); osc.stop(ctx.currentTime + 0.25);
     } else if (type === 'sap') {
-      // Sấp — nốt trầm
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = 'triangle';
@@ -752,14 +795,21 @@ function toggleSound() {
 function capNhatKhan() {
   const ten = document.getElementById('inputTen').value.trim();
   const viec = document.getElementById('inputViec').value;
+  const cauHoi = document.getElementById('inputCauHoi').value.trim();
   const el = document.getElementById('khanPreview');
+
   if (!ten && !viec) {
     el.innerHTML = '<em style="color:rgba(200,168,75,0.3)">Nhập tên và chọn việc cầu để hiển thị lời khấn...</em>';
     return;
   }
   const tenHien = ten || '(tên đệ tử)';
   const viecHien = viec || '(việc đang cầu)';
-  el.innerHTML = `"Nay đệ tử là <strong style="color:rgba(200,168,75,0.9)">${tenHien}</strong> vì việc <strong style="color:rgba(200,168,75,0.9)">${viecHien}</strong>, xin Bồ Tát chứng minh, trong ba mươi hai quẻ, được một quẻ, cho biết họa phước tốt xấu."`;
+  let html = `"Nay đệ tử là <strong style="color:rgba(200,168,75,0.9)">${tenHien}</strong> vì việc <strong style="color:rgba(200,168,75,0.9)">${viecHien}</strong>`;
+  if (cauHoi) {
+    html += `, với câu hỏi: <em style="color:rgba(200,168,75,0.75)">${cauHoi}</em>`;
+  }
+  html += `, xin Bồ Tát chứng minh, trong ba mươi hai quẻ, được một quẻ, cho biết họa phước tốt xấu."`;
+  el.innerHTML = html;
 }
 
 // ═══════════════════════════════════════════════
@@ -770,7 +820,7 @@ function toggleAccordion(id) {
 }
 
 // ═══════════════════════════════════════════════
-// THUẬT TOÁN NGẪU NHIÊN (crypto + time entropy)
+// NGẪU NHIÊN
 // ═══════════════════════════════════════════════
 function taoNgauNhien() {
   const arr = new Uint32Array(16);
@@ -797,7 +847,6 @@ function xocTien() {
   document.getElementById('resultArea').classList.remove('visible');
   document.getElementById('resetArea').classList.remove('visible');
 
-  // Reset tất cả đồng về waiting
   for (let i = 1; i <= 5; i++) {
     document.getElementById('coin3d-' + i).classList.remove('flipped');
     const front = document.getElementById('coinFront' + i);
@@ -812,7 +861,6 @@ function xocTien() {
 
   setTimeout(() => {
     thuatToan = taoNgauNhien();
-    // Enable đồng 1
     activateCoin(1);
     const hint = document.getElementById('shakeHint');
     hint.textContent = 'Đã xốc xong! Bấm lần lượt từ Lần 1 → Lần 5 ↑';
@@ -838,7 +886,6 @@ function latDong(viTri) {
   const ket = thuatToan[viTri - 1];
   playSound(ket === 'N' ? 'ngua' : 'sap');
 
-  // Cập nhật mặt sau trước khi flip
   const back = document.getElementById('coinBack' + viTri);
   const icon = document.getElementById('coinIcon' + viTri);
   const label = document.getElementById('coinLabel' + viTri);
@@ -852,12 +899,10 @@ function latDong(viTri) {
     label.textContent = 'Sấp';
   }
 
-  // Disable front
   const front = document.getElementById('coinFront' + viTri);
   front.className = 'coin-face coin-front';
   front.onclick = null;
 
-  // Flip 3D
   setTimeout(() => {
     document.getElementById('coin3d-' + viTri).classList.add('flipped');
     document.getElementById('dot' + viTri).className = 'coin-status-dot done';
@@ -872,7 +917,7 @@ function latDong(viTri) {
 }
 
 // ═══════════════════════════════════════════════
-// TRA QUẺ & REVEAL
+// TRA QUẺ
 // ═══════════════════════════════════════════════
 function traQue() {
   const key = thuatToan.join('');
@@ -881,7 +926,16 @@ function traQue() {
 
   playSound('reveal');
 
-  // Fill header
+  const cauHoi = document.getElementById('inputCauHoi').value.trim();
+  const qBar = document.getElementById('resQuestionBar');
+  const qText = document.getElementById('resQuestionText');
+  if (cauHoi) {
+    qText.textContent = cauHoi;
+    qBar.classList.add('has-q');
+  } else {
+    qBar.classList.remove('has-q');
+  }
+
   document.getElementById('resNumLabel').textContent = `Quẻ số ${que.so}`;
   const nameEl = document.getElementById('resName');
   nameEl.textContent = que.ten;
@@ -890,7 +944,7 @@ function traQue() {
   capEl.textContent = que.cap;
   capEl.className = 'result-cap ' + getCapClass(que.cap);
 
-  // Hào truyền thống — vị 5 trái → vị 1 phải (từ trên xuống trong layout)
+  // Hào truyền thống
   const haoEl = document.getElementById('haoTraditional');
   haoEl.innerHTML = '';
   for (let i = 5; i >= 1; i--) {
@@ -908,19 +962,15 @@ function traQue() {
   document.getElementById('resTho').innerHTML = que.tho.replace(/\n/g, '<br>');
   document.getElementById('resDoan').innerHTML = que.doan.replace(/\n/g, '<br>');
 
-  // Show result
   const resultArea = document.getElementById('resultArea');
   resultArea.classList.add('visible');
 
-  // Staggered reveal animation
   setTimeout(() => { nameEl.classList.add('show'); capEl.classList.add('show'); }, 80);
   setTimeout(() => { haoEl.classList.add('show'); }, 200);
   setTimeout(() => { document.getElementById('resTho').classList.add('show'); }, 420);
   setTimeout(() => { document.getElementById('resDoan').classList.add('show'); }, 640);
 
   document.getElementById('resetArea').classList.add('visible');
-
-  // Lưu nhật ký
   luuLichSu(que, key);
 
   setTimeout(() => {
@@ -930,7 +980,7 @@ function traQue() {
 
 function getCapClass(cap) {
   if (cap.includes('Hạ Hạ')) return 'cap-xau';
-  if (cap.includes('Thượng Thượng') || cap.includes('Đại Cát')) return 'cap-dai-cat';
+  if (cap.includes('Thượng Thượng') || cap.includes('Đại Cát') || cap.includes('Đại Kiết')) return 'cap-dai-cat';
   if (cap.includes('Kiết') || cap.includes('Thượng')) return 'cap-kiet';
   return 'cap-trung';
 }
@@ -945,10 +995,12 @@ function copyResult() {
   if (!que) return;
   const ten = document.getElementById('inputTen').value.trim();
   const viec = document.getElementById('inputViec').value;
+  const cauHoi = document.getElementById('inputCauHoi').value.trim();
   const haoText = thuatToan.map((v,i)=>`  Vị ${i+1}: ${v==='N'?'Ngửa (Dương)':'Sấp (Âm)'}`).join('\n');
   const khanLine = ten ? `\nNgười gieo: ${ten}${viec?' — '+viec:''}` : '';
+  const cauHoiLine = cauHoi ? `\nCâu hỏi: ${cauHoi}` : '';
   const text = `━━━━━━━━━━━━━━━━━━━━
-32 QUẺ QUÁN ÂM${khanLine}
+32 QUẺ QUÁN ÂM${khanLine}${cauHoiLine}
 Ngày: ${new Date().toLocaleDateString('vi-VN')} ${new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'})}
 ━━━━━━━━━━━━━━━━━━━━
 Quẻ số ${que.so} — ${que.ten}
@@ -974,7 +1026,7 @@ Nam Mô Đại Từ Đại Bi Quán Thế Âm Bồ Tát`;
 }
 
 // ═══════════════════════════════════════════════
-// LƯU ẢNH (Canvas)
+// LƯU ẢNH — CẬP NHẬT: hiển thị câu hỏi, việc cầu, quẻ & lời giải
 // ═══════════════════════════════════════════════
 function saveImage() {
   if (!thuatToan) return;
@@ -982,112 +1034,294 @@ function saveImage() {
   const que = QUE_MAP[key];
   if (!que) return;
 
+  const ten = document.getElementById('inputTen').value.trim();
+  const viec = document.getElementById('inputViec').value;
+  const cauHoi = document.getElementById('inputCauHoi').value.trim();
+  const now = new Date();
+
+  // Tính chiều cao canvas động
+  const thoLines = que.tho.split('\n');
+  const doanLines = que.doan.split('\n');
+  const hasCauHoi = !!cauHoi;
+  const hasViec = !!viec;
+
+  // Layout heights
+  const MARGIN = 48;
+  const IMG_W = 680;
+  let curY = 0;
+
+  // ---- Tính trước tổng chiều cao ----
+  const HEADER_H = 140;
+  const META_H = hasCauHoi ? 90 : (hasViec ? 52 : 30);
+  const HAO_H = 80;
+  const THO_H = 60 + thoLines.length * 32;
+  const DOAN_H = 60 + doanLines.length * 28;
+  const FOOTER_H = 70;
+  const DIVIDER_H = 28;
+  const TOTAL_H = HEADER_H + META_H + HAO_H + THO_H + DOAN_H + FOOTER_H + DIVIDER_H * 2 + MARGIN;
+
   const canvas = document.getElementById('exportCanvas');
-  const W = 640, H = 900;
+  const W = IMG_W;
+  const H = Math.max(TOTAL_H, 780);
   canvas.width = W; canvas.height = H;
   const ctx = canvas.getContext('2d');
 
-  // Background
+  // ---- Background ----
   const bg = ctx.createLinearGradient(0, 0, 0, H);
-  bg.addColorStop(0, '#0f0d08'); bg.addColorStop(1, '#1a1410');
-  ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+  bg.addColorStop(0, '#0f0d08');
+  bg.addColorStop(0.4, '#13100b');
+  bg.addColorStop(1, '#1a1410');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
 
-  // Grid pattern
-  ctx.strokeStyle = 'rgba(200,168,75,0.04)'; ctx.lineWidth = 1;
+  // Grid texture
+  ctx.strokeStyle = 'rgba(200,168,75,0.04)';
+  ctx.lineWidth = 1;
   for (let x = 0; x < W; x += 40) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
   for (let y = 0; y < H; y += 40) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
 
-  // Top line
-  const gl = ctx.createLinearGradient(0,0,W,0);
-  gl.addColorStop(0,'transparent'); gl.addColorStop(0.5,'#c8a84b'); gl.addColorStop(1,'transparent');
-  ctx.fillStyle = gl; ctx.fillRect(0, 0, W, 2);
+  // Ambient glow top
+  const glowTop = ctx.createRadialGradient(W/2, 0, 0, W/2, 0, H*0.5);
+  glowTop.addColorStop(0, 'rgba(200,168,75,0.06)');
+  glowTop.addColorStop(1, 'transparent');
+  ctx.fillStyle = glowTop;
+  ctx.fillRect(0, 0, W, H);
 
-  // Title
+  // Top gold line
+  const lineGrad = ctx.createLinearGradient(0,0,W,0);
+  lineGrad.addColorStop(0,'transparent');
+  lineGrad.addColorStop(0.5,'rgba(200,168,75,0.9)');
+  lineGrad.addColorStop(1,'transparent');
+  ctx.fillStyle = lineGrad;
+  ctx.fillRect(0, 0, W, 2);
+
+  // Border frame
+  ctx.strokeStyle = 'rgba(200,168,75,0.12)';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(20, 16, W-40, H-32);
+
+  curY = 44;
+
+  // ---- Logo / Header ----
   ctx.textAlign = 'center';
-  ctx.fillStyle = 'rgba(200,168,75,0.5)';
-  ctx.font = '13px "Be Vietnam Pro", sans-serif';
-  ctx.fillText('32 QUẺ QUÁN ÂM', W/2, 48);
-  ctx.fillStyle = 'rgba(200,168,75,0.18)';
-  ctx.fillRect(W/2 - 120, 58, 240, 1);
+  ctx.fillStyle = 'rgba(200,168,75,0.35)';
+  ctx.font = '11px "Be Vietnam Pro", sans-serif';
+  ctx.letterSpacing = '0.2em';
+  ctx.fillText('NAM MÔ ĐẠI TỪ ĐẠI BI QUÁN THẾ ÂM BỒ TÁT', W/2, curY);
+  curY += 18;
 
-  // Quẻ name
+  ctx.fillStyle = 'rgba(200,168,75,0.15)';
+  ctx.fillRect(W/2 - 100, curY, 200, 1);
+  curY += 18;
+
   ctx.fillStyle = '#c8a84b';
-  ctx.font = 'bold 38px "Playfair Display", serif';
-  ctx.fillText(que.ten, W/2, 110);
+  ctx.font = 'bold 32px "Playfair Display", serif';
+  ctx.shadowColor = 'rgba(200,168,75,0.4)';
+  ctx.shadowBlur = 20;
+  ctx.fillText('32 Quẻ Quán Âm', W/2, curY);
+  ctx.shadowBlur = 0;
+  curY += 28;
 
-  // Số quẻ
+  ctx.fillStyle = 'rgba(200,168,75,0.15)';
+  ctx.fillRect(W/2 - 140, curY, 280, 1);
+  curY += 22;
+
+  // ---- Họ tên + ngày ----
+  if (ten) {
+    ctx.fillStyle = 'rgba(245,233,192,0.6)';
+    ctx.font = '13px "Be Vietnam Pro", sans-serif';
+    const dateStr = now.toLocaleDateString('vi-VN') + ' ' + now.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'});
+    ctx.fillText(`${ten}  •  ${dateStr}`, W/2, curY);
+    curY += 22;
+  } else {
+    ctx.fillStyle = 'rgba(200,168,75,0.3)';
+    ctx.font = '12px "Be Vietnam Pro", sans-serif';
+    ctx.fillText(now.toLocaleDateString('vi-VN') + ' ' + now.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}), W/2, curY);
+    curY += 22;
+  }
+
+  // ---- Việc Cầu + Câu Hỏi box ----
+  if (hasViec || hasCauHoi) {
+    curY += 6;
+    const boxX = 48, boxW = W - 96;
+    const boxY = curY;
+    let boxH = 18;
+    if (hasViec) boxH += 26;
+    if (hasCauHoi) boxH += 30 + Math.ceil(cauHoi.length / 40) * 20;
+
+    // Draw rounded rect box
+    ctx.fillStyle = 'rgba(200,168,75,0.06)';
+    ctx.strokeStyle = 'rgba(200,168,75,0.18)';
+    ctx.lineWidth = 1;
+    roundRect(ctx, boxX, boxY, boxW, boxH, 8);
+    ctx.fill();
+    ctx.stroke();
+
+    let inY = boxY + 20;
+
+    if (hasViec) {
+      ctx.textAlign = 'left';
+      ctx.fillStyle = 'rgba(200,168,75,0.45)';
+      ctx.font = '10px "Be Vietnam Pro", sans-serif';
+      ctx.fillText('VIỆC CẦU', boxX + 16, inY);
+      ctx.fillStyle = 'rgba(245,233,192,0.8)';
+      ctx.font = '13px "Be Vietnam Pro", sans-serif';
+      ctx.fillText(viec, boxX + 90, inY);
+      inY += 26;
+    }
+
+    if (hasCauHoi) {
+      ctx.textAlign = 'left';
+      ctx.fillStyle = 'rgba(200,168,75,0.45)';
+      ctx.font = '10px "Be Vietnam Pro", sans-serif';
+      ctx.fillText('CÂU HỎI', boxX + 16, inY);
+      inY += 16;
+      ctx.fillStyle = 'rgba(245,233,192,0.82)';
+      ctx.font = 'italic 13px "Playfair Display", serif';
+      // Word wrap câu hỏi
+      const maxW = boxW - 32;
+      const words = cauHoi.split('');
+      let line = '';
+      const charW = 13;
+      const charsPerLine = Math.floor(maxW / charW);
+      for (let ci = 0; ci < cauHoi.length; ci += charsPerLine) {
+        const chunk = cauHoi.slice(ci, ci + charsPerLine);
+        ctx.fillText(chunk, boxX + 16, inY);
+        inY += 20;
+      }
+      inY -= 4;
+    }
+
+    ctx.textAlign = 'center';
+    curY = boxY + boxH + 16;
+  }
+
+  // ---- Divider ----
+  drawDivider(ctx, W, curY);
+  curY += 22;
+
+  // ---- Quẻ số & Tên ----
   ctx.fillStyle = 'rgba(200,168,75,0.4)';
-  ctx.font = '13px "Be Vietnam Pro", sans-serif';
-  ctx.fillText(`Quẻ số ${que.so}  •  ${que.cap}`, W/2, 138);
+  ctx.font = '10px "Be Vietnam Pro", sans-serif';
+  ctx.fillText(`QUẺ SỐ ${que.so}`, W/2, curY);
+  curY += 20;
 
-  // Hào truyền thống
-  const haoW = 52, haoGap = 16;
+  ctx.fillStyle = '#c8a84b';
+  ctx.font = 'bold 36px "Playfair Display", serif';
+  ctx.shadowColor = 'rgba(200,168,75,0.4)';
+  ctx.shadowBlur = 16;
+  ctx.fillText(que.ten, W/2, curY);
+  ctx.shadowBlur = 0;
+  curY += 18;
+
+  // Cấp
+  const capText = que.cap;
+  ctx.font = '11px "Be Vietnam Pro", sans-serif';
+  const capW = ctx.measureText(capText).width + 28;
+  const capX = W/2 - capW/2;
+  const capClass = getCapClass(capText);
+  let capBg, capColor, capBorder;
+  if (capClass === 'cap-dai-cat') { capBg='rgba(200,168,75,0.18)'; capColor='#f0d060'; capBorder='rgba(200,168,75,0.5)'; }
+  else if (capClass === 'cap-kiet') { capBg='rgba(80,160,80,0.15)'; capColor='#88cc66'; capBorder='rgba(80,160,80,0.4)'; }
+  else if (capClass === 'cap-xau') { capBg='rgba(180,50,50,0.18)'; capColor='#dd7070'; capBorder='rgba(180,50,50,0.4)'; }
+  else { capBg='rgba(80,120,200,0.15)'; capColor='#88aaee'; capBorder='rgba(80,120,200,0.4)'; }
+
+  ctx.fillStyle = capBg;
+  ctx.strokeStyle = capBorder;
+  ctx.lineWidth = 1;
+  roundRect(ctx, capX, curY, capW, 22, 11);
+  ctx.fill(); ctx.stroke();
+  ctx.fillStyle = capColor;
+  ctx.fillText(capText, W/2, curY + 15);
+  curY += 36;
+
+  // ---- Hào ----
+  const haoW = 58, haoGap = 14;
   const haoTotalW = 5 * haoW + 4 * haoGap;
   const haoX0 = (W - haoTotalW) / 2;
-  const haoY = 168;
-
+  const haoY = curY + 4;
   for (let i = 0; i < 5; i++) {
-    const v = thuatToan[4 - i]; // vị 5 bên trái → vị 1 bên phải
+    const v = thuatToan[4 - i];
     const x = haoX0 + i * (haoW + haoGap);
     if (v === 'N') {
       const grad = ctx.createLinearGradient(x, haoY, x + haoW, haoY);
       grad.addColorStop(0, '#b8941e'); grad.addColorStop(0.5, '#e8c840'); grad.addColorStop(1, '#b8941e');
       ctx.fillStyle = grad;
       ctx.shadowColor = 'rgba(200,168,75,0.6)'; ctx.shadowBlur = 8;
-      ctx.beginPath(); ctx.roundRect(x, haoY, haoW, 10, 4); ctx.fill();
+      roundRect(ctx, x, haoY, haoW, 9, 4); ctx.fill();
       ctx.shadowBlur = 0;
     } else {
-      const sw = (haoW - 8) / 2;
+      const sw = (haoW - 10) / 2;
       ctx.fillStyle = 'rgba(200,168,75,0.22)';
-      ctx.beginPath(); ctx.roundRect(x, haoY, sw, 10, 4); ctx.fill();
-      ctx.beginPath(); ctx.roundRect(x + haoW - sw, haoY, sw, 10, 4); ctx.fill();
+      roundRect(ctx, x, haoY, sw, 9, 4); ctx.fill();
+      roundRect(ctx, x + haoW - sw, haoY, sw, 9, 4); ctx.fill();
     }
-    ctx.fillStyle = 'rgba(200,168,75,0.3)';
-    ctx.font = '10px "Be Vietnam Pro", sans-serif';
+    ctx.fillStyle = 'rgba(200,168,75,0.28)';
+    ctx.font = '9px "Be Vietnam Pro", sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText(`Vị ${5 - i}`, x + haoW / 2, haoY + 24);
+    ctx.fillText(`Vị ${5 - i}`, x + haoW/2, haoY + 22);
   }
   ctx.textAlign = 'center';
+  curY = haoY + 36;
 
-  // Divider
-  ctx.fillStyle = 'rgba(200,168,75,0.15)';
-  ctx.fillRect(60, 215, W - 120, 1);
+  drawDivider(ctx, W, curY);
+  curY += 22;
 
-  // Bài thơ
-  ctx.fillStyle = 'rgba(200,168,75,0.45)';
-  ctx.font = '11px "Be Vietnam Pro", sans-serif';
-  ctx.fillText('BÀI THƠ', W/2, 238);
-  ctx.fillStyle = 'rgba(245,233,192,0.8)';
-  ctx.font = 'italic 17px "Playfair Display", serif';
-  const thoLines = que.tho.split('\n');
-  thoLines.forEach((line, i) => ctx.fillText(line, W/2, 265 + i * 30));
+  // ---- Bài Thơ ----
+  ctx.fillStyle = 'rgba(200,168,75,0.4)';
+  ctx.font = '10px "Be Vietnam Pro", sans-serif';
+  ctx.fillText('BÀI THƠ', W/2, curY);
+  curY += 18;
 
-  // Divider 2
-  ctx.fillStyle = 'rgba(200,168,75,0.12)';
-  ctx.fillRect(60, 400, W - 120, 1);
-
-  // Lời đoán
-  ctx.fillStyle = 'rgba(200,168,75,0.45)';
-  ctx.font = '11px "Be Vietnam Pro", sans-serif';
-  ctx.fillText('LỜI ĐOÁN', W/2, 425);
-  ctx.fillStyle = 'rgba(245,233,192,0.72)';
-  ctx.font = '14px "Be Vietnam Pro", sans-serif';
-  const doanLines = que.doan.split('\n');
-  doanLines.forEach((line, i) => ctx.fillText(line, W/2, 452 + i * 28));
-
-  // Footer
-  const ten = document.getElementById('inputTen').value.trim();
-  const now = new Date();
+  // Left bar for poem
   ctx.fillStyle = 'rgba(200,168,75,0.25)';
-  ctx.fillRect(60, H - 70, W - 120, 1);
-  ctx.font = '11px "Be Vietnam Pro", sans-serif';
+  ctx.fillRect(60, curY - 4, 2, thoLines.length * 32 + 8);
+
+  ctx.textAlign = 'left';
+  ctx.fillStyle = 'rgba(245,233,192,0.85)';
+  ctx.font = 'italic 16px "Playfair Display", serif';
+  thoLines.forEach((line, i) => {
+    ctx.fillText(line, 72, curY + i * 32);
+  });
+  ctx.textAlign = 'center';
+  curY += thoLines.length * 32 + 8;
+
+  drawDivider(ctx, W, curY);
+  curY += 22;
+
+  // ---- Lời Đoán ----
+  ctx.fillStyle = 'rgba(200,168,75,0.4)';
+  ctx.font = '10px "Be Vietnam Pro", sans-serif';
+  ctx.fillText('LỜI ĐOÁN', W/2, curY);
+  curY += 18;
+
+  ctx.textAlign = 'left';
+  ctx.fillStyle = 'rgba(245,233,192,0.72)';
+  ctx.font = '13px "Be Vietnam Pro", sans-serif';
+  doanLines.forEach((line, i) => {
+    ctx.fillText(line, 60, curY + i * 28);
+  });
+  ctx.textAlign = 'center';
+  curY += doanLines.length * 28 + 16;
+
+  // ---- Footer ----
+  ctx.fillStyle = 'rgba(200,168,75,0.12)';
+  ctx.fillRect(40, curY, W - 80, 1);
+  curY += 18;
+
   ctx.fillStyle = 'rgba(200,168,75,0.3)';
-  ctx.fillText('Nam Mô Đại Từ Đại Bi Quán Thế Âm Bồ Tát', W/2, H - 45);
-  if (ten) ctx.fillText(ten + ' — ' + now.toLocaleDateString('vi-VN'), W/2, H - 25);
-  else ctx.fillText(now.toLocaleDateString('vi-VN') + ' ' + now.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}), W/2, H - 25);
+  ctx.font = '11px "Be Vietnam Pro", sans-serif';
+  ctx.fillText('Nam Mô Đại Từ Đại Bi Quán Thế Âm Bồ Tát', W/2, curY);
+  curY += 18;
+
+  if (ten) {
+    ctx.fillStyle = 'rgba(200,168,75,0.2)';
+    ctx.font = '10px "Be Vietnam Pro", sans-serif';
+    ctx.fillText(ten + ' — ' + now.toLocaleDateString('vi-VN'), W/2, curY);
+  }
 
   // Bottom line
-  ctx.fillStyle = gl;
+  ctx.fillStyle = lineGrad;
   ctx.fillRect(0, H - 2, W, 2);
 
   // Download
@@ -1098,16 +1332,40 @@ function saveImage() {
   showToast('Đã lưu ảnh quẻ!');
 }
 
+function drawDivider(ctx, W, y) {
+  const grad = ctx.createLinearGradient(0,y,W,y);
+  grad.addColorStop(0,'transparent');
+  grad.addColorStop(0.5,'rgba(200,168,75,0.2)');
+  grad.addColorStop(1,'transparent');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, y, W, 1);
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
 // ═══════════════════════════════════════════════
-// NHẬT KÝ (localStorage)
+// NHẬT KÝ
 // ═══════════════════════════════════════════════
 function luuLichSu(que, key) {
   const ten = document.getElementById('inputTen').value.trim();
   const viec = document.getElementById('inputViec').value;
+  const cauHoi = document.getElementById('inputCauHoi').value.trim();
   const entry = {
     ts: Date.now(),
     so: que.so, ten: que.ten, cap: que.cap,
-    key, nguoi: ten, viec
+    key, nguoi: ten, viec, cauHoi
   };
   let history = JSON.parse(localStorage.getItem('quequanam_history') || '[]');
   history.unshift(entry);
@@ -1129,11 +1387,13 @@ function renderHistory() {
     const haoMini = h.key.split('').map(v => `<div class="hm ${v==='N'?'n':'s'}"></div>`).join('');
     const capClass = getCapClass(h.cap);
     const meta = [h.nguoi, h.viec].filter(Boolean).join(' — ') || dateStr;
+    const cauHoiMeta = h.cauHoi ? `<div class="history-meta" style="color:rgba(200,168,75,0.25);font-style:italic">${h.cauHoi.slice(0,45)}${h.cauHoi.length>45?'…':''}</div>` : '';
     return `<div class="history-item" onclick="loadHistory(${idx})">
       <div class="history-hao-mini">${haoMini}</div>
       <div class="history-info">
         <div class="history-que-name">Quẻ ${h.so} — ${h.ten}</div>
         <div class="history-meta">${meta}${h.nguoi ? ' · ' + dateStr : ''}</div>
+        ${cauHoiMeta}
       </div>
       <span class="history-cap-badge ${capClass}">${h.cap.split(' ')[0]}</span>
     </div>`;
@@ -1144,12 +1404,10 @@ function loadHistory(idx) {
   const history = JSON.parse(localStorage.getItem('quequanam_history') || '[]');
   const h = history[idx];
   if (!h) return;
-  // Hiển thị lại quẻ đã gieo
   thuatToan = h.key.split('');
   const que = QUE_MAP[h.key];
   if (!que) return;
 
-  // Flip tất cả đồng
   for (let i = 1; i <= 5; i++) {
     const v = thuatToan[i - 1];
     const back = document.getElementById('coinBack' + i);
@@ -1167,6 +1425,7 @@ function loadHistory(idx) {
   revealed = 5;
   if (h.nguoi) document.getElementById('inputTen').value = h.nguoi;
   if (h.viec) document.getElementById('inputViec').value = h.viec;
+  if (h.cauHoi) document.getElementById('inputCauHoi').value = h.cauHoi;
   capNhatKhan();
   traQue();
   showToast('Đã tải lại quẻ từ lịch sử');
@@ -1196,7 +1455,6 @@ function resetApp() {
     document.getElementById('dot' + i).className = 'coin-status-dot';
     document.getElementById('dot' + i).textContent = '○';
   }
-  // Reset reveal animations
   ['resName','resCap','haoTraditional','resTho','resDoan'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.remove('show');
