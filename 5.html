@@ -117,7 +117,6 @@
         .lbl-badge.d { background: var(--sage);  color: #fff; }
         .lbl-badge.n { background: var(--amber); color: #fff; }
 
-        /* preview chip nhỏ bên phải label */
         .preview-chip {
             margin-left: auto;
             font-size: 11px;
@@ -150,19 +149,16 @@
             outline: none;
             transition: border-color .2s, box-shadow .2s;
             font-family: inherit;
-            /* KHÔNG dùng ime-mode hay text-transform để tránh can thiệp gõ */
         }
         input.in-card:focus {
             border-color: var(--sage);
             box-shadow: 0 0 0 3px rgba(74,124,89,0.12);
         }
-        /* Màu viền sau khi đã correct */
         input.in-card.corrected {
             border-color: var(--sage);
             background: #f4fbf5;
         }
 
-        /* Badge Đ/N góc phải input */
         .kh-badge {
             position: absolute;
             right: 10px; top: 50%;
@@ -178,7 +174,6 @@
         .kh-badge.d  { background: #d6eedd; color: var(--sage-dk); }
         .kh-badge.n  { background: #fef0e0; color: var(--amber); }
 
-        /* TƯỚNG/TƯỢNG suggestion */
         .suggest-box {
             display: none;
             position: absolute;
@@ -209,7 +204,6 @@
         }
         .suggest-item:hover, .suggest-item:active { background: var(--sage-lt); }
 
-        /* Buttons */
         .btn-container {
             display: flex; flex-direction: column;
             gap: 10px; margin-top: 6px;
@@ -366,16 +360,11 @@
 <script>
 // ╔══════════════════════════════════════════════════════════════╗
 //  AUTO-CORRECT RULES
-//  Nguyên tắc:
-//  1. Gõ gì → UPPERCASE ngay, KHÔNG sửa gì thêm
-//  2. Gợi ý TƯỚNG/TƯỢNG sau 1.5s nếu thấy ký tự TU/TW (không thay)
-//  3. Toàn bộ correct CHỈ chạy khi bấm TÌM hoặc Enter trong form
 // ╚══════════════════════════════════════════════════════════════╝
 
 const QUAN_LIST = ['TƯỚNG','TƯỢNG','SĨ','XE','PHÁO','NGỰA','CHỐT'];
 const MAU_LIST  = ['XANH','VÀNG','TRẮNG','ĐỎ'];
 
-// ── Bảng nhận dạng tên quân (so sánh KHÔNG dấu) ──
 function removeAccent(s) {
     return s.normalize('NFD')
         .replace(/[\u0300-\u036f]/g,'')
@@ -383,18 +372,12 @@ function removeAccent(s) {
         .toUpperCase();
 }
 
-// Trả về: { name:'TƯỚNG', ambig:false } | { name:null, ambig:true } | null
 function detectQuan(raw) {
     const u = raw.toUpperCase().trim();
-    // Khớp chính xác
     if (QUAN_LIST.includes(u)) return { name: u, ambig: false };
-
     const na = removeAccent(u);
-
-    // Khớp không dấu chính xác
     const mapExact = {
-        'TUONG': null, // ambig
-        'TUONG ': null,
+        'TUONG': null,
         'SI': 'SĨ', 'SY': 'SĨ',
         'XE': 'XE',
         'PHAO': 'PHÁO', 'PHA': 'PHÁO',
@@ -404,24 +387,18 @@ function detectQuan(raw) {
     if (mapExact[na] !== undefined) {
         return mapExact[na] ? { name: mapExact[na], ambig: false } : { name: null, ambig: true };
     }
-
-    // Khớp bắt đầu bằng (prefix 2+ ký tự không dấu)
     if (na.startsWith('SI') || na.startsWith('SY')) return { name: 'SĨ', ambig: false };
     if (na === 'X' || na.startsWith('XE'))           return { name: 'XE', ambig: false };
     if (na.startsWith('PH'))                          return { name: 'PHÁO', ambig: false };
     if (na.startsWith('NG'))                          return { name: 'NGỰA', ambig: false };
     if (na.startsWith('CH'))                          return { name: 'CHỐT', ambig: false };
-    // TU → ambig TƯỚNG/TƯỢNG
     if (na.startsWith('TU') || na.startsWith('TW'))   return { name: null, ambig: true };
-
     return null;
 }
 
-// Trả về tên màu đúng hoặc null
 function detectMau(raw) {
     const u = raw.toUpperCase().trim();
     if (MAU_LIST.includes(u)) return u;
-
     const na = removeAccent(u);
     if (na.startsWith('XA') || na.startsWith('XH') || na === 'XAN' || na === 'XANH') return 'XANH';
     if (na.startsWith('VA') || na.startsWith('VAN') || na === 'VANG' || na === 'VAG' || na === 'VG') return 'VÀNG';
@@ -430,7 +407,31 @@ function detectMau(raw) {
     return null;
 }
 
-// Trả về 'Đ', 'N', hoặc null
+// ══════════════════════════════════════════════════════════
+//  FIX CHÍNH: Lấy ký hiệu từ token CUỐI CÙNG của chuỗi
+//  Tránh nhầm chữ "Đ" trong "ĐỎ"
+// ══════════════════════════════════════════════════════════
+function getKyHieu(str) {
+    if (!str) return null;
+    const tokens = str.trim().toUpperCase().split(/\s+/);
+    const last = tokens[tokens.length - 1];
+    // Ký hiệu phải là token cuối, CHỈ là "Đ" hoặc "N" (không phải ĐỎ, ĐỨNG, v.v.)
+    if (last === 'Đ' || last === 'D')  return 'Đ';
+    if (last === 'N' || last === 'M')  return 'N';
+    return null;
+}
+
+// Lấy phần tên lá KHÔNG kèm ký hiệu (bỏ token cuối nếu là Đ/N)
+function getBaseName(str) {
+    if (!str) return str;
+    const tokens = str.trim().toUpperCase().split(/\s+/);
+    const last = tokens[tokens.length - 1];
+    if (last === 'Đ' || last === 'D' || last === 'N' || last === 'M') {
+        return tokens.slice(0, -1).join(' ');
+    }
+    return tokens.join(' ');
+}
+
 function detectKyHieu(raw) {
     if (!raw) return null;
     const c = raw.toUpperCase().trim();
@@ -439,15 +440,11 @@ function detectKyHieu(raw) {
     return null;
 }
 
-// ── PARSE toàn bộ chuỗi đã uppercase → { quan, mau, kyHieu, ambig } ──
-// Không throw, không side-effect
 function parseInput(str) {
     const s = str.toUpperCase().trim();
     const tokens = s.split(/\s+/).filter(Boolean);
-
     let quan = null, mau = null, kyHieu = null, ambig = false;
 
-    // Thử token cuối là ký hiệu
     if (tokens.length >= 1) {
         const last = tokens[tokens.length - 1];
         const kh = detectKyHieu(last);
@@ -456,13 +453,10 @@ function parseInput(str) {
             tokens.pop();
         }
     }
-
-    // Thử token cuối là màu
     if (tokens.length >= 1) {
         const last = tokens[tokens.length - 1];
         const m = detectMau(last);
         if (m && tokens.length >= 1) {
-            // Chỉ nhận là màu nếu phần còn lại hợp lệ là tên quân
             const rest = tokens.slice(0, -1).join(' ');
             if (!rest || detectQuan(rest) !== null || tokens.length === 1) {
                 mau = m;
@@ -470,8 +464,6 @@ function parseInput(str) {
             }
         }
     }
-
-    // Phần còn lại là tên quân
     const quanStr = tokens.join(' ');
     if (quanStr) {
         const qr = detectQuan(quanStr);
@@ -480,14 +472,11 @@ function parseInput(str) {
             else quan = qr.name;
         }
     }
-
-    // Fallback: scan toàn chuỗi tìm màu nếu chưa có
     if (!mau) {
         for (const m of MAU_LIST) {
             if (s.includes(m)) { mau = m; break; }
         }
     }
-    // Fallback: scan toàn chuỗi tìm ký hiệu nếu chưa có
     if (!kyHieu) {
         const allTokens = s.split(/\s+/);
         for (const t of allTokens) {
@@ -495,11 +484,9 @@ function parseInput(str) {
             if (kh) { kyHieu = kh; break; }
         }
     }
-
     return { quan, mau, kyHieu, ambig };
 }
 
-// ── Build chuỗi đã correct ──
 function buildCorrected(quan, mau, kyHieu) {
     const parts = [];
     if (quan) parts.push(quan);
@@ -519,7 +506,6 @@ function setupForm(fId) {
     const chip    = document.getElementById('chip-' + fId);
     const sugBox  = document.getElementById('sug-' + fId);
 
-    // ── 1. Chỉ UPPERCASE ngay khi gõ, không làm gì thêm ──
     inp.addEventListener('input', function() {
         const pos = this.selectionStart;
         const upped = this.value.toUpperCase();
@@ -527,29 +513,21 @@ function setupForm(fId) {
             this.value = upped;
             try { this.setSelectionRange(pos, pos); } catch(e) {}
         }
-
-        // Cập nhật badge Đ/N realtime (chỉ đọc, không sửa)
         const parsed = parseInput(this.value);
         updateKhBadge(khBadge, parsed.kyHieu);
         updateChip(chip, parsed);
-
-        // Gợi ý TƯỚNG/TƯỢNG sau 1.5s — CHỈ hiện popup, không sửa text
         clearTimeout(suggestTimers[fId]);
         if (parsed.ambig) {
-            suggestTimers[fId] = setTimeout(() => {
-                openSuggest(sugBox);
-            }, 1500);
+            suggestTimers[fId] = setTimeout(() => { openSuggest(sugBox); }, 1500);
         } else {
             closeSuggest(sugBox);
         }
     });
 
-    // ── 2. Enter → correct và chuyển focus ──
     inp.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
             e.preventDefault();
             correctField(fId);
-            // Focus field tiếp theo
             const order = ['f1','f2','f3','f4'];
             const idx = order.indexOf(fId);
             if (idx < order.length - 1) {
@@ -558,7 +536,6 @@ function setupForm(fId) {
         }
     });
 
-    // ── 3. Blur → KHÔNG sửa gì (giữ nguyên những gì user gõ) ──
     inp.addEventListener('blur', function() {
         setTimeout(() => closeSuggest(sugBox), 200);
     });
@@ -586,7 +563,6 @@ function updateChip(chip, parsed) {
 function openSuggest(box)  { box.classList.add('open'); }
 function closeSuggest(box) { box.classList.remove('open'); }
 
-// ── Xử lý click vào gợi ý TƯỚNG / TƯỢNG ──
 document.querySelectorAll('.suggest-item').forEach(item => {
     item.addEventListener('mousedown', function(e) {
         e.preventDefault();
@@ -594,49 +570,37 @@ document.querySelectorAll('.suggest-item').forEach(item => {
         const val = this.dataset.val;
         const inp = document.getElementById(fId);
         const sugBox = document.getElementById('sug-' + fId);
-
-        // Thay phần tên quân, giữ màu + ký hiệu nếu có
         const parsed = parseInput(inp.value);
         inp.value = buildCorrected(val, parsed.mau, parsed.kyHieu);
         inp.classList.add('corrected');
         closeSuggest(sugBox);
-
-        // Cập nhật badge
         const p2 = parseInput(inp.value);
         updateKhBadge(document.getElementById('kh-' + fId), p2.kyHieu);
         updateChip(document.getElementById('chip-' + fId), p2);
     });
 });
 
-// ── correctField: correct MỘT field khi cần ──
 function correctField(fId, lockMauFrom) {
     const inp = document.getElementById(fId);
     const raw = inp.value.trim();
     if (!raw) return;
-
     let parsed = parseInput(raw);
-
-    // Lock màu: f2 lấy màu f1, f4 lấy màu f3
     if (lockMauFrom) {
         const parentParsed = parseInput(document.getElementById(lockMauFrom).value.trim());
         if (parentParsed.mau) parsed.mau = parentParsed.mau;
     }
-
     if (parsed.quan && parsed.mau && parsed.kyHieu) {
         const corrected = buildCorrected(parsed.quan, parsed.mau, parsed.kyHieu);
         inp.value = corrected;
         inp.classList.add('corrected');
     }
-
     updateKhBadge(document.getElementById('kh-' + fId), parsed.kyHieu);
     updateChip(document.getElementById('chip-' + fId), parsed);
     closeSuggest(document.getElementById('sug-' + fId));
 }
 
-// Init 4 forms
 ['f1','f2','f3','f4'].forEach(setupForm);
 
-// Đóng suggest khi click ngoài
 document.addEventListener('click', function(e) {
     ['f1','f2','f3','f4'].forEach(fId => {
         const inp = document.getElementById(fId);
@@ -882,30 +846,50 @@ Gặp CHỐT ĐỎ N : Nhận được tin tức, thư tình từ nơi xa xôi |
     `;
 
 // ══════════════════════════════════════════════════════════
-//  THUẬT TOÁN GỐC — GIỮ NGUYÊN HOÀN TOÀN
+//  findData05 — SỬA: dùng getKyHieu() thay vì includes("Đ")
+//  để tránh nhầm "Đ" trong "ĐỎ"
 // ══════════════════════════════════════════════════════════
 function findData05(laChu, laGap, gapNamBenPhai) {
     const db = DATA_FILE_05.split('\n');
     let currentChuBlock = "";
-    let targetChu = laChu.toUpperCase().trim();
-    let targetGap = "GẶP " + laGap.toUpperCase().trim();
+
+    // Lấy tên base (không kèm ký hiệu) rồi uppercase để so khớp
+    const targetChu = getBaseName(laChu).toUpperCase().trim();
+    const targetGap = "GẶP " + getBaseName(laGap).toUpperCase().trim();
+
     for (let i = 0; i < db.length; i++) {
         let row = db[i].trim().toUpperCase();
         if (!row) continue;
+
+        // Dòng header lá chủ: chứa ":" nhưng không bắt đầu bằng "GẶP"
         if (row.includes(":") && !row.startsWith("GẶP")) {
             if (row.includes(targetChu)) { currentChuBlock = targetChu; continue; }
             else { currentChuBlock = ""; }
         }
+
+        // Dòng data
         if (currentChuBlock === targetChu && row.startsWith(targetGap)) {
-            let textHau = db[i].split(":")[1] || "";
-            let vế = textHau.split("|");
-            if (vế.length >= 2) return gapNamBenPhai ? vế[1].trim() : vế[0].trim();
-            else return vế[0].trim();
+            let textHau = db[i].split(":").slice(1).join(":"); // lấy phần sau ":" đầu tiên
+            let ve = textHau.split("|");
+            if (ve.length >= 2) return gapNamBenPhai ? ve[1].trim() : ve[0].trim();
+            else return ve[0].trim();
         }
     }
     return null;
 }
 
+// ══════════════════════════════════════════════════════════
+//  thucHienTruyVan — SỬA LOGIC HOÀN TOÀN
+//
+//  Với mỗi cặp (A, B):
+//  Bước 1: Xác định vai trò theo ký hiệu
+//    - A=Đ, B=N → lá A làm chủ, B đi kèm bên PHẢI A → lấy vế PHẢI (index 1)
+//    - B=Đ, A=N → lá B làm chủ, A đi kèm bên TRÁI B → lấy vế TRÁI (index 0)
+//  Bước 2: Nếu không tìm được (cả 2 cùng Đ, cùng N, hoặc miss):
+//    → Thử lá 2 làm chủ, lá 1 đi kèm
+//      · Lá 1 nằm bên TRÁI lá 2 → lấy vế TRÁI (index 0)
+//      · (đổi vai: findData05(B, A, false))
+// ══════════════════════════════════════════════════════════
 function thucHienTruyVan() {
     // Correct tất cả 4 form trước khi tra
     correctField('f1', null);
@@ -921,21 +905,54 @@ function thucHienTruyVan() {
     ];
 
     let ketQua = [];
-    for (let i = 0; i < 3; i++) {
-        let A = la[i], B = la[i+1];
+
+    // Chỉ xử lý 2 cặp: (la[0],la[1]) và (la[2],la[3])
+    const capDoi = [[la[0], la[1], 1], [la[2], la[3], 2]];
+
+    for (const [A, B, soCapHienThi] of capDoi) {
         if (!A || !B) continue;
-        let result = "";
-        if (A.toUpperCase().includes("Đ") && B.toUpperCase().includes("N")) {
+
+        const khA = getKyHieu(A);
+        const khB = getKyHieu(B);
+
+        let result = null;
+        let moTaCach = "";
+
+        // ── Bước 1: lá 1 làm chủ ──
+        if (khA === 'Đ' && khB === 'N') {
+            // A chủ, B bên phải → vế PHẢI
             result = findData05(A, B, true);
-        } else if (B.toUpperCase().includes("Đ") && A.toUpperCase().includes("N")) {
+            moTaCach = `Lá ${soCapHienThi*2-1} (${A}) làm chủ — lấy vế phải`;
+        } else if (khB === 'Đ' && khA === 'N') {
+            // B chủ, A bên trái B → vế TRÁI
             result = findData05(B, A, false);
+            moTaCach = `Lá ${soCapHienThi*2} (${B}) làm chủ — lấy vế trái`;
         }
+
+        // ── Bước 2: Nếu chưa có result, thử lá 2 làm chủ (fallback) ──
+        if (!result) {
+            // B làm chủ, A đi kèm nằm bên TRÁI B → vế TRÁI (false)
+            result = findData05(B, A, false);
+            if (result) {
+                moTaCach = `Lá ${soCapHienThi*2} (${B}) làm chủ [fallback] — lấy vế trái`;
+            }
+        }
+
+        // ── Bước 3: Nếu vẫn không có, thử thêm A làm chủ B bên trái (đảo vế) ──
+        if (!result) {
+            result = findData05(A, B, false);
+            if (result) {
+                moTaCach = `Lá ${soCapHienThi*2-1} (${A}) làm chủ [fallback vế trái]`;
+            }
+        }
+
         if (result) {
-            ketQua.push(`Cặp ${i+1}  (${A} — ${B})\n➤ ${result}`);
+            ketQua.push(`Cặp ${soCapHienThi}  (${A} — ${B})\n➤ ${result}`);
         } else {
-            ketQua.push(`Cặp ${i+1}  (${A} — ${B})\n⚠ Không tìm thấy — kiểm tra lại định dạng`);
+            ketQua.push(`Cặp ${soCapHienThi}  (${A} — ${B})\n⚠ Không tìm thấy — kiểm tra lại định dạng`);
         }
     }
+
     document.getElementById('output').innerText = ketQua.join("\n\n────────────────────\n\n");
 }
 
