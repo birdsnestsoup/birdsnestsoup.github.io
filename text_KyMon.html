@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kỳ Môn Input Tool</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; color: #333; padding: 20px; line-height: 1.6; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        h2 { color: #2c3e50; text-align: center; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        
+        .section { margin-bottom: 25px; padding: 15px; border: 1px solid #eee; border-radius: 8px; }
+        .section-title { font-weight: bold; margin-bottom: 15px; color: #e67e22; display: block; border-left: 4px solid #e67e22; padding-left: 10px; }
+        
+        .grid-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
+        .input-group { display: flex; flex-direction: column; }
+        label { font-size: 0.9em; margin-bottom: 5px; color: #666; }
+        input { padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px; }
+
+        .cu-cuc-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+        .box-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
+        .box { border: 1px solid #d35400; padding: 10px; border-radius: 5px; background: #fff5f0; }
+        
+        button { width: 100%; padding: 15px; background: #27ae60; color: white; border: none; border-radius: 8px; font-size: 18px; cursor: pointer; margin-top: 20px; transition: 0.3s; }
+        button:hover { background: #219150; }
+
+        #output { width: 100%; height: 250px; margin-top: 20px; padding: 15px; font-family: monospace; font-size: 14px; border: 2px dashed #bdc3c7; background: #fafafa; white-space: pre; overflow-x: auto; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Nhập Liệu Kỳ Môn Độn Giáp</h2>
+
+    <div class="section">
+        <span class="section-title">Tổng quan</span>
+        <div class="grid-inputs">
+            <div class="input-group"><label>Giờ (HH:mm)</label><input type="text" id="time" placeholder="11:00"></div>
+            <div class="input-group"><label>Ngày (YYYY-MM-DD)</label><input type="text" id="date" placeholder="2026-05-28"></div>
+            <div class="input-group"><label>Phương hướng</label><input type="text" id="direction" placeholder="Đông Bắc"></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <span class="section-title">Cách cục (Nhập tối đa 6)</span>
+        <div class="cu-cuc-list" id="cachCucContainer">
+            <input type="text" class="cach-cuc" placeholder="Cách cục 1 (Vd: Tinh kỳ chu tước)">
+            <input type="text" class="cach-cuc" placeholder="Cách cục 2 (Vd: Ngọc nữ thủ môn)">
+            <input type="text" class="cach-cuc" placeholder="Cách cục 3 (Vd: Thiên độn)">
+            <input type="text" class="cach-cuc" placeholder="Cách cục 4">
+            <input type="text" class="cach-cuc" placeholder="Cách cục 5">
+            <input type="text" class="cach-cuc" placeholder="Cách cục 6">
+        </div>
+    </div>
+
+    <div class="section">
+        <span class="section-title">Trụ Thời Gian</span>
+        <div class="grid-inputs">
+            <div class="input-group"><label>Giờ</label><input type="text" id="truGio" placeholder="Bính Ngọ"></div>
+            <div class="input-group"><label>Ngày</label><input type="text" id="truNgay" placeholder="Nhâm Dần"></div>
+            <div class="input-group"><label>Tháng</label><input type="text" id="truThang" placeholder="Quý Tỵ"></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <span class="section-title">Chi Tiết 3 Cung (Tứ Trụ/Thần/Môn/Tinh)</span>
+        <div class="box-container">
+            <div class="box">
+                <input type="text" id="c1_h1_1" placeholder="Can Trên" style="width:30%">
+                <input type="text" id="c1_h1_2" placeholder="Tinh" style="width:30%">
+                <input type="text" id="c1_h1_3" placeholder="Thần" style="width:30%">
+                <hr>
+                <input type="text" id="c1_h2_1" placeholder="Can Dưới" style="width:45%">
+                <input type="text" id="c1_h2_2" placeholder="Môn" style="width:45%">
+            </div>
+            <div class="box">
+                <input type="text" id="c2_h1_1" placeholder="Can Trên" style="width:30%">
+                <input type="text" id="c2_h1_2" placeholder="Tinh" style="width:30%">
+                <input type="text" id="c2_h1_3" placeholder="Thần" style="width:30%">
+                <hr>
+                <input type="text" id="c2_h2_1" placeholder="Can Dưới" style="width:45%">
+                <input type="text" id="c2_h2_2" placeholder="Môn" style="width:45%">
+            </div>
+            <div class="box">
+                <input type="text" id="c3_h1_1" placeholder="Can Trên" style="width:30%">
+                <input type="text" id="c3_h1_2" placeholder="Tinh" style="width:30%">
+                <input type="text" id="c3_h1_3" placeholder="Thần" style="width:30%">
+                <hr>
+                <input type="text" id="c3_h2_1" placeholder="Can Dưới" style="width:45%">
+                <input type="text" id="c3_h2_2" placeholder="Môn" style="width:45%">
+            </div>
+        </div>
+    </div>
+
+    <button onclick="generateText()">XUẤT VĂN BẢN (COPY SEND AI)</button>
+
+    <textarea id="output" readonly placeholder="Kết quả sẽ hiển thị ở đây..."></textarea>
+</div>
+
+<script>
+    function generateText() {
+        const time = document.getElementById('time').value || "11:00";
+        const date = document.getElementById('date').value || "2026-05-28";
+        const direction = document.getElementById('direction').value || "Đông Bắc";
+        
+        let cachCucs = "";
+        document.querySelectorAll('.cach-cuc').forEach(el => {
+            if(el.value.trim() !== "") cachCucs += `      ${el.value.trim()}\n`;
+        });
+
+        const tru = `Giờ ${document.getElementById('truGio').value} Ngày ${document.getElementById('truNgay').value} Tháng ${document.getElementById('truThang').value}`;
+
+        // Hàm lấy giá trị ô
+        const getVal = (id) => (document.getElementById(id).value || "---").padEnd(6);
+
+        let boxText = "";
+        boxText += `[ ${getVal('c1_h1_1')} ${getVal('c1_h1_2')} ${getVal('c1_h1_3')} ] [ ${getVal('c2_h1_1')} ${getVal('c2_h1_2')} ${getVal('c2_h1_3')} ] [ ${getVal('c3_h1_1')} ${getVal('c3_h1_2')} ${getVal('c3_h1_3')} ]\n`;
+        boxText += `[ ${getVal('c1_h2_1')} ${getVal('c1_h2_2')}        ] [ ${getVal('c2_h2_1')} ${getVal('c2_h2_2')}        ] [ ${getVal('c3_h2_1')} ${getVal('c3_h2_2')}        ]`;
+
+        const finalOutput = `${time}      \n${date}\n${direction}\n\n${cachCucs}\n${tru}\n------------------------------------------------------------\n${boxText}`;
+        
+        document.getElementById('output').value = finalOutput;
+    }
+</script>
+
+</body>
+</html>
