@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Liên Hoa Độn Pháp</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Ma+Shan+Zheng&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-dim: #7a5f28;
+    --ink: #1a1208;
+    --paper: #f5ead8;
+    --paper-dark: #e8d4b0;
+    --red: #8b1a1a;
+    --red-light: #c0392b;
+    --smoke: rgba(201,168,76,0.08);
+    --shadow: rgba(26,18,8,0.5);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background-color: #0d0a05;
+    background-image:
+      radial-gradient(ellipse 80% 60% at 50% 0%, #2a1a05 0%, transparent 70%),
+      repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(201,168,76,0.03) 40px, rgba(201,168,76,0.03) 41px),
+      repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(201,168,76,0.03) 40px, rgba(201,168,76,0.03) 41px);
+    min-height: 100vh;
+    font-family: 'Noto Serif', serif;
+    color: var(--paper);
+    overflow-x: hidden;
+  }
+
+  /* Incense smoke animation */
+  .smoke-container {
+    position: fixed;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 120px;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+  .smoke-particle {
+    position: absolute;
+    bottom: 0;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--gold-light);
+    animation: smoke-rise 4s ease-out infinite;
+  }
+  .smoke-particle:nth-child(1) { left: 90px; animation-delay: 0s; }
+  .smoke-particle:nth-child(2) { left: 95px; animation-delay: 0.8s; }
+  .smoke-particle:nth-child(3) { left: 100px; animation-delay: 1.6s; }
+  .smoke-particle:nth-child(4) { left: 105px; animation-delay: 2.4s; }
+  @keyframes smoke-rise {
+    0%   { opacity: 0; transform: translateY(0) scaleX(1); }
+    20%  { opacity: 0.8; }
+    100% { opacity: 0; transform: translateY(-110px) scaleX(6) translateX(-20px); }
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 16px 60px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 48px 0 32px;
+    position: relative;
+  }
+  .header::before {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, transparent, var(--gold));
+    margin: 0 auto 16px;
+  }
+  .header-zh {
+    font-family: 'Ma Shan Zheng', serif;
+    font-size: 3.2rem;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-shadow: 0 0 30px rgba(201,168,76,0.4), 0 2px 8px var(--shadow);
+    line-height: 1;
+  }
+  .header-vi {
+    font-size: 0.8rem;
+    color: var(--gold-dim);
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+  .header::after {
+    content: '✦ ✦ ✦';
+    display: block;
+    color: var(--gold-dim);
+    font-size: 0.6rem;
+    letter-spacing: 0.6em;
+    margin-top: 20px;
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    border: 1px solid var(--gold-dim);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 28px;
+    background: rgba(0,0,0,0.3);
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 12px;
+    background: transparent;
+    border: none;
+    color: var(--gold-dim);
+    font-family: 'Noto Serif', serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+  }
+  .tab-btn.active {
+    background: linear-gradient(135deg, rgba(201,168,76,0.15), rgba(201,168,76,0.05));
+    color: var(--gold);
+  }
+  .tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: var(--gold);
+  }
+  .tab-btn:not(.active):hover { color: var(--paper); }
+  .tab-separator {
+    width: 1px;
+    background: var(--gold-dim);
+    flex-shrink: 0;
+  }
+
+  /* Panel */
+  .panel {
+    display: none;
+    animation: fadeIn 0.4s ease;
+  }
+  .panel.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  /* Card */
+  .card {
+    background: linear-gradient(160deg, rgba(30,20,5,0.95) 0%, rgba(15,10,2,0.98) 100%);
+    border: 1px solid var(--gold-dim);
+    border-radius: 2px;
+    padding: 28px;
+    margin-bottom: 20px;
+    position: relative;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(201,168,76,0.1);
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 6px; left: 6px; right: 6px; bottom: 6px;
+    border: 1px solid rgba(201,168,76,0.08);
+    border-radius: 1px;
+    pointer-events: none;
+  }
+
+  .section-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--gold-dim), transparent);
+  }
+
+  /* Question input */
+  .question-area {
+    width: 100%;
+    min-height: 80px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 2px;
+    color: var(--paper);
+    font-family: 'Noto Serif', serif;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    padding: 12px 14px;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .question-area::placeholder { color: rgba(201,168,76,0.25); font-style: italic; }
+  .question-area:focus { border-color: rgba(201,168,76,0.5); }
+
+  /* Method buttons */
+  .method-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .method-btn {
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 2px;
+    color: var(--paper);
+    font-family: 'Noto Serif', serif;
+    font-size: 0.75rem;
+    padding: 14px 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+    line-height: 1.5;
+    user-select: none;
+  }
+  .method-btn .method-icon { font-size: 1.4rem; display: block; margin-bottom: 6px; }
+  .method-btn:hover { border-color: var(--gold); background: rgba(201,168,76,0.08); }
+  .method-btn.selected {
+    border-color: var(--gold);
+    background: linear-gradient(135deg, rgba(201,168,76,0.15), rgba(201,168,76,0.05));
+    color: var(--gold);
+    box-shadow: 0 0 15px rgba(201,168,76,0.1);
+  }
+
+  /* Touch zone */
+  .touch-zone {
+    display: none;
+    width: 100%;
+    height: 180px;
+    background: radial-gradient(ellipse at center, rgba(201,168,76,0.06) 0%, transparent 70%);
+    border: 1px dashed rgba(201,168,76,0.3);
+    border-radius: 2px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: var(--gold-dim);
+    letter-spacing: 0.1em;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .touch-zone.visible { display: flex; }
+  .touch-zone-hint { font-size: 1.6rem; }
+  .touch-ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.3);
+    transform: scale(0);
+    animation: ripple 0.8s ease-out forwards;
+    pointer-events: none;
+  }
+  @keyframes ripple {
+    to { transform: scale(6); opacity: 0; }
+  }
+  .touch-zone .touch-count {
+    position: absolute;
+    top: 10px; right: 14px;
+    font-size: 0.7rem;
+    color: var(--gold);
+  }
+
+  /* Shake zone */
+  .shake-zone {
+    display: none;
+    width: 100%;
+    padding: 20px;
+    background: rgba(0,0,0,0.3);
+    border: 1px dashed rgba(201,168,76,0.3);
+    border-radius: 2px;
+    text-align: center;
+    margin-bottom: 16px;
+    font-size: 0.8rem;
+    color: var(--gold-dim);
+    letter-spacing: 0.08em;
+  }
+  .shake-zone.visible { display: block; }
+  .shake-icon { font-size: 2rem; display: block; margin-bottom: 8px; }
+  .shake-bar-wrap { width: 100%; height: 6px; background: rgba(0,0,0,0.4); border-radius: 3px; margin: 12px 0 4px; overflow: hidden; }
+  .shake-bar { height: 100%; width: 0%; background: linear-gradient(to right, var(--gold-dim), var(--gold)); border-radius: 3px; transition: width 0.1s; }
+
+  /* Main action button */
+  .btn-main {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #2a1a05 0%, #1a0f02 100%);
+    border: 1px solid var(--gold);
+    border-radius: 2px;
+    color: var(--gold);
+    font-family: 'Ma Shan Zheng', serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.3em;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(201,168,76,0.1);
+  }
+  .btn-main::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(ellipse at center, rgba(201,168,76,0.1) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .btn-main:hover { box-shadow: 0 0 35px rgba(201,168,76,0.25); border-color: var(--gold-light); }
+  .btn-main:hover::before { opacity: 1; }
+  .btn-main:active { transform: scale(0.99); }
+  .btn-main:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* Result */
+  .result-card {
+    display: none;
+    animation: resultReveal 0.6s ease;
+  }
+  .result-card.visible { display: block; }
+  @keyframes resultReveal {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  .result-header {
+    text-align: center;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+  }
+  .result-title {
+    font-size: 0.6rem;
+    letter-spacing: 0.5em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .numbers-row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 24px;
+    margin-bottom: 8px;
+  }
+  .number-block { text-align: center; }
+  .number-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .number-val {
+    font-family: 'Ma Shan Zheng', serif;
+    font-size: 2.8rem;
+    color: var(--gold);
+    line-height: 1;
+    text-shadow: 0 0 20px rgba(201,168,76,0.4);
+  }
+  .number-sep {
+    font-size: 1.4rem;
+    color: var(--gold-dim);
+    margin-top: 20px;
+  }
+
+  .hao-block { text-align: center; margin-top: 16px; }
+  .hao-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .hao-val {
+    font-family: 'Ma Shan Zheng', serif;
+    font-size: 2rem;
+    color: var(--red-light);
+    text-shadow: 0 0 15px rgba(192,57,43,0.4);
+  }
+
+  /* Hexagram lines */
+  .hexagram-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    margin: 20px 0;
+  }
+  .hex-line {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    height: 14px;
+    position: relative;
+  }
+  .hex-line-num {
+    font-size: 0.55rem;
+    color: var(--gold-dim);
+    width: 16px;
+    text-align: right;
+    font-family: monospace;
+  }
+  .hex-bar {
+    width: 60px;
+    height: 6px;
+    background: var(--gold);
+    border-radius: 1px;
+    box-shadow: 0 0 6px rgba(201,168,76,0.3);
+  }
+  .hex-bar.broken { width: 26px; }
+  .hex-bar.broken + .hex-bar-gap + .hex-bar { width: 26px; }
+  .hex-bar-gap { width: 8px; }
+  .hex-line.moving .hex-bar { background: var(--red-light); box-shadow: 0 0 8px rgba(192,57,43,0.5); }
+  .hex-line.moving::after {
+    content: '○';
+    color: var(--red-light);
+    font-size: 0.7rem;
+    margin-left: 4px;
+  }
+
+  /* Info rows */
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .info-item {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(201,168,76,0.12);
+    border-radius: 2px;
+    padding: 12px 14px;
+  }
+  .info-item-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .info-item-val {
+    font-family: 'Ma Shan Zheng', serif;
+    font-size: 1.1rem;
+    color: var(--paper);
+    letter-spacing: 0.05em;
+  }
+
+  /* Timestamp info */
+  .timestamp-note {
+    font-size: 0.7rem;
+    color: var(--gold-dim);
+    text-align: center;
+    margin-top: 12px;
+    font-style: italic;
+    letter-spacing: 0.05em;
+  }
+
+  /* Copy / action buttons */
+  .action-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+  }
+  .btn-action {
+    flex: 1;
+    padding: 11px 8px;
+    background: transparent;
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 2px;
+    color: var(--gold-dim);
+    font-family: 'Noto Serif', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .btn-action:hover { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.05); }
+  .btn-action.copied { border-color: #4caf50; color: #4caf50; }
+
+  /* Divider */
+  .divider {
+    text-align: center;
+    color: var(--gold-dim);
+    font-size: 0.6rem;
+    letter-spacing: 0.5em;
+    margin: 8px 0 20px;
+  }
+
+  /* Tooltip */
+  .tooltip { position: relative; display: inline-block; }
+  .tooltip-text {
+    visibility: hidden;
+    background: rgba(20,12,2,0.95);
+    border: 1px solid var(--gold-dim);
+    color: var(--paper);
+    font-size: 0.7rem;
+    line-height: 1.6;
+    padding: 8px 12px;
+    border-radius: 2px;
+    position: absolute;
+    bottom: 130%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 220px;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.2s;
+    text-align: center;
+  }
+  .tooltip:hover .tooltip-text { visibility: visible; opacity: 1; }
+
+  /* Reset btn */
+  .btn-reset {
+    display: block;
+    width: 100%;
+    margin-top: 14px;
+    padding: 10px;
+    background: transparent;
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 2px;
+    color: var(--gold-dim);
+    font-family: 'Noto Serif', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-reset:hover { border-color: var(--gold-dim); color: var(--paper); }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding-top: 30px;
+    color: var(--gold-dim);
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    opacity: 0.5;
+  }
+
+  /* Pulse animation for button when method selected */
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 20px rgba(201,168,76,0.1); }
+    50% { box-shadow: 0 0 35px rgba(201,168,76,0.3); }
+  }
+  .btn-main.ready { animation: pulse-glow 2s ease-in-out infinite; }
+
+  /* Shake animation for shake method */
+  @keyframes device-shake {
+    0%, 100% { transform: rotate(0deg); }
+    20% { transform: rotate(-4deg); }
+    40% { transform: rotate(4deg); }
+    60% { transform: rotate(-3deg); }
+    80% { transform: rotate(3deg); }
+  }
+  .shaking { animation: device-shake 0.3s ease-in-out; }
+
+  /* Canvas for screenshot */
+  #screenshotCanvas { display: none; }
+
+  @media (max-width: 420px) {
+    .method-grid { grid-template-columns: 1fr 1fr 1fr; }
+    .method-btn { font-size: 0.68rem; padding: 12px 4px; }
+    .numbers-row { gap: 16px; }
+    .number-val { font-size: 2.2rem; }
+    .info-grid { grid-template-columns: 1fr 1fr; }
+    .header-zh { font-size: 2.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="smoke-container">
+  <div class="smoke-particle"></div>
+  <div class="smoke-particle"></div>
+  <div class="smoke-particle"></div>
+  <div class="smoke-particle"></div>
+</div>
+
+<div class="wrapper">
+
+  <div class="header">
+    <div class="header-zh">蓮花遁法</div>
+    <div class="header-vi">Liên Hoa Độn Pháp · Bói Quẻ Online</div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('basic')">Cơ Bản (Basic)</button>
+    <div class="tab-separator"></div>
+    <button class="tab-btn" onclick="switchTab('plus')">Nâng Cao (Plus)</button>
+  </div>
+
+  <!-- ===== BASIC PANEL ===== -->
+  <div class="panel active" id="panel-basic">
+
+    <div class="card">
+      <div class="section-label">Câu Hỏi</div>
+      <textarea class="question-area" id="q-basic" placeholder="Viết câu hỏi của bạn vào đây… Tập trung tâm ý vào câu hỏi trước khi lấy quẻ."></textarea>
+    </div>
+
+    <div class="card">
+      <div class="section-label">Phương Thức Lấy Số</div>
+      <div class="method-grid">
+        <button class="method-btn" onclick="selectMethod('basic','touch')" id="basic-method-touch">
+          <span class="method-icon">👆</span>Chạm Màn Hình
+        </button>
+        <button class="method-btn" onclick="selectMethod('basic','time')" id="basic-method-time">
+          <span class="method-icon">⏱️</span>Thời Điểm Bấm
+        </button>
+        <button class="method-btn" onclick="selectMethod('basic','shake')" id="basic-method-shake">
+          <span class="method-icon">📳</span>Lắc Điện Thoại
+        </button>
+      </div>
+
+      <!-- Touch zone basic -->
+      <div class="touch-zone" id="basic-touch-zone" onclick="registerTouch(event,'basic')">
+        <div class="touch-count" id="basic-touch-count">0 / 2 lần</div>
+        <span class="touch-zone-hint">✋</span>
+        <span>Nhắm mắt · Tập trung · Chạm 2 lần</span>
+      </div>
+
+      <!-- Shake zone basic -->
+      <div class="shake-zone" id="basic-shake-zone">
+        <span class="shake-icon">📱</span>
+        <span id="basic-shake-text">Lắc điện thoại để lấy số…</span>
+        <div class="shake-bar-wrap"><div class="shake-bar" id="basic-shake-bar"></div></div>
+        <span style="font-size:0.65rem;color:var(--gold-dim);">Cường độ lắc</span>
+      </div>
+
+      <button class="btn-main" id="basic-btn" onclick="castBasic()" disabled>
+        ✦ Lập Quẻ ✦
+      </button>
+    </div>
+
+    <!-- Basic Result -->
+    <div class="result-card card" id="basic-result">
+      <div class="result-header">
+        <div class="result-title">✦ Kết Quả Lấy Quẻ · Cơ Bản ✦</div>
+        <div class="numbers-row">
+          <div class="number-block">
+            <div class="number-label">Số Thượng</div>
+            <div class="number-val" id="b-thuong">—</div>
+          </div>
+          <div class="number-sep">·</div>
+          <div class="number-block">
+            <div class="number-label">Số Hạ</div>
+            <div class="number-val" id="b-ha">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-item-label">Quẻ Thượng</div>
+          <div class="info-item-val" id="b-que-thuong">—</div>
+        </div>
+        <div class="info-item">
+          <div class="info-item-label">Quẻ Hạ</div>
+          <div class="info-item-val" id="b-que-ha">—</div>
+        </div>
+        <div class="info-item">
+          <div class="info-item-label">Tên Quẻ</div>
+          <div class="info-item-val" id="b-que-name">—</div>
+        </div>
+        <div class="info-item">
+          <div class="info-item-label">Số Thứ Tự</div>
+          <div class="info-item-val" id="b-que-num">—</div>
+        </div>
+      </div>
+
+      <div class="hexagram-display" id="b-hexagram"></div>
+      <div class="timestamp-note" id="b-timestamp"></div>
+
+      <div class="action-row">
+        <button class="btn-action" id="basic-copy-btn" onclick="copyResult('basic')">
+          📋 Sao Chép
+        </button>
+        <button class="btn-action" onclick="saveImage('basic')">
+          🖼️ Lưu Ảnh
+        </button>
+      </div>
+      <button class="btn-reset" onclick="resetPanel('basic')">↺ Lấy Quẻ Mới</button>
+    </div>
+
+  </div>
+
+  <!-- ===== PLUS PANEL ===== -->
+  <div class="panel" id="panel-plus">
+
+    <div class="card">
+      <div class="section-label">Câu Hỏi</div>
+      <textarea class="question-area" id="q-plus" placeholder="Viết câu hỏi của bạn vào đây… Tập trung tâm ý vào câu hỏi trước khi lấy quẻ."></textarea>
+    </div>
+
+    <div class="card">
+      <div class="section-label">Phương Thức Lấy Số</div>
+      <div class="method-grid">
+        <button class="method-btn" onclick="selectMethod('plus','touch')" id="plus-method-touch">
+          <span class="method-icon">👆</span>Chạm Màn Hình
+        </button>
+        <button class="method-btn" onclick="selectMethod('plus','time')" id="plus-method-time">
+          <span class="method-icon">⏱️</span>Thời Điểm Bấm
+        </button>
+        <button class="method-btn" onclick="selectMethod('plus','shake')" id="plus-method-shake">
+          <span class="method-icon">📳</span>Lắc Điện Thoại
+        </button>
+      </div>
+
+      <!-- Touch zone plus (3 touches) -->
+      <div class="touch-zone" id="plus-touch-zone" onclick="registerTouch(event,'plus')">
+        <div class="touch-count" id="plus-touch-count">0 / 3 lần</div>
+        <span class="touch-zone-hint">✋</span>
+        <span>Nhắm mắt · Tập trung · Chạm 3 lần</span>
+      </div>
+
+      <!-- Shake zone plus -->
+      <div class="shake-zone" id="plus-shake-zone">
+        <span class="shake-icon">📱</span>
+        <span id="plus-shake-text">Lắc điện thoại để lấy số…</span>
+        <div class="shake-bar-wrap"><div class="shake-bar" id="plus-shake-bar"></div></div>
+        <span style="font-size:0.65rem;color:var(--gold-dim);">Cường độ lắc</span>
+      </div>
+
+      <button class="btn-main" id="plus-btn" onclick="castPlus()" disabled>
+        ✦ Lập Quẻ Plus ✦
+      </button>
+    </div>
+
+    <!-- Plus Result -->
+    <div class="result-card card" id="plus-result">
+      <div class="result-header">
+        <div class="result-title">✦ Kết Quả Lấy Quẻ · Nâng Cao ✦</div>
+        <div class="numbers-row">
+          <div class="number-block">
+            <div class="number-label">Số Thượng</div>
+            <div class="number-val" id="p-thuong">—</div>
+          </div>
+          <div class="number-sep">·</div>
+          <div class="number-block">
+            <div class="number-label">Số Hạ</div>
+            <div class="number-val" id="p-ha">—</div>
+          </div>
+          <div class="number-sep">·</div>
+          <div class="number-block">
+            <div class="number-label">Hào Động</div>
+            <div class="number-val" id="p-hao" style="color:var(--red-light)">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-item-label">Quẻ Thượng</div>
+          <div class="info-item-val" id="p-que-thuong">—</div>
+        </div>
+        <div class="info-item">
+          <div class="info-item-label">Quẻ Hạ</div>
+          <div class="info-item-val" id="p-que-ha">—</div>
+        </div>
+        <div class="info-item">
+          <div class="info-item-label">Tên Quẻ</div>
+          <div class="info-item-val" id="p-que-name">—</div>
+        </div>
+        <div class="info-item">
+          <div class="info-item-label">Số Thứ Tự</div>
+          <div class="info-item-val" id="p-que-num">—</div>
+        </div>
+      </div>
+
+      <div class="hexagram-display" id="p-hexagram"></div>
+      <div class="timestamp-note" id="p-timestamp"></div>
+
+      <div class="action-row">
+        <button class="btn-action" id="plus-copy-btn" onclick="copyResult('plus')">
+          📋 Sao Chép
+        </button>
+        <button class="btn-action" onclick="saveImage('plus')">
+          🖼️ Lưu Ảnh
+        </button>
+      </div>
+      <button class="btn-reset" onclick="resetPanel('plus')">↺ Lấy Quẻ Mới</button>
+    </div>
+
+  </div>
+
+  <div class="footer">蓮花遁法 · Tâm Động Thời Linh · 心動時靈</div>
+</div>
+
+<canvas id="screenshotCanvas"></canvas>
+
+<script>
+// ===== BÁT QUÁI DATA =====
+const BAT_QUAI = [
+  null, // index 0 unused
+  { name: '☰ Càn', viet: 'Càn', lines: [1,1,1], element: 'Kim', dir: 'Tây Bắc' },
+  { name: '☱ Đoài', viet: 'Đoài', lines: [0,1,1], element: 'Kim', dir: 'Tây' },
+  { name: '☲ Ly', viet: 'Ly', lines: [1,0,1], element: 'Hỏa', dir: 'Nam' },
+  { name: '☳ Chấn', viet: 'Chấn', lines: [0,0,1], element: 'Mộc', dir: 'Đông' },
+  { name: '☴ Tốn', viet: 'Tốn', lines: [1,1,0], element: 'Mộc', dir: 'Đông Nam' },
+  { name: '☵ Khảm', viet: 'Khảm', lines: [0,1,0], element: 'Thủy', dir: 'Bắc' },
+  { name: '☶ Cấn', viet: 'Cấn', lines: [1,0,0], element: 'Thổ', dir: 'Đông Bắc' },
+  { name: '☷ Khôn', viet: 'Khôn', lines: [0,0,0], element: 'Thổ', dir: 'Tây Nam' }
+];
+
+// 64 quẻ Kinh Dịch (Thượng x Hạ) → tên quẻ
+// Index [thuong][ha] (1-based)
+const QUE_64 = {
+  '1-1': {num:1, name:'Càn Vi Thiên'},   '1-2': {num:43,name:'Trạch Thiên Quải'}, '1-3': {num:14,name:'Hỏa Thiên Đại Hữu'}, '1-4': {num:34,name:'Lôi Thiên Đại Tráng'},
+  '1-5': {num:9, name:'Phong Thiên Tiểu Súc'}, '1-6': {num:5,name:'Thủy Thiên Nhu'}, '1-7': {num:26,name:'Sơn Thiên Đại Súc'}, '1-8': {num:11,name:'Địa Thiên Thái'},
+  '2-1': {num:10,name:'Thiên Trạch Lý'},   '2-2': {num:58,name:'Đoài Vi Trạch'}, '2-3': {num:38,name:'Hỏa Trạch Khuê'}, '2-4': {num:54,name:'Lôi Trạch Quy Muội'},
+  '2-5': {num:61,name:'Phong Trạch Trung Phu'}, '2-6': {num:60,name:'Thủy Trạch Tiết'}, '2-7': {num:41,name:'Sơn Trạch Tổn'}, '2-8': {num:19,name:'Địa Trạch Lâm'},
+  '3-1': {num:13,name:'Thiên Hỏa Đồng Nhân'}, '3-2': {num:49,name:'Trạch Hỏa Cách'}, '3-3': {num:30,name:'Ly Vi Hỏa'}, '3-4': {num:55,name:'Lôi Hỏa Phong'},
+  '3-5': {num:37,name:'Phong Hỏa Gia Nhân'}, '3-6': {num:63,name:'Thủy Hỏa Ký Tế'}, '3-7': {num:22,name:'Sơn Hỏa Bí'}, '3-8': {num:36,name:'Địa Hỏa Minh Di'},
+  '4-1': {num:25,name:'Thiên Lôi Vô Vọng'}, '4-2': {num:17,name:'Trạch Lôi Tùy'}, '4-3': {num:21,name:'Hỏa Lôi Phệ Hạp'}, '4-4': {num:51,name:'Chấn Vi Lôi'},
+  '4-5': {num:42,name:'Phong Lôi Ích'}, '4-6': {num:3,name:'Thủy Lôi Truân'}, '4-7': {num:27,name:'Sơn Lôi Di'}, '4-8': {num:24,name:'Địa Lôi Phục'},
+  '5-1': {num:44,name:'Thiên Phong Cấu'}, '5-2': {num:28,name:'Trạch Phong Đại Quá'}, '5-3': {num:50,name:'Hỏa Phong Đỉnh'}, '5-4': {num:32,name:'Lôi Phong Hằng'},
+  '5-5': {num:57,name:'Tốn Vi Phong'}, '5-6': {num:48,name:'Thủy Phong Tỉnh'}, '5-7': {num:18,name:'Sơn Phong Cổ'}, '5-8': {num:46,name:'Địa Phong Thăng'},
+  '6-1': {num:6,name:'Thiên Thủy Tụng'}, '6-2': {num:47,name:'Trạch Thủy Khốn'}, '6-3': {num:64,name:'Hỏa Thủy Vị Tế'}, '6-4': {num:40,name:'Lôi Thủy Giải'},
+  '6-5': {num:59,name:'Phong Thủy Hoán'}, '6-6': {num:29,name:'Khảm Vi Thủy'}, '6-7': {num:4,name:'Sơn Thủy Mông'}, '6-8': {num:7,name:'Địa Thủy Sư'},
+  '7-1': {num:33,name:'Thiên Sơn Độn'}, '7-2': {num:31,name:'Trạch Sơn Hàm'}, '7-3': {num:56,name:'Hỏa Sơn Lữ'}, '7-4': {num:62,name:'Lôi Sơn Tiểu Quá'},
+  '7-5': {num:53,name:'Phong Sơn Tiệm'}, '7-6': {num:39,name:'Thủy Sơn Kiển'}, '7-7': {num:52,name:'Cấn Vi Sơn'}, '7-8': {num:15,name:'Địa Sơn Khiêm'},
+  '8-1': {num:12,name:'Thiên Địa Bĩ'}, '8-2': {num:45,name:'Trạch Địa Tụy'}, '8-3': {num:35,name:'Hỏa Địa Tấn'}, '8-4': {num:16,name:'Lôi Địa Dự'},
+  '8-5': {num:20,name:'Phong Địa Quan'}, '8-6': {num:8,name:'Thủy Địa Tỷ'}, '8-7': {num:23,name:'Sơn Địa Bác'}, '8-8': {num:2,name:'Khôn Vi Địa'}
+};
+
+// ===== STATE =====
+const state = {
+  basic: { method: null, touches: [], shakeData: [], shakeListening: false, result: null },
+  plus:  { method: null, touches: [], shakeData: [], shakeListening: false, result: null }
+};
+
+// ===== TABS =====
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>{
+    b.classList.toggle('active', (i===0&&tab==='basic')||(i===1&&tab==='plus'));
+  });
+  document.getElementById('panel-basic').classList.toggle('active', tab==='basic');
+  document.getElementById('panel-plus').classList.toggle('active', tab==='plus');
+}
+
+// ===== METHOD SELECTION =====
+function selectMethod(panel, method) {
+  state[panel].method = method;
+  state[panel].touches = [];
+  state[panel].shakeData = [];
+
+  // Update UI buttons
+  ['touch','time','shake'].forEach(m => {
+    document.getElementById(`${panel}-method-${m}`).classList.toggle('selected', m===method);
+  });
+
+  // Show/hide zones
+  const touchZone = document.getElementById(`${panel}-touch-zone`);
+  const shakeZone = document.getElementById(`${panel}-shake-zone`);
+  touchZone.classList.toggle('visible', method==='touch');
+  shakeZone.classList.toggle('visible', method==='shake');
+
+  if(method==='touch') {
+    const max = panel==='basic' ? 2 : 3;
+    document.getElementById(`${panel}-touch-count`).textContent = `0 / ${max} lần`;
+  }
+  if(method==='shake') {
+    startShakeListen(panel);
+  }
+  if(method==='time') {
+    document.getElementById(`${panel}-btn`).disabled = false;
+    document.getElementById(`${panel}-btn`).classList.add('ready');
+  } else {
+    document.getElementById(`${panel}-btn`).disabled = true;
+    document.getElementById(`${panel}-btn`).classList.remove('ready');
+  }
+}
+
+// ===== TOUCH =====
+function registerTouch(e, panel) {
+  const max = panel==='basic' ? 2 : 3;
+  const s = state[panel];
+  if(s.touches.length >= max) return;
+
+  const rect = e.currentTarget.getBoundingClientRect();
+  const x = Math.round(e.clientX - rect.left);
+  const y = Math.round(e.clientY - rect.top);
+  s.touches.push({x, y, t: Date.now()});
+
+  // Ripple
+  const ripple = document.createElement('div');
+  ripple.className = 'touch-ripple';
+  ripple.style.cssText = `left:${e.clientX-rect.left}px;top:${e.clientY-rect.top}px;width:20px;height:20px;margin-left:-10px;margin-top:-10px;`;
+  e.currentTarget.appendChild(ripple);
+  setTimeout(()=>ripple.remove(), 900);
+
+  document.getElementById(`${panel}-touch-count`).textContent = `${s.touches.length} / ${max} lần`;
+
+  if(s.touches.length === max) {
+    document.getElementById(`${panel}-btn`).disabled = false;
+    document.getElementById(`${panel}-btn`).classList.add('ready');
+  }
+}
+
+// ===== SHAKE =====
+function startShakeListen(panel) {
+  const s = state[panel];
+  s.shakeData = [];
+  s.shakeListening = true;
+  let lastAcc = {x:0,y:0,z:0};
+
+  if(typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
+    DeviceMotionEvent.requestPermission().then(r => {
+      if(r==='granted') listenShake(panel, lastAcc);
+    }).catch(()=>{
+      document.getElementById(`${panel}-shake-text`).textContent = 'Thiết bị không hỗ trợ cảm biến. Dùng phương thức khác.';
+    });
+  } else if(typeof DeviceMotionEvent !== 'undefined') {
+    listenShake(panel, lastAcc);
+  } else {
+    document.getElementById(`${panel}-shake-text`).textContent = 'Thiết bị không hỗ trợ cảm biến. Dùng phương thức khác.';
+  }
+}
+
+function listenShake(panel, lastAcc) {
+  const s = state[panel];
+  let collected = 0;
+  const NEEDED = panel==='basic' ? 20 : 30;
+
+  function onMotion(e) {
+    if(!s.shakeListening) { window.removeEventListener('devicemotion',onMotion); return; }
+    const acc = e.acceleration || e.accelerationIncludingGravity || {x:0,y:0,z:0};
+    const dx = Math.abs((acc.x||0) - lastAcc.x);
+    const dy = Math.abs((acc.y||0) - lastAcc.y);
+    const dz = Math.abs((acc.z||0) - lastAcc.z);
+    const intensity = dx + dy + dz;
+    lastAcc = {x:acc.x||0, y:acc.y||0, z:acc.z||0};
+
+    if(intensity > 2) {
+      s.shakeData.push(Math.round(intensity * 10));
+      collected++;
+      const pct = Math.min(100, Math.round(collected/NEEDED*100));
+      document.getElementById(`${panel}-shake-bar`).style.width = pct + '%';
+      document.getElementById(`${panel}-shake-text`).textContent = pct < 100 ? 'Tiếp tục lắc…' : 'Đủ rồi! Bấm Lập Quẻ.';
+      if(collected >= NEEDED) {
+        window.removeEventListener('devicemotion', onMotion);
+        s.shakeListening = false;
+        document.getElementById(`${panel}-btn`).disabled = false;
+        document.getElementById(`${panel}-btn`).classList.add('ready');
+      }
+    }
+  }
+  window.addEventListener('devicemotion', onMotion);
+}
+
+// ===== NUMBER DERIVATION =====
+function getNumbers(panel, count) {
+  const s = state[panel];
+  const method = s.method;
+  let nums = [];
+
+  if(method === 'touch') {
+    // Use X/Y coordinates of touches
+    const t = s.touches;
+    if(count === 2) {
+      // Basic: X of touch1 → Thượng, Y of touch2 → Hạ (or X2 if only 2 touches)
+      nums.push(t[0].x + t[0].y + t[0].t % 97);
+      nums.push(t[1].x + t[1].y + (t[1].t - t[0].t) % 83);
+    } else {
+      nums.push(t[0].x + t[0].y);
+      nums.push(t[1].x + t[1].y);
+      nums.push((t[2].x + t[2].y + t[2].t % 71));
+    }
+  } else if(method === 'time') {
+    // Timestamp at button press
+    const ts = Date.now();
+    const ms = ts % 1000;
+    const sec = Math.floor(ts/1000) % 100;
+    const min = Math.floor(ts/60000) % 60;
+    nums.push(ms + sec);
+    nums.push(min * 13 + ms % 37);
+    if(count === 3) nums.push((sec * 7 + ms % 19 + min));
+  } else if(method === 'shake') {
+    const arr = s.shakeData;
+    if(arr.length === 0) { nums = [Date.now()%999, (Date.now()/7)%999, (Date.now()/13)%999]; }
+    else {
+      const sum1 = arr.slice(0, Math.floor(arr.length/2)).reduce((a,b)=>a+b,0);
+      const sum2 = arr.slice(Math.floor(arr.length/2)).reduce((a,b)=>a+b,0);
+      nums.push(sum1);
+      nums.push(sum2);
+      if(count===3) nums.push(arr.reduce((a,b)=>a+b,0) % 997 + arr.length);
+    }
+  }
+  return nums;
+}
+
+function deriveQueIndex(rawNum) {
+  // Reduce to 1-8 (Bát Quái)
+  let n = Math.abs(Math.round(rawNum));
+  if(n === 0) n = 1;
+  // Sum digits until 1-8
+  while(n > 8) {
+    n = String(n).split('').reduce((a,c)=>a+parseInt(c),0);
+    if(n === 0) n = 8;
+  }
+  return n;
+}
+
+function deriveHao(rawNum) {
+  let n = Math.abs(Math.round(rawNum));
+  if(n === 0) n = 1;
+  while(n > 6) {
+    n = String(n).split('').reduce((a,c)=>a+parseInt(c),0);
+    if(n === 0) n = 6;
+  }
+  return n;
+}
+
+// ===== HEXAGRAM RENDER =====
+function renderHexagram(containerId, thuong, ha, movingHao) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  const qT = BAT_QUAI[thuong];
+  const qH = BAT_QUAI[ha];
+  // Lines: bottom to top: ha lines (1,2,3) then thuong lines (4,5,6)
+  const lines = [...qH.lines, ...qT.lines]; // index 0=hao1(bottom)
+  for(let i=5; i>=0; i--) {
+    const haoNum = i+1;
+    const isYang = lines[i] === 1;
+    const isMoving = movingHao && movingHao === haoNum;
+    const lineEl = document.createElement('div');
+    lineEl.className = 'hex-line' + (isMoving?' moving':'');
+    lineEl.innerHTML = `<span class="hex-line-num">${haoNum}</span>`;
+    if(isYang) {
+      lineEl.innerHTML += `<div class="hex-bar"></div>`;
+    } else {
+      lineEl.innerHTML += `<div class="hex-bar broken"></div><div class="hex-bar-gap"></div><div class="hex-bar broken"></div>`;
+    }
+    container.appendChild(lineEl);
+  }
+}
+
+// ===== CAST BASIC =====
+function castBasic() {
+  if(!state.basic.method) { alert('Vui lòng chọn phương thức lấy số!'); return; }
+  const nums = getNumbers('basic', 2);
+  const raw1 = nums[0], raw2 = nums[1];
+  const t = deriveQueIndex(raw1);
+  const h = deriveQueIndex(raw2);
+  const queInfo = QUE_64[`${t}-${h}`] || {num:'?', name:'Chưa rõ'};
+
+  document.getElementById('b-thuong').textContent = Math.abs(Math.round(raw1)) % 1000 || Math.abs(Math.round(raw1));
+  document.getElementById('b-ha').textContent = Math.abs(Math.round(raw2)) % 1000 || Math.abs(Math.round(raw2));
+  document.getElementById('b-que-thuong').textContent = BAT_QUAI[t].name;
+  document.getElementById('b-que-ha').textContent = BAT_QUAI[h].name;
+  document.getElementById('b-que-name').textContent = queInfo.name;
+  document.getElementById('b-que-num').textContent = `Quẻ ${queInfo.num}/64`;
+
+  renderHexagram('b-hexagram', t, h, null);
+
+  const now = new Date();
+  document.getElementById('b-timestamp').textContent =
+    `Thời điểm lấy quẻ: ${now.toLocaleTimeString('vi-VN')} · ${now.toLocaleDateString('vi-VN')}`;
+
+  state.basic.result = { raw1, raw2, t, h, queInfo, time: now };
+  document.getElementById('basic-result').classList.add('visible');
+  document.getElementById('basic-result').scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+// ===== CAST PLUS =====
+function castPlus() {
+  if(!state.plus.method) { alert('Vui lòng chọn phương thức lấy số!'); return; }
+  const nums = getNumbers('plus', 3);
+  const raw1 = nums[0], raw2 = nums[1], raw3 = nums[2];
+  const t = deriveQueIndex(raw1);
+  const h = deriveQueIndex(raw2);
+  const hao = deriveHao(raw3);
+  const queInfo = QUE_64[`${t}-${h}`] || {num:'?', name:'Chưa rõ'};
+
+  const displayRaw = (r) => String(Math.abs(Math.round(r))).slice(-3).replace(/^0+/,'') || '1';
+
+  document.getElementById('p-thuong').textContent = displayRaw(raw1);
+  document.getElementById('p-ha').textContent = displayRaw(raw2);
+  document.getElementById('p-hao').textContent = `Hào ${hao}`;
+  document.getElementById('p-que-thuong').textContent = BAT_QUAI[t].name;
+  document.getElementById('p-que-ha').textContent = BAT_QUAI[h].name;
+  document.getElementById('p-que-name').textContent = queInfo.name;
+  document.getElementById('p-que-num').textContent = `Quẻ ${queInfo.num}/64`;
+
+  renderHexagram('p-hexagram', t, h, hao);
+
+  const now = new Date();
+  document.getElementById('p-timestamp').textContent =
+    `Thời điểm lấy quẻ: ${now.toLocaleTimeString('vi-VN')} · ${now.toLocaleDateString('vi-VN')}`;
+
+  state.plus.result = { raw1, raw2, raw3, t, h, hao, queInfo, time: now };
+  document.getElementById('plus-result').classList.add('visible');
+  document.getElementById('plus-result').scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+// ===== COPY =====
+function copyResult(panel) {
+  const r = state[panel].result;
+  if(!r) return;
+  const q = document.getElementById(`q-${panel}`).value.trim();
+  const isPlus = panel==='plus';
+  const now = r.time;
+
+  let text = `🔮 Liên Hoa Độn Pháp — ${isPlus?'Nâng Cao':'Cơ Bản'}\n`;
+  text += `━━━━━━━━━━━━━━━━━━━\n`;
+  if(q) text += `📝 Câu hỏi: ${q}\n\n`;
+  if(isPlus) {
+    text += `Số Thượng : ${String(Math.abs(Math.round(r.raw1))).slice(-3).replace(/^0+/,'')||1}\n`;
+    text += `Số Hạ     : ${String(Math.abs(Math.round(r.raw2))).slice(-3).replace(/^0+/,'')||1}\n`;
+    text += `Hào Động  : Hào ${r.hao}\n\n`;
+  } else {
+    text += `Số Thượng : ${Math.abs(Math.round(r.raw1))%1000||Math.abs(Math.round(r.raw1))}\n`;
+    text += `Số Hạ     : ${Math.abs(Math.round(r.raw2))%1000||Math.abs(Math.round(r.raw2))}\n\n`;
+  }
+  text += `Quẻ Thượng: ${BAT_QUAI[r.t].name}\n`;
+  text += `Quẻ Hạ   : ${BAT_QUAI[r.h].name}\n`;
+  text += `Tên Quẻ  : ${r.queInfo.name} (Quẻ ${r.queInfo.num}/64)\n`;
+  text += `━━━━━━━━━━━━━━━━━━━\n`;
+  text += `⏰ ${now.toLocaleTimeString('vi-VN')} · ${now.toLocaleDateString('vi-VN')}`;
+
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn = document.getElementById(`${panel}-copy-btn`);
+    btn.textContent = '✓ Đã Sao Chép';
+    btn.classList.add('copied');
+    setTimeout(()=>{ btn.innerHTML = '📋 Sao Chép'; btn.classList.remove('copied'); }, 2000);
+  }).catch(()=>{
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta); ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    const btn = document.getElementById(`${panel}-copy-btn`);
+    btn.textContent = '✓ Đã Sao Chép';
+    btn.classList.add('copied');
+    setTimeout(()=>{ btn.innerHTML = '📋 Sao Chép'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// ===== SAVE IMAGE =====
+function saveImage(panel) {
+  const r = state[panel].result;
+  if(!r) return;
+  const q = document.getElementById(`q-${panel}`).value.trim();
+  const isPlus = panel==='plus';
+  const now = r.time;
+
+  const canvas = document.getElementById('screenshotCanvas');
+  const W = 600, H = isPlus ? 500 : 440;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // Background
+  ctx.fillStyle = '#0d0a05';
+  ctx.fillRect(0,0,W,H);
+  // Inner border
+  ctx.strokeStyle = '#7a5f28';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(16,16,W-32,H-32);
+  ctx.strokeStyle = 'rgba(201,168,76,0.15)';
+  ctx.strokeRect(24,24,W-48,H-48);
+
+  // Title
+  ctx.fillStyle = '#c9a84c';
+  ctx.font = 'bold 28px serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('蓮花遁法', W/2, 62);
+  ctx.fillStyle = '#7a5f28';
+  ctx.font = '11px sans-serif';
+  ctx.fillText('LIÊN HOA ĐỘN PHÁP · ' + (isPlus?'NÂNG CAO':'CƠ BẢN'), W/2, 82);
+
+  // Divider
+  ctx.strokeStyle = '#7a5f28';
+  ctx.lineWidth = 0.5;
+  ctx.beginPath(); ctx.moveTo(60,96); ctx.lineTo(W-60,96); ctx.stroke();
+
+  // Question
+  if(q) {
+    ctx.fillStyle = '#e8d4b0';
+    ctx.font = 'italic 13px serif';
+    ctx.textAlign = 'center';
+    const words = q.split(''); let line='', lines=[], maxW=W-120;
+    for(let ch of words) {
+      if(ctx.measureText(line+ch).width > maxW) { lines.push(line); line=ch; }
+      else line+=ch;
+    }
+    lines.push(line);
+    lines.slice(0,2).forEach((l,i) => ctx.fillText(l, W/2, 116+i*18));
+  }
+
+  // Numbers
+  const numY = q ? 170 : 140;
+  ctx.fillStyle = '#c9a84c';
+  ctx.font = 'bold 36px serif';
+  ctx.textAlign = 'center';
+
+  if(isPlus) {
+    const disp = (v) => String(Math.abs(Math.round(v))).slice(-3).replace(/^0+/,'')||'1';
+    ctx.fillText(disp(r.raw1), W/2-110, numY);
+    ctx.fillText(disp(r.raw2), W/2, numY);
+    ctx.fillStyle = '#c0392b';
+    ctx.fillText(disp(r.raw3), W/2+110, numY);
+    ctx.fillStyle = '#7a5f28';
+    ctx.font = '10px sans-serif';
+    ctx.fillText('SỐ THƯỢNG', W/2-110, numY+18);
+    ctx.fillText('SỐ HẠ', W/2, numY+18);
+    ctx.fillText('HÀO ĐỘNG', W/2+110, numY+18);
+  } else {
+    const r1 = Math.abs(Math.round(r.raw1))%1000||Math.abs(Math.round(r.raw1));
+    const r2 = Math.abs(Math.round(r.raw2))%1000||Math.abs(Math.round(r.raw2));
+    ctx.fillText(String(r1), W/2-80, numY);
+    ctx.fillText(String(r2), W/2+80, numY);
+    ctx.fillStyle = '#7a5f28';
+    ctx.font = '10px sans-serif';
+    ctx.fillText('SỐ THƯỢNG', W/2-80, numY+18);
+    ctx.fillText('SỐ HẠ', W/2+80, numY+18);
+  }
+
+  // Que info
+  const infoY = numY + 50;
+  ctx.fillStyle = '#e8d4b0';
+  ctx.font = '14px serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(r.queInfo.name + ' · Quẻ ' + r.queInfo.num + '/64', W/2, infoY);
+  ctx.fillStyle = '#7a5f28';
+  ctx.font = '11px sans-serif';
+  ctx.fillText(BAT_QUAI[r.t].name + '  ✦  ' + BAT_QUAI[r.h].name, W/2, infoY+20);
+
+  // Hexagram lines
+  const hexY = infoY + 50;
+  const qT = BAT_QUAI[r.t];
+  const qH = BAT_QUAI[r.h];
+  const lines = [...qH.lines, ...qT.lines];
+  for(let i=5;i>=0;i--) {
+    const haoNum = i+1;
+    const isYang = lines[i]===1;
+    const isMoving = isPlus && r.hao===haoNum;
+    const lY = hexY + (5-i)*22;
+    ctx.fillStyle = isMoving ? '#c0392b' : '#c9a84c';
+    if(isYang) {
+      ctx.fillRect(W/2-60, lY, 120, 8);
+    } else {
+      ctx.fillRect(W/2-60, lY, 52, 8);
+      ctx.fillRect(W/2+8, lY, 52, 8);
+    }
+    if(isMoving) {
+      ctx.fillStyle = '#c0392b';
+      ctx.font = '10px sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('○', W/2+68, lY+8);
+    }
+    ctx.fillStyle = '#7a5f28';
+    ctx.font = '9px monospace';
+    ctx.textAlign = 'right';
+    ctx.fillText(haoNum, W/2-66, lY+8);
+  }
+
+  // Footer
+  ctx.fillStyle = '#7a5f28';
+  ctx.font = '10px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(now.toLocaleTimeString('vi-VN') + ' · ' + now.toLocaleDateString('vi-VN'), W/2, H-30);
+
+  // Download
+  const link = document.createElement('a');
+  link.download = `lien-hoa-don-phap-${panel}-${Date.now()}.png`;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+// ===== RESET =====
+function resetPanel(panel) {
+  state[panel] = { method: null, touches: [], shakeData: [], shakeListening: false, result: null };
+  ['touch','time','shake'].forEach(m => {
+    document.getElementById(`${panel}-method-${m}`).classList.remove('selected');
+  });
+  document.getElementById(`${panel}-touch-zone`).classList.remove('visible');
+  document.getElementById(`${panel}-shake-zone`).classList.remove('visible');
+  document.getElementById(`${panel}-btn`).disabled = true;
+  document.getElementById(`${panel}-btn`).classList.remove('ready');
+  document.getElementById(`${panel}-result`).classList.remove('visible');
+  document.getElementById(`q-${panel}`).value = '';
+  if(panel==='basic') document.getElementById('basic-touch-count').textContent = '0 / 2 lần';
+  else document.getElementById('plus-touch-count').textContent = '0 / 3 lần';
+}
+</script>
+</body>
+</html>
