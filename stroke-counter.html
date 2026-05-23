@@ -318,54 +318,8 @@
 
 <script>
 // ============================================================
-// DATA
+// DATA — xem QUE64 bên dưới (sau phần đếm nét)
 // ============================================================
-const BAGUA = {
-  1:{name:'Kiền',han:'乾',lines:[1,1,1],element:'Kim', image:'Trời'},
-  2:{name:'Đoài',han:'兌',lines:[1,1,0],element:'Kim', image:'Đầm' },
-  3:{name:'Ly',  han:'離',lines:[1,0,1],element:'Hỏa', image:'Lửa' },
-  4:{name:'Chấn',han:'震',lines:[1,0,0],element:'Mộc', image:'Sấm' },
-  5:{name:'Tốn', han:'巽',lines:[0,1,1],element:'Mộc', image:'Gió' },
-  6:{name:'Khảm',han:'坎',lines:[0,1,0],element:'Thủy',image:'Nước'},
-  7:{name:'Cấn', han:'艮',lines:[0,0,1],element:'Thổ', image:'Núi' },
-  8:{name:'Khôn',han:'坤',lines:[0,0,0],element:'Thổ', image:'Đất' },
-};
-const HEX64={
-  '1_1':'Thuần Kiền','1_2':'Thiên Trạch Lý','1_3':'Thiên Hỏa Đồng Nhân','1_4':'Thiên Lôi Vô Vọng',
-  '1_5':'Thiên Phong Cấu','1_6':'Thiên Thủy Tụng','1_7':'Thiên Sơn Độn','1_8':'Thiên Địa Bĩ',
-  '2_1':'Trạch Thiên Quải','2_2':'Thuần Đoài','2_3':'Trạch Hỏa Cách','2_4':'Trạch Lôi Tùy',
-  '2_5':'Trạch Phong Đại Quá','2_6':'Trạch Thủy Khốn','2_7':'Trạch Sơn Hàm','2_8':'Trạch Địa Tụy',
-  '3_1':'Hỏa Thiên Đại Hữu','3_2':'Hỏa Trạch Khuê','3_3':'Thuần Ly','3_4':'Hỏa Lôi Phệ Hạp',
-  '3_5':'Hỏa Phong Đỉnh','3_6':'Hỏa Thủy Vị Tế','3_7':'Hỏa Sơn Lữ','3_8':'Hỏa Địa Tấn',
-  '4_1':'Lôi Thiên Đại Tráng','4_2':'Lôi Trạch Quy Muội','4_3':'Lôi Hỏa Phong','4_4':'Thuần Chấn',
-  '4_5':'Lôi Phong Hằng','4_6':'Lôi Thủy Giải','4_7':'Lôi Sơn Tiểu Quá','4_8':'Lôi Địa Dự',
-  '5_1':'Phong Thiên Tiểu Súc','5_2':'Phong Trạch Trung Phu','5_3':'Phong Hỏa Gia Nhân','5_4':'Phong Lôi Ích',
-  '5_5':'Thuần Tốn','5_6':'Phong Thủy Hoán','5_7':'Phong Sơn Tiệm','5_8':'Phong Địa Quan',
-  '6_1':'Thủy Thiên Nhu','6_2':'Thủy Trạch Tiết','6_3':'Thủy Hỏa Ký Tế','6_4':'Thủy Lôi Truân',
-  '6_5':'Thủy Phong Tỉnh','6_6':'Thuần Khảm','6_7':'Thủy Sơn Kiển','6_8':'Thủy Địa Tỷ',
-  '7_1':'Sơn Thiên Đại Súc','7_2':'Sơn Trạch Tổn','7_3':'Sơn Hỏa Bí','7_4':'Sơn Lôi Di',
-  '7_5':'Sơn Phong Cổ','7_6':'Sơn Thủy Mông','7_7':'Thuần Cấn','7_8':'Sơn Địa Bác',
-  '8_1':'Địa Thiên Thái','8_2':'Địa Trạch Lâm','8_3':'Địa Hỏa Minh Di','8_4':'Địa Lôi Phục',
-  '8_5':'Địa Phong Thăng','8_6':'Địa Thủy Sư','8_7':'Địa Sơn Khiêm','8_8':'Thuần Khôn',
-};
-const HEX_HAN={
-  'Thuần Kiền':'乾','Thiên Trạch Lý':'履','Thiên Hỏa Đồng Nhân':'同','Thiên Lôi Vô Vọng':'妄',
-  'Thiên Phong Cấu':'姤','Thiên Thủy Tụng':'訟','Thiên Sơn Độn':'遯','Thiên Địa Bĩ':'否',
-  'Trạch Thiên Quải':'夬','Thuần Đoài':'兌','Trạch Hỏa Cách':'革','Trạch Lôi Tùy':'隨',
-  'Trạch Phong Đại Quá':'過','Trạch Thủy Khốn':'困','Trạch Sơn Hàm':'咸','Trạch Địa Tụy':'萃',
-  'Hỏa Thiên Đại Hữu':'有','Hỏa Trạch Khuê':'睽','Thuần Ly':'離','Hỏa Lôi Phệ Hạp':'噬',
-  'Hỏa Phong Đỉnh':'鼎','Hỏa Thủy Vị Tế':'濟','Hỏa Sơn Lữ':'旅','Hỏa Địa Tấn':'晉',
-  'Lôi Thiên Đại Tráng':'壯','Lôi Trạch Quy Muội':'歸','Lôi Hỏa Phong':'豐','Thuần Chấn':'震',
-  'Lôi Phong Hằng':'恆','Lôi Thủy Giải':'解','Lôi Sơn Tiểu Quá':'過','Lôi Địa Dự':'豫',
-  'Phong Thiên Tiểu Súc':'畜','Phong Trạch Trung Phu':'孚','Phong Hỏa Gia Nhân':'人','Phong Lôi Ích':'益',
-  'Thuần Tốn':'巽','Phong Thủy Hoán':'渙','Phong Sơn Tiệm':'漸','Phong Địa Quan':'觀',
-  'Thủy Thiên Nhu':'需','Thủy Trạch Tiết':'節','Thủy Hỏa Ký Tế':'濟','Thủy Lôi Truân':'屯',
-  'Thủy Phong Tỉnh':'井','Thuần Khảm':'坎','Thủy Sơn Kiển':'蹇','Thủy Địa Tỷ':'比',
-  'Sơn Thiên Đại Súc':'畜','Sơn Trạch Tổn':'損','Sơn Hỏa Bí':'賁','Sơn Lôi Di':'頤',
-  'Sơn Phong Cổ':'蠱','Sơn Thủy Mông':'蒙','Thuần Cấn':'艮','Sơn Địa Bác':'剝',
-  'Địa Thiên Thái':'泰','Địa Trạch Lâm':'臨','Địa Hỏa Minh Di':'夷','Địa Lôi Phục':'復',
-  'Địa Phong Thăng':'升','Địa Thủy Sư':'師','Địa Sơn Khiêm':'謙','Thuần Khôn':'坤',
-};
 
 // ============================================================
 // BẢNG SỐ NÉT
@@ -445,6 +399,116 @@ document.getElementById('question').addEventListener('input',()=>{
   lc.textContent=analyzeText(q).total+' nét';
 });
 
+
+
+// ============================================================
+// DATA 64 QUẺ — nhị phân 6 bit (theo logic code tham khảo)
+// bit[0]=hào6(thượng)...bit[5]=hào1(hạ) ; '1'=dương '0'=âm
+// Tìm quẻ theo code: findQueByCode(codeStr) → {name, han, thuong, ha}
+// ============================================================
+const QUE64 = [
+  // Họ Kiền
+  {c:'111111',n:'Thuần Kiền',      han:'乾',t:'Kiền',h:'Kiền'},
+  {c:'111110',n:'Thiên Phong Cấu', han:'姤',t:'Kiền',h:'Tốn'},
+  {c:'111100',n:'Thiên Sơn Độn',   han:'遯',t:'Kiền',h:'Cấn'},
+  {c:'111000',n:'Thiên Địa Bĩ',    han:'否',t:'Kiền',h:'Khôn'},
+  {c:'111001',n:'Thiên Lôi Vô Vọng',han:'妄',t:'Kiền',h:'Chấn'},
+  {c:'111010',n:'Thiên Thủy Tụng', han:'訟',t:'Kiền',h:'Khảm'},
+  {c:'111011',n:'Thiên Trạch Lý',  han:'履',t:'Kiền',h:'Đoài'},
+  {c:'111101',n:'Thiên Hỏa Đồng Nhân',han:'同',t:'Kiền',h:'Ly'},
+  // Họ Đoài
+  {c:'011011',n:'Thuần Đoài',      han:'兌',t:'Đoài',h:'Đoài'},
+  {c:'011010',n:'Trạch Thủy Khốn', han:'困',t:'Đoài',h:'Khảm'},
+  {c:'011000',n:'Trạch Địa Tụy',   han:'萃',t:'Đoài',h:'Khôn'},
+  {c:'011100',n:'Trạch Sơn Hàm',   han:'咸',t:'Đoài',h:'Cấn'},
+  {c:'011001',n:'Trạch Lôi Tùy',   han:'隨',t:'Đoài',h:'Chấn'},
+  {c:'011110',n:'Trạch Phong Đại Quá',han:'過',t:'Đoài',h:'Tốn'},
+  {c:'011111',n:'Trạch Thiên Quải',han:'夬',t:'Đoài',h:'Kiền'},
+  {c:'011101',n:'Trạch Hỏa Cách',  han:'革',t:'Đoài',h:'Ly'},
+  // Họ Ly
+  {c:'101101',n:'Thuần Ly',        han:'離',t:'Ly',h:'Ly'},
+  {c:'101100',n:'Hỏa Sơn Lữ',      han:'旅',t:'Ly',h:'Cấn'},
+  {c:'101110',n:'Hỏa Phong Đỉnh',  han:'鼎',t:'Ly',h:'Tốn'},
+  {c:'101010',n:'Hỏa Thủy Vị Tế',  han:'濟',t:'Ly',h:'Khảm'},
+  {c:'101000',n:'Hỏa Địa Tấn',     han:'晉',t:'Ly',h:'Khôn'},
+  {c:'101001',n:'Hỏa Lôi Phệ Hạp', han:'噬',t:'Ly',h:'Chấn'},
+  {c:'101011',n:'Hỏa Trạch Khuê',  han:'睽',t:'Ly',h:'Đoài'},
+  {c:'101111',n:'Hỏa Thiên Đại Hữu',han:'有',t:'Ly',h:'Kiền'},
+  // Họ Chấn
+  {c:'001001',n:'Thuần Chấn',      han:'震',t:'Chấn',h:'Chấn'},
+  {c:'001000',n:'Lôi Địa Dự',      han:'豫',t:'Chấn',h:'Khôn'},
+  {c:'001010',n:'Lôi Thủy Giải',   han:'解',t:'Chấn',h:'Khảm'},
+  {c:'001110',n:'Lôi Phong Hằng',  han:'恆',t:'Chấn',h:'Tốn'},
+  {c:'001100',n:'Lôi Sơn Tiểu Quá',han:'過',t:'Chấn',h:'Cấn'},
+  {c:'001011',n:'Lôi Trạch Quy Muội',han:'歸',t:'Chấn',h:'Đoài'},
+  {c:'001111',n:'Lôi Thiên Đại Tráng',han:'壯',t:'Chấn',h:'Kiền'},
+  {c:'001101',n:'Lôi Hỏa Phong',   han:'豐',t:'Chấn',h:'Ly'},
+  // Họ Tốn
+  {c:'110110',n:'Thuần Tốn',       han:'巽',t:'Tốn',h:'Tốn'},
+  {c:'110111',n:'Phong Thiên Tiểu Súc',han:'畜',t:'Tốn',h:'Kiền'},
+  {c:'110101',n:'Phong Hỏa Gia Nhân',han:'人',t:'Tốn',h:'Ly'},
+  {c:'110001',n:'Phong Lôi Ích',   han:'益',t:'Tốn',h:'Chấn'},
+  {c:'110000',n:'Phong Địa Quan',  han:'觀',t:'Tốn',h:'Khôn'},
+  {c:'110010',n:'Phong Thủy Hoán', han:'渙',t:'Tốn',h:'Khảm'},
+  {c:'110011',n:'Phong Trạch Trung Phu',han:'孚',t:'Tốn',h:'Đoài'},
+  {c:'110100',n:'Phong Sơn Tiệm',  han:'漸',t:'Tốn',h:'Cấn'},
+  // Họ Khảm
+  {c:'010010',n:'Thuần Khảm',      han:'坎',t:'Khảm',h:'Khảm'},
+  {c:'010011',n:'Thủy Trạch Tiết', han:'節',t:'Khảm',h:'Đoài'},
+  {c:'010001',n:'Thủy Lôi Truân',  han:'屯',t:'Khảm',h:'Chấn'},
+  {c:'010101',n:'Thủy Hỏa Ký Tế',  han:'濟',t:'Khảm',h:'Ly'},
+  {c:'010111',n:'Thủy Thiên Nhu',  han:'需',t:'Khảm',h:'Kiền'},
+  {c:'010110',n:'Thủy Phong Tỉnh', han:'井',t:'Khảm',h:'Tốn'},
+  {c:'010100',n:'Thủy Sơn Kiển',   han:'蹇',t:'Khảm',h:'Cấn'},
+  {c:'010000',n:'Thủy Địa Tỷ',     han:'比',t:'Khảm',h:'Khôn'},
+  // Họ Cấn
+  {c:'100100',n:'Thuần Cấn',       han:'艮',t:'Cấn',h:'Cấn'},
+  {c:'100101',n:'Sơn Hỏa Bí',      han:'賁',t:'Cấn',h:'Ly'},
+  {c:'100111',n:'Sơn Thiên Đại Súc',han:'畜',t:'Cấn',h:'Kiền'},
+  {c:'100011',n:'Sơn Trạch Tổn',   han:'損',t:'Cấn',h:'Đoài'},
+  {c:'100001',n:'Sơn Lôi Di',      han:'頤',t:'Cấn',h:'Chấn'},
+  {c:'100110',n:'Sơn Phong Cổ',    han:'蠱',t:'Cấn',h:'Tốn'},
+  {c:'100010',n:'Sơn Thủy Mông',   han:'蒙',t:'Cấn',h:'Khảm'},
+  {c:'100000',n:'Sơn Địa Bác',     han:'剝',t:'Cấn',h:'Khôn'},
+  // Họ Khôn
+  {c:'000000',n:'Thuần Khôn',      han:'坤',t:'Khôn',h:'Khôn'},
+  {c:'000001',n:'Địa Lôi Phục',    han:'復',t:'Khôn',h:'Chấn'},
+  {c:'000011',n:'Địa Trạch Lâm',   han:'臨',t:'Khôn',h:'Đoài'},
+  {c:'000111',n:'Địa Thiên Thái',  han:'泰',t:'Khôn',h:'Kiền'},
+  {c:'000101',n:'Địa Hỏa Minh Di', han:'夷',t:'Khôn',h:'Ly'},
+  {c:'000010',n:'Địa Thủy Sư',     han:'師',t:'Khôn',h:'Khảm'},
+  {c:'000110',n:'Địa Phong Thăng', han:'升',t:'Khôn',h:'Tốn'},
+  {c:'000100',n:'Địa Sơn Khiêm',   han:'謙',t:'Khôn',h:'Cấn'},
+];
+
+// Số thứ tự Tiên Thiên Bát Quái → chuỗi 3 bit
+// 1=Kiền=111, 2=Đoài=011, 3=Ly=101, 4=Chấn=001
+// 5=Tốn=110, 6=Khảm=010, 7=Cấn=100, 8=Khôn=000
+const BAGUA_BIT = {
+  1:'111', 2:'011', 3:'101', 4:'001',
+  5:'110', 6:'010', 7:'100', 8:'000'
+};
+
+// Build lookup: code → entry
+const QUE_BY_CODE = {};
+QUE64.forEach(q => { QUE_BY_CODE[q.c] = q; });
+
+// Số thứ tự theo King Wen (bảng chuẩn)
+const QUE_SO = {
+  '111111':1,'010000':8,'010001':3,'100010':4,'010111':5,'111010':6,'000010':7,'000000':2,
+  '110111':9,'111011':10,'000111':11,'111000':12,'101111':13,'101101':14,'000100':15,'000001':16,
+  '011001':17,'110100':18,'000011':19,'110000':20,'101001':21,'100101':22,'100000':23,'000001':24,
+  '111001':25,'100111':26,'100001':27,'011110':28,'010010':29,'101101':30,'011100':31,'001110':32,
+  '111100':33,'001111':34,'101000':35,'000101':36,'110101':37,'101011':38,'010100':39,'001010':40,
+  '100011':41,'110001':42,'011111':43,'111110':44,'011000':45,'000110':46,'011010':47,'010110':48,
+  '011101':49,'101110':50,'001001':51,'100100':52,'110100':53,'001011':54,'001101':55,'101100':56,
+  '110110':57,'011011':58,'010011':59,'010101':60,'110011':61,'001100':62,'010101':63,'101010':64,
+};
+
+function findQueByCode(code) {
+  return QUE_BY_CODE[code] || null;
+}
+
 // ============================================================
 // QUẺ LOGIC
 // ============================================================
@@ -454,62 +518,61 @@ const mod6=n=>{const r=n%6;return r===0?6:r;};
 function lapQue(tot){
   const thuong=tot%2===0?tot/2:Math.floor(tot/2);
   const ha    =tot%2===0?tot/2:Math.ceil(tot/2);
-  return{thuong,ha,sT:mod8(thuong),sH:mod8(ha),hd:mod6(tot)};
+  const sT=mod8(thuong), sH=mod8(ha), hd=mod6(tot);
+  // Ghép code nhị phân: thượng quái (3 bit) + hạ quái (3 bit)
+  const code = BAGUA_BIT[sT] + BAGUA_BIT[sH];
+  return {thuong, ha, sT, sH, hd, code};
 }
 
-function quebian(sT,sH,hd){
-  const lH=[...BAGUA[sH].lines], lT=[...BAGUA[sT].lines];
-  const all=[lH[2],lH[1],lH[0],lT[2],lT[1],lT[0]];
-  all[hd-1]=1-all[hd-1];
-  const findBG=ls=>{for(const[k,v]of Object.entries(BAGUA)){if(v.lines[0]===ls[0]&&v.lines[1]===ls[1]&&v.lines[2]===ls[2])return+k;}return 1;};
-  return{sTB:findBG([all[5],all[4],all[3]]),sHB:findBG([all[2],all[1],all[0]])};
+function quebian(code, hd){
+  // Lật bit tại vị trí hào động
+  // hào 1 = bit[5], hào 6 = bit[0]  →  bitIndex = 6 - hd
+  const arr = code.split('');
+  const bitIdx = 6 - hd;
+  arr[bitIdx] = arr[bitIdx]==='1' ? '0' : '1';
+  return arr.join('');
 }
 
 // ============================================================
-// RENDER
+// RENDER — dùng column-reverse + đọc c[5-i] như code tham khảo
 // ============================================================
-function hexLine(val,idx,hd,changed){
-  const mov=!changed&&(idx+1)===hd;
-  const cls=['hline',val===1?'yang':'yin',mov?'moving':''].filter(Boolean).join(' ');
-  const inner=val===1?'<div class="bar"></div>':'<div class="bar-left"></div><div class="gap"></div><div class="bar-right"></div>';
-  const mk=mov?`<span class="mv-mark">●${idx+1}</span>`:'';
-  return`<div class="${cls}">${inner}${mk}</div>`;
+function hexLine(codeStr, i, hd, changed){
+  // i chạy 0→5, CSS column-reverse tự đảo: i=0 hiện dưới cùng (hào 1)
+  // c[5-i]: i=0→c[5]=hào1, i=5→c[0]=hào6 ✓
+  const isYang = codeStr[5-i] === '1';
+  const haoThu = i + 1;
+  const isMov  = !changed && haoThu === hd;
+  const cls = ['hline', isYang?'yang':'yin', isMov?'moving':''].filter(Boolean).join(' ');
+  const inner = isYang
+    ? '<div class="bar"></div>'
+    : '<div class="bar-left"></div><div class="gap"></div><div class="bar-right"></div>';
+  const mk = isMov ? `<span class="mv-mark">●${haoThu}</span>` : '';
+  return `<div class="${cls}">${inner}${mk}</div>`;
 }
 
-function buildLines(sT,sH,hd,changed=false){
-  const lH=BAGUA[sH].lines,lT=BAGUA[sT].lines;
-  const all=[lH[2],lH[1],lH[0],lT[2],lT[1],lT[0]];
+function buildLines(codeStr, hd, changed=false){
   let h='';
-  for(let i=0;i<6;i++){if(i===3)h+='<div class="hex-sep"></div>';h+=hexLine(all[i],i,hd,changed);}
+  for(let i=0;i<6;i++){
+    if(i===3) h+='<div class="hex-sep"></div>';
+    h+=hexLine(codeStr, i, hd, changed);
+  }
   return h;
 }
 
-const HN={
-  '1_1':1,'8_8':2,'6_4':3,'7_6':4,'6_1':5,'1_6':6,'8_6':7,'8_3':8,
-  '5_1':9,'1_5':10,'8_1':11,'1_8':12,'1_3':13,'3_1':14,'8_7':15,'8_4':16,
-  '2_4':17,'7_5':18,'8_2':19,'5_8':20,'3_4':21,'7_3':22,
-  '1_4':25,'7_1':26,'7_4':27,'5_2':28,'6_6':29,'3_3':30,'2_7':31,'4_5':32,
-  '1_7':33,'4_1':34,'3_8':35,'5_3':37,'3_5':38,'6_7':39,'4_6':40,
-  '7_2':41,'5_4':42,'2_1':43,'2_8':45,'8_5':46,'2_6':47,'6_5':48,
-  '2_3':49,'4_4':51,'7_7':52,'5_7':53,'4_2':54,'3_7':56,
-  '5_5':57,'2_2':58,'5_6':59,'6_2':60,'4_7':62,'6_3':63,'3_6':64,
-};
-
-function hexBox(sT,sH,hd,changed){
-  const nm=HEX64[`${sT}_${sH}`]||`Quẻ ${sT}-${sH}`;
-  const g=BAGUA[sT],h=BAGUA[sH];
-  const han=HEX_HAN[nm]||'易';
-  const lines=buildLines(sT,sH,hd,changed);
-  const label=changed?'Quẻ Biến':'Quẻ Chủ';
-  const hdHtml=!changed?`<div class="hd-label">● Hào Động: Hào ${hd}</div>`:'';
-  return`<div class="hex-box${changed?' bien':''}">
+function hexBox(queEntry, hd, changed){
+  if(!queEntry) return '';
+  const {c,n,han,t,h} = queEntry;
+  const lines = buildLines(c, hd, changed);
+  const label = changed ? 'Quẻ Biến' : 'Quẻ Chủ';
+  const hdHtml = !changed ? `<div class="hd-label">● Hào Động: Hào ${hd}</div>` : '';
+  const soQue  = QUE_SO[c] || '–';
+  return `<div class="hex-box${changed?' bien':''}">
     <span class="box-label${changed?' bien':''}">${label}</span>
     <div class="hex-lines">${lines}</div>
     <div class="hex-info">
       <div class="hex-han">${han}</div>
-      <div class="hex-viet">${nm}</div>
-      <div class="hex-num">Quẻ ${HN[`${sT}_${sH}`]||'–'}</div>
-      <div class="tg-info">T: <span>${g.han}${g.name}</span> (${g.image}·${g.element})<br>H: <span>${h.han}${h.name}</span> (${h.image}·${h.element})</div>
+      <div class="hex-viet">${n}</div>
+      <div class="hex-num">Quẻ ${soQue} · T:${t} H:${h}</div>
       ${hdHtml}
     </div>
   </div>`;
@@ -581,23 +644,31 @@ document.getElementById('btnLap').addEventListener('click',()=>{
   renderSD(bd,total);
   document.getElementById('sdPanel').classList.add('show');
 
-  const{thuong,ha,sT,sH,hd}=lapQue(total);
-  const{sTB,sHB}=quebian(sT,sH,hd);
-  const qn=HEX64[`${sT}_${sH}`]||`Quẻ ${sT}-${sH}`;
-  const qnB=HEX64[`${sTB}_${sHB}`]||`Quẻ ${sTB}-${sHB}`;
+  const{thuong,ha,sT,sH,hd,code}=lapQue(total);
+  const codeBien = quebian(code, hd);
+  const queEntry  = findQueByCode(code);
+  const queEntryB = findQueByCode(codeBien);
+  const qn  = queEntry  ? queEntry.n  : `Quẻ ${sT}-${sH}`;
+  const qnB = queEntryB ? queEntryB.n : '–';
 
   document.getElementById('statsRow').innerHTML=`
     <div class="stat-chip">Tổng Số Nét: <strong>${total}</strong></div>
-    <div class="stat-chip">Thượng: <strong>${thuong}→${sT} (${BAGUA[sT].name})</strong></div>
-    <div class="stat-chip">Hạ: <strong>${ha}→${sH} (${BAGUA[sH].name})</strong></div>
+    <div class="stat-chip">Thượng: <strong>${thuong}→${sT}</strong></div>
+    <div class="stat-chip">Hạ: <strong>${ha}→${sH}</strong></div>
+    <div class="stat-chip">Mã: <strong>${code}</strong></div>
     <div class="stat-chip">Hào Động: <strong>Hào ${hd}</strong></div>`;
 
-  document.getElementById('hexPair').innerHTML=hexBox(sT,sH,hd,false)+hexBox(sTB,sHB,hd,true);
+  document.getElementById('hexPair').innerHTML=
+    hexBox(queEntry,  hd, false) +
+    hexBox(queEntryB, hd, true);
 
   const now=new Date();
   document.getElementById('footNote').textContent=`Tiên Thiên Bát Quái · Số Nét · ${now.toLocaleString('vi-VN')}`;
 
-  last={q,total,sT,sH,hd,qn,qnB,tgT:BAGUA[sT].name,tgH:BAGUA[sH].name};
+  last={q,total,hd,qn,qnB,
+    tgT: queEntry  ? queEntry.t  : '',
+    tgH: queEntry  ? queEntry.h  : '',
+    code, codeBien};
 
   const sec=document.getElementById('result');
   sec.classList.remove('show');
@@ -608,12 +679,12 @@ document.getElementById('btnLap').addEventListener('click',()=>{
 // Sao chép
 document.getElementById('btnCopy').addEventListener('click',()=>{
   if(!last)return;
-  const{q,total,qn,qnB,tgT,tgH,hd}=last;
+  const{q,total,qn,qnB,tgT,tgH,hd,code,codeBien}=last;
   navigator.clipboard.writeText(
 `📖 CÂU HỎI: ${q}
-✍️ Tổng số nét: ${total}
-☯ QUẺ CHỦ: ${qn}  (Thượng: ${tgT} · Hạ: ${tgH})
-🔄 QUẺ BIẾN: ${qnB}
+✍️ Tổng số nét: ${total}  |  Mã quẻ: ${code}
+☯ QUẺ CHỦ: ${qn}  (T: ${tgT} · H: ${tgH})
+🔄 QUẺ BIẾN: ${qnB}  (Mã: ${codeBien})
 🔴 HÀO ĐỘNG: Hào ${hd}
 🕐 ${new Date().toLocaleString('vi-VN')}`
   ).then(()=>toast('✓ Đã sao chép vào clipboard'));
