@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lá Số Kỳ Môn Mệnh — Nữ 1986</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap');
+
+  :root {
+    --bg: #0d0a08;
+    --bg2: #141009;
+    --gold: #d4a843;
+    --gold-light: #f0d080;
+    --gold-pale: #8a6a2a;
+    --red: #c0392b;
+    --red-soft: #e57373;
+    --teal: #2e8b8b;
+    --teal-light: #7dd3d3;
+    --green: #4a9a5a;
+    --green-light: #a8d8a8;
+    --purple: #7b5ea7;
+    --purple-light: #c9b8f0;
+    --paper: #f0e6d0;
+    --paper-dim: rgba(240,230,208,0.75);
+    --paper-faint: rgba(240,230,208,0.45);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--paper);
+    font-family: 'Crimson Pro', serif;
+    font-size: 16px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 15% 10%, rgba(212,168,67,0.07) 0%, transparent 45%),
+      radial-gradient(ellipse at 85% 90%, rgba(46,139,139,0.06) 0%, transparent 45%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    text-align: center;
+    padding: 3rem 0 2.5rem;
+    border-bottom: 1px solid rgba(212,168,67,0.25);
+    margin-bottom: 2.5rem;
+  }
+
+  .header-glyph {
+    font-size: 2rem;
+    letter-spacing: 1.2rem;
+    color: var(--gold-pale);
+    margin-bottom: 1.2rem;
+  }
+
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 400;
+    color: var(--gold-light);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.4rem;
+  }
+
+  .header .sub {
+    font-size: 0.9rem;
+    color: rgba(212,168,67,0.45);
+    font-style: italic;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── INFO BOX ── */
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.8rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .info-cell {
+    background: rgba(212,168,67,0.07);
+    border: 1px solid rgba(212,168,67,0.18);
+    border-radius: 2px;
+    padding: 0.8rem;
+    text-align: center;
+  }
+
+  .info-cell .label {
+    font-size: 0.72rem;
+    color: var(--gold-pale);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+
+  .info-cell .val {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--gold-light);
+  }
+
+  .info-cell .val2 {
+    font-size: 0.8rem;
+    color: var(--paper-faint);
+    margin-top: 0.15rem;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(212,168,67,0.15);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .sec-hdr {
+    padding: 0.9rem 1.3rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+  }
+
+  .sec-hdr:hover { background: rgba(212,168,67,0.04); }
+
+  .sec-icon { font-size: 1.1rem; min-width: 1.8rem; text-align: center; }
+
+  .sec-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 400;
+    flex: 1;
+    letter-spacing: 0.06em;
+  }
+
+  .sec-arr {
+    color: var(--gold-pale);
+    font-size: 0.75rem;
+    transition: transform 0.3s;
+  }
+
+  .sec-arr.open { transform: rotate(180deg); }
+
+  .sec-body {
+    padding: 0 1.3rem 1.3rem;
+    display: none;
+  }
+
+  .sec-body.open { display: block; }
+
+  /* Section color variants */
+  .s-manh .sec-hdr { background: rgba(212,168,67,0.1); border-left: 3px solid var(--gold); }
+  .s-manh .sec-title { color: var(--gold-light); }
+
+  .s-tot .sec-hdr { background: rgba(46,139,139,0.12); border-left: 3px solid var(--teal); }
+  .s-tot .sec-title { color: var(--teal-light); }
+
+  .s-kho .sec-hdr { background: rgba(192,57,43,0.12); border-left: 3px solid var(--red); }
+  .s-kho .sec-title { color: var(--red-soft); }
+
+  .s-trung .sec-hdr { background: rgba(74,154,90,0.1); border-left: 3px solid var(--green); }
+  .s-trung .sec-title { color: var(--green-light); }
+
+  .s-cai .sec-hdr { background: rgba(123,94,167,0.12); border-left: 3px solid var(--purple); }
+  .s-cai .sec-title { color: var(--purple-light); }
+
+  .s-tong .sec-hdr { background: rgba(212,168,67,0.08); border-left: 3px solid rgba(212,168,67,0.5); }
+  .s-tong .sec-title { color: var(--gold-light); }
+
+  /* ── CUNG BLOCK ── */
+  .cung {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 2px;
+  }
+
+  .cung-hdr {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.7rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(212,168,67,0.12);
+    flex-wrap: wrap;
+  }
+
+  .cung-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    color: var(--gold-light);
+    letter-spacing: 0.05em;
+  }
+
+  .tag {
+    font-size: 0.68rem;
+    padding: 0.12rem 0.45rem;
+    border-radius: 1px;
+    letter-spacing: 0.04em;
+    font-family: 'Crimson Pro', serif;
+  }
+
+  .tag-cat { background: rgba(212,168,67,0.18); color: var(--gold); border: 1px solid rgba(212,168,67,0.3); }
+  .tag-hung { background: rgba(192,57,43,0.2); color: var(--red-soft); border: 1px solid rgba(192,57,43,0.3); }
+  .tag-trung { background: rgba(80,80,80,0.3); color: #aaa; border: 1px solid rgba(150,150,150,0.2); }
+  .tag-khong { background: rgba(100,80,180,0.2); color: #b0a0e0; border: 1px solid rgba(100,80,180,0.3); }
+
+  .meta {
+    font-size: 0.8rem;
+    color: var(--paper-faint);
+    font-style: italic;
+    margin-bottom: 0.7rem;
+  }
+
+  /* ── LISTS ── */
+  ul.al {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  ul.al li {
+    font-size: 0.93rem;
+    color: var(--paper-dim);
+    padding-left: 1.2rem;
+    position: relative;
+    line-height: 1.55;
+  }
+
+  ul.al li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--gold-pale);
+    font-size: 0.78rem;
+    top: 0.15em;
+  }
+
+  ul.al li.free::after { content: ' [0đ]'; color: var(--green); font-size: 0.78rem; }
+  ul.al li.low::after  { content: ' [30-50k]'; color: var(--purple-light); font-size: 0.78rem; }
+
+  /* ── CALLOUT ── */
+  .note {
+    margin-top: 0.8rem;
+    padding: 0.75rem 1rem;
+    background: rgba(212,168,67,0.05);
+    border-left: 2px solid rgba(212,168,67,0.35);
+    font-size: 0.86rem;
+    color: var(--paper-faint);
+    font-style: italic;
+    line-height: 1.6;
+  }
+
+  .warn {
+    margin-top: 0.8rem;
+    padding: 0.75rem 1rem;
+    background: rgba(192,57,43,0.08);
+    border-left: 2px solid rgba(192,57,43,0.4);
+    font-size: 0.86rem;
+    color: rgba(229,115,115,0.85);
+    line-height: 1.6;
+  }
+
+  .good {
+    margin-top: 0.8rem;
+    padding: 0.75rem 1rem;
+    background: rgba(46,139,139,0.08);
+    border-left: 2px solid rgba(46,139,139,0.4);
+    font-size: 0.86rem;
+    color: rgba(125,211,211,0.85);
+    line-height: 1.6;
+  }
+
+  /* ── TABLE ── */
+  table.t {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.86rem;
+    margin: 0.8rem 0;
+  }
+
+  table.t th {
+    padding: 0.5rem 0.7rem;
+    background: rgba(212,168,67,0.1);
+    color: var(--gold-light);
+    font-family: 'Playfair Display', serif;
+    font-weight: 400;
+    text-align: left;
+    border-bottom: 1px solid rgba(212,168,67,0.2);
+    font-size: 0.82rem;
+    letter-spacing: 0.05em;
+  }
+
+  table.t td {
+    padding: 0.5rem 0.7rem;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    color: var(--paper-dim);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  table.t tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .cat { color: var(--gold); }
+  .hung { color: var(--red-soft); }
+  .ok { color: var(--green-light); }
+
+  /* ── DIVIDER ── */
+  .div {
+    text-align: center;
+    color: rgba(212,168,67,0.2);
+    font-size: 1rem;
+    letter-spacing: 0.8rem;
+    margin: 2rem 0;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    padding: 2rem 0 1rem;
+    border-top: 1px solid rgba(212,168,67,0.12);
+    margin-top: 3rem;
+    font-size: 0.78rem;
+    color: rgba(212,168,67,0.25);
+    letter-spacing: 0.1em;
+    font-style: italic;
+  }
+
+  @media (max-width: 580px) {
+    .info-grid { grid-template-columns: repeat(2, 1fr); }
+    .header h1 { font-size: 1.4rem; }
+    .wrap { padding: 1rem 1rem 4rem; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-glyph">☷ ☰ ☵ ☲</div>
+  <h1>Kỳ Môn Độn Giáp — Lá Số Mệnh</h1>
+  <div class="sub">Nữ · Sinh 30/01/1986 · Giờ Hợi 22:21 · Phân tích & Tiểu Cải Vận</div>
+</div>
+
+<!-- INFO -->
+<div class="info-grid">
+  <div class="info-cell">
+    <div class="label">Giờ</div>
+    <div class="val">Ất Hợi</div>
+    <div class="val2">22:21</div>
+  </div>
+  <div class="info-cell">
+    <div class="label">Ngày</div>
+    <div class="val">Giáp Tuất</div>
+    <div class="val2">30/01</div>
+  </div>
+  <div class="info-cell">
+    <div class="label">Tháng</div>
+    <div class="val">Kỷ Sửu</div>
+    <div class="val2">Tháng 1</div>
+  </div>
+  <div class="info-cell">
+    <div class="label">Năm</div>
+    <div class="val">Ất Sửu</div>
+    <div class="val2">1986</div>
+  </div>
+</div>
+
+<!-- PHẦN 1: CUNG MẠNH -->
+<div class="section s-manh">
+  <div class="sec-hdr" onclick="tog(this)">
+    <span class="sec-icon">☷</span>
+    <span class="sec-title">I. CUNG MẠNH — THẾ MẠNH BẢN MỆNH</span>
+    <span class="sec-arr open">▼</span>
+  </div>
+  <div class="sec-body open">
+
+    <div class="cung">
+      <div class="cung-hdr">
+        <span class="cung-name">Nam (Ly) — Trực Phù · Sinh Môn</span>
+        <span class="tag tag-cat">Tài Vị Chủ Đạo</span>
+        <span class="tag tag-cat">Điểm 60 ↗</span>
+      </div>
+      <div class="meta">Cửu Thiên · Tân · Nhuế · Sinh Môn · Tài Bạch · Tật Ách · Vợ V3 · V2</div>
+      <ul class="al">
+        <li>Trực Phù tại Nam = năng lượng chủ đạo bản mệnh hướng Nam — đây là phương vị cốt lõi</li>
+        <li>Sinh Môn = con đường tạo ra tài lộc qua hành động, lao động thực tế</li>
+        <li>Cửu Thiên = tầm nhìn rộng, có khả năng vươn xa, không bị giới hạn bởi không gian nhỏ</li>
+        <li>Điểm 60 ↗ mũi tên lên = năng lượng đang tăng trưởng theo thời gian</li>
+        <li>Nhãn Tài Bạch = tài lộc gắn với cung này</li>
+      </ul>
+      <div class="good">Tài vị thực sự của mệnh chủ là hướng Nam. Làm việc, ngủ, thiền quay mặt Nam = kích hoạt trực tiếp tài vận.</div>
+      <div class="warn">Nhãn Tật Ách đồng xuất hiện — sức khỏe và tài lộc liên kết chặt. Khi sức khỏe tốt tài mới vượng, ngược lại.</div>
+    </div>
+
+    <div class="cung">
+      <div class="cung-hdr">
+        <span class="cung-name">Đông (Chấn) — Chu Tước · Khai Môn</span>
+        <span class="tag tag-cat">Quan Lộc · Học Hành</span>
+        <span class="tag tag-cat">Điểm 30 ↗</span>
+      </div>
+      <div class="meta">Chu Tước · Bính · Phụ · Khai Môn · Quan Lộc · Học Hành</div>
+      <ul class="al">
+        <li>Khai Môn = cửa tốt nhất trong Bát Môn — mở ra cơ hội sự nghiệp, học vấn</li>
+        <li>Thiên Phụ = sao học vấn, trí tuệ, thầy cô — phù hợp ngành giáo dục/tư vấn/nghiên cứu</li>
+        <li>Quan Lộc = sự nghiệp chính thống, có thể làm quan/công chức/chuyên gia</li>
+        <li>Học Hành = tiềm năng học tập cao, học suốt đời có lợi</li>
+        <li>Chu Tước = khả năng ngôn ngữ, diễn đạt, viết lách tốt</li>
+      </ul>
+      <div class="good">Hướng Đông là cung sự nghiệp và học vấn mạnh. Ngồi làm việc quay mặt Đông hoặc Nam đều thuận.</div>
+    </div>
+
+    <div class="cung">
+      <div class="cung-hdr">
+        <span class="cung-name">Tây Bắc (Càn) — Lục Hợp · Tử Môn</span>
+        <span class="tag tag-trung">Điền Trạch · Chồng · Mối Quan Hệ</span>
+        <span class="tag tag-cat">Điểm 12 ↗</span>
+      </div>
+      <div class="meta">Lục Hợp · Canh · Nhâm · Tử Môn · Điền Trạch · Chồng · Mối Quan Hệ</div>
+      <ul class="al">
+        <li>Lục Hợp = hòa hợp, kết nối, quan hệ xã hội tốt</li>
+        <li>Mũi tên ↗ = xu hướng đi lên về điền trạch và quan hệ</li>
+        <li>Điền Trạch = bất động sản, nơi ở có thể cải thiện theo thời gian</li>
+        <li>Tử Môn tại đây = hôn nhân/quan hệ tình cảm cần thời gian mới ổn định</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- PHẦN 2: CUNG TỐT -->
+<div class="section s-tot">
+  <div class="sec-hdr" onclick="tog(this)">
+    <span class="sec-icon">☱</span>
+    <span class="sec-title">II. CUNG HỖ TRỢ — NĂNG LƯỢNG THUẬN</span>
+    <span class="sec-arr">▼</span>
+  </div>
+  <div class="sec-body">
+
+    <div class="cung">
+      <div class="cung-hdr">
+        <span class="cung-name">Tây Nam (Khôn) — Cửu Địa · Hưu Môn</span>
+        <span class="tag tag-cat">Điểm 60 ↙</span>
+        <span class="tag tag-trung">Mũi tên xuống</span>
+      </div>
+      <div class="meta">Cửu Địa · Quý · Nhuế · Hưu Môn · Tài Bạch · Tật Ách · Vợ V3 · V2</div>
+      <ul class="al">
+        <li>Hưu Môn = dưỡng sinh, tích lũy âm thầm — không phát nhanh nhưng bền</li>
+        <li>Cửu Địa = ổn định, bền vững, gắn với đất đai</li>
+        <li>Điểm 60 nhưng ↙ = tiềm năng lớn nhưng chưa được khai thác</li>
+        <li>Cùng nhãn Tài Bạch với cung Nam = đây là cung tài vị thứ 2</li>
+      </ul>
+      <div class="note">Tây Nam là cung dưỡng — phù hợp để nghỉ ngơi, tích lũy năng lượng. Không phải cung hành động mạnh.</div>
+    </div>
+
+    <div class="cung">
+      <div class="cung-hdr">
+        <span class="cung-name">Tây (Đoài) — Đằng Xà · Thương Môn</span>
+        <span class="tag tag-trung">Kiến Thức · Điểm 90</span>
+      </div>
+      <div class="meta">Đằng Xà · Kỳ · Mậu · Tâm · Thương Môn · Kiến Thức</div>
+      <ul class="al">
+        <li>Thiên Tâm = trực giác mạnh, khả năng cảm nhận tốt</li>
+        <li>Mậu = can mạnh, bền vững</li>
+        <li>Kiến Thức = cung tư duy, học thuật</li>
+        <li>Điểm 90 — điểm cao nhất trong bảng nhưng Thương Môn + Đằng Xà cần thận trọng</li>
+      </ul>
+      <div class="warn">Đằng Xà tại đây = trí tuệ sắc bén nhưng dễ lo lắng, suy nghĩ nhiều, tự tạo áp lực tinh thần.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PHẦN 3: CUNG KHÓ -->
+<div class="section s-kho">
+  <div class="sec-hdr" onclick="tog(this)">
+    <span class="sec-icon">☵</span>
+    <span class="sec-title">III. CUNG KHÓ KHĂN — CẦN CHÚ Ý</span>
+    <span class="sec-arr">▼</span>
+  </div>
+  <div class="sec-body">
+
+    <div class="cung">
+      <div class="cung-hdr">
+        <span class="cung-name">Bắc (Khảm) — Câu Trận · Tử Môn</span>
+        <span class="tag tag-hung">Sức Khỏe · Điểm 12 ↙</span>
+        <span class="tag tag-khong">Không Vong</span>
+      </div>
+      <div class="meta">Câu Trận · Đinh · Xung · Tử Môn · Sức Khỏe</div>
+      <ul class="al">
+        <li>Tử Môn + Câu Trận = cung hung nhất — bế tắc, trói buộc về sức khỏe</li>
+        <li>Nhãn Sức Khỏe tại cung này = sức khỏe là điểm cần bảo vệ suốt đời</li>
+        <li>Không Vong = năng lượng hung bị giảm nhẹ tự nhiên ✅ nhưng cũng làm giảm lực phòng thủ</li>
+        <li>Đinh = can hỏa — sức khỏe liên quan hệ tim mạch, huyết áp, thần kinh</li>
+        <li>Mũi tên ↙ = xu hướng suy giảm — cần chủ động bảo vệ</li>
+      </ul>
+      <div class="warn">⚠ Không ngủ đầu giường hướng Bắc. Không để góc Bắc tối tăm, tù đọng. Đây là cung ảnh hưởng trực tiếp sức khỏe.</div>
+    </div>
+
+    <div class="cung">
+      <div class="cung-hdr">
+        <span class="cung-name">Đông Bắc (Cấn) — Bạch Hổ · Kinh Môn</span>
+        <span class="tag tag-hung">Điểm 9 ↙ Trực</span>
+      </div>
+      <div class="meta">Bạch Hổ · Canh · Kinh Môn · Trực</div>
+      <ul class="al">
+        <li>Kinh Môn = lo lắng, bất ổn, biến động liên tục</li>
+        <li>Bạch Hổ = sát khí, tranh chấp, xung đột</li>
+        <li>Canh = Kim cứng — trở ngại từ bên ngoài</li>
+        <li>Trực = đang ở trạng thái trực tiếp tác động — không ẩn</li>
+        <li>Điểm 9 thấp + ↙ = cung yếu nhất trong bảng</li>
+      </ul>
+      <div class="note">Hướng Đông Bắc là hướng cần tránh khi xuất hành việc quan trọng. Không đặt bàn làm việc quay về ĐB.</div>
+    </div>
+
+    <div class="cung">
+      <div class="cung-hdr">
+        <span class="cung-name">Đông Nam (Tốn) — Cửu Địa · Hưu Môn</span>
+        <span class="tag tag-khong">Không Vong · NHS</span>
+        <span class="tag tag-trung">Điểm 5 ↙</span>
+      </div>
+      <div class="meta">Cửu Địa · Tân · Anh · Hưu Môn · NHS</div>
+      <ul class="al">
+        <li>Hưu Môn tốt nhưng bị Không Vong = năng lượng dưỡng sinh bị vô hiệu hóa phần lớn</li>
+        <li>NHS = không có sức mạnh vượng khí</li>
+        <li>Mũi tên ↙ = xu hướng đi xuống</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- PHẦN 4: TUẦN KHÔNG -->
+<div class="section s-trung">
+  <div class="sec-hdr" onclick="tog(this)">
+    <span class="sec-icon">◎</span>
+    <span class="sec-title">IV. TUẦN KHÔNG — TÁC ĐỘNG ĐẶC BIỆT</span>
+    <span class="sec-arr">▼</span>
+  </div>
+  <div class="sec-body">
+    <table class="t">
+      <tr>
+        <th>Trụ</th>
+        <th>Không Vong</th>
+        <th>Cung bị ảnh hưởng</th>
+        <th>Tác động</th>
+      </tr>
+      <tr>
+        <td>Năm</td>
+        <td>Thân · Dậu</td>
+        <td>Tây (Đoài)</td>
+        <td class="hung">Cung Kiến Thức bị vô hiệu một phần</td>
+      </tr>
+      <tr>
+        <td>Tháng</td>
+        <td>Dần · Mão</td>
+        <td>Đông (Chấn) · ĐB (Cấn)</td>
+        <td class="ok">Khai Môn Đông bị giảm · Kinh Môn ĐB cũng giảm hung ✅</td>
+      </tr>
+      <tr>
+        <td>Ngày</td>
+        <td>Dần · Mão</td>
+        <td>Đông · Đông Bắc</td>
+        <td class="ok">Khai Môn bị suy nhưng Kinh Môn hung cũng bị suy ✅</td>
+      </tr>
+      <tr>
+        <td>Giờ</td>
+        <td>Tý · Sửu</td>
+        <td>Bắc (Khảm)</td>
+        <td class="ok">Tử Môn Bắc bị Không Vong = hung giảm đáng kể ✅</td>
+      </tr>
+    </table>
+    <div class="note">
+      Điểm tích cực: Tuần Không vô hiệu hóa phần lớn 2 cung hung nhất (Bắc/Tử Môn và ĐB/Kinh Môn). Đây là yếu tố bảo hộ tự nhiên trong lá số này.
+    </div>
+  </div>
+</div>
+
+<!-- PHẦN 5: TIỂU CẢI VẬN -->
+<div class="section s-cai">
+  <div class="sec-hdr" onclick="tog(this)">
+    <span class="sec-icon">✦</span>
+    <span class="sec-title">V. TIỂU CẢI VẬN — HƯỚNG DẪN THỰC HÀNH</span>
+    <span class="sec-arr">▼</span>
+  </div>
+  <div class="sec-body">
+
+    <div class="cung">
+      <div class="cung-hdr">
+        <span class="cung-name">Kích Hoạt Tài Vị — Hướng Nam</span>
+        <span class="tag tag-cat">Ưu Tiên Số 1</span>
+      </div>
+      <ul class="al">
+        <li class="free">Ngủ đầu giường quay về Nam — nạp Sinh Môn + Trực Phù mỗi đêm</li>
+        <li class="free">Bàn làm việc quay mặt về Nam hoặc Đông Nam</li>
+        <li class="free">Mỗi sáng ngồi quay mặt Nam 5-10 phút — thiền hoặc lên kế hoạch ngày</li>
+        <li class="free">Góc Nam trong nhà: dọn thoáng, có ánh sáng tự nhiên</li>
+        <li class="free">Ly nước tĩnh sạch góc Nam — thay mỗi sáng</li>
+        <li class="low">Đèn ánh vàng ấm góc Nam — thắp buổi tối (Hỏa sinh Ly)</li>
+        <li class="free">Khi xuất hành việc quan trọng: ưu tiên hướng Nam hoặc Đông</li>
+        <li class="free">Tiểu Sinh Cơ: gói ADN vào đất sét — đặt góc Nam</li>
+      </ul>
+    </div>
+
+    <div class="cung">
+      <div class="cung-hdr">
+        <span class="cung-name">Kích Hoạt Sự Nghiệp — Hướng Đông</span>
+        <span class="tag tag-cat">Ưu Tiên Số 2</span>
+      </div>
+      <ul class="al">
+        <li class="free">Bàn làm việc/học tập quay mặt Đông — Khai Môn + Quan Lộc</li>
+        <li class="free">Góc Đông: đặt sách, tài liệu học tập, chứng chỉ</li>
+        <li class="free">Cây xanh nhỏ góc Đông — Mộc khí thuận Chấn</li>
+        <li class="low">Đèn xanh lá nhỏ hoặc đèn tự nhiên góc Đông</li>
+        <li class="free">Xuất hành phỏng vấn, thi cử, gặp cấp trên: hướng Đông</li>
+      </ul>
+      <div class="note">Khai Môn + Thiên Phụ tại Đông = thiên phú về học thuật và sự nghiệp chuyên môn. Đầu tư vào học hỏi nâng cao kỹ năng là đúng hướng nhất.</div>
+    </div>
+
+    <div class="cung">
+      <div class="cung-hdr">
+        <span class="cung-name">Bảo Vệ Sức Khỏe — Hướng Bắc</span>
+        <span class="tag tag-hung">Cần Xử Lý</span>
+      </div>
+      <ul class="al">
+        <li class="free">Không ngủ đầu giường hướng Bắc</li>
+        <li class="free">Góc Bắc nhà: không để tối tăm, tù đọng</li>
+        <li class="free">Chén muối trắng nhỏ góc Bắc — thay mỗi 2 tuần</li>
+        <li class="free">Mở cửa sổ/thông gió hướng Bắc nếu có</li>
+        <li class="low">Đèn nhỏ thắp góc Bắc — Hỏa khắc Tử Môn</li>
+        <li class="free">Ưu tiên khám sức khỏe định kỳ — đặc biệt tim mạch, thần kinh</li>
+        <li class="free">Không để bếp, toilet ở hướng Bắc nếu có thể sắp xếp</li>
+      </ul>
+    </div>
+
+    <div class="cung">
+      <div class="cung-hdr">
+        <span class="cung-name">Hóa Giải Đông Bắc — Bạch Hổ · Kinh Môn</span>
+        <span class="tag tag-hung">Cần Làm Nhẹ</span>
+      </div>
+      <ul class="al">
+        <li class="free">Không đặt bàn làm việc quay về Đông Bắc</li>
+        <li class="free">Không xuất hành việc quan trọng hướng Đông Bắc</li>
+        <li class="free">Góc ĐB: để thoáng, có ánh sáng tự nhiên</li>
+        <li class="free">3 hòn đá nhỏ đặt tam giác góc ĐB — Thổ trấn Kim</li>
+        <li class="low">Chuông gió kim loại nhỏ góc ĐB — phá Kinh Môn trệ khí</li>
+      </ul>
+    </div>
+
+    <div class="cung">
+      <div class="cung-hdr">
+        <span class="cung-name">Cân Bằng Tinh Thần — Hướng Tây</span>
+        <span class="tag tag-trung">Đằng Xà Lo Âu</span>
+      </div>
+      <ul class="al">
+        <li class="free">Thiền định hoặc thực hành thư giãn — giảm Đằng Xà lo lắng</li>
+        <li class="free">Hạn chế suy nghĩ vòng lặp — Đằng Xà tại Kiến Thức dễ tạo vòng lo âu</li>
+        <li class="free">Vận động thể chất nhẹ nhàng — hóa giải Thương Môn</li>
+        <li class="free">Âm nhạc nhẹ, thiên nhiên — cân bằng Thiên Tâm</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- PHẦN 6: TỔNG HỢP -->
+<div class="section s-tong">
+  <div class="sec-hdr" onclick="tog(this)">
+    <span class="sec-icon">◈</span>
+    <span class="sec-title">VI. TỔNG HỢP — CHÂN DUNG MỆNH CHỦ & THỨ TỰ ƯU TIÊN</span>
+    <span class="sec-arr">▼</span>
+  </div>
+  <div class="sec-body">
+
+    <div class="cung">
+      <div class="cung-hdr">
+        <span class="cung-name">Chân Dung Mệnh Chủ</span>
+      </div>
+      <ul class="al">
+        <li>Người có trí tuệ và trực giác tốt (Thiên Tâm + Thiên Phụ)</li>
+        <li>Thích hợp công việc chuyên môn, học thuật, tư vấn, giảng dạy (Khai Môn + Quan Lộc + Học Hành)</li>
+        <li>Tài lộc đến từ lao động thực tế và hành động (Sinh Môn)</li>
+        <li>Có khả năng ngôn ngữ và diễn đạt tốt (Chu Tước + Thiên Phụ)</li>
+        <li>Sức khỏe là điểm cần bảo vệ — không nên để kiệt sức (Tử Môn + Tật Ách)</li>
+        <li>Dễ lo lắng, suy nghĩ nhiều — cần thực hành buông bỏ (Đằng Xà)</li>
+        <li>Quan hệ hôn nhân/tình cảm cần thời gian ổn định (Tử Môn + Lục Hợp tại Càn)</li>
+      </ul>
+    </div>
+
+    <div class="cung">
+      <div class="cung-hdr">
+        <span class="cung-name">Thứ Tự Ưu Tiên Tiểu Cải Vận</span>
+      </div>
+      <table class="t">
+        <tr>
+          <th>#</th>
+          <th>Việc làm</th>
+          <th>Chi phí</th>
+          <th>Tác động</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Đầu giường quay Nam</td>
+          <td class="ok">0đ</td>
+          <td class="cat">Nạp Sinh Môn mỗi đêm</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Bàn làm việc quay Đông hoặc Nam</td>
+          <td class="ok">0đ</td>
+          <td class="cat">Khai Môn + Quan Lộc</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Ly nước sạch góc Nam</td>
+          <td class="ok">0đ</td>
+          <td class="cat">Kích hoạt tài vị</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Chén muối góc Bắc</td>
+          <td class="ok">0đ</td>
+          <td class="ok">Hút âm khí Tử Môn</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>Thiền quay mặt Nam mỗi sáng</td>
+          <td class="ok">0đ</td>
+          <td class="cat">Nạp Trực Phù + Sinh Môn</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>Tiểu Sinh Cơ góc Nam</td>
+          <td class="ok">0đ</td>
+          <td class="cat">Kết nối bản thể với tài vị</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>Đèn vàng góc Nam buổi tối</td>
+          <td style="color:var(--purple-light);">30-50k</td>
+          <td class="cat">Hỏa sinh Ly — tăng tài khí</td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td>Đèn nhỏ góc Bắc buổi tối</td>
+          <td style="color:var(--purple-light);">30-50k</td>
+          <td class="ok">Hóa giải Tử Môn</td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td>Chuông gió kim loại góc ĐB</td>
+          <td style="color:var(--purple-light);">30-50k</td>
+          <td class="ok">Phá Kinh Môn bất ổn</td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td>Cây xanh góc Đông</td>
+          <td class="ok">0đ-20k</td>
+          <td class="cat">Mộc khí Khai Môn</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="good">
+      Điểm mạnh nhất của lá số: Trực Phù + Sinh Môn tại Nam + Khai Môn tại Đông — đây là tổ hợp sự nghiệp và tài lộc tốt. Tuần Không hóa giải phần lớn cung hung. Lá số có nền tảng tích cực — cần kích hoạt đúng hướng.
+    </div>
+
+  </div>
+</div>
+
+<div class="div">· · · · ·</div>
+
+<div class="footer">
+  Kỳ Môn Độn Giáp · Lá Số Mệnh Nữ · Sinh 30/01/1986 · Giờ Hợi<br>
+  Phân tích căn cứ Bản Mệnh · Tiểu Cải Vận theo khả năng thực tế<br>
+  ☷ ☰ ☵ ☲ ☳ ☴ ☶ ☱
+</div>
+
+</div>
+<script>
+  function tog(hdr) {
+    const body = hdr.nextElementSibling;
+    const arr = hdr.querySelector('.sec-arr');
+    body.classList.toggle('open');
+    arr.classList.toggle('open');
+  }
+</script>
+</body>
+</html>
