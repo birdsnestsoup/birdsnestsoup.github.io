@@ -493,6 +493,31 @@ function tinhDay(sT0,sH0,sD0){
 }
 
 // ================================================================
+// TÍNH TỰ CƯỜNG — khi 1 quái xuất hiện nhiều lần trong 1 KT
+// Chính/Hỗ (pos 1-4): trọng số 1.0 mỗi lần
+// Biến (pos 5-6): trọng số 0.5 mỗi lần
+// Điểm hiện diện tổng → bonus tự cường + giảm % bất lợi
+// ================================================================
+function tinhTuCuong(pos, target) {
+  let diemHienDien = 0;
+  for(let p=1; p<=6; p++) {
+    if(pos[p] === target) {
+      diemHienDien += (p >= 5) ? 0.5 : 1.0;
+    }
+  }
+  // Chỉ kích hoạt khi xuất hiện hơn 1 lần (diemHienDien > 1.0)
+  if(diemHienDien <= 1.0) return { bonus:0, giamPct:0, diem:diemHienDien };
+
+  let bonus, giamPct;
+  if     (diemHienDien <= 2.0) { bonus=0.500; giamPct=0.20; }
+  else if(diemHienDien <= 3.0) { bonus=1.000; giamPct=0.35; }
+  else if(diemHienDien <= 4.0) { bonus=1.500; giamPct=0.50; }
+  else                          { bonus=2.000; giamPct=0.65; }
+
+  return { bonus, giamPct, diem:diemHienDien };
+}
+
+// ================================================================
 // TÍNH LỰC MỘT KHÔNG THỜI
 // ================================================================
 function tinhLucKT(q, target) {
@@ -500,17 +525,18 @@ function tinhLucKT(q, target) {
   const myPositions = Object.entries(pos).filter(([,v])=>v===target).map(([k])=>+k);
   if(!myPositions.length) return null;
 
+  // Tính tự cường trước
+  const tuCuong = tinhTuCuong(pos, target);
+
   let duocSinh=0, biKhac=0, duocTro=0, haoKhac=0, tieuTan=0;
   const lines=[];
 
   for(const myP of myPositions) {
-    // Nhận tác động từ các vị trí khác
     for(let op=1;op<=6;op++){
       if(op===myP) continue;
       const oq=pos[op], cap=capGiua(myP,op);
       if(!cap) continue;
       const oBien=op>=5, mBien=myP>=5;
-      // Biến chỉ sinh tượng trưng lên Chính (T→T, H→H)
       const validBien = oBien && !mBien && ((op===5&&myP===1)||(op===6&&myP===2));
       if(oBien && !mBien && !validBien) continue;
 
@@ -519,15 +545,18 @@ function tinhLucKT(q, target) {
         lines.push({type:'sinh',src:op,srcQ:oq,cap,val:+DIEM[cap]});
       }
       if(!oBien && coKhac(oq,target)){
-        biKhac+=DIEM[cap];
-        lines.push({type:'khac',src:op,srcQ:oq,cap,val:-DIEM[cap]});
+        // Giảm % lực bất lợi theo tự cường
+        const valGoc = DIEM[cap];
+        const valSau = valGoc * (1 - tuCuong.giamPct);
+        biKhac += valSau;
+        lines.push({type:'khac',src:op,srcQ:oq,cap,val:-valSau,
+          tuCuongGiam: tuCuong.giamPct>0 ? `−${(tuCuong.giamPct*100).toFixed(0)}%` : null});
       }
       if(!oBien && !mBien && dongHanh(oq,target) && !coSinh(oq,target) && !coKhac(oq,target)){
         duocTro+=DIEM[cap];
         lines.push({type:'tro',src:op,srcQ:oq,cap,val:+DIEM[cap]});
       }
     }
-    // Tác động ra ngoài (hao tổn & tiêu tán) — chỉ từ vị trí 1-4
     if(myP<=4) {
       for(let op=1;op<=6;op++){
         if(op===myP) continue;
@@ -535,19 +564,34 @@ function tinhLucKT(q, target) {
         if(!cap) continue;
         if(coKhac(target,oq)){
           const c=capHaoKhac(myP,op);
-          haoKhac+=DIEM[c];
-          lines.push({type:'hao',dst:op,dstQ:oq,cap:c,val:-DIEM[c]});
+          // Hao tổn khi đi khắc cũng giảm theo tự cường (nỗ lực khắc vẫn hao nhưng ít hơn)
+          const valGoc = DIEM[c];
+          const valSau = valGoc * (1 - tuCuong.giamPct * 0.5); // giảm nhẹ hơn (50% của giamPct)
+          haoKhac += valSau;
+          lines.push({type:'hao',dst:op,dstQ:oq,cap:c,val:-valSau});
         }
         if(coSinh(target,oq)){
-          tieuTan+=DIEM[cap];
-          lines.push({type:'tieu',dst:op,dstQ:oq,cap,val:-DIEM[cap]});
+          // Tiêu tán khi sinh xuất cũng giảm theo tự cường
+          const valGoc = DIEM[cap];
+          const valSau = valGoc * (1 - tuCuong.giamPct * 0.5);
+          tieuTan += valSau;
+          lines.push({type:'tieu',dst:op,dstQ:oq,cap,val:-valSau});
         }
       }
     }
   }
 
+  // Cộng bonus tự cường vào duocTro (thể hiện như lực trợ nội tại)
+  const duocTroTuCuong = tuCuong.bonus;
+  if(duocTroTuCuong > 0) {
+    duocTro += duocTroTuCuong;
+    lines.push({type:'tucuong', val:+duocTroTuCuong,
+      diem:tuCuong.diem, giamPct:tuCuong.giamPct,
+      msg:`Tự cường (hiện diện ${tuCuong.diem.toFixed(1)} lần)`});
+  }
+
   const tong = duocSinh + duocTro - biKhac - haoKhac - tieuTan;
-  return {duocSinh,biKhac,duocTro,haoKhac,tieuTan,tong,lines,myPositions,pos};
+  return {duocSinh,biKhac,duocTro,haoKhac,tieuTan,tong,lines,myPositions,pos,tuCuong};
 }
 
 // ================================================================
@@ -754,8 +798,8 @@ const ten = q => QUE_TEN[q]||'?';
 const fmtS = v => (v>=0?'+':'')+v.toFixed(2);
 const fmtP = v => (v>=0?'+':'')+v.toFixed(3);
 const posLbl = p => ['','①Ch.T','②Ch.H','③Hỗ.T','④Hỗ.H','⑤Bi.T','⑥Bi.H'][p];
-const typeLabel= {sinh:'Được Sinh',tro:'Được Trợ',khac:'Bị Khắc',hao:'Hao Tổn',tieu:'Tiêu Tán'};
-const typeCls  = {sinh:'d-sinh',tro:'d-tro',khac:'d-khac',hao:'d-hao',tieu:'d-tieu'};
+const typeLabel= {sinh:'Được Sinh',tro:'Được Trợ',khac:'Bị Khắc',hao:'Hao Tổn',tieu:'Tiêu Tán',tucuong:'⚡ Tự Cường'};
+const typeCls  = {sinh:'d-sinh',tro:'d-tro',khac:'d-khac',hao:'d-hao',tieu:'d-tieu',tucuong:'d-tro'};
 
 // ================================================================
 // PHÂN TÍCH VÒNG LỰC & SỨC KHOẺ THEO LOGIC LÕI
@@ -878,8 +922,12 @@ function renderLucResult(results, target, cid, taQuai) {
   const analysis = phanTichDienBien(ktR);
   const {vals,trend,peakIdx,troughIdx,turningPoints} = analysis;
 
-  let tSinh=0,tKhac=0,tTro=0,tHao=0,tTieu=0;
-  ktR.forEach(r=>{ if(!r)return; tSinh+=r.duocSinh;tKhac+=r.biKhac;tTro+=r.duocTro;tHao+=r.haoKhac;tTieu+=r.tieuTan; });
+  let tSinh=0,tKhac=0,tTro=0,tHao=0,tTieu=0,tTuCuong=0;
+  ktR.forEach(r=>{ if(!r)return; tSinh+=r.duocSinh;tKhac+=r.biKhac;tTro+=r.duocTro;tHao+=r.haoKhac;tTieu+=r.tieuTan;
+    if(r.tuCuong?.bonus>0) tTuCuong+=r.tuCuong.bonus;
+  });
+  // duocTro đã bao gồm bonus tucuong, tách ra để hiển thị riêng
+  const tTroThuan = tTro - tTuCuong;
   const tongNet = tSinh+tTro-tKhac-tHao-tTieu;
   const vClass = tongNet>0.3?'pos':tongNet<-0.3?'neg':'neu';
   const {head,body} = buildNarrative(tongNet,analysis);
@@ -899,7 +947,8 @@ function renderLucResult(results, target, cid, taQuai) {
       <div class="verdict-narrative">${body}</div>
       <div class="verdict-pills">
         <span class="pill pill-sinh">+Sinh ${fmtS(tSinh)}</span>
-        <span class="pill pill-tro">+Trợ ${fmtS(tTro)}</span>
+        <span class="pill pill-tro">+Trợ ${fmtS(tTroThuan)}</span>
+        ${tTuCuong>0?`<span class="pill pill-tro" style="border-color:var(--gold);color:var(--gold-light)">⚡TựCường +${tTuCuong.toFixed(3)}</span>`:''}
         <span class="pill pill-khac">−Khắc ${fmtS(-tKhac)}</span>
         <span class="pill pill-hao">−HaoTổn ${fmtS(-tHao)}</span>
         <span class="pill pill-tieu">−TiêuTán ${fmtS(-tTieu)}</span>
@@ -1088,16 +1137,19 @@ function renderLucResult(results, target, cid, taQuai) {
     const posTxt = r.myPositions.map(p=>posLbl(p)).join(', ');
 
     // Chi tiết tác động
-    const groups={sinh:[],tro:[],khac:[],hao:[],tieu:[]};
+    const groups={sinh:[],tro:[],khac:[],hao:[],tieu:[],tucuong:[]};
     r.lines.forEach(l=>groups[l.type]?.push(l));
     let det='';
     for(const [t,arr] of Object.entries(groups)){
       arr.forEach(l=>{
         const cls=typeCls[t];
-        if(t==='sinh'||t==='tro'||t==='khac'){
+        if(t==='tucuong'){
+          det+=`<span class="${cls}" style="font-weight:bold">⚡ ${l.msg} · bonus +${l.val.toFixed(3)} · giảm bất lợi ${(l.giamPct*100).toFixed(0)}%</span><br>`;
+        } else if(t==='sinh'||t==='tro'||t==='khac'){
           const lt = taQuai ? lucThan(taQuai, l.srcQ) : '';
           const ltSpan = lt ? `<sup style="font-size:0.48rem;color:${LT_COLOR[lt]||'#aaa'};font-weight:bold">${lt}</sup>` : '';
-          det+=`<span class="${cls}">${typeLabel[t]}: ${ten(l.srcQ)}${ltSpan}(${posLbl(l.src)}) Cấp${l.cap} ${l.val>=0?'+':''}${l.val.toFixed(3)}</span><br>`;
+          const giamNote = l.tuCuongGiam ? ` <span style="font-size:0.6rem;color:var(--green)">[tự cường ${l.tuCuongGiam}]</span>` : '';
+          det+=`<span class="${cls}">${typeLabel[t]}: ${ten(l.srcQ)}${ltSpan}(${posLbl(l.src)}) Cấp${l.cap} ${l.val>=0?'+':''}${l.val.toFixed(3)}${giamNote}</span><br>`;
         } else {
           const lt = taQuai ? lucThan(taQuai, l.dstQ) : '';
           const ltSpan = lt ? `<sup style="font-size:0.48rem;color:${LT_COLOR[lt]||'#aaa'};font-weight:bold">${lt}</sup>` : '';
