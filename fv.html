@@ -1,4 +1,3 @@
-Fix vạch
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -111,12 +110,8 @@ Fix vạch
     background: rgba(200,80,80,0.12); border: 1px solid rgba(200,80,80,0.3);
     border-radius: 10px; padding: 1px 6px;
   }
-  .que-cols { display: grid; grid-template-columns: 1fr 1px 1fr 1px 1fr; grid-template-rows: auto 1fr auto 1fr; }
-  .que-col { display: contents; }
-  .que-col .col-head { padding-top: 8px; text-align: center; }
-  .que-col .que-thuong { min-height: 40px; display: flex; align-items: center; justify-content: center; }
-  .que-col .que-ha { min-height: 40px; display: flex; align-items: center; justify-content: center; padding-bottom: 10px; }
-  .col-divider { background: rgba(92,61,30,0.5); grid-row: 1 / -1; }
+  .que-cols { display: grid; grid-template-columns: 1fr 1px 1fr 1px 1fr; align-items: stretch; }
+.que-col { display: flex; flex-direction: column; align-items: center; padding: 8px 4px 10px; text-align: center; }
   .col-divider { background: rgba(92,61,30,0.5); }
   .col-head { font-size: 0.58rem; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
   .que-thuong { font-size: 0.88rem; font-weight: bold; margin-bottom: 5px; display:flex; align-items:center; justify-content:center; min-height: 36px; }
@@ -163,12 +158,8 @@ Fix vạch
   }
   .mh-kt-title { font-size: 0.7rem; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; }
   .mh-kt-hao { font-size: 0.65rem; color: var(--red-soft); background: rgba(200,80,80,0.12); border: 1px solid rgba(200,80,80,0.3); border-radius: 10px; padding: 1px 7px; }
-  .mh-cols { display: grid; grid-template-columns: 1fr 1px 1fr 1px 1fr; grid-template-rows: auto 1fr auto 1fr; }
-  .mh-col { display: contents; }
-  .mh-col .mh-col-head { padding-top: 8px; text-align: center; }
-  .mh-col .mh-que-t { min-height: 40px; display: flex; align-items: center; justify-content: center; }
-  .mh-col .mh-que-h { min-height: 40px; display: flex; align-items: center; justify-content: center; padding-bottom: 10px; }
-  .mh-divider { background: rgba(92,61,30,0.5); grid-row: 1 / -1; }
+  .mh-cols { display: grid; grid-template-columns: 1fr 1px 1fr 1px 1fr; align-items: stretch; }
+.mh-col { display: flex; flex-direction: column; align-items: center; padding: 8px 4px 10px; text-align: center; }
   .mh-col-head { font-size: 0.58rem; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 5px; }
   .mh-que-t { font-size: 0.88rem; font-weight: bold; margin-bottom: 5px; display:flex; align-items:center; justify-content:center; min-height: 36px; }
   .mh-que-h { font-size: 0.88rem; font-weight: bold; display:flex; align-items:center; justify-content:center; min-height: 36px; }
