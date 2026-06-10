@@ -100,6 +100,20 @@
     line-height: 1; white-space: nowrap; text-align: left;
     text-shadow: 0 0 16px currentColor;
   }
+.lt-fixed{
+  position:absolute;
+  left:50%;
+  margin-left:14px;
+  top:50%;
+  transform:translateY(-50%);
+  white-space:nowrap;
+  z-index:10;
+}
+
+.que-thuong,
+.que-ha{
+  position:relative;
+}
   .card-header {
     background: rgba(201,146,42,0.08); border-bottom: 1px solid var(--border);
     padding: 6px 10px; display: flex; align-items: center; justify-content: space-between;
@@ -110,12 +124,32 @@
     background: rgba(200,80,80,0.12); border: 1px solid rgba(200,80,80,0.3);
     border-radius: 10px; padding: 1px 6px;
   }
-  .que-cols { display: grid; grid-template-columns: 1fr 1px 1fr 1px 1fr; }
+  .que-cols { display: grid; grid-template-columns: 1fr 1px 1fr 1px 1fr; align-items: stretch; }
+.que-col { display: flex; flex-direction: column; align-items: center; padding: 8px 4px 10px; text-align: center; }
   .col-divider { background: rgba(92,61,30,0.5); }
-  .que-col { padding: 8px 4px 10px; text-align: center; }
   .col-head { font-size: 0.58rem; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
-  .que-thuong { font-size: 0.88rem; font-weight: bold; margin-bottom: 5px; display:flex; align-items:center; justify-content:center; }
-  .que-ha { font-size: 0.88rem; font-weight: bold; display:flex; align-items:center; justify-content:center; }
+  .que-thuong {
+    font-size: 0.88rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height: 40px;
+    vertical-align:top;
+    width:100%;
+}
+
+.que-ha {
+    font-size: 0.88rem;
+    font-weight: bold;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height: 40px;
+    vertical-align:top;
+    width:100%;
+}
   .sep-line { border: none; border-top: 1px solid rgba(92,61,30,0.4); margin: 3px auto; width: 55%; }
   .col-chinh .vq-line { background-color: #e8c97a; }
   .col-chinh .vq-line.broken::before, .col-chinh .vq-line.broken::after { background-color: #e8c97a; }
@@ -125,10 +159,19 @@
   .col-bien .vq-line.broken::before, .col-bien .vq-line.broken::after { background-color: var(--purple-soft); }
 
   /* Vạch quẻ mini */
-  .vq { display:inline-flex; flex-direction:column; gap:3px; align-items:center; vertical-align:middle; }
+  .vq {
+    display:inline-flex;
+    flex-direction:column;
+    gap:3px;
+    align-items:center;
+    justify-content:center;
+    min-height:36px;
+    vertical-align:middle;
+    flex-shrink:0;
+}
   .vq-line { width:30px; height:5px; background-color: #c9922a; border-radius:2px; }
-  .vq-line.broken { background:transparent; display:flex; justify-content:space-between; }
-  .vq-line.broken::before,.vq-line.broken::after { content:""; width:44%; height:100%; background-color:#c9922a; border-radius:2px; }
+  .vq-line.broken { background:transparent; display:flex; justify-content:space-between; align-items:center; }
+.vq-line.broken::before,.vq-line.broken::after { content:""; width:44%; height:100%; background-color:#c9922a; border-radius:2px; display:block; }
   /* Kích thước nhỏ hơn trong card quẻ */
   .que-col .vq { gap:2px; }
   .que-col .vq-line, .mh-col .vq-line { width:26px; height:4px; }
@@ -158,11 +201,11 @@
   }
   .mh-kt-title { font-size: 0.7rem; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; }
   .mh-kt-hao { font-size: 0.65rem; color: var(--red-soft); background: rgba(200,80,80,0.12); border: 1px solid rgba(200,80,80,0.3); border-radius: 10px; padding: 1px 7px; }
-  .mh-cols { display: grid; grid-template-columns: 1fr 1px 1fr 1px 1fr; }
-  .mh-col { padding: 8px 4px 10px; text-align: center; }
+  .mh-cols { display: grid; grid-template-columns: 1fr 1px 1fr 1px 1fr; align-items: stretch; }
+.mh-col { display: flex; flex-direction: column; align-items: center; padding: 8px 4px 10px; text-align: center; }
   .mh-col-head { font-size: 0.58rem; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 5px; }
-  .mh-que-t { font-size: 0.88rem; font-weight: bold; margin-bottom: 5px; display:flex; align-items:center; justify-content:center; }
-  .mh-que-h { font-size: 0.88rem; font-weight: bold; display:flex; align-items:center; justify-content:center; }
+  .mh-que-t { font-size: 0.88rem; font-weight: bold; margin-bottom: 5px; display:flex; align-items:center; justify-content:center; min-height: 36px; }
+  .mh-que-h { font-size: 0.88rem; font-weight: bold; display:flex; align-items:center; justify-content:center; min-height: 36px; }
   .mh-sep { border: none; border-top: 1px solid rgba(92,61,30,0.4); margin: 3px auto; width: 55%; }
   .mh-col-chinh .vq-line { background-color: #e8c97a; }
   .mh-col-chinh .vq-line.broken::before, .mh-col-chinh .vq-line.broken::after { background-color: #e8c97a; }
@@ -1056,7 +1099,10 @@ function chuKhongThoiLucThan(q, taQuai) {
 
 function makeCard(q, i, taQuai) {
   const lbl = i===0 ? 'Quẻ Chính' : `Không Thời ${i+1}`;
-  const lb = (queNum) => taQuai ? ltBadge(lucThan(taQuai, queNum)) : '';
+  const lb = (queNum) =>
+  taQuai
+    ? `<span class="lt-fixed">${ltBadge(lucThan(taQuai, queNum))}</span>`
+    : '';
   const chuLt = chuKhongThoiLucThan(q, taQuai);
   const chuColor = chuLt ? (LT_COLOR[chuLt] || '#aaa') : 'transparent';
   const chuBadge = `<div class="chu-kt-wrap">
