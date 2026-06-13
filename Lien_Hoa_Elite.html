@@ -42,7 +42,6 @@
   }
   .subtitle { text-align: center; color: var(--text-dim); font-size: 0.8rem; letter-spacing: 0.12em; margin-bottom: 28px; font-style: italic; }
 
-  /* TABS */
   .tabs { display: flex; margin-bottom: 24px; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
   .tab-btn {
     flex: 1; padding: 10px; background: var(--paper); border: none;
@@ -55,7 +54,6 @@
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
 
-  /* INPUT */
   .input-section { background: var(--paper); border: 1px solid var(--border); border-radius: 6px; padding: 20px; margin-bottom: 24px; }
   .input-row { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; }
   .input-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 120px; }
@@ -78,12 +76,10 @@
   .btn-sm { border-color: var(--text-dim); color: var(--text-dim); font-size: 0.78rem; }
   .btn-sm:hover { border-color: var(--text); color: var(--text); background: rgba(255,255,255,0.04); }
 
-  /* RESULT */
   .result-area { display: none; }
   .result-area.visible { display: block; animation: fadeIn 0.4s ease; }
   @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
 
-  /* QUE CARDS */
   .que-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
   .que-card-wrap { display: flex; align-items: stretch; gap: 8px; flex: 1 1 160px; min-width: 155px; max-width: 240px; }
   .que-card { background: var(--paper); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; flex: 1; }
@@ -93,19 +89,10 @@
   .chu-kt-spacer { flex: 0 0 26px; }
   .chu-kt-body { flex: 1; display: flex; align-items: center; }
   .chu-kt-badge { font-size: 1.3rem; font-weight: 900; line-height: 1; text-shadow: 0 0 14px currentColor; }
-.lt-fixed{
-  position:absolute;
-  left:100%;
-  margin-left:14px;
-  top:50%;
-  transform:translateY(-50%);
-  white-space:nowrap;
-}
 
-.que-thuong,
-.que-ha{
-  position:relative;
-}
+  .lt-fixed { position:absolute; left:100%; margin-left:14px; top:50%; transform:translateY(-50%); white-space:nowrap; }
+  .que-thuong, .que-ha { position:relative; }
+
   .card-header {
     background: rgba(201,146,42,0.08); border-bottom: 1px solid var(--border);
     padding: 5px 8px; display: flex; align-items: center; justify-content: space-between;
@@ -117,18 +104,9 @@
   .que-col { display: flex; flex-direction: column; align-items: center; padding: 7px 3px 9px; text-align: center; }
   .col-divider { background: rgba(92,61,30,0.5); }
   .col-head { font-size: 0.55rem; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 5px; }
-  .que-thuong,
-.que-ha{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  min-height:38px;
-  width:100%;
-  position:relative;
-}
+  .que-thuong, .que-ha { display:flex; align-items:center; justify-content:center; min-height:38px; width:100%; position:relative; }
   .sep-line { border: none; border-top: 1px solid rgba(92,61,30,0.4); margin: 2px auto; width: 55%; }
 
-  /* Vạch quẻ */
   .vq { display: inline-flex; flex-direction: column; gap: 2px; align-items: center; }
   .vq-line { width: 24px; height: 4px; border-radius: 2px; }
   .vq-line.broken { background: transparent !important; display: flex; justify-content: space-between; }
@@ -140,28 +118,8 @@
   .col-bien .vq-line { background: var(--purple-soft); }
   .col-bien .vq-line.broken::before, .col-bien .vq-line.broken::after { background: var(--purple-soft); }
 
-  .lt-sup{
-  position:absolute;
-  left:50%;
-  margin-left:14px;
-  top:50%;
-  transform:translateY(-50%);
-  font-size:0.48rem;
-  font-weight:bold;
-  line-height:1;
-  z-index:10;
-}
+  .lt-sup { position:absolute; left:50%; margin-left:14px; top:50%; transform:translateY(-50%); font-size:0.48rem; font-weight:bold; line-height:1; z-index:10; }
 
-  /* COPY */
-  .copy-section { background: rgba(0,0,0,0.3); border: 1px solid rgba(92,61,30,0.4); border-radius: 6px; padding: 14px; margin-bottom: 14px; }
-  .copy-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-  .copy-label { font-size: 0.68rem; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; }
-  .btn-copy { padding: 5px 16px; border: 1px solid var(--gold); border-radius: 4px; background: rgba(201,146,42,0.1); color: var(--gold-light); font-size: 0.78rem; cursor: pointer; transition: all 0.2s; font-family: 'Noto Serif', serif; }
-  .btn-copy:hover { background: rgba(201,146,42,0.22); }
-  .btn-copy.copied { color: var(--green); border-color: var(--green); }
-  .copy-text { font-family: 'Courier New', monospace; font-size: 0.75rem; color: var(--text); white-space: pre; line-height: 1.7; overflow-x: auto; }
-
-  /* LỰC SECTION */
   .luc-section { margin-top: 24px; border-top: 1px solid var(--border); padding-top: 20px; }
   .luc-title { font-family: 'Cinzel Decorative', serif; font-size: 0.95rem; color: var(--gold-light); margin-bottom: 14px; }
   .luc-form { background: var(--paper); border: 1px solid var(--border); border-radius: 6px; padding: 16px; margin-bottom: 18px; display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; }
@@ -173,7 +131,6 @@
   .luc-result { display: none; }
   .luc-result.visible { display: block; animation: fadeIn 0.3s ease; }
 
-  /* VERDICT */
   .verdict-banner {
     border-radius: 8px; padding: 18px 20px; margin-bottom: 16px;
     border: 1px solid; display: flex; gap: 18px; flex-wrap: wrap; align-items: center;
@@ -192,13 +149,10 @@
   .pos .verdict-headline { color: var(--green); }
   .neg .verdict-headline { color: var(--red-soft); }
   .neu .verdict-headline { color: var(--gold-light); }
+  .verdict-desc { font-size: 0.78rem; color: var(--text); line-height: 1.7; }
 
-  /* ĐIỂM ROW */
   .score-grid { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
-  .score-row {
-    display: flex; align-items: center; gap: 10px; padding: 8px 12px;
-    border-radius: 5px; border: 1px solid;
-  }
+  .score-row { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 5px; border: 1px solid; }
   .score-row.positive { background: rgba(109,191,109,0.07); border-color: rgba(109,191,109,0.25); }
   .score-row.negative { background: rgba(224,112,112,0.07); border-color: rgba(224,112,112,0.25); }
   .score-row.neutral  { background: rgba(224,168,112,0.07); border-color: rgba(224,168,112,0.25); }
@@ -211,21 +165,18 @@
   .score-row.neutral  .score-val { color: var(--orange); }
   .score-row.warn     .score-val { color: var(--red-soft); }
 
-  /* CẢNH BÁO */
   .canh-bao-block { border-radius: 8px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid; }
-  .canh-bao-block.tot  { background: rgba(109,191,109,0.07); border-color: rgba(109,191,109,0.3); }
-  .canh-bao-block.xau  { background: rgba(224,112,112,0.08); border-color: rgba(224,112,112,0.4); }
-  .canh-bao-block.trung{ background: rgba(224,168,112,0.07); border-color: rgba(224,168,112,0.3); }
+  .canh-bao-block.tot   { background: rgba(109,191,109,0.07); border-color: rgba(109,191,109,0.3); }
+  .canh-bao-block.xau   { background: rgba(224,112,112,0.08); border-color: rgba(224,112,112,0.4); }
+  .canh-bao-block.trung { background: rgba(224,168,112,0.07); border-color: rgba(224,168,112,0.3); }
   .canh-bao-title { font-size: 0.72rem; font-weight: bold; margin-bottom: 6px; letter-spacing: 0.04em; }
-  .canh-bao-block.tot  .canh-bao-title { color: var(--green); }
-  .canh-bao-block.xau  .canh-bao-title { color: var(--red-soft); }
+  .canh-bao-block.tot   .canh-bao-title { color: var(--green); }
+  .canh-bao-block.xau   .canh-bao-title { color: var(--red-soft); }
   .canh-bao-block.trung .canh-bao-title { color: var(--orange); }
   .canh-bao-body { font-size: 0.76rem; color: var(--text); line-height: 1.7; }
 
-  /* DIVIDER */
   .divider-line { border: none; border-top: 1px solid rgba(92,61,30,0.3); margin: 14px 0; }
 
-  /* CQDC */
   .cqdc-banner {
     background: linear-gradient(135deg, rgba(255,100,0,0.1), rgba(255,180,0,0.06));
     border: 1px solid rgba(255,154,60,0.5); border-radius: 8px;
@@ -245,14 +196,13 @@
 <body>
 <div class="container">
   <h1>Liên Hoa Độn Pháp</h1>
-  <p class="subtitle">Lập quẻ · Tính lực · Cân bằng sinh khắc</p>
+  <p class="subtitle">Lập quẻ · Tính lực · Sức khoẻ Lục Thân</p>
 
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab(1)">Thượng + Hạ</button>
     <button class="tab-btn" onclick="switchTab(2)">Thượng + Hạ + Hào Động</button>
   </div>
 
-  <!-- TAB 1 -->
   <div class="tab-panel active" id="panel1">
     <div class="input-section">
       <div class="input-row">
@@ -275,7 +225,6 @@
     <div class="result-area" id="result1"></div>
   </div>
 
-  <!-- TAB 2 -->
   <div class="tab-panel" id="panel2">
     <div class="input-section">
       <div class="input-row">
@@ -304,9 +253,6 @@
 </div>
 
 <script>
-// ================================================================
-// DATA
-// ================================================================
 const QUE_TEN = ['','Kiền','Đoài','Ly','Chấn','Tốn','Khảm','Cấn','Khôn'];
 const HANH    = {1:'Kim',2:'Kim',3:'Hỏa',4:'Mộc',5:'Mộc',6:'Thủy',7:'Thổ',8:'Thổ'};
 const SINH_BANG = {1:[6],2:[6],3:[7,8],4:[3],5:[3],6:[4,5],7:[1,2],8:[1,2]};
@@ -331,9 +277,6 @@ function capHaoKhac(a,b){
   return {'1-3':2,'2-4':2,'1-4':3,'2-3':3,'1-2':3,'3-4':3}[key]||3;
 }
 
-// ================================================================
-// VẠCH QUẺ
-// ================================================================
 function vach(q){
   if(!q||!QUE_BIT[q]) return '<span style="color:var(--text-dim)">?</span>';
   return `<span class="vq">${QUE_BIT[q].map(b=>
@@ -341,9 +284,6 @@ function vach(q){
   ).join('')}</span>`;
 }
 
-// ================================================================
-// LẬP QUẺ ENGINE
-// ================================================================
 function bitsToQue(b3,b2,b1){ return {'111':1,'011':2,'101':3,'001':4,'110':5,'010':6,'100':7,'000':8}[`${b3}${b2}${b1}`]; }
 const chia8 = n => { let r=n%8; return r===0?8:r; };
 const chia6 = n => { let r=n%6; return r===0?6:r; };
@@ -379,9 +319,6 @@ function tinhDay(sT0,sH0,sD0){
   return res;
 }
 
-// ================================================================
-// LỤC THÂN
-// ================================================================
 function xacDinhTaQuai(q1){ return q1.hao>=1&&q1.hao<=3?q1.thuong:q1.ha; }
 function lucThan(ta,queB){
   if(queB===ta) return 'TA';
@@ -393,14 +330,7 @@ function lucThan(ta,queB){
   if(dongHanh(ta,queB)) return 'H';
   return '';
 }
-function ltSup(lt){
-  if(!lt) return '';
-  return `<span class="lt-sup" style="color:${LT_COLOR[lt]||'#aaa'}">${lt}</span>`;
-}
 
-// ================================================================
-// CÔ QUÂN ĐỘC CHIẾN
-// ================================================================
 function phatHienCQDC(pos,target){
   const sl=[1,2,3,4].filter(p=>pos[p]===target).length;
   let coQ=false,coP=false,coH=false;
@@ -416,68 +346,42 @@ function phatHienCQDC(pos,target){
   return {active,soLuong:sl,bonus:DIEM[2]*2*heSo,heSo};
 }
 
-// ================================================================
-// TÍNH LỰC — TỔ HỢP TOÀN CHUỖI KT
-// Trả về: tổng điểm cộng từ P/P', H; điểm trừ từ Q/Q', C/C', T/T'
-// ================================================================
-function tinhLucToanBoTach(results, target){
-  let duocSinhP=0, duocTroH=0, biKhacQ=0, haoTanC=0, haoKhacT=0, cqdcBonus=0;
+function tinhLucToanBoTach(results,target){
+  let duocSinhP=0,duocTroH=0,biKhacQ=0,haoTanC=0,haoKhacT=0,cqdcBonus=0;
   let cqdcKTs=[];
-
   results.forEach((q,ki)=>{
     const pos={1:q.thuong,2:q.ha,3:q.hoThuong,4:q.hoHa,5:q.bienThuong,6:q.bienHa};
     const myPos=Object.entries(pos).filter(([,v])=>v===target).map(([k])=>+k);
     if(!myPos.length) return;
-
-    // CQDC
     const cqdc=phatHienCQDC(pos,target);
     if(cqdc.active){ cqdcBonus+=cqdc.bonus; cqdcKTs.push(ki+1); }
-
     for(const myP of myPos){
       for(let op=1;op<=6;op++){
         if(op===myP) continue;
-        const oq=pos[op], cap=capGiua(myP,op);
+        const oq=pos[op],cap=capGiua(myP,op);
         if(!cap) continue;
         const oBien=op>=5,mBien=myP>=5;
         const validBien=oBien&&!mBien&&((op===5&&myP===1)||(op===6&&myP===2));
         if(oBien&&!mBien&&!validBien) continue;
-
-        if(coSinh(oq,target)){
-          // Phân biệt P/P' hay H
-          const lt=lucThan(target,oq); // dùng target làm TA để xác định mối quan hệ
-          // Thực ra: ai sinh target = P của target
-          duocSinhP+=DIEM[cap];
-        }
-        if(!oBien&&coKhac(oq,target)){
-          biKhacQ+=DIEM[cap];
-        }
-        if(!oBien&&!mBien&&dongHanh(oq,target)&&!coSinh(oq,target)&&!coKhac(oq,target)){
-          duocTroH+=DIEM[cap];
-        }
+        if(coSinh(oq,target)) duocSinhP+=DIEM[cap];
+        if(!oBien&&coKhac(oq,target)) biKhacQ+=DIEM[cap];
+        if(!oBien&&!mBien&&dongHanh(oq,target)&&!coSinh(oq,target)&&!coKhac(oq,target)) duocTroH+=DIEM[cap];
       }
       if(myP<=4){
         for(let op=1;op<=6;op++){
           if(op===myP) continue;
-          const oq=pos[op], cap=capGiua(myP,op);
+          const oq=pos[op],cap=capGiua(myP,op);
           if(!cap) continue;
-          if(coKhac(target,oq)){
-            haoKhacT+=DIEM[capHaoKhac(myP,op)];
-          }
-          if(coSinh(target,oq)){
-            haoTanC+=DIEM[cap];
-          }
+          if(coKhac(target,oq)) haoKhacT+=DIEM[capHaoKhac(myP,op)];
+          if(coSinh(target,oq)) haoTanC+=DIEM[cap];
         }
       }
     }
   });
-
-  return {duocSinhP, duocTroH, biKhacQ, haoTanC, haoKhacT, cqdcBonus, cqdcKTs,
-          tongNet: duocSinhP+duocTroH+cqdcBonus-biKhacQ-haoTanC-haoKhacT};
+  return {duocSinhP,duocTroH,biKhacQ,haoTanC,haoKhacT,cqdcBonus,cqdcKTs,
+          tongNet:duocSinhP+duocTroH+cqdcBonus-biKhacQ-haoTanC-haoKhacT};
 }
 
-// ================================================================
-// RENDER QUẺ CARD
-// ================================================================
 function chuKhongThoiLucThan(q,taQuai){
   const chuQue=(q.hao>=1&&q.hao<=3)?q.thuong:q.ha;
   return taQuai?lucThan(taQuai,chuQue):'';
@@ -492,7 +396,6 @@ function makeCard(q,i,taQuai){
   };
   const chuLt=chuKhongThoiLucThan(q,taQuai);
   const chuColor=chuLt?(LT_COLOR[chuLt]||'#aaa'):'transparent';
-
   return `<div class="que-card-wrap">
     <div class="que-card ${i===0?'chinh-card':''}">
       <div class="card-header">
@@ -532,53 +435,21 @@ function makeCard(q,i,taQuai){
 }
 
 // ================================================================
-// COPY TEXT
+// RENDER LỰC — ĐÃ FIX PHẦN TỔNG LUẬN LỤC THÂN RIÊNG RẼ
 // ================================================================
-const padR=(s,n)=>s.padEnd(n,' ');
-function buildCopyText(results,sT,sH,sD,taQuai){
-  const ta=taQuai?`TA=${ten(taQuai)}`:'';
-  const L=[`=== BẢNG LIÊN HOA ĐỘN ===`,
-    `Số nhập : Thượng=${sT}  Hạ=${sH}  Hào=${sD}  ${ta}`,
-    `Tổng : ${results.length} Không Thời`,''];
-  results.forEach((q,i)=>{
-    L.push((i===0?`1. Quẻ Chính`:`${i+1}. Không Thời ${i+1}`)+`  [Hào ${q.hao} động]`);
-    L.push(`             Chính           Hỗ              Biến`);
-    const fmt=n=>padR(`${ten(n)}${taQuai?`(${lucThan(taQuai,n)})`:''}`,16);
-    L.push(`Thượng :   ${fmt(q.thuong)} ${fmt(q.hoThuong)} ${ten(q.bienThuong)}${taQuai?`(${lucThan(taQuai,q.bienThuong)})`:''}`)
-    L.push(`Hạ     :   ${fmt(q.ha)} ${fmt(q.hoHa)} ${ten(q.bienHa)}${taQuai?`(${lucThan(taQuai,q.bienHa)})`:''}`)
-    L.push('');
-  });
-  return L.join('\n');
-}
-
-// ================================================================
-// RENDER LỰC — CHỈ CÁC SỐ QUAN TRỌNG + CẢNH BÁO
-// ================================================================
-function renderLucResult(results, target, cid, taQuai){
+function renderLucResult(results,target,cid,taQuai){
   const area=document.getElementById('luc_result_'+cid);
   area.innerHTML=''; area.classList.add('visible');
 
   const lc=tinhLucToanBoTach(results,target);
   const {duocSinhP,duocTroH,biKhacQ,haoTanC,haoKhacT,cqdcBonus,cqdcKTs,tongNet}=lc;
   const n=results.length;
-
-  // Nhóm cộng vs nhóm trừ cần cảnh báo
-  const tongCong  = duocSinhP+duocTroH+cqdcBonus;
-  const tongTruCQ = biKhacQ+haoTanC;          // Trừ cần lo: C + Q
-  const tongTruT  = haoKhacT;                  // Trừ bình thường: T
-  const tongTru   = tongTruCQ+tongTruT;
-
-  // Verdict
-  let head, vClass;
-  if(tongNet>1.5)       {head='✦ Lực Mạnh — Ổn Thoả';    vClass='pos';}
-  else if(tongNet>0.3)  {head='✦ Lực Nhẹ Thuận';          vClass='pos';}
-  else if(tongNet>-0.3) {head='✦ Bình Hoà — Giằng Co';    vClass='neu';}
-  else if(tongNet>-1.5) {head='✦ Lực Nhẹ Nghịch';         vClass='neg';}
-  else                  {head='✦ Lực Mạnh Nghịch — Bất Cập'; vClass='neg';}
+  const isTA=target===taQuai;
+  const ltTarget=lucThan(taQuai,target);
 
   let html='';
 
-  // CQDC banner nếu có
+  // CQDC banner
   if(cqdcKTs.length>0){
     const cq=results.map((q,i)=>{
       if(!cqdcKTs.includes(i+1)) return null;
@@ -595,117 +466,174 @@ function renderLucResult(results, target, cid, taQuai){
     </div>`;
   }
 
-  // Verdict banner
-  html+=`<div class="verdict-banner ${vClass}">
-    <div class="verdict-score">
-      <div class="verdict-score-num">${fmtS(tongNet)}</div>
-      <div class="verdict-score-label">Tổng lực · ${n} KT</div>
-    </div>
-    <div class="verdict-text">
-      <div class="verdict-headline">${head}</div>
-    </div>
-  </div>`;
+  // ============================================================
+  // TRƯỜNG HỢP 1: ĐANG XÉT TA
+  // ============================================================
+  if(isTA){
+    const tongCong=duocSinhP+duocTroH+cqdcBonus;
+    const tongTruCQ=biKhacQ+haoTanC;
+    const tongTruT=haoKhacT;
 
-  // Bảng điểm chi tiết
-  html+=`<div class="score-grid">`;
-
-  // Cộng P
-  html+=`<div class="score-row positive">
-    <div class="score-label"><b>Được Sinh bởi P / P'</b><br>Nguồn lực bồi trợ cho ${ten(target)} qua ${n} KT</div>
-    <div class="score-val">+${duocSinhP.toFixed(3)}</div>
-  </div>`;
-
-  // Cộng H
-  if(duocTroH>0) html+=`<div class="score-row positive">
-    <div class="score-label"><b>Được Trợ bởi H</b><br>Huynh đệ đồng hành phụ trợ</div>
-    <div class="score-val">+${duocTroH.toFixed(3)}</div>
-  </div>`;
-
-  // Cộng CQDC
-  if(cqdcBonus>0) html+=`<div class="score-row positive" style="border-color:rgba(255,154,60,0.4);background:rgba(255,154,60,0.07)">
-    <div class="score-label" style="color:#ff9a3c"><b>⚔ Nội Lực Cô Quân</b><br>Tự sinh khi cô độc kiên cường</div>
-    <div class="score-val" style="color:#ff9a3c">+${cqdcBonus.toFixed(3)}</div>
-  </div>`;
-
-  html+=`<div class="divider-line"></div>`;
-
-  // Trừ Q — cảnh báo đỏ
-  if(biKhacQ>0) html+=`<div class="score-row warn">
-    <div class="score-label"><b>⚠ Bị Khắc bởi Q / Q'</b><br>Áp lực, trở ngại, nguy cơ trực tiếp — đáng lo nhất</div>
-    <div class="score-val">−${biKhacQ.toFixed(3)}</div>
-  </div>`;
-
-  // Trừ C — cảnh báo đỏ
-  if(haoTanC>0) html+=`<div class="score-row warn">
-    <div class="score-label"><b>⚠ Hao Tán bởi C / C'</b><br>Sinh dưỡng C làm tiêu hao lực — đáng lo</div>
-    <div class="score-val">−${haoTanC.toFixed(3)}</div>
-  </div>`;
-
-  // Trừ T — nhẹ nhàng hơn
-  if(haoKhacT>0) html+=`<div class="score-row neutral">
-    <div class="score-label"><b>Hao Sức do Khắc T / T'</b><br>Vận động kiếm Tài — hao sức là hợp lẽ, không đáng lo</div>
-    <div class="score-val">−${haoKhacT.toFixed(3)}</div>
-  </div>`;
-
-  html+=`</div>`; // end score-grid
-
-  // ================================================================
-  // CẢNH BÁO CÂN BẰNG
-  // ================================================================
-  html+=`<div style="margin-top:14px">`;
-
-  // 1. P+H vs C+Q
-  const du_PH_CQ = tongCong - tongTruCQ;
-  if(tongTruCQ>0){
-    if(du_PH_CQ>=0){
-      html+=`<div class="canh-bao-block tot">
-        <div class="canh-bao-title">✅ P+H bù đắp được C+Q</div>
-        <div class="canh-bao-body">
-          Điểm cộng từ P/P' và H (<b>${tongCong.toFixed(3)}</b>) ≥ điểm trừ từ C/C' và Q/Q' (<b>${tongTruCQ.toFixed(3)}</b>).
-          Dư ra <b>+${du_PH_CQ.toFixed(3)}</b> — bỏ công mà đặng lợi, nền tảng ổn.
-        </div>
-      </div>`;
+    let head,vClass,desc;
+    if(tongNet>1.5){
+      head='✦ TA — Lực Mạnh, Ổn Thoả'; vClass='pos';
+      desc=`Tổng điểm dương rõ rệt (${fmtS(tongNet)}). TA đang ở thế thuận lợi — may mắn, có lợi ích, mọi vận động đều có nền tảng vững.`;
+    } else if(tongNet>0.3){
+      head='✦ TA — Lực Nhẹ Thuận'; vClass='pos';
+      desc=`Tổng điểm dương nhẹ (${fmtS(tongNet)}). TA tương đối ổn, các yếu tố bồi trợ đủ để cân bằng các tổn hao.`;
+    } else if(tongNet>-0.3){
+      head='✦ TA — Bình Hoà, Giằng Co'; vClass='neu';
+      desc=`Tổng điểm gần như trung lập (${fmtS(tongNet)}). TA không hẳn thuận, không hẳn nghịch — cục diện giằng co, chưa ngả hẳn về phía nào.`;
+    } else if(tongNet>-1.5){
+      head='✦ TA — Lực Nhẹ Nghịch'; vClass='neg';
+      desc=`Tổng điểm âm nhẹ (${fmtS(tongNet)}). TA đang ở thế bất ổn nhẹ — cần xem rõ nguyên nhân âm là do đâu để biết mức độ nghiêm trọng.`;
     } else {
-      html+=`<div class="canh-bao-block xau">
-        <div class="canh-bao-title">🔴 P+H KHÔNG bù đắp được C+Q</div>
-        <div class="canh-bao-body">
-          Điểm cộng từ P/H chỉ <b>${tongCong.toFixed(3)}</b> nhưng điểm trừ do C/C' và Q/Q' lên đến <b>${tongTruCQ.toFixed(3)}</b>.
-          Thiếu hụt <b>${Math.abs(du_PH_CQ).toFixed(3)}</b> — lợi chẳng bù được hại. Cần xem lại thời điểm hành động.
-        </div>
-      </div>`;
+      head='✦ TA — Lực Mạnh Nghịch, Bất Cập'; vClass='neg';
+      desc=`Tổng điểm âm rõ rệt (${fmtS(tongNet)}). TA đang ở thế bất ổn, nguy hại, thua thiệt.`;
     }
-  }
 
-  // 2. So sánh C+Q với T (tiền kiếm ra mà tốn hơn)
-  if(haoKhacT>0 && tongTruCQ>0){
-    if(tongTruCQ>=haoKhacT){
-      html+=`<div class="canh-bao-block xau">
-        <div class="canh-bao-title">🔴 Hao bởi C+Q ≥ Hao do đi kiếm T</div>
-        <div class="canh-bao-body">
-          Tốn sức kiếm T mất <b>${haoKhacT.toFixed(3)}</b>, nhưng C/C' và Q/Q' đã ngốn mất <b>${tongTruCQ.toFixed(3)}</b>.
-          Tiền kiếm ra rồi chạy đi đâu mất — làm mà thiệt hại vượt công sức bỏ ra. Không đáng bỏ công lúc này.
-        </div>
-      </div>`;
-    } else {
-      html+=`<div class="canh-bao-block trung">
-        <div class="canh-bao-title">🟡 C+Q nhỏ hơn hao do kiếm T — Tương đối ổn</div>
-        <div class="canh-bao-body">
-          Tổn thất từ C/C' và Q/Q' (<b>${tongTruCQ.toFixed(3)}</b>) nhỏ hơn hao sức kiếm T (<b>${haoKhacT.toFixed(3)}</b>).
-          Phần lớn tổn hao đến từ vận động kiếm Tài — hao sức hợp lẽ, không đáng lo.
-        </div>
-      </div>`;
-    }
-  }
-
-  // 3. Tổng kết nếu không có Q và C
-  if(biKhacQ===0 && haoTanC===0){
-    html+=`<div class="canh-bao-block tot">
-      <div class="canh-bao-title">✅ Không có Q và C trong chuỗi quẻ</div>
-      <div class="canh-bao-body">Không bị áp lực từ Q/Q', không bị hao tán bởi C/C'. Tổn hao duy nhất là hao sức kiếm T — hoàn toàn hợp lẽ.</div>
+    html+=`<div class="verdict-banner ${vClass}">
+      <div class="verdict-score">
+        <div class="verdict-score-num">${fmtS(tongNet)}</div>
+        <div class="verdict-score-label">TA · ${n} KT</div>
+      </div>
+      <div class="verdict-text">
+        <div class="verdict-headline">${head}</div>
+        <div class="verdict-desc">${desc}</div>
+      </div>
     </div>`;
-  }
 
-  html+=`</div>`; // end cảnh báo
+    html+=`<div class="score-grid">`;
+    html+=`<div class="score-row positive">
+      <div class="score-label"><b>Được Sinh bởi P / P'</b><br>Nguồn lực bồi trợ trực tiếp cho TA</div>
+      <div class="score-val">+${duocSinhP.toFixed(3)}</div>
+    </div>`;
+    if(duocTroH>0) html+=`<div class="score-row positive">
+      <div class="score-label"><b>Được Trợ bởi H</b><br>Huynh đệ đồng hành phụ trợ</div>
+      <div class="score-val">+${duocTroH.toFixed(3)}</div>
+    </div>`;
+    if(cqdcBonus>0) html+=`<div class="score-row positive" style="border-color:rgba(255,154,60,0.4);background:rgba(255,154,60,0.07)">
+      <div class="score-label" style="color:#ff9a3c"><b>⚔ Nội Lực Cô Quân</b><br>Tự sinh khi cô độc kiên cường</div>
+      <div class="score-val" style="color:#ff9a3c">+${cqdcBonus.toFixed(3)}</div>
+    </div>`;
+    html+=`<div class="divider-line"></div>`;
+    if(biKhacQ>0) html+=`<div class="score-row warn">
+      <div class="score-label"><b>⚠ Bị Khắc bởi Q / Q'</b><br>Áp lực, trở ngại, nguy cơ trực tiếp — đáng lo nhất</div>
+      <div class="score-val">−${biKhacQ.toFixed(3)}</div>
+    </div>`;
+    if(haoTanC>0) html+=`<div class="score-row warn">
+      <div class="score-label"><b>⚠ Hao Tán bởi C / C'</b><br>Sinh dưỡng C làm tiêu hao lực — đáng lo</div>
+      <div class="score-val">−${haoTanC.toFixed(3)}</div>
+    </div>`;
+    if(haoKhacT>0) html+=`<div class="score-row neutral">
+      <div class="score-label"><b>Hao Sức do Khắc T / T'</b><br>Vận động kiếm Tài — hao sức là hợp lẽ, không đáng lo</div>
+      <div class="score-val">−${haoKhacT.toFixed(3)}</div>
+    </div>`;
+    html+=`</div>`;
+
+    // Cảnh báo phân loại âm/dương
+    html+=`<div style="margin-top:14px">`;
+    if(tongNet<=0){
+      if(tongTruCQ>0&&tongCong<tongTruCQ){
+        html+=`<div class="canh-bao-block xau">
+          <div class="canh-bao-title">🔴 Âm do C & Q — Tiêu cực, nghiêm trọng</div>
+          <div class="canh-bao-body">Điểm trừ từ C/C' và Q/Q' (<b>${tongTruCQ.toFixed(3)}</b>) vượt điểm cộng từ P/H (<b>${tongCong.toFixed(3)}</b>).
+            Tình huống <b>chỉ có hại mà chẳng có lợi nào</b> — áp lực và hao tổn không được bù đắp. Cần thận trọng, không nên vội vàng hành động.</div>
+        </div>`;
+      } else if(tongTruCQ===0&&haoKhacT>0){
+        html+=`<div class="canh-bao-block trung">
+          <div class="canh-bao-title">🟡 Âm do Khắc T — Hợp lẽ, vận động kiếm Tài</div>
+          <div class="canh-bao-body">Điểm âm chủ yếu đến từ việc khắc T/T' (<b>−${haoKhacT.toFixed(3)}</b>), không kèm C hoặc Q.
+            <b>Hao sức kiếm tiền — hợp lẽ tự nhiên</b>. Vận động để có Tài thì phải bỏ công, không phải tín hiệu xấu.</div>
+        </div>`;
+      } else if(tongTruCQ>0&&haoKhacT>0){
+        html+=`<div class="canh-bao-block xau">
+          <div class="canh-bao-title">🔴 Tài Sinh Nguy Hại — Kiếm Tài nhưng Tài lại nuôi C/Q</div>
+          <div class="canh-bao-body">Hao sức kiếm T (<b>−${haoKhacT.toFixed(3)}</b>) là hợp lẽ, nhưng đồng thời còn bị hao tổn bởi C/C' và/hoặc Q/Q'
+            (<b>−${tongTruCQ.toFixed(3)}</b>). <b>Tài tìm được lại phải chi cho hao tổn, rủi ro</b> — tiền tài đang sinh ra nguy hại đi kèm.</div>
+        </div>`;
+      } else {
+        html+=`<div class="canh-bao-block trung">
+          <div class="canh-bao-title">🟡 Bình hoà nhẹ</div>
+          <div class="canh-bao-body">Điểm gần 0, không có yếu tố C/Q/T đáng kể tác động. Cục diện trung lập.</div>
+        </div>`;
+      }
+    } else {
+      if(tongTruCQ>0){
+        html+=`<div class="canh-bao-block tot">
+          <div class="canh-bao-title">✅ Dương — P/H đủ bù đắp C/Q</div>
+          <div class="canh-bao-body">Tuy có hao tổn từ C/C' và/hoặc Q/Q' (<b>−${tongTruCQ.toFixed(3)}</b>), nhưng điểm cộng từ P/H
+            (<b>+${tongCong.toFixed(3)}</b>) đủ bù đắp và còn dư. Tổng thể <b>ổn thoả, may mắn, có lợi ích</b>.</div>
+        </div>`;
+      } else {
+        html+=`<div class="canh-bao-block tot">
+          <div class="canh-bao-title">✅ Dương — Không có C và Q</div>
+          <div class="canh-bao-body">Không bị áp lực từ Q/Q', không bị hao tán bởi C/C'.
+            ${haoKhacT>0?`Tổn hao duy nhất là hao sức kiếm T (−${haoKhacT.toFixed(3)}) — hoàn toàn hợp lẽ.`:''}
+            Tổng thể <b>ổn thoả, may mắn, có lợi ích</b>.</div>
+        </div>`;
+      }
+    }
+    html+=`</div>`;
+
+  // ============================================================
+  // TRƯỜNG HỢP 2: LỤC THÂN RIÊNG RẼ — chỉ báo âm/dương đơn giản
+  // ============================================================
+  } else {
+    const tenLT=`${ten(target)} (${ltTarget})`;
+    let head,vClass,desc;
+
+    if(tongNet>0.3){
+      head=`✦ ${tenLT} — Có Lực, Mạnh`; vClass='pos';
+      desc=`Điểm lực dương (${fmtS(tongNet)}) — ${ten(target)} đang ở trạng thái mạnh, có lực, ổn thoả đối với chính bản thân nó.`;
+    } else if(tongNet>-0.3){
+      head=`✦ ${tenLT} — Bình Hoà`; vClass='neu';
+      desc=`Điểm lực gần trung lập (${fmtS(tongNet)}) — ${ten(target)} không mạnh, không yếu, trạng thái trung tính.`;
+    } else {
+      head=`✦ ${tenLT} — Bất Ổn, Yếu`; vClass='neg';
+      desc=`Điểm lực âm (${fmtS(tongNet)}) — ${ten(target)} đang ở trạng thái bất ổn, suy yếu đối với chính bản thân nó.`;
+    }
+
+    html+=`<div class="verdict-banner ${vClass}">
+      <div class="verdict-score">
+        <div class="verdict-score-num">${fmtS(tongNet)}</div>
+        <div class="verdict-score-label">${ten(target)} · ${n} KT</div>
+      </div>
+      <div class="verdict-text">
+        <div class="verdict-headline">${head}</div>
+        <div class="verdict-desc">${desc}</div>
+      </div>
+    </div>`;
+
+    // Bảng điểm chi tiết của lục thân này
+    html+=`<div class="score-grid">`;
+    if(duocSinhP>0) html+=`<div class="score-row positive">
+      <div class="score-label"><b>Được Sinh</b><br>Nguồn lực bồi trợ ${ten(target)}</div>
+      <div class="score-val">+${duocSinhP.toFixed(3)}</div>
+    </div>`;
+    if(duocTroH>0) html+=`<div class="score-row positive">
+      <div class="score-label"><b>Được Trợ</b><br>Đồng hành phụ trợ ${ten(target)}</div>
+      <div class="score-val">+${duocTroH.toFixed(3)}</div>
+    </div>`;
+    if(cqdcBonus>0) html+=`<div class="score-row positive" style="border-color:rgba(255,154,60,0.4);background:rgba(255,154,60,0.07)">
+      <div class="score-label" style="color:#ff9a3c"><b>⚔ Nội Lực Cô Quân</b></div>
+      <div class="score-val" style="color:#ff9a3c">+${cqdcBonus.toFixed(3)}</div>
+    </div>`;
+    if(duocSinhP>0||duocTroH>0||cqdcBonus>0) html+=`<div class="divider-line"></div>`;
+    if(biKhacQ>0) html+=`<div class="score-row negative">
+      <div class="score-label"><b>Bị Khắc</b></div>
+      <div class="score-val">−${biKhacQ.toFixed(3)}</div>
+    </div>`;
+    if(haoTanC>0) html+=`<div class="score-row negative">
+      <div class="score-label"><b>Hao Tán</b><br>${ten(target)} phải sinh dưỡng đối tượng khác</div>
+      <div class="score-val">−${haoTanC.toFixed(3)}</div>
+    </div>`;
+    if(haoKhacT>0) html+=`<div class="score-row negative">
+      <div class="score-label"><b>Hao do Khắc</b><br>${ten(target)} vận động khắc chế — hao lực</div>
+      <div class="score-val">−${haoKhacT.toFixed(3)}</div>
+    </div>`;
+    html+=`</div>`;
+  }
 
   area.innerHTML=html;
 }
@@ -733,15 +661,6 @@ function renderResults(cid,results,sT,sH,sD){
   results.forEach((q,i)=>cards+=makeCard(q,i,taQuai));
   cards+=`</div>`;
 
-  const copyTxt=buildCopyText(results,sT,sH,sD,taQuai);
-  const copySec=`<div class="copy-section">
-    <div class="copy-header">
-      <span class="copy-label">📋 Sao chép quẻ</span>
-      <button class="btn-copy" id="cb_${cid}" onclick="doCopy('cb_${cid}','cp_${cid}')">Sao Chép</button>
-    </div>
-    <pre class="copy-text" id="cp_${cid}">${copyTxt}</pre>
-  </div>`;
-
   const lucSec=`<div class="luc-section">
     <div class="luc-title">⚡ Tính Lực Lục Thân</div>
     <div class="luc-form">
@@ -763,7 +682,7 @@ function renderResults(cid,results,sT,sH,sD){
     <div class="luc-result" id="luc_result_${cid}"></div>
   </div>`;
 
-  area.innerHTML=legendHTML+cards+copySec+lucSec;
+  area.innerHTML=legendHTML+cards+lucSec;
   area._results=results;
   area._taQuai=taQuai;
 }
@@ -778,9 +697,6 @@ function tinhLuc(cid){
   setTimeout(()=>document.getElementById('luc_result_'+cid).scrollIntoView({behavior:'smooth',block:'start'}),100);
 }
 
-// ================================================================
-// UTIL
-// ================================================================
 function compute(tab){
   let sT,sH,sD;
   if(tab===1){
@@ -818,14 +734,6 @@ function clearAll(tab){
 function switchTab(n){
   document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===n-1));
   document.querySelectorAll('.tab-panel').forEach((p,i)=>p.classList.toggle('active',i===n-1));
-}
-
-function doCopy(btnId,preId){
-  navigator.clipboard.writeText(document.getElementById(preId).textContent).then(()=>{
-    const b=document.getElementById(btnId);
-    b.textContent='Đã copy!'; b.classList.add('copied');
-    setTimeout(()=>{b.textContent='Sao Chép';b.classList.remove('copied');},2000);
-  });
 }
 
 document.addEventListener('keydown',e=>{
