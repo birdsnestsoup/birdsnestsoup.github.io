@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xin Số Lập Quẻ — Liên Hoa Độn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,500;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#1a1410;
+    --paper-2:#221a14;
+    --paper-3:#2a2018;
+    --ink:#e8dcc8;
+    --ink-dim:#a9978068;
+    --ink-dim2:#9c8a72;
+    --gold:#c9a063;
+    --gold-soft:#8f7450;
+    --seal:#8b3a3a;
+    --seal-soft:#6e3232;
+    --line:#3a2f24;
+    --line-soft:#2c2419;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(ellipse 80% 60% at 50% -10%, rgba(201,160,99,0.07), transparent),
+      var(--paper);
+    background-attachment:fixed;
+    color:var(--ink);
+    font-family:'Cormorant Garamond','Noto Serif',serif;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* texture vân giấy */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    pointer-events:none;
+    opacity:0.5;
+    background-image:
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.012) 0px, transparent 1px, transparent 2px, rgba(255,255,255,0.012) 3px);
+    z-index:0;
+  }
+
+  .wrap{
+    max-width:920px;
+    margin:0 auto;
+    padding:56px 22px 90px;
+    position:relative;
+    z-index:1;
+  }
+
+  /* ---------- Header ---------- */
+  header{
+    text-align:center;
+    margin-bottom:54px;
+  }
+  .eyebrow{
+    font-family:'Noto Serif', serif;
+    font-size:12.5px;
+    letter-spacing:0.32em;
+    color:var(--gold-soft);
+    text-transform:uppercase;
+    margin-bottom:14px;
+  }
+  h1{
+    font-family:'Noto Serif', serif;
+    font-weight:600;
+    font-size:clamp(28px,5vw,42px);
+    margin:0 0 12px;
+    letter-spacing:0.01em;
+    color:var(--ink);
+  }
+  h1 em{
+    font-style:normal;
+    color:var(--gold);
+  }
+  .sub{
+    font-size:17px;
+    color:var(--ink-dim2);
+    max-width:560px;
+    margin:0 auto;
+    line-height:1.7;
+    font-style:italic;
+  }
+  .divider{
+    width:64px; height:1px;
+    background:linear-gradient(90deg, transparent, var(--gold-soft), transparent);
+    margin:26px auto 0;
+  }
+
+  /* ---------- Method grid ---------- */
+  .methods{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(250px,1fr));
+    gap:14px;
+    margin-bottom:8px;
+  }
+  .m-card{
+    background:linear-gradient(160deg, var(--paper-2), var(--paper-3));
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:22px 20px;
+    cursor:pointer;
+    position:relative;
+    transition:border-color .25s ease, transform .25s ease, background .25s ease;
+    text-align:left;
+  }
+  .m-card:hover{
+    border-color:var(--gold-soft);
+    transform:translateY(-2px);
+  }
+  .m-card:focus-visible{
+    outline:2px solid var(--gold);
+    outline-offset:2px;
+  }
+  .m-card.active{
+    border-color:var(--gold);
+    background:linear-gradient(160deg, #2a2117, #241c14);
+    box-shadow:0 0 0 1px rgba(201,160,99,0.15), 0 8px 24px -8px rgba(201,160,99,0.18);
+  }
+  .m-num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--gold-soft);
+    letter-spacing:0.08em;
+    margin-bottom:10px;
+    display:block;
+  }
+  .m-title{
+    font-family:'Noto Serif', serif;
+    font-weight:600;
+    font-size:18px;
+    color:var(--ink);
+    margin:0 0 6px;
+  }
+  .m-desc{
+    font-size:14.5px;
+    color:var(--ink-dim2);
+    line-height:1.55;
+    margin:0;
+  }
+
+  /* ---------- Stage ---------- */
+  .stage{
+    margin-top:36px;
+    border:1px solid var(--line);
+    border-radius:3px;
+    background:linear-gradient(180deg, rgba(0,0,0,0.12), transparent);
+    padding:40px;
+    min-height:220px;
+    display:none;
+  }
+  .stage.show{display:block;}
+  .stage-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin-bottom:28px;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .stage-title{
+    font-family:'Noto Serif', serif;
+    font-size:21px;
+    font-weight:600;
+    color:var(--gold);
+  }
+  .stage-hint{
+    font-size:14px;
+    color:var(--ink-dim2);
+    font-style:italic;
+  }
+
+  /* ---------- Two-hand layout ---------- */
+  .hands{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:28px;
+  }
+  @media (max-width:620px){ .hands{grid-template-columns:1fr;} }
+
+  .hand{
+    border:1px solid var(--line-soft);
+    border-radius:3px;
+    padding:24px 20px 26px;
+    text-align:center;
+    position:relative;
+    background:rgba(255,255,255,0.012);
+  }
+  .hand.phai{ border-top:2px solid var(--gold-soft); }
+  .hand.trai{ border-top:2px solid var(--seal-soft); }
+
+  .hand-label{
+    font-family:'Noto Serif', serif;
+    font-size:13px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    margin-bottom:4px;
+  }
+  .hand.phai .hand-label{ color:var(--gold); }
+  .hand.trai .hand-label{ color:#c08a8a; }
+
+  .hand-sub{
+    font-size:12.5px;
+    color:var(--ink-dim2);
+    margin-bottom:18px;
+  }
+
+  .result-box{
+    font-family:'JetBrains Mono', monospace;
+    font-size:42px;
+    color:var(--ink);
+    min-height:54px;
+    line-height:54px;
+    margin-bottom:18px;
+    font-weight:500;
+    letter-spacing:0.02em;
+  }
+  .result-box.empty{
+    color:var(--ink-dim);
+    font-size:15px;
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+  }
+  .result-box.rolling{
+    color:var(--gold-soft);
+    animation:flicker 0.06s linear infinite;
+  }
+  @keyframes flicker{ 50%{opacity:0.55;} }
+
+  .act-btn{
+    font-family:'Noto Serif', serif;
+    font-size:14px;
+    letter-spacing:0.04em;
+    background:transparent;
+    border:1px solid var(--gold-soft);
+    color:var(--ink);
+    padding:11px 22px;
+    border-radius:2px;
+    cursor:pointer;
+    transition:all .2s ease;
+    width:100%;
+  }
+  .act-btn:hover:not(:disabled){
+    background:rgba(201,160,99,0.1);
+    border-color:var(--gold);
+  }
+  .act-btn:disabled{
+    opacity:0.35;
+    cursor:default;
+  }
+  .hand.trai .act-btn{ border-color:var(--seal-soft); }
+  .hand.trai .act-btn:hover:not(:disabled){
+    background:rgba(139,58,58,0.12);
+    border-color:#c08a8a;
+  }
+
+  /* manual count helpers */
+  .manual-area{
+    width:100%;
+    height:90px;
+    border:1px dashed var(--line);
+    border-radius:2px;
+    background:rgba(0,0,0,0.15);
+    margin-bottom:14px;
+    position:relative;
+    cursor:crosshair;
+    touch-action:none;
+    overflow:hidden;
+  }
+  .manual-area svg{ width:100%; height:100%; }
+  .manual-area .ph{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--ink-dim);
+    font-size:13px;
+    font-style:italic;
+    pointer-events:none;
+  }
+  .manual-count-display{
+    font-size:12.5px;
+    color:var(--ink-dim2);
+    margin-bottom:12px;
+    min-height:16px;
+  }
+
+  /* steps method */
+  .step-track{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:16px;
+    min-height:30px;
+  }
+  .footprint{
+    width:9px;height:9px;
+    border-radius:50%;
+    background:var(--gold-soft);
+    opacity:0.8;
+  }
+  .hand.trai .footprint{ background:var(--seal-soft); }
+
+  /* leaf branch method */
+  .branch-svg{ width:100%; height:96px; display:block; margin-bottom:10px; }
+
+  /* coin method */
+  .coins-row{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:14px;
+    min-height:40px;
+  }
+  .coin{
+    width:34px;height:34px;
+    border-radius:50%;
+    border:1.5px solid var(--gold-soft);
+    display:flex;align-items:center;justify-content:center;
+    font-size:11px;
+    color:var(--ink-dim2);
+    font-family:'JetBrains Mono',monospace;
+    background:radial-gradient(circle at 35% 30%, rgba(255,255,255,0.06), transparent);
+  }
+  .coin.tails{ border-color:var(--seal-soft); color:#c08a8a; }
+
+  /* breath method */
+  .breath-ring{
+    width:90px;height:90px;
+    border-radius:50%;
+    border:1.5px solid var(--gold-soft);
+    margin:0 auto 16px;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    color:var(--ink-dim2);
+    transition:transform 4s ease-in-out, border-color .4s ease;
+  }
+  .hand.trai .breath-ring{ border-color:var(--seal-soft); }
+  .breath-ring.inhale{ transform:scale(1.18); }
+  .breath-ring.exhale{ transform:scale(0.86); }
+
+  /* ---------- Confirm / seal ---------- */
+  .confirm-row{
+    margin-top:30px;
+    text-align:center;
+  }
+  .seal-wrap{
+    display:inline-flex;
+    align-items:center;
+    gap:18px;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+  .lock-btn{
+    font-family:'Noto Serif', serif;
+    font-size:15px;
+    letter-spacing:0.06em;
+    background:var(--gold);
+    color:#1a1410;
+    border:none;
+    padding:13px 30px;
+    border-radius:2px;
+    cursor:pointer;
+    font-weight:600;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .lock-btn:hover:not(:disabled){
+    transform:translateY(-1px);
+    box-shadow:0 6px 18px -6px rgba(201,160,99,0.5);
+  }
+  .lock-btn:disabled{
+    background:var(--line);
+    color:var(--ink-dim);
+    cursor:default;
+  }
+  .reset-link{
+    font-size:13px;
+    color:var(--ink-dim2);
+    text-decoration:underline;
+    text-decoration-color:var(--line);
+    cursor:pointer;
+    background:none;
+    border:none;
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+  }
+  .reset-link:hover{ color:var(--ink); }
+
+  /* sealed summary */
+  .sealed-panel{
+    margin-top:36px;
+    border-top:1px solid var(--line);
+    padding-top:30px;
+    display:none;
+    text-align:center;
+  }
+  .sealed-panel.show{
+    display:block;
+    animation:fadeUp .5s ease both;
+  }
+  @keyframes fadeUp{
+    from{opacity:0; transform:translateY(8px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  .stamp{
+    width:74px;height:74px;
+    border:1.5px solid var(--seal);
+    border-radius:50%;
+    margin:0 auto 18px;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--seal);
+    font-family:'Noto Serif', serif;
+    font-size:13px;
+    letter-spacing:0.05em;
+    transform:rotate(-8deg);
+    opacity:0;
+    animation:stampIn .6s cubic-bezier(.2,1.5,.4,1) .15s forwards;
+    box-shadow: inset 0 0 0 1px rgba(139,58,58,0.25);
+  }
+  @keyframes stampIn{
+    from{opacity:0; transform:rotate(-8deg) scale(1.6);}
+    to{opacity:0.92; transform:rotate(-8deg) scale(1);}
+  }
+  .sealed-numbers{
+    display:flex;
+    justify-content:center;
+    gap:48px;
+    margin-bottom:22px;
+    flex-wrap:wrap;
+  }
+  .sealed-col .lbl{
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--ink-dim2);
+    margin-bottom:8px;
+  }
+  .sealed-col .val{
+    font-family:'JetBrains Mono', monospace;
+    font-size:48px;
+    color:var(--gold);
+    line-height:1;
+  }
+  .sealed-note{
+    font-size:13.5px;
+    color:var(--ink-dim2);
+    font-style:italic;
+    max-width:480px;
+    margin:0 auto 22px;
+    line-height:1.6;
+  }
+  .copy-row{
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+  .ghost-btn{
+    font-family:'Noto Serif', serif;
+    font-size:13.5px;
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--ink-dim2);
+    padding:9px 18px;
+    border-radius:2px;
+    cursor:pointer;
+    transition:all .2s ease;
+  }
+  .ghost-btn:hover{
+    border-color:var(--gold-soft);
+    color:var(--ink);
+  }
+
+  footer{
+    text-align:center;
+    margin-top:60px;
+    font-size:12.5px;
+    color:var(--ink-dim);
+    font-style:italic;
+    letter-spacing:0.02em;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.01ms !important; transition-duration:0.01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Liên Hoa Độn</div>
+    <h1>Xin Số <em>Lập Quẻ</em></h1>
+    <p class="sub">Tĩnh tâm, khấn nguyện theo ý mình, rồi chọn một cách xin số dưới đây.<br>Tay Phải ứng số quẻ Thượng — Tay Trái ứng số quẻ Hạ.</p>
+    <div class="divider"></div>
+  </header>
+
+  <div class="methods" id="methodList"></div>
+
+  <div class="stage" id="stage">
+    <div class="stage-head">
+      <div class="stage-title" id="stageTitle">—</div>
+      <div class="stage-hint" id="stageHint">—</div>
+    </div>
+    <div class="hands" id="handsArea"><!-- rendered by JS --></div>
+
+    <div class="confirm-row">
+      <div class="seal-wrap">
+        <button class="lock-btn" id="lockBtn" disabled>Chốt Số &amp; Đóng Ấn</button>
+        <button class="reset-link" id="resetBtn">xin lại từ đầu</button>
+      </div>
+    </div>
+
+    <div class="sealed-panel" id="sealedPanel">
+      <div class="stamp">đã định</div>
+      <div class="sealed-numbers">
+        <div class="sealed-col">
+          <div class="lbl">Số Thượng</div>
+          <div class="val" id="sealedThuong">—</div>
+        </div>
+        <div class="sealed-col">
+          <div class="lbl">Số Hạ</div>
+          <div class="val" id="sealedHa">—</div>
+        </div>
+      </div>
+      <p class="sealed-note">Hai số trên đã được giữ nguyên theo cách xin của bạn. Hãy chuyển sang chương trình Lập Quẻ để nhập hai số này và xem kết quả.</p>
+      <div class="copy-row">
+        <button class="ghost-btn" id="copyBtn">Chép số (Thượng,Hạ)</button>
+        <button class="ghost-btn" id="restartBtn">Xin quẻ khác</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>Khấn sao cho tâm mình khế hợp với Thần, chư vị Thiêng Liêng — số tự đến, không cần gắng cầu.</footer>
+</div>
+
+<script>
+(function(){
+
+  /* ============================================================
+     DATA: methods
+  ============================================================ */
+  const METHODS = [
+    {
+      id:'book',
+      num:'01',
+      title:'Lật Sách Ngẫu Nhiên',
+      desc:'Khấn rồi lật một quyển sách: tay Phải mở một trang lấy số Thượng, tay Trái mở một trang khác lấy số Hạ.',
+      hint:'Lật ngẫu nhiên — số trang sách hiện ra là số ứng.'
+    },
+    {
+      id:'leaf',
+      num:'02',
+      title:'Đếm Lá Trên Cành',
+      desc:'Ra vườn, tay Phải ngắt một cành nhỏ đếm số lá làm số Thượng; tay Trái ngắt cành khác đếm số lá làm số Hạ.',
+      hint:'Chạm để "mọc" từng lá lên cành, dừng khi thấy đủ.'
+    },
+    {
+      id:'steps',
+      num:'03',
+      title:'Đếm Bước Chân',
+      desc:'Tĩnh tâm khấn hỏi, đi tới một điểm tự định — số bước chân là số Thượng; đi tiếp đến điểm khác — số bước là số Hạ.',
+      hint:'Bấm mỗi khi bước một bước, dừng tuỳ ý ở mỗi quẻ.'
+    },
+    {
+      id:'strokes',
+      num:'04',
+      title:'Vạch Giấy Ngẫu Nhiên',
+      desc:'Tay Trái vạch tự do một vùng giấy (không đếm khi vạch), tay Phải vạch vùng khác. Vạch xong mới đếm lại số vạch của mỗi tay.',
+      hint:'Vẩy tay kéo nét — vô tư không đếm, đếm lại sau.'
+    },
+    {
+      id:'coin',
+      num:'05',
+      title:'Gieo Đồng Tiền',
+      desc:'Phương pháp gợi thêm: mỗi tay gieo một đồng tiền 3 lần, số mặt Sấp/Ngửa quy thành số — theo cách gieo âm dương cổ truyền.',
+      hint:'Gieo 3 lần mỗi tay, số Ngửa tích lại thành số ứng.'
+    },
+    {
+      id:'breath',
+      num:'06',
+      title:'Đếm Theo Hơi Thở',
+      desc:'Phương pháp gợi thêm: tĩnh tâm khấn nguyện, thả lỏng, đếm theo từng hơi thở ra cho đến khi tâm thấy "đủ" thì dừng.',
+      hint:'Theo nhịp thở hiện trên màn hình, bấm dừng khi tâm an.'
+    }
+  ];
+
+  let current = null;
+  let valThuong = null; // tay Phải
+  let valHa = null;     // tay Trái
+  let sealed = false;
+
+  const methodList = document.getElementById('methodList');
+  const stage = document.getElementById('stage');
+  const stageTitle = document.getElementById('stageTitle');
+  const stageHint = document.getElementById('stageHint');
+  const handsArea = document.getElementById('handsArea');
+  const lockBtn = document.getElementById('lockBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const sealedPanel = document.getElementById('sealedPanel');
+  const sealedThuong = document.getElementById('sealedThuong');
+  const sealedHa = document.getElementById('sealedHa');
+  const copyBtn = document.getElementById('copyBtn');
+  const restartBtn = document.getElementById('restartBtn');
+
+  /* ============================================================
+     Render method picker
+  ============================================================ */
+  METHODS.forEach(m=>{
+    const card = document.createElement('button');
+    card.className='m-card';
+    card.type='button';
+    card.dataset.id=m.id;
+    card.innerHTML = `
+      <span class="m-num">${m.num}</span>
+      <div class="m-title">${m.title}</div>
+      <p class="m-desc">${m.desc}</p>
+    `;
+    card.addEventListener('click', ()=>selectMethod(m.id));
+    methodList.appendChild(card);
+  });
+
+  function selectMethod(id){
+    current = id;
+    valThuong = null;
+    valHa = null;
+    sealed = false;
+    document.querySelectorAll('.m-card').forEach(c=>{
+      c.classList.toggle('active', c.dataset.id===id);
+    });
+    const m = METHODS.find(x=>x.id===id);
+    stageTitle.textContent = m.title;
+    stageHint.textContent = m.hint;
+    stage.classList.add('show');
+    sealedPanel.classList.remove('show');
+    lockBtn.disabled = true;
+    renderHands(id);
+    stage.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function checkReady(){
+    lockBtn.disabled = !(Number.isInteger(valThuong) && valThuong>0 && Number.isInteger(valHa) && valHa>0);
+  }
+
+  /* ============================================================
+     Render the two-hand interaction area per method
+  ============================================================ */
+  function renderHands(id){
+    handsArea.innerHTML = '';
+    const phaiWrap = document.createElement('div');
+    phaiWrap.className='hand phai';
+    const traiWrap = document.createElement('div');
+    traiWrap.className='hand trai';
+    handsArea.appendChild(phaiWrap);
+    handsArea.appendChild(traiWrap);
+
+    const builders = {
+      book: buildBook,
+      leaf: buildLeaf,
+      steps: buildSteps,
+      strokes: buildStrokes,
+      coin: buildCoin,
+      breath: buildBreath
+    };
+    builders[id](phaiWrap, traiWrap);
+  }
+
+  /* generic header for a hand box */
+  function handHeader(wrap, side){
+    const label = document.createElement('div');
+    label.className='hand-label';
+    label.textContent = side==='phai' ? 'Tay Phải · Số Thượng' : 'Tay Trái · Số Hạ';
+    wrap.appendChild(label);
+  }
+
+  function resultBox(wrap){
+    const box = document.createElement('div');
+    box.className='result-box empty';
+    box.textContent='chưa có số';
+    wrap.appendChild(box);
+    return box;
+  }
+
+  function setVal(side, n, box){
+    if(side==='phai'){ valThuong = n; } else { valHa = n; }
+    box.classList.remove('empty','rolling');
+    box.textContent = n;
+    checkReady();
+  }
+
+  /* ---------- 01 Book ---------- */
+  function buildBook(phaiWrap, traiWrap){
+    [['phai',phaiWrap],['trai',traiWrap]].forEach(([side,wrap])=>{
+      handHeader(wrap, side);
+      const sub = document.createElement('div');
+      sub.className='hand-sub';
+      sub.textContent = side==='phai' ? 'Khấn: "tay Phải lật trang số mấy"' : 'Khấn: "tay Trái lật trang số mấy"';
+      wrap.appendChild(sub);
+      const box = resultBox(wrap);
+      const btn = document.createElement('button');
+      btn.className='act-btn';
+      btn.textContent='Lật trang sách';
+      wrap.appendChild(btn);
+
+      let rolling=false;
+      btn.addEventListener('click', ()=>{
+        if(rolling) return;
+        rolling=true;
+        box.classList.add('rolling');
+        box.classList.remove('empty');
+        let ticks=0;
+        const maxTicks = 14 + Math.floor(Math.random()*6);
+        const iv = setInterval(()=>{
+          box.textContent = 1 + Math.floor(Math.random()*999);
+          ticks++;
+          if(ticks>=maxTicks){
+            clearInterval(iv);
+            const final = 1 + Math.floor(Math.random()*999);
+            rolling=false;
+            setVal(side, final, box);
+            btn.textContent='Lật trang khác';
+          }
+        }, 55);
+      });
+    });
+  }
+
+  /* ---------- 02 Leaf ---------- */
+  function buildLeaf(phaiWrap, traiWrap){
+    [['phai',phaiWrap],['trai',traiWrap]].forEach(([side,wrap])=>{
+      handHeader(wrap, side);
+      const sub = document.createElement('div');
+      sub.className='hand-sub';
+      sub.textContent='Chạm vào cành để lá mọc thêm';
+      wrap.appendChild(sub);
+
+      const svgNS = 'http://www.w3.org/2000/svg';
+      const svg = document.createElementNS(svgNS,'svg');
+      svg.classList.add('branch-svg');
+      svg.setAttribute('viewBox','0 0 300 96');
+      // branch line
+      const branch = document.createElementNS(svgNS,'path');
+      branch.setAttribute('d','M10 80 Q120 60 290 20');
+      branch.setAttribute('stroke', side==='phai' ? '#8f7450' : '#6e3232');
+      branch.setAttribute('stroke-width','2.5');
+      branch.setAttribute('fill','none');
+      branch.setAttribute('stroke-linecap','round');
+      svg.appendChild(branch);
+      wrap.appendChild(svg);
+
+      const countDisp = document.createElement('div');
+      countDisp.className='manual-count-display';
+      countDisp.textContent='Số lá: 0';
+      wrap.appendChild(countDisp);
+
+      const box = resultBox(wrap);
+      box.style.display='none'; // until confirmed
+
+      let leafCount = 0;
+      let confirmed=false;
+      const tapBtn = document.createElement('button');
+      tapBtn.className='act-btn';
+      tapBtn.textContent='Thêm một lá';
+      wrap.appendChild(tapBtn);
+
+      const doneBtn = document.createElement('button');
+      doneBtn.className='act-btn';
+      doneBtn.style.marginTop='8px';
+      doneBtn.textContent='Dừng — chốt số lá này';
+      doneBtn.disabled = true;
+      wrap.appendChild(doneBtn);
+
+      function addLeaf(){
+        if(confirmed) return;
+        leafCount++;
+        countDisp.textContent = 'Số lá: '+leafCount;
+        doneBtn.disabled = leafCount<1;
+        const leafNS='http://www.w3.org/2000/svg';
+        const leaf = document.createElementNS(leafNS,'ellipse');
+        // position along branch path approx
+        const t = Math.min(leafCount/14, 1);
+        const x = 10 + t*270 + (Math.random()*6-3);
+        const y = 80 - t*55 + (Math.random()*6-3) - 10;
+        leaf.setAttribute('cx', x);
+        leaf.setAttribute('cy', y);
+        leaf.setAttribute('rx','7');
+        leaf.setAttribute('ry','3.4');
+        leaf.setAttribute('fill', side==='phai' ? '#c9a063' : '#a85c5c');
+        leaf.setAttribute('opacity','0');
+        leaf.setAttribute('transform', `rotate(${-30+Math.random()*60} ${x} ${y})`);
+        svg.appendChild(leaf);
+        leaf.animate([{opacity:0, transform:'scale(0.3)'},{opacity:0.9, transform:'scale(1)'}], {duration:250, easing:'ease-out', fill:'forwards'});
+      }
+      tapBtn.addEventListener('click', addLeaf);
+
+      doneBtn.addEventListener('click', ()=>{
+        confirmed = true;
+        tapBtn.disabled = true;
+        doneBtn.disabled = true;
+        box.style.display='block';
+        setVal(side, leafCount, box);
+      });
+    });
+  }
+
+  /* ---------- 03 Steps ---------- */
+  function buildSteps(phaiWrap, traiWrap){
+    [['phai',phaiWrap],['trai',traiWrap]].forEach(([side,wrap])=>{
+      handHeader(wrap, side);
+      const sub = document.createElement('div');
+      sub.className='hand-sub';
+      sub.textContent='Mỗi lần bước, bấm một lần';
+      wrap.appendChild(sub);
+
+      const track = document.createElement('div');
+      track.className='step-track';
+      wrap.appendChild(track);
+
+      const countDisp = document.createElement('div');
+      countDisp.className='manual-count-display';
+      countDisp.textContent='Số bước: 0';
+      wrap.appendChild(countDisp);
+
+      const box = resultBox(wrap);
+      box.style.display='none';
+
+      let steps=0, confirmed=false;
+      const stepBtn = document.createElement('button');
+      stepBtn.className='act-btn';
+      stepBtn.textContent='Bước';
+      wrap.appendChild(stepBtn);
+
+      const doneBtn = document.createElement('button');
+      doneBtn.className='act-btn';
+      doneBtn.style.marginTop='8px';
+      doneBtn.textContent='Dừng — chốt số bước';
+      doneBtn.disabled=true;
+      wrap.appendChild(doneBtn);
+
+      stepBtn.addEventListener('click', ()=>{
+        if(confirmed) return;
+        steps++;
+        countDisp.textContent='Số bước: '+steps;
+        doneBtn.disabled = steps<1;
+        const dot = document.createElement('div');
+        dot.className='footprint';
+        track.appendChild(dot);
+        if(track.children.length>18){ track.removeChild(track.firstChild); }
+      });
+
+      doneBtn.addEventListener('click', ()=>{
+        confirmed=true;
+        stepBtn.disabled=true;
+        doneBtn.disabled=true;
+        box.style.display='block';
+        setVal(side, steps, box);
+      });
+    });
+  }
+
+  /* ---------- 04 Strokes ---------- */
+  function buildStrokes(phaiWrap, traiWrap){
+    [['phai',phaiWrap],['trai',traiWrap]].forEach(([side,wrap])=>{
+      handHeader(wrap, side);
+      const sub = document.createElement('div');
+      sub.className='hand-sub';
+      sub.textContent='Vẩy tay vạch tự do, đừng đếm';
+      wrap.appendChild(sub);
+
+      const area = document.createElement('div');
+      area.className='manual-area';
+      const ph = document.createElement('div');
+      ph.className='ph';
+      ph.textContent='vạch ở đây';
+      area.appendChild(ph);
+      const svgNS='http://www.w3.org/2000/svg';
+      const svg = document.createElementNS(svgNS,'svg');
+      area.appendChild(svg);
+      wrap.appendChild(area);
+
+      const countDisp = document.createElement('div');
+      countDisp.className='manual-count-display';
+      countDisp.textContent='(số vạch sẽ hiện sau khi đếm lại)';
+      wrap.appendChild(countDisp);
+
+      const box = resultBox(wrap);
+      box.style.display='none';
+
+      let strokeCount=0;
+      let drawing=false;
+      let currentLine=null;
+      let confirmed=false;
+
+      function pos(evt){
+        const rect = area.getBoundingClientRect();
+        const cx = (evt.touches? evt.touches[0].clientX : evt.clientX) - rect.left;
+        const cy = (evt.touches? evt.touches[0].clientY : evt.clientY) - rect.top;
+        return [cx,cy];
+      }
+
+      function startDraw(evt){
+        if(confirmed) return;
+        evt.preventDefault();
+        ph.style.display='none';
+        drawing=true;
+        const [x,y]=pos(evt);
+        currentLine = document.createElementNS(svgNS,'polyline');
+        currentLine.setAttribute('points', `${x},${y}`);
+        currentLine.setAttribute('fill','none');
+        currentLine.setAttribute('stroke', side==='phai' ? '#c9a063' : '#a85c5c');
+        currentLine.setAttribute('stroke-width','2');
+        currentLine.setAttribute('stroke-linecap','round');
+        currentLine.setAttribute('opacity','0.85');
+        svg.appendChild(currentLine);
+      }
+      function moveDraw(evt){
+        if(!drawing) return;
+        evt.preventDefault();
+        const [x,y]=pos(evt);
+        const pts = currentLine.getAttribute('points');
+        currentLine.setAttribute('points', pts+` ${x},${y}`);
+      }
+      function endDraw(){
+        if(!drawing) return;
+        drawing=false;
+        strokeCount++;
+        currentLine=null;
+      }
+      area.addEventListener('mousedown', startDraw);
+      area.addEventListener('mousemove', moveDraw);
+      area.addEventListener('mouseup', endDraw);
+      area.addEventListener('mouseleave', endDraw);
+      area.addEventListener('touchstart', startDraw, {passive:false});
+      area.addEventListener('touchmove', moveDraw, {passive:false});
+      area.addEventListener('touchend', endDraw);
+
+      const countBtn = document.createElement('button');
+      countBtn.className='act-btn';
+      countBtn.textContent='Đếm lại số vạch vừa vẽ';
+      wrap.appendChild(countBtn);
+
+      countBtn.addEventListener('click', ()=>{
+        if(confirmed) return;
+        if(strokeCount<1){
+          countDisp.textContent='Chưa có vạch nào — hãy vẽ trước khi đếm.';
+          return;
+        }
+        confirmed=true;
+        countDisp.textContent='Đã đếm được: '+strokeCount+' vạch';
+        box.style.display='block';
+        setVal(side, strokeCount, box);
+        countBtn.disabled=true;
+        area.style.pointerEvents='none';
+        area.style.opacity='0.6';
+      });
+    });
+  }
+
+  /* ---------- 05 Coin ---------- */
+  function buildCoin(phaiWrap, traiWrap){
+    [['phai',phaiWrap],['trai',traiWrap]].forEach(([side,wrap])=>{
+      handHeader(wrap, side);
+      const sub = document.createElement('div');
+      sub.className='hand-sub';
+      sub.textContent='Gieo đồng tiền 3 lần (Ngửa=1, Sấp=0, ghép nhị phân)';
+      wrap.appendChild(sub);
+
+      const row = document.createElement('div');
+      row.className='coins-row';
+      wrap.appendChild(row);
+
+      const countDisp = document.createElement('div');
+      countDisp.className='manual-count-display';
+      countDisp.textContent='Lần gieo: 0 / 3';
+      wrap.appendChild(countDisp);
+
+      const box = resultBox(wrap);
+      box.style.display='none';
+
+      let throws=0;
+      let bits=[]; // 1 = ngửa(dương), 0 = sấp(âm)
+      let confirmed=false;
+
+      const btn = document.createElement('button');
+      btn.className='act-btn';
+      btn.textContent='Gieo đồng tiền';
+      wrap.appendChild(btn);
+
+      btn.addEventListener('click', ()=>{
+        if(confirmed || throws>=3) return;
+        const heads = Math.random()<0.5;
+        bits.push(heads?1:0);
+        throws++;
+        const coin = document.createElement('div');
+        coin.className='coin'+(heads?'':' tails');
+        coin.textContent = heads ? 'Ngửa':'Sấp';
+        row.appendChild(coin);
+        countDisp.textContent = 'Lần gieo: '+throws+' / 3';
+
+        if(throws>=3){
+          btn.disabled=true;
+          confirmed=true;
+          // convert 3 bits (mỗi lần Ngửa=1,Sấp=0) thành số 1..8 theo binary, 0 -> 8
+          let n = bits[0]*4 + bits[1]*2 + bits[2]*1;
+          if(n===0) n=8;
+          box.style.display='block';
+          setVal(side, n, box);
+        }
+      });
+    });
+  }
+
+  /* ---------- 06 Breath ---------- */
+  function buildBreath(phaiWrap, traiWrap){
+    [['phai',phaiWrap],['trai',traiWrap]].forEach(([side,wrap])=>{
+      handHeader(wrap, side);
+      const sub = document.createElement('div');
+      sub.className='hand-sub';
+      sub.textContent='Thở theo nhịp, đếm mỗi lần thở ra';
+      wrap.appendChild(sub);
+
+      const ring = document.createElement('div');
+      ring.className='breath-ring';
+      ring.textContent='hít vào';
+      wrap.appendChild(ring);
+
+      const countDisp = document.createElement('div');
+      countDisp.className='manual-count-display';
+      countDisp.textContent='Hơi thở: 0';
+      wrap.appendChild(countDisp);
+
+      const box = resultBox(wrap);
+      box.style.display='none';
+
+      let breaths=0, confirmed=false, phase='in';
+      let timer = null;
+
+      function cycle(){
+        if(confirmed) return;
+        if(phase==='in'){
+          ring.classList.remove('exhale');
+          ring.classList.add('inhale');
+          ring.textContent='hít vào';
+          phase='out';
+        } else {
+          ring.classList.remove('inhale');
+          ring.classList.add('exhale');
+          ring.textContent='thở ra';
+          phase='in';
+          breaths++;
+          countDisp.textContent='Hơi thở: '+breaths;
+          doneBtn.disabled = breaths<1;
+        }
+      }
+      timer = setInterval(cycle, 4000);
+      cycle();
+
+      const doneBtn = document.createElement('button');
+      doneBtn.className='act-btn';
+      doneBtn.textContent='Dừng — tâm đã an';
+      doneBtn.disabled=true;
+      wrap.appendChild(doneBtn);
+
+      doneBtn.addEventListener('click', ()=>{
+        if(confirmed) return;
+        confirmed=true;
+        clearInterval(timer);
+        doneBtn.disabled=true;
+        box.style.display='block';
+        setVal(side, breaths, box);
+      });
+    });
+  }
+
+  /* ============================================================
+     Lock / seal
+  ============================================================ */
+  lockBtn.addEventListener('click', ()=>{
+    if(lockBtn.disabled) return;
+    sealed = true;
+    sealedThuong.textContent = valThuong;
+    sealedHa.textContent = valHa;
+    sealedPanel.classList.add('show');
+    lockBtn.disabled = true;
+    sealedPanel.scrollIntoView({behavior:'smooth', block:'center'});
+  });
+
+  resetBtn.addEventListener('click', ()=>{
+    if(!current) return;
+    selectMethod(current);
+  });
+
+  restartBtn.addEventListener('click', ()=>{
+    stage.classList.remove('show');
+    sealedPanel.classList.remove('show');
+    document.querySelectorAll('.m-card').forEach(c=>c.classList.remove('active'));
+    current=null; valThuong=null; valHa=null; sealed=false;
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+
+  copyBtn.addEventListener('click', ()=>{
+    const text = `${valThuong},${valHa}`;
+    if(navigator.clipboard){
+      navigator.clipboard.writeText(text).then(()=>{
+        copyBtn.textContent='Đã chép!';
+        setTimeout(()=>{ copyBtn.textContent='Chép số (Thượng,Hạ)'; }, 1600);
+      }).catch(()=>{
+        fallbackCopy(text);
+      });
+    } else {
+      fallbackCopy(text);
+    }
+  });
+
+  function fallbackCopy(text){
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    try{ document.execCommand('copy'); }catch(e){}
+    document.body.removeChild(ta);
+    copyBtn.textContent='Đã chép!';
+    setTimeout(()=>{ copyBtn.textContent='Chép số (Thượng,Hạ)'; }, 1600);
+  }
+
+})();
+</script>
+</body>
+</html>
