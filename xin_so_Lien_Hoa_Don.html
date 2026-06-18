@@ -34,7 +34,6 @@
     min-height:100vh;
     -webkit-font-smoothing:antialiased;
   }
-  /* texture vân giấy */
   body::before{
     content:"";
     position:fixed; inset:0;
@@ -144,9 +143,70 @@
     margin:0;
   }
 
+  /* ---------- Note input ---------- */
+  .note-panel{
+    margin-top:28px;
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:28px 32px;
+    background:linear-gradient(180deg, rgba(201,160,99,0.03), transparent);
+    display:none;
+    animation:fadeUp .35s ease both;
+  }
+  .note-panel.show{ display:block; }
+
+  .note-label{
+    font-family:'Noto Serif', serif;
+    font-size:13px;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:var(--gold-soft);
+    margin-bottom:10px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .note-label::after{
+    content:'';
+    flex:1;
+    height:1px;
+    background:linear-gradient(90deg, var(--line), transparent);
+  }
+  .note-input{
+    width:100%;
+    background:rgba(0,0,0,0.25);
+    border:1px solid var(--line);
+    border-radius:2px;
+    color:var(--ink);
+    font-family:'Cormorant Garamond','Noto Serif',serif;
+    font-size:17px;
+    font-style:italic;
+    line-height:1.6;
+    padding:14px 16px;
+    resize:vertical;
+    min-height:72px;
+    transition:border-color .2s ease;
+    outline:none;
+  }
+  .note-input::placeholder{
+    color:var(--ink-dim2);
+    opacity:0.6;
+  }
+  .note-input:focus{
+    border-color:var(--gold-soft);
+  }
+  .note-char{
+    font-size:11.5px;
+    color:var(--ink-dim2);
+    text-align:right;
+    margin-top:6px;
+    font-family:'JetBrains Mono', monospace;
+    opacity:0.6;
+  }
+
   /* ---------- Stage ---------- */
   .stage{
-    margin-top:36px;
+    margin-top:20px;
     border:1px solid var(--line);
     border-radius:3px;
     background:linear-gradient(180deg, rgba(0,0,0,0.12), transparent);
@@ -426,6 +486,37 @@
     from{opacity:0; transform:rotate(-8deg) scale(1.6);}
     to{opacity:0.92; transform:rotate(-8deg) scale(1);}
   }
+
+  /* sealed question display */
+  .sealed-question{
+    font-size:15px;
+    color:var(--ink-dim2);
+    font-style:italic;
+    max-width:480px;
+    margin:0 auto 22px;
+    line-height:1.65;
+    padding:12px 20px;
+    border-left:2px solid var(--gold-soft);
+    text-align:left;
+    background:rgba(201,160,99,0.04);
+    border-radius:0 2px 2px 0;
+    display:none;
+  }
+  .sealed-question.show{ display:block; }
+  .sealed-question .q-label{
+    font-size:11px;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    color:var(--gold-soft);
+    margin-bottom:6px;
+    font-style:normal;
+    font-family:'Noto Serif', serif;
+  }
+  .sealed-question .q-text{
+    color:var(--ink);
+    font-size:16px;
+  }
+
   .sealed-numbers{
     display:flex;
     justify-content:center;
@@ -475,6 +566,16 @@
     border-color:var(--gold-soft);
     color:var(--ink);
   }
+  /* save image btn — gold accent */
+  .ghost-btn.save-img{
+    border-color:var(--gold-soft);
+    color:var(--gold);
+  }
+  .ghost-btn.save-img:hover{
+    background:rgba(201,160,99,0.1);
+    border-color:var(--gold);
+    color:var(--ink);
+  }
 
   footer{
     text-align:center;
@@ -484,6 +585,9 @@
     font-style:italic;
     letter-spacing:0.02em;
   }
+
+  /* hidden canvas for export */
+  #exportCanvas{ display:none; }
 
   @media (prefers-reduced-motion: reduce){
     *{ animation-duration:0.01ms !important; transition-duration:0.01ms !important; }
@@ -503,6 +607,17 @@
 
   <div class="methods" id="methodList"></div>
 
+  <!-- Note panel — hiện ngay khi chọn phương pháp -->
+  <div class="note-panel" id="notePanel">
+    <div class="note-label">Câu hỏi xin quẻ</div>
+    <textarea class="note-input" id="noteInput"
+      placeholder="Ghi lại sự kiện / câu hỏi đang hỏi quẻ… (không bắt buộc)"
+      maxlength="200"
+      rows="3"
+    ></textarea>
+    <div class="note-char"><span id="noteCount">0</span> / 200</div>
+  </div>
+
   <div class="stage" id="stage">
     <div class="stage-head">
       <div class="stage-title" id="stageTitle">—</div>
@@ -519,19 +634,27 @@
 
     <div class="sealed-panel" id="sealedPanel">
       <div class="stamp">đã định</div>
+
+      <!-- Hiện câu hỏi nếu có -->
+      <div class="sealed-question" id="sealedQuestion">
+        <div class="q-label">Câu hỏi</div>
+        <div class="q-text" id="sealedQuestionText"></div>
+      </div>
+
       <div class="sealed-numbers">
         <div class="sealed-col">
-          <div class="lbl">Số Thượng</div>
+          <div class="lbl">Số Thượng · Tay Phải</div>
           <div class="val" id="sealedThuong">—</div>
         </div>
         <div class="sealed-col">
-          <div class="lbl">Số Hạ</div>
+          <div class="lbl">Số Hạ · Tay Trái</div>
           <div class="val" id="sealedHa">—</div>
         </div>
       </div>
       <p class="sealed-note">Hai số trên đã được giữ nguyên theo cách xin của bạn. Hãy chuyển sang chương trình Lập Quẻ để nhập hai số này và xem kết quả.</p>
       <div class="copy-row">
         <button class="ghost-btn" id="copyBtn">Chép số (Thượng,Hạ)</button>
+        <button class="ghost-btn save-img" id="saveImgBtn">Lưu ảnh kết quả</button>
         <button class="ghost-btn" id="restartBtn">Xin quẻ khác</button>
       </div>
     </div>
@@ -539,6 +662,9 @@
 
   <footer>Khấn sao cho tâm mình khế hợp với Thần, chư vị Thiêng Liêng — số tự đến, không cần gắng cầu.</footer>
 </div>
+
+<!-- Canvas ẩn dùng để render ảnh export -->
+<canvas id="exportCanvas"></canvas>
 
 <script>
 (function(){
@@ -592,22 +718,34 @@
   ];
 
   let current = null;
-  let valThuong = null; // tay Phải
-  let valHa = null;     // tay Trái
+  let valThuong = null;
+  let valHa = null;
   let sealed = false;
 
-  const methodList = document.getElementById('methodList');
-  const stage = document.getElementById('stage');
-  const stageTitle = document.getElementById('stageTitle');
-  const stageHint = document.getElementById('stageHint');
-  const handsArea = document.getElementById('handsArea');
-  const lockBtn = document.getElementById('lockBtn');
-  const resetBtn = document.getElementById('resetBtn');
-  const sealedPanel = document.getElementById('sealedPanel');
-  const sealedThuong = document.getElementById('sealedThuong');
-  const sealedHa = document.getElementById('sealedHa');
-  const copyBtn = document.getElementById('copyBtn');
-  const restartBtn = document.getElementById('restartBtn');
+  const methodList    = document.getElementById('methodList');
+  const notePanel     = document.getElementById('notePanel');
+  const noteInput     = document.getElementById('noteInput');
+  const noteCount     = document.getElementById('noteCount');
+  const stage         = document.getElementById('stage');
+  const stageTitle    = document.getElementById('stageTitle');
+  const stageHint     = document.getElementById('stageHint');
+  const handsArea     = document.getElementById('handsArea');
+  const lockBtn       = document.getElementById('lockBtn');
+  const resetBtn      = document.getElementById('resetBtn');
+  const sealedPanel   = document.getElementById('sealedPanel');
+  const sealedThuong  = document.getElementById('sealedThuong');
+  const sealedHa      = document.getElementById('sealedHa');
+  const sealedQuestion= document.getElementById('sealedQuestion');
+  const sealedQuestionText = document.getElementById('sealedQuestionText');
+  const copyBtn       = document.getElementById('copyBtn');
+  const saveImgBtn    = document.getElementById('saveImgBtn');
+  const restartBtn    = document.getElementById('restartBtn');
+  const exportCanvas  = document.getElementById('exportCanvas');
+
+  /* note char counter */
+  noteInput.addEventListener('input', ()=>{
+    noteCount.textContent = noteInput.value.length;
+  });
 
   /* ============================================================
      Render method picker
@@ -631,17 +769,25 @@
     valThuong = null;
     valHa = null;
     sealed = false;
+
     document.querySelectorAll('.m-card').forEach(c=>{
       c.classList.toggle('active', c.dataset.id===id);
     });
+
     const m = METHODS.find(x=>x.id===id);
     stageTitle.textContent = m.title;
-    stageHint.textContent = m.hint;
+    stageHint.textContent  = m.hint;
+
+    // hiện note panel trước stage
+    notePanel.classList.add('show');
+
     stage.classList.add('show');
     sealedPanel.classList.remove('show');
     lockBtn.disabled = true;
     renderHands(id);
-    stage.scrollIntoView({behavior:'smooth', block:'start'});
+
+    // scroll đến note panel
+    notePanel.scrollIntoView({behavior:'smooth', block:'start'});
   }
 
   function checkReady(){
@@ -661,17 +807,16 @@
     handsArea.appendChild(traiWrap);
 
     const builders = {
-      book: buildBook,
-      leaf: buildLeaf,
-      steps: buildSteps,
+      book:    buildBook,
+      leaf:    buildLeaf,
+      steps:   buildSteps,
       strokes: buildStrokes,
-      coin: buildCoin,
-      breath: buildBreath
+      coin:    buildCoin,
+      breath:  buildBreath
     };
     builders[id](phaiWrap, traiWrap);
   }
 
-  /* generic header for a hand box */
   function handHeader(wrap, side){
     const label = document.createElement('div');
     label.className='hand-label';
@@ -744,7 +889,6 @@
       const svg = document.createElementNS(svgNS,'svg');
       svg.classList.add('branch-svg');
       svg.setAttribute('viewBox','0 0 300 96');
-      // branch line
       const branch = document.createElementNS(svgNS,'path');
       branch.setAttribute('d','M10 80 Q120 60 290 20');
       branch.setAttribute('stroke', side==='phai' ? '#8f7450' : '#6e3232');
@@ -760,10 +904,9 @@
       wrap.appendChild(countDisp);
 
       const box = resultBox(wrap);
-      box.style.display='none'; // until confirmed
+      box.style.display='none';
 
-      let leafCount = 0;
-      let confirmed=false;
+      let leafCount=0, confirmed=false;
       const tapBtn = document.createElement('button');
       tapBtn.className='act-btn';
       tapBtn.textContent='Thêm một lá';
@@ -773,17 +916,15 @@
       doneBtn.className='act-btn';
       doneBtn.style.marginTop='8px';
       doneBtn.textContent='Dừng — chốt số lá này';
-      doneBtn.disabled = true;
+      doneBtn.disabled=true;
       wrap.appendChild(doneBtn);
 
       function addLeaf(){
         if(confirmed) return;
         leafCount++;
-        countDisp.textContent = 'Số lá: '+leafCount;
-        doneBtn.disabled = leafCount<1;
-        const leafNS='http://www.w3.org/2000/svg';
-        const leaf = document.createElementNS(leafNS,'ellipse');
-        // position along branch path approx
+        countDisp.textContent='Số lá: '+leafCount;
+        doneBtn.disabled=leafCount<1;
+        const leaf = document.createElementNS(svgNS,'ellipse');
         const t = Math.min(leafCount/14, 1);
         const x = 10 + t*270 + (Math.random()*6-3);
         const y = 80 - t*55 + (Math.random()*6-3) - 10;
@@ -795,14 +936,13 @@
         leaf.setAttribute('opacity','0');
         leaf.setAttribute('transform', `rotate(${-30+Math.random()*60} ${x} ${y})`);
         svg.appendChild(leaf);
-        leaf.animate([{opacity:0, transform:'scale(0.3)'},{opacity:0.9, transform:'scale(1)'}], {duration:250, easing:'ease-out', fill:'forwards'});
+        leaf.animate([{opacity:0,transform:'scale(0.3)'},{opacity:0.9,transform:'scale(1)'}],{duration:250,easing:'ease-out',fill:'forwards'});
       }
       tapBtn.addEventListener('click', addLeaf);
-
       doneBtn.addEventListener('click', ()=>{
-        confirmed = true;
-        tapBtn.disabled = true;
-        doneBtn.disabled = true;
+        confirmed=true;
+        tapBtn.disabled=true;
+        doneBtn.disabled=true;
         box.style.display='block';
         setVal(side, leafCount, box);
       });
@@ -847,13 +987,12 @@
         if(confirmed) return;
         steps++;
         countDisp.textContent='Số bước: '+steps;
-        doneBtn.disabled = steps<1;
+        doneBtn.disabled=steps<1;
         const dot = document.createElement('div');
         dot.className='footprint';
         track.appendChild(dot);
         if(track.children.length>18){ track.removeChild(track.firstChild); }
       });
-
       doneBtn.addEventListener('click', ()=>{
         confirmed=true;
         stepBtn.disabled=true;
@@ -892,10 +1031,7 @@
       const box = resultBox(wrap);
       box.style.display='none';
 
-      let strokeCount=0;
-      let drawing=false;
-      let currentLine=null;
-      let confirmed=false;
+      let strokeCount=0, drawing=false, currentLine=null, confirmed=false;
 
       function pos(evt){
         const rect = area.getBoundingClientRect();
@@ -903,7 +1039,6 @@
         const cy = (evt.touches? evt.touches[0].clientY : evt.clientY) - rect.top;
         return [cx,cy];
       }
-
       function startDraw(evt){
         if(confirmed) return;
         evt.preventDefault();
@@ -911,7 +1046,7 @@
         drawing=true;
         const [x,y]=pos(evt);
         currentLine = document.createElementNS(svgNS,'polyline');
-        currentLine.setAttribute('points', `${x},${y}`);
+        currentLine.setAttribute('points',`${x},${y}`);
         currentLine.setAttribute('fill','none');
         currentLine.setAttribute('stroke', side==='phai' ? '#c9a063' : '#a85c5c');
         currentLine.setAttribute('stroke-width','2');
@@ -923,8 +1058,7 @@
         if(!drawing) return;
         evt.preventDefault();
         const [x,y]=pos(evt);
-        const pts = currentLine.getAttribute('points');
-        currentLine.setAttribute('points', pts+` ${x},${y}`);
+        currentLine.setAttribute('points', currentLine.getAttribute('points')+` ${x},${y}`);
       }
       function endDraw(){
         if(!drawing) return;
@@ -947,10 +1081,7 @@
 
       countBtn.addEventListener('click', ()=>{
         if(confirmed) return;
-        if(strokeCount<1){
-          countDisp.textContent='Chưa có vạch nào — hãy vẽ trước khi đếm.';
-          return;
-        }
+        if(strokeCount<1){ countDisp.textContent='Chưa có vạch nào — hãy vẽ trước khi đếm.'; return; }
         confirmed=true;
         countDisp.textContent='Đã đếm được: '+strokeCount+' vạch';
         box.style.display='block';
@@ -983,10 +1114,7 @@
       const box = resultBox(wrap);
       box.style.display='none';
 
-      let throws=0;
-      let bits=[]; // 1 = ngửa(dương), 0 = sấp(âm)
-      let confirmed=false;
-
+      let throws=0, bits=[], confirmed=false;
       const btn = document.createElement('button');
       btn.className='act-btn';
       btn.textContent='Gieo đồng tiền';
@@ -999,14 +1127,12 @@
         throws++;
         const coin = document.createElement('div');
         coin.className='coin'+(heads?'':' tails');
-        coin.textContent = heads ? 'Ngửa':'Sấp';
+        coin.textContent=heads?'Ngửa':'Sấp';
         row.appendChild(coin);
-        countDisp.textContent = 'Lần gieo: '+throws+' / 3';
-
+        countDisp.textContent='Lần gieo: '+throws+' / 3';
         if(throws>=3){
           btn.disabled=true;
           confirmed=true;
-          // convert 3 bits (mỗi lần Ngửa=1,Sấp=0) thành số 1..8 theo binary, 0 -> 8
           let n = bits[0]*4 + bits[1]*2 + bits[2]*1;
           if(n===0) n=8;
           box.style.display='block';
@@ -1038,8 +1164,7 @@
       const box = resultBox(wrap);
       box.style.display='none';
 
-      let breaths=0, confirmed=false, phase='in';
-      let timer = null;
+      let breaths=0, confirmed=false, phase='in', timer=null;
 
       function cycle(){
         if(confirmed) return;
@@ -1055,10 +1180,10 @@
           phase='in';
           breaths++;
           countDisp.textContent='Hơi thở: '+breaths;
-          doneBtn.disabled = breaths<1;
+          doneBtn.disabled=breaths<1;
         }
       }
-      timer = setInterval(cycle, 4000);
+      timer=setInterval(cycle,4000);
       cycle();
 
       const doneBtn = document.createElement('button');
@@ -1083,11 +1208,21 @@
   ============================================================ */
   lockBtn.addEventListener('click', ()=>{
     if(lockBtn.disabled) return;
-    sealed = true;
+    sealed=true;
     sealedThuong.textContent = valThuong;
-    sealedHa.textContent = valHa;
+    sealedHa.textContent     = valHa;
+
+    // hiện câu hỏi nếu có
+    const q = noteInput.value.trim();
+    if(q){
+      sealedQuestionText.textContent = q;
+      sealedQuestion.classList.add('show');
+    } else {
+      sealedQuestion.classList.remove('show');
+    }
+
     sealedPanel.classList.add('show');
-    lockBtn.disabled = true;
+    lockBtn.disabled=true;
     sealedPanel.scrollIntoView({behavior:'smooth', block:'center'});
   });
 
@@ -1098,35 +1233,260 @@
 
   restartBtn.addEventListener('click', ()=>{
     stage.classList.remove('show');
+    notePanel.classList.remove('show');
     sealedPanel.classList.remove('show');
+    sealedQuestion.classList.remove('show');
     document.querySelectorAll('.m-card').forEach(c=>c.classList.remove('active'));
     current=null; valThuong=null; valHa=null; sealed=false;
+    noteInput.value='';
+    noteCount.textContent='0';
     window.scrollTo({top:0, behavior:'smooth'});
   });
 
+  /* ============================================================
+     Copy
+  ============================================================ */
   copyBtn.addEventListener('click', ()=>{
     const text = `${valThuong},${valHa}`;
     if(navigator.clipboard){
       navigator.clipboard.writeText(text).then(()=>{
         copyBtn.textContent='Đã chép!';
         setTimeout(()=>{ copyBtn.textContent='Chép số (Thượng,Hạ)'; }, 1600);
-      }).catch(()=>{
-        fallbackCopy(text);
-      });
-    } else {
-      fallbackCopy(text);
-    }
+      }).catch(()=>fallbackCopy(text));
+    } else { fallbackCopy(text); }
   });
 
   function fallbackCopy(text){
-    const ta = document.createElement('textarea');
-    ta.value = text;
+    const ta=document.createElement('textarea');
+    ta.value=text;
     document.body.appendChild(ta);
     ta.select();
     try{ document.execCommand('copy'); }catch(e){}
     document.body.removeChild(ta);
     copyBtn.textContent='Đã chép!';
     setTimeout(()=>{ copyBtn.textContent='Chép số (Thượng,Hạ)'; }, 1600);
+  }
+
+  /* ============================================================
+     Save Image — Canvas render
+  ============================================================ */
+  saveImgBtn.addEventListener('click', ()=>{
+    renderExportImage();
+  });
+
+  function renderExportImage(){
+    const W = 900, H = 500;
+    const canvas = exportCanvas;
+    canvas.width  = W;
+    canvas.height = H;
+    const ctx = canvas.getContext('2d');
+
+    // --- Background ---
+    ctx.fillStyle = '#1a1410';
+    ctx.fillRect(0, 0, W, H);
+
+    // subtle radial glow top center
+    const grd = ctx.createRadialGradient(W/2, -40, 0, W/2, -40, 500);
+    grd.addColorStop(0, 'rgba(201,160,99,0.10)');
+    grd.addColorStop(1, 'transparent');
+    ctx.fillStyle = grd;
+    ctx.fillRect(0, 0, W, H);
+
+    // paper grain lines
+    ctx.save();
+    ctx.globalAlpha = 0.04;
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 0.5;
+    for(let y=0; y<H; y+=3){
+      ctx.beginPath();
+      ctx.moveTo(0,y);
+      ctx.lineTo(W,y);
+      ctx.stroke();
+    }
+    ctx.restore();
+
+    // --- Outer border ---
+    ctx.strokeStyle = '#3a2f24';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(24, 24, W-48, H-48);
+
+    // --- Inner thin border ---
+    ctx.strokeStyle = '#2c2419';
+    ctx.lineWidth = 0.5;
+    ctx.strokeRect(30, 30, W-60, H-60);
+
+    // --- Eyebrow ---
+    ctx.save();
+    ctx.fillStyle = '#8f7450';
+    ctx.font = '500 13px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.letterSpacing = '6px';
+    ctx.fillText('LIÊN HOA ĐỘN  ·  XIN SỐ LẬP QUẺ', W/2, 74);
+    ctx.restore();
+
+    // --- Divider line ---
+    const grad = ctx.createLinearGradient(W/2-100, 0, W/2+100, 0);
+    grad.addColorStop(0, 'transparent');
+    grad.addColorStop(0.5, '#8f7450');
+    grad.addColorStop(1, 'transparent');
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(W/2-100, 90);
+    ctx.lineTo(W/2+100, 90);
+    ctx.stroke();
+
+    // --- Question / note ---
+    const q = noteInput.value.trim();
+    let numberY = 180;
+    if(q){
+      ctx.save();
+      ctx.fillStyle = 'rgba(201,160,99,0.06)';
+      roundRect(ctx, W/2-280, 104, 560, 52, 2);
+      ctx.fill();
+      ctx.strokeStyle = '#8f7450';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(W/2-280, 106);
+      ctx.lineTo(W/2-280, 156);
+      ctx.stroke();
+      ctx.restore();
+
+      ctx.save();
+      ctx.fillStyle = '#8f7450';
+      ctx.font = '500 11px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.fillText('CÂU HỎI', W/2-264, 122);
+      ctx.restore();
+
+      ctx.save();
+      ctx.fillStyle = '#e8dcc8';
+      ctx.font = 'italic 16px "Georgia", serif';
+      ctx.textAlign = 'left';
+      // wrap text if long
+      const maxWidth = 510;
+      const lines = wrapText(ctx, q, maxWidth);
+      lines.forEach((line, i)=>{
+        ctx.fillText(line, W/2-264, 143 + i*20);
+      });
+      ctx.restore();
+
+      numberY = 200 + Math.max(0, lines.length-1)*20;
+    }
+
+    // --- Two number columns ---
+    const colLeft  = W/2 - 160;
+    const colRight = W/2 + 160;
+
+    // Tay Phải (Số Thượng)
+    drawNumberColumn(ctx, colLeft, numberY, valThuong, 'Tay Phải', 'Số Thượng', '#c9a063', '#8f7450');
+
+    // vertical separator
+    ctx.save();
+    ctx.strokeStyle = '#3a2f24';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4,4]);
+    ctx.beginPath();
+    ctx.moveTo(W/2, numberY - 10);
+    ctx.lineTo(W/2, numberY + 120);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
+
+    // Tay Trái (Số Hạ)
+    drawNumberColumn(ctx, colRight, numberY, valHa, 'Tay Trái', 'Số Hạ', '#c08a8a', '#6e3232');
+
+    // --- Timestamp ---
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('vi-VN', {weekday:'short', year:'numeric', month:'long', day:'numeric'});
+    const timeStr = now.toLocaleTimeString('vi-VN', {hour:'2-digit', minute:'2-digit'});
+    ctx.save();
+    ctx.fillStyle = '#5a4a38';
+    ctx.font = '13px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(dateStr + '  ·  ' + timeStr, W/2, H - 44);
+    ctx.restore();
+
+    // --- Seal stamp (rotated circle) ---
+    ctx.save();
+    ctx.translate(W - 80, H - 80);
+    ctx.rotate(-0.14);
+    ctx.strokeStyle = 'rgba(139,58,58,0.6)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(0, 0, 34, 0, Math.PI*2);
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(139,58,58,0.55)';
+    ctx.font = '500 11px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('đã', 0, -4);
+    ctx.fillText('định', 0, 10);
+    ctx.restore();
+
+    // --- Download ---
+    const link = document.createElement('a');
+    const qSlug = q ? '_' + q.slice(0,20).replace(/\s+/g,'_').replace(/[^\w_]/g,'') : '';
+    link.download = `lien-hoa-don_${valThuong}-${valHa}${qSlug}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+
+    saveImgBtn.textContent = 'Đã lưu ảnh ✓';
+    setTimeout(()=>{ saveImgBtn.textContent = 'Lưu ảnh kết quả'; }, 2000);
+  }
+
+  function drawNumberColumn(ctx, cx, y, val, handLabel, numLabel, colorMain, colorDim){
+    // hand label
+    ctx.save();
+    ctx.fillStyle = colorDim;
+    ctx.font = '500 11px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(handLabel.toUpperCase(), cx, y);
+    ctx.restore();
+
+    // num label
+    ctx.save();
+    ctx.fillStyle = colorDim;
+    ctx.font = '12px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('· ' + numLabel + ' ·', cx, y + 20);
+    ctx.restore();
+
+    // big number
+    ctx.save();
+    ctx.fillStyle = colorMain;
+    ctx.font = 'bold 76px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(String(val), cx, y + 100);
+    ctx.restore();
+  }
+
+  function wrapText(ctx, text, maxWidth){
+    const words = text.split(' ');
+    const lines = [];
+    let line = '';
+    words.forEach(word=>{
+      const test = line ? line+' '+word : word;
+      if(ctx.measureText(test).width > maxWidth && line){
+        lines.push(line);
+        line = word;
+      } else { line = test; }
+    });
+    if(line) lines.push(line);
+    return lines.slice(0,2); // max 2 lines in canvas
+  }
+
+  function roundRect(ctx, x, y, w, h, r){
+    ctx.beginPath();
+    ctx.moveTo(x+r, y);
+    ctx.lineTo(x+w-r, y);
+    ctx.quadraticCurveTo(x+w, y, x+w, y+r);
+    ctx.lineTo(x+w, y+h-r);
+    ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+    ctx.lineTo(x+r, y+h);
+    ctx.quadraticCurveTo(x, y+h, x, y+h-r);
+    ctx.lineTo(x, y+r);
+    ctx.quadraticCurveTo(x, y, x+r, y);
+    ctx.closePath();
   }
 
 })();
